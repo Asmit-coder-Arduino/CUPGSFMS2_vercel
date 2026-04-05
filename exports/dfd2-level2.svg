@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1260" height="820" viewBox="0 0 1260 820" font-family="Arial,sans-serif">
+  <rect width="1260" height="820" fill="white"/>
+  <rect x="0" y="0" width="1260" height="42" fill="#1e3a8a"/>
+  <text x="630" y="26" text-anchor="middle" font-size="15" font-weight="800" fill="white">DFD Level 2 — Process 2.0 Explosion: Feedback Collection · CUPGS System (Yourdon-Coad)</text>
+  <defs>
+    <marker id="a2" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto">
+      <polygon points="0 0,10 4,0 8" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- Explosion boundary -->
+  <rect x="70" y="80" width="1100" height="540" rx="12" fill="none" stroke="#22c55e" stroke-width="2" stroke-dasharray="10,5"/>
+  <text x="88" y="100" font-size="11" fill="#16a34a" font-weight="700">Process 2.0 — Feedback Collection (Expanded)</text>
+
+  <!-- External Entities -->
+  <rect x="6" y="248" width="110" height="52" rx="4" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1.8"/>
+  <text x="61" y="275" text-anchor="middle" font-size="12" font-weight="700" fill="white">STUDENT</text>
+
+  <rect x="6" y="420" width="110" height="52" rx="4" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1.8"/>
+  <text x="61" y="441" text-anchor="middle" font-size="11" font-weight="700" fill="white">HOD FORM</text>
+  <text x="61" y="457" text-anchor="middle" font-size="9" fill="#93c5fd">Template</text>
+
+  <!-- Processes -->
+  <circle cx="290" cy="198" r="66" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
+  <text x="290" y="186" text-anchor="middle" font-size="10" font-weight="800" fill="#86efac">2.1</text>
+  <text x="290" y="202" text-anchor="middle" font-size="12" font-weight="700" fill="white">Validate</text>
+  <text x="290" y="218" text-anchor="middle" font-size="11" fill="#a7f3d0">Inputs</text>
+
+  <circle cx="290" cy="432" r="66" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
+  <text x="290" y="420" text-anchor="middle" font-size="10" font-weight="800" fill="#86efac">2.2</text>
+  <text x="290" y="436" text-anchor="middle" font-size="12" font-weight="700" fill="white">Check</text>
+  <text x="290" y="452" text-anchor="middle" font-size="11" fill="#a7f3d0">Feedback Win.</text>
+
+  <circle cx="550" cy="315" r="66" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
+  <text x="550" y="303" text-anchor="middle" font-size="10" font-weight="800" fill="#86efac">2.3</text>
+  <text x="550" y="319" text-anchor="middle" font-size="12" font-weight="700" fill="white">Profanity</text>
+  <text x="550" y="335" text-anchor="middle" font-size="11" fill="#a7f3d0">Filter</text>
+
+  <circle cx="810" cy="198" r="66" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
+  <text x="810" y="186" text-anchor="middle" font-size="10" font-weight="800" fill="#86efac">2.4</text>
+  <text x="810" y="202" text-anchor="middle" font-size="12" font-weight="700" fill="white">Course-Faculty</text>
+  <text x="810" y="218" text-anchor="middle" font-size="11" fill="#a7f3d0">Integrity</text>
+
+  <circle cx="810" cy="432" r="66" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
+  <text x="810" y="420" text-anchor="middle" font-size="10" font-weight="800" fill="#86efac">2.5</text>
+  <text x="810" y="436" text-anchor="middle" font-size="12" font-weight="700" fill="white">Generate</text>
+  <text x="810" y="452" text-anchor="middle" font-size="11" fill="#a7f3d0">Reference ID</text>
+
+  <circle cx="1080" cy="315" r="66" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
+  <text x="1080" y="303" text-anchor="middle" font-size="10" font-weight="800" fill="#86efac">2.6</text>
+  <text x="1080" y="319" text-anchor="middle" font-size="12" font-weight="700" fill="white">Store</text>
+  <text x="1080" y="335" text-anchor="middle" font-size="11" fill="#a7f3d0">Feedback</text>
+
+  <!-- Data Stores -->
+  <rect x="170" y="670" width="190" height="30" fill="#451a03" stroke="#92400e" stroke-width="1.5"/>
+  <rect x="170" y="670" width="30" height="30" fill="#92400e"/>
+  <text x="185" y="686" text-anchor="middle" font-size="9" font-weight="800" fill="white">D2</text>
+  <text x="170+30+80" y="686" text-anchor="middle" font-size="10" font-weight="600" fill="#fcd34d">Courses</text>
+
+  <rect x="400" y="670" width="195" height="30" fill="#451a03" stroke="#92400e" stroke-width="1.5"/>
+  <rect x="400" y="670" width="30" height="30" fill="#92400e"/>
+  <text x="415" y="686" text-anchor="middle" font-size="9" font-weight="800" fill="white">D3</text>
+  <text x="400+30+82" y="686" text-anchor="middle" font-size="10" font-weight="600" fill="#fcd34d">Faculty</text>
+
+  <rect x="640" y="670" width="215" height="30" fill="#451a03" stroke="#92400e" stroke-width="1.5"/>
+  <rect x="640" y="670" width="30" height="30" fill="#92400e"/>
+  <text x="655" y="686" text-anchor="middle" font-size="9" font-weight="800" fill="white">D6</text>
+  <text x="640+30+92" y="686" text-anchor="middle" font-size="10" font-weight="600" fill="#fcd34d">Feedback Windows</text>
+
+  <rect x="900" y="670" width="190" height="30" fill="#451a03" stroke="#92400e" stroke-width="1.5"/>
+  <rect x="900" y="670" width="30" height="30" fill="#92400e"/>
+  <text x="915" y="686" text-anchor="middle" font-size="9" font-weight="800" fill="white">D1</text>
+  <text x="900+30+80" y="686" text-anchor="middle" font-size="10" font-weight="600" fill="#fcd34d">Feedback</text>
+
+  <!-- Data Flows -->
+  <line x1="116" y1="265" x2="226" y2="213" stroke="#475569" stroke-width="1.5" marker-end="url(#a2)"/>
+  <rect x="136" y="222" width="140" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
+  <text x="206" y="232" text-anchor="middle" font-size="9" fill="#1e293b">Raw Feedback Data</text>
+
+  <line x1="116" y1="443" x2="226" y2="430" stroke="#475569" stroke-width="1.5" marker-end="url(#a2)"/>
+  <rect x="130" y="428" width="120" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
+  <text x="190" y="438" text-anchor="middle" font-size="9" fill="#1e293b">Form Template</text>
+
+  <line x1="356" y1="210" x2="486" y2="286" stroke="#475569" stroke-width="1.5" marker-end="url(#a2)"/>
+  <rect x="392" y="238" width="120" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
+  <text x="452" y="248" text-anchor="middle" font-size="9" fill="#1e293b">Validated Fields</text>
+
+  <line x1="290" y1="366" x2="290" y2="264" stroke="#475569" stroke-width="1.5" marker-end="url(#a2)"/>
+  <rect x="298" y="308" width="106" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
+  <text x="351" y="318" text-anchor="middle" font-size="9" fill="#1e293b">Window Open</text>
+
+  <line x1="614" y1="286" x2="746" y2="212" stroke="#475569" stroke-width="1.5" marker-end="url(#a2)"/>
+  <rect x="654" y="236" width="122" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
+  <text x="715" y="246" text-anchor="middle" font-size="9" fill="#1e293b">Filtered Content</text>
+
+  <line x1="614" y1="342" x2="746" y2="415" stroke="#475569" stroke-width="1.5" marker-end="url(#a2)"/>
+  <rect x="654" y="370" width="110" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
+  <text x="709" y="380" text-anchor="middle" font-size="9" fill="#1e293b">Text Fields OK</text>
+
+  <line x1="876" y1="212" x2="1016" y2="281" stroke="#475569" stroke-width="1.5" marker-end="url(#a2)"/>
+  <rect x="916" y="232" width="126" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
+  <text x="979" y="242" text-anchor="middle" font-size="9" fill="#1e293b">Integrity Passed</text>
+
+  <line x1="876" y1="418" x2="1016" y2="348" stroke="#475569" stroke-width="1.5" marker-end="url(#a2)"/>
+  <rect x="916" y="374" width="120" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
+  <text x="976" y="384" text-anchor="middle" font-size="9" fill="#1e293b">Reference ID</text>
+
+  <line x1="1080" y1="381" x2="1010" y2="670" stroke="#475569" stroke-width="1.5" marker-end="url(#a2)"/>
+  <rect x="1052" y="522" width="126" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
+  <text x="1115" y="532" text-anchor="middle" font-size="9" fill="#1e293b">Feedback Record</text>
+
+  <!-- Course/Faculty store flows -->
+  <line x1="270" y1="670" x2="756" y2="264" stroke="#475569" stroke-width="1.3" marker-end="url(#a2)" stroke-dasharray="5,3"/>
+  <rect x="430" y="440" width="120" height="16" rx="3" fill="#fffbeb" stroke="#fbbf24" stroke-width="0.6"/>
+  <text x="490" y="450" text-anchor="middle" font-size="9" fill="#92400e">Course Record</text>
+
+  <line x1="530" y1="670" x2="766" y2="264" stroke="#475569" stroke-width="1.3" marker-end="url(#a2)" stroke-dasharray="5,3"/>
+  <rect x="600" y="484" width="120" height="16" rx="3" fill="#fffbeb" stroke="#fbbf24" stroke-width="0.6"/>
+  <text x="660" y="494" text-anchor="middle" font-size="9" fill="#92400e">Faculty Record</text>
+
+  <!-- Window check flows -->
+  <line x1="750" y1="670" x2="322" y2="495" stroke="#475569" stroke-width="1.3" marker-end="url(#a2)" stroke-dasharray="5,3"/>
+  <rect x="490" y="590" width="126" height="16" rx="3" fill="#fffbeb" stroke="#fbbf24" stroke-width="0.6"/>
+  <text x="553" y="600" text-anchor="middle" font-size="9" fill="#92400e">Window Status</text>
+
+  <line x1="300" y1="495" x2="752" y2="670" stroke="#475569" stroke-width="1.3" marker-end="url(#a2)" stroke-dasharray="5,3"/>
+  <rect x="490" y="620" width="126" height="16" rx="3" fill="#fffbeb" stroke="#fbbf24" stroke-width="0.6"/>
+  <text x="553" y="630" text-anchor="middle" font-size="9" fill="#92400e">Window Query</text>
+
+  <!-- Confirm back to student -->
+  <path d="M1016,300 C820,224 500,212 290,212" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#a2)"/>
+  <rect x="576" y="196" width="150" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
+  <text x="651" y="206" text-anchor="middle" font-size="9" fill="#1e293b">Confirmed + Ref ID</text>
+  <line x1="290" y1="220" x2="116" y2="273" stroke="#475569" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <!-- Legend -->
+  <rect x="20" y="768" width="420" height="40" rx="5" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="34" y="782" font-size="9" font-weight="700" fill="#1e293b">LEGEND</text>
+  <circle cx="44" cy="796" r="8" fill="#14532d" stroke="#16a34a" stroke-width="1"/>
+  <text x="58" y="800" font-size="9" fill="#1e293b">Sub-Process</text>
+  <line x1="130" y1="796" x2="170" y2="796" stroke="#475569" stroke-width="1.5"/>
+  <text x="182" y="800" font-size="9" fill="#1e293b">Data Flow</text>
+  <line x1="262" y1="796" x2="302" y2="796" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,3"/>
+  <text x="314" y="800" font-size="9" fill="#1e293b">DB Lookup</text>
+</svg>

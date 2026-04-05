@@ -12,3 +12,9 @@ id = "ycUOxBz4X2IOsPDwFD8Ju"
 uri = "file://CUPGS_Credentials.xlsx"
 type = "table"
 title = "CUPGS_Credentials.xlsx — All Login Credentials"
+
+[[outputs]]
+id = "OA7nVdbZKzkulRJ6IOiT5"
+uri = "file://exports/CUPGS-SE-Diagrams.pdf"
+type = "pdf"
+title = "CUPGS SE Diagrams — All 4 Pages (PDF)"

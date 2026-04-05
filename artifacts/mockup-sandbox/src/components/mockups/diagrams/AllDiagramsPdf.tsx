@@ -275,7 +275,7 @@ function ErSvg() {
       <ellipse cx={120} cy={H-21} rx={26} ry={11} fill={AF} stroke="#6b7280" strokeWidth={1}/><text x={152} y={H-18} fontSize={9} fill="#e2e8f0">Attribute</text>
       <polygon points={`220,${H-14} 244,${H-21} 220,${H-28} 196,${H-21}`} fill={RF} stroke="#a78bfa" strokeWidth={1}/><text x={252} y={H-18} fontSize={9} fill="#e2e8f0">Relationship</text>
       <text x={336} y={H-20} fontSize={10} fill="#f59e0b" fontWeight="700">1, N</text><text x={356} y={H-18} fontSize={9} fill="#e2e8f0">= Cardinality</text>
-      <line x1={420} y1={H-21} x2={450} y2={H-21} stroke="#6366f1" strokeWidth={1.2} strokeDasharray="5,3}/><text x={456} y={H-18} fontSize={9} fill="#e2e8f0">Optional FK</text>
+      <line x1={420} y1={H-21} x2={450} y2={H-21} stroke="#6366f1" strokeWidth={1.2} strokeDasharray="5,3"/><text x={456} y={H-18} fontSize={9} fill="#e2e8f0">Optional FK</text>
     </svg>
   );
 }
