@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1754" viewBox="0 0 1240 1754" font-family="Times New Roman,Georgia,serif">
+  <rect width="1240" height="1754" fill="white"/>
+  <rect x="0" y="0" width="1240" height="10" fill="#0f3460"/>
+  <rect x="0" y="10" width="1240" height="4" fill="#e94560"/>
+  <rect x="0" y="14" width="1240" height="56" fill="#0f3460"/>
+  <rect x="0" y="70" width="1240" height="4" fill="#e94560"/>
+  <text x="60" y="50" font-size="22" font-weight="800" fill="#ffffff">Chapter 9: References</text>
+
+  <!-- Books -->
+  <rect x="60" y="88" width="1120" height="30" rx="4" fill="#0f346015" stroke="#0f346040" stroke-width="1"/>
+  <text x="72" y="108" font-size="13" font-weight="800" fill="#0f3460">A.  Books and Textbooks</text>
+  <rect x="60" y="130" width="1120" height="50" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="146" font-size="12" fill="#374151" font-weight="normal">[1] Pressman, R. S. and Maxim, B. R. (2014). &quot;Software Engineering: A Practitioner's Approach,&quot; 8th</text>
+<text x="80" y="165" font-size="12" fill="#374151" font-weight="normal">Edition. McGraw-Hill Education.</text><rect x="60" y="184" width="1120" height="50" rx="4" fill="white" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="200" font-size="12" fill="#374151" font-weight="normal">[2] Sommerville, I. (2015). &quot;Software Engineering,&quot; 10th Edition. Pearson Education. (SDLC, SRS, Design</text>
+<text x="80" y="219" font-size="12" fill="#374151" font-weight="normal">Patterns)</text><rect x="60" y="238" width="1120" height="50" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="254" font-size="12" fill="#374151" font-weight="normal">[3] Date, C. J. (2003). &quot;An Introduction to Database Systems,&quot; 8th Edition. Addison-Wesley. (Relational</text>
+<text x="80" y="273" font-size="12" fill="#374151" font-weight="normal">DB, ER Diagrams)</text><rect x="60" y="292" width="1120" height="50" rx="4" fill="white" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="308" font-size="12" fill="#374151" font-weight="normal">[4] Flanagan, D. (2020). &quot;JavaScript: The Definitive Guide,&quot; 7th Edition. O'Reilly Media. (Node.js,</text>
+<text x="80" y="327" font-size="12" fill="#374151" font-weight="normal">JavaScript fundamentals)</text><rect x="60" y="346" width="1120" height="50" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="362" font-size="12" fill="#374151" font-weight="normal">[5] Watt, A. (2014). &quot;Database Design&quot; (Open Textbook). BCcampus OpenEd. (Database normalization, schema</text>
+<text x="80" y="381" font-size="12" fill="#374151" font-weight="normal">design)</text>
+
+  <!-- Online Resources -->
+  <rect x="60" y="420" width="1120" height="30" rx="4" fill="#0f346015" stroke="#0f346040" stroke-width="1"/>
+  <text x="72" y="440" font-size="13" font-weight="800" fill="#0f3460">B.  Online Documentation and Resources</text>
+  <rect x="60" y="462" width="1120" height="50" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="478" font-size="12" fill="#374151" font-weight="normal">[6] React Documentation. &quot;Hooks Reference and Component Lifecycle.&quot; React.dev.</text>
+<text x="80" y="497" font-size="12" fill="#374151" font-weight="normal">https://react.dev/reference/react (Accessed 2024)</text><rect x="60" y="516" width="1120" height="50" rx="4" fill="white" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="532" font-size="12" fill="#374151" font-weight="normal">[7] Node.js Documentation. &quot;HTTP, Express, and Middleware Reference.&quot; nodejs.org.</text>
+<text x="80" y="551" font-size="12" fill="#374151" font-weight="normal">https://nodejs.org/en/docs (Accessed 2024)</text><rect x="60" y="570" width="1120" height="50" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="586" font-size="12" fill="#374151" font-weight="normal">[8] PostgreSQL Global Development Group. &quot;PostgreSQL 15 Documentation.&quot; postgresql.org.</text>
+<text x="80" y="605" font-size="12" fill="#374151" font-weight="normal">https://www.postgresql.org/docs/15/ (2024)</text><rect x="60" y="624" width="1120" height="50" rx="4" fill="white" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="640" font-size="12" fill="#374151" font-weight="normal">[9] Drizzle Team. &quot;Drizzle ORM Documentation -- Schema, Queries, and Migrations.&quot; orm.drizzle.team.</text>
+<text x="80" y="659" font-size="12" fill="#374151" font-weight="normal">https://orm.drizzle.team (2024)</text><rect x="60" y="678" width="1120" height="50" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="694" font-size="12" fill="#374151" font-weight="normal">[10] OWASP Foundation. &quot;OWASP Top 10 Web Application Security Risks.&quot; owasp.org. https://owasp.org/Top10</text>
+<text x="80" y="713" font-size="12" fill="#374151" font-weight="normal">(2021 Edition)</text><rect x="60" y="732" width="1120" height="50" rx="4" fill="white" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="748" font-size="12" fill="#374151" font-weight="normal">[11] Mozilla Developer Network. &quot;Progressive Web Apps (PWA) Guide.&quot; developer.mozilla.org. (Accessed 2024)</text><rect x="60" y="786" width="1120" height="50" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="802" font-size="12" fill="#374151" font-weight="normal">[12] Boehm, B. W. (1981). &quot;Software Engineering Economics.&quot; Prentice-Hall. (COCOMO Model Reference)</text><rect x="60" y="840" width="1120" height="50" rx="4" fill="white" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="856" font-size="12" fill="#374151" font-weight="normal">[13] Tailwind CSS Documentation. &quot;Utility-First Fundamentals.&quot; tailwindcss.com.</text>
+<text x="80" y="875" font-size="12" fill="#374151" font-weight="normal">https://tailwindcss.com/docs (Accessed 2024)</text><rect x="60" y="894" width="1120" height="50" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="910" font-size="12" fill="#374151" font-weight="normal">[14] Zod. &quot;TypeScript-First Schema Validation with Static Type Inference.&quot; zod.dev. https://zod.dev</text>
+<text x="80" y="929" font-size="12" fill="#374151" font-weight="normal">(Accessed 2024)</text><rect x="60" y="948" width="1120" height="50" rx="4" fill="white" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="964" font-size="12" fill="#374151" font-weight="normal">[15] W3Schools and MDN Web Docs. &quot;SVG Specification Reference.&quot;</text>
+<text x="80" y="983" font-size="12" fill="#374151" font-weight="normal">https://developer.mozilla.org/en-US/docs/Web/SVG (2024)</text>
+
+  <!-- Standards -->
+  <rect x="60" y="1012" width="1120" height="30" rx="4" fill="#0f346015" stroke="#0f346040" stroke-width="1"/>
+  <text x="72" y="1032" font-size="13" font-weight="800" fill="#0f3460">C.  Standards and Specifications Referenced</text>
+  <rect x="60" y="1054" width="1120" height="50" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="1070" font-size="12" fill="#374151" font-weight="normal">[16] IEEE Std 830-1998. &quot;IEEE Recommended Practice for Software Requirements Specifications.&quot; IEEE</text>
+<text x="80" y="1089" font-size="12" fill="#374151" font-weight="normal">Computer Society.</text><rect x="60" y="1108" width="1120" height="50" rx="4" fill="white" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="1124" font-size="12" fill="#374151" font-weight="normal">[17] ISO/IEC 25010:2011. &quot;Systems and Software Engineering -- Quality Models.&quot; International Organization</text>
+<text x="80" y="1143" font-size="12" fill="#374151" font-weight="normal">for Standardization.</text><rect x="60" y="1162" width="1120" height="50" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="1178" font-size="12" fill="#374151" font-weight="normal">[18] Yourdon, E. and Cane, S. (1979). &quot;Data Flow Diagrams: DFD Notation.&quot; (Yourdon-Coad Notation for DFD</text>
+<text x="80" y="1197" font-size="12" fill="#374151" font-weight="normal">Level 0, 1, 2)</text><rect x="60" y="1216" width="1120" height="50" rx="4" fill="white" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="1232" font-size="12" fill="#374151" font-weight="normal">[19] BPUT Academic Regulations. &quot;Guidelines for B.Tech Project Report Submission.&quot; Biju Patnaik University</text>
+<text x="80" y="1251" font-size="12" fill="#374151" font-weight="normal">of Technology, Rourkela.</text>
+
+  <!-- Appendix note -->
+  <line x1="60" y1="1280" x2="1180" y2="1280" stroke="#e94560" stroke-width="2"/>
+  <text x="620" y="1316" text-anchor="middle" font-size="20" font-weight="700" fill="#0f3460">APPENDIX</text>
+  <line x1="200" y1="1332" x2="1040" y2="1332" stroke="#e94560" stroke-width="2"/>
+
+  <text x="620" y="1368" text-anchor="middle" font-size="14" font-weight="700" fill="#374151">Appendix A: Sample Feedback Form Screenshot</text>
+  <rect x="280" y="1384" width="680" height="80" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="620" y="1414" text-anchor="middle" font-size="13" fill="#6b7280">[Screenshot of Feedback Submission Page]</text>
+  <text x="620" y="1438" text-anchor="middle" font-size="12" fill="#6b7280">(Attach actual screenshot here)</text>
+
+  <text x="620" y="1506" text-anchor="middle" font-size="14" font-weight="700" fill="#374151">Appendix B: Sample HOD Dashboard Screenshot</text>
+  <rect x="280" y="1522" width="680" height="80" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="620" y="1552" text-anchor="middle" font-size="13" fill="#6b7280">[Screenshot of HOD Analytics Dashboard]</text>
+  <text x="620" y="1576" text-anchor="middle" font-size="12" fill="#6b7280">(Attach actual screenshot here)</text>
+
+  <text x="620" y="1644" text-anchor="middle" font-size="14" font-weight="700" fill="#374151">Appendix C: Sample PDF Report</text>
+  <rect x="280" y="1660" width="680" height="80" rx="4" fill="#f9fafb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="620" y="1690" text-anchor="middle" font-size="13" fill="#6b7280">[First page of a generated HOD Department Report PDF]</text>
+  <text x="620" y="1714" text-anchor="middle" font-size="12" fill="#6b7280">(Attach actual PDF page here)</text>
+
+  <!-- End -->
+  <rect x="60" y="1762" width="1120" height="60" rx="8" fill="#0f3460"/>
+  <text x="620" y="1792" text-anchor="middle" font-size="15" font-weight="700" fill="white">-- End of Project Report --</text>
+  <text x="620" y="1812" text-anchor="middle" font-size="12" fill="#93c5fd">Akshaya Gardia  |  B.Tech CSE  |  CUPGS, BPUT Rourkela  |  2024-25</text>
+
+  <rect x="0" y="1706" width="1240" height="48" fill="#0f3460"/>
+  <line x1="0" y1="1706" x2="1240" y2="1706" stroke="#e94560" stroke-width="3"/>
+  <text x="60" y="1736" font-size="11" fill="#94a3b8">CUPGS Academic Feedback Manager  |  Software Engineering Project Report</text>
+  <text x="1180" y="1736" text-anchor="end" font-size="11" fill="#94a3b8">Page 14 of 16</text>
+</svg>

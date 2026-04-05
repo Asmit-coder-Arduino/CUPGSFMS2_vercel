@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1754" viewBox="0 0 1240 1754" font-family="Times New Roman,Georgia,serif">
+  <rect width="1240" height="1754" fill="white"/>
+  <rect x="0" y="0" width="1240" height="10" fill="#0f3460"/>
+  <rect x="0" y="10" width="1240" height="4" fill="#e94560"/>
+  <rect x="0" y="14" width="1240" height="36" fill="#0f346060"/>
+  <text x="60" y="40" font-size="16" font-weight="700" fill="white">Appendix D: Project Timeline (Gantt Chart)</text>
+
+  <rect x="60" y="60" width="1120" height="30" rx="4" fill="#0f346015" stroke="#0f346040" stroke-width="1"/>
+  <text x="72" y="80" font-size="13" font-weight="800" fill="#0f3460">Project Schedule -- 5 Month Development Timeline</text>
+  <text x="80" y="102" font-size="12" fill="#374151" font-weight="normal">The project was executed over approximately 5 months (July 2024 to November 2024) following an Agile</text>
+<text x="80" y="122" font-size="12" fill="#374151" font-weight="normal">iterative development model. The Gantt chart below shows the planned schedule for each phase.</text>
+
+  <!-- Gantt header -->
+  <rect x="60" y="138" width="1120" height="36" fill="#0f3460"/>
+  <text x="260" y="161" text-anchor="middle" font-size="12" font-weight="700" fill="white">Activity / Phase</text>
+  <text x="568" y="161" text-anchor="middle" font-size="12" font-weight="700" fill="white">July 2024</text>
+    <text x="704" y="161" text-anchor="middle" font-size="12" font-weight="700" fill="white">Aug 2024</text>
+    <line x1="636" y1="138" x2="636" y2="1318" stroke="white30" stroke-width="0.5"/><text x="840" y="161" text-anchor="middle" font-size="12" font-weight="700" fill="white">Sep 2024</text>
+    <line x1="772" y1="138" x2="772" y2="1318" stroke="white30" stroke-width="0.5"/><text x="976" y="161" text-anchor="middle" font-size="12" font-weight="700" fill="white">Oct 2024</text>
+    <line x1="908" y1="138" x2="908" y2="1318" stroke="white30" stroke-width="0.5"/><text x="1112" y="161" text-anchor="middle" font-size="12" font-weight="700" fill="white">Nov 2024</text>
+    <line x1="1044" y1="138" x2="1044" y2="1318" stroke="white30" stroke-width="0.5"/>
+  <line x1="500" y1="138" x2="500" y2="1318" stroke="#ffffff50" stroke-width="1"/>
+
+  <rect x="60" y="174" width="1120" height="44" fill="#f9fafb"/>
+    <line x1="60" y1="174" x2="1180" y2="174" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="200" font-size="11" fill="#374151">Literature Review</text>
+    <rect x="500" y="182" width="136" height="28" rx="4" fill="#7c3aed" opacity="0.85"/>
+    <text x="568" y="200" text-anchor="middle" font-size="9" fill="white" font-weight="700">1M</text><rect x="60" y="218" width="1120" height="44" fill="white"/>
+    <line x1="60" y1="218" x2="1180" y2="218" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="244" font-size="11" fill="#374151">Requirements Analysis (SRS)</text>
+    <rect x="500" y="226" width="204" height="28" rx="4" fill="#1e3a8a" opacity="0.85"/>
+    <text x="602" y="244" text-anchor="middle" font-size="9" fill="white" font-weight="700">1.5M</text><rect x="60" y="262" width="1120" height="44" fill="#f9fafb"/>
+    <line x1="60" y1="262" x2="1180" y2="262" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="288" font-size="11" fill="#374151">System Design (DFD, ER, Arch)</text>
+    <rect x="636" y="270" width="136" height="28" rx="4" fill="#065f46" opacity="0.85"/>
+    <text x="704" y="288" text-anchor="middle" font-size="9" fill="white" font-weight="700">1M</text><rect x="60" y="306" width="1120" height="44" fill="white"/>
+    <line x1="60" y1="306" x2="1180" y2="306" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="332" font-size="11" fill="#374151">Database Schema Implementation</text>
+    <rect x="704" y="314" width="68" height="28" rx="4" fill="#0284c7" opacity="0.85"/>
+    <text x="738" y="332" text-anchor="middle" font-size="9" fill="white" font-weight="700"></text><rect x="60" y="350" width="1120" height="44" fill="#f9fafb"/>
+    <line x1="60" y1="350" x2="1180" y2="350" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="376" font-size="11" fill="#374151">Authentication Module</text>
+    <rect x="704" y="358" width="136" height="28" rx="4" fill="#1e3a8a" opacity="0.85"/>
+    <text x="772" y="376" text-anchor="middle" font-size="9" fill="white" font-weight="700">1M</text><rect x="60" y="394" width="1120" height="44" fill="white"/>
+    <line x1="60" y1="394" x2="1180" y2="394" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="420" font-size="11" fill="#374151">Feedback Submission Module</text>
+    <rect x="772" y="402" width="204" height="28" rx="4" fill="#14532d" opacity="0.85"/>
+    <text x="874" y="420" text-anchor="middle" font-size="9" fill="white" font-weight="700">1.5M</text><rect x="60" y="438" width="1120" height="44" fill="#f9fafb"/>
+    <line x1="60" y1="438" x2="1180" y2="438" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="464" font-size="11" fill="#374151">HOD Dashboard + Analytics</text>
+    <rect x="840" y="446" width="204" height="28" rx="4" fill="#065f46" opacity="0.85"/>
+    <text x="942" y="464" text-anchor="middle" font-size="9" fill="white" font-weight="700">1.5M</text><rect x="60" y="482" width="1120" height="44" fill="white"/>
+    <line x1="60" y1="482" x2="1180" y2="482" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="508" font-size="11" fill="#374151">Admin Management Module</text>
+    <rect x="908" y="490" width="136" height="28" rx="4" fill="#7c2d12" opacity="0.85"/>
+    <text x="976" y="508" text-anchor="middle" font-size="9" fill="white" font-weight="700">1M</text><rect x="60" y="526" width="1120" height="44" fill="#f9fafb"/>
+    <line x1="60" y1="526" x2="1180" y2="526" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="552" font-size="11" fill="#374151">Faculty View Module</text>
+    <rect x="976" y="534" width="68" height="28" rx="4" fill="#4c1d95" opacity="0.85"/>
+    <text x="1010" y="552" text-anchor="middle" font-size="9" fill="white" font-weight="700"></text><rect x="60" y="570" width="1120" height="44" fill="white"/>
+    <line x1="60" y1="570" x2="1180" y2="570" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="596" font-size="11" fill="#374151">PDF Report Generation</text>
+    <rect x="908" y="578" width="136" height="28" rx="4" fill="#7c3aed" opacity="0.85"/>
+    <text x="976" y="596" text-anchor="middle" font-size="9" fill="white" font-weight="700">1M</text><rect x="60" y="614" width="1120" height="44" fill="#f9fafb"/>
+    <line x1="60" y1="614" x2="1180" y2="614" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="640" font-size="11" fill="#374151">HOD Form Builder</text>
+    <rect x="976" y="622" width="68" height="28" rx="4" fill="#0284c7" opacity="0.85"/>
+    <text x="1010" y="640" text-anchor="middle" font-size="9" fill="white" font-weight="700"></text><rect x="60" y="658" width="1120" height="44" fill="white"/>
+    <line x1="60" y1="658" x2="1180" y2="658" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="684" font-size="11" fill="#374151">PWA Configuration</text>
+    <rect x="1044" y="666" width="68" height="28" rx="4" fill="#0f3460" opacity="0.85"/>
+    <text x="1078" y="684" text-anchor="middle" font-size="9" fill="white" font-weight="700"></text><rect x="60" y="702" width="1120" height="44" fill="#f9fafb"/>
+    <line x1="60" y1="702" x2="1180" y2="702" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="728" font-size="11" fill="#374151">Unit and Integration Testing</text>
+    <rect x="840" y="710" width="272" height="28" rx="4" fill="#92400e" opacity="0.85"/>
+    <text x="976" y="728" text-anchor="middle" font-size="9" fill="white" font-weight="700">2M</text><rect x="60" y="746" width="1120" height="44" fill="white"/>
+    <line x1="60" y1="746" x2="1180" y2="746" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="772" font-size="11" fill="#374151">System and UAT Testing</text>
+    <rect x="1044" y="754" width="68" height="28" rx="4" fill="#d97706" opacity="0.85"/>
+    <text x="1078" y="772" text-anchor="middle" font-size="9" fill="white" font-weight="700"></text><rect x="60" y="790" width="1120" height="44" fill="#f9fafb"/>
+    <line x1="60" y1="790" x2="1180" y2="790" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="816" font-size="11" fill="#374151">Security Testing</text>
+    <rect x="1044" y="798" width="68" height="28" rx="4" fill="#dc2626" opacity="0.85"/>
+    <text x="1078" y="816" text-anchor="middle" font-size="9" fill="white" font-weight="700"></text><rect x="60" y="834" width="1120" height="44" fill="white"/>
+    <line x1="60" y1="834" x2="1180" y2="834" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="860" font-size="11" fill="#374151">Documentation and Report</text>
+    <rect x="976" y="842" width="136" height="28" rx="4" fill="#475569" opacity="0.85"/>
+    <text x="1044" y="860" text-anchor="middle" font-size="9" fill="white" font-weight="700">1M</text><rect x="60" y="878" width="1120" height="44" fill="#f9fafb"/>
+    <line x1="60" y1="878" x2="1180" y2="878" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="904" font-size="11" fill="#374151">Bug Fixes and Polish</text>
+    <rect x="1044" y="886" width="68" height="28" rx="4" fill="#64748b" opacity="0.85"/>
+    <text x="1078" y="904" text-anchor="middle" font-size="9" fill="white" font-weight="700"></text><rect x="60" y="922" width="1120" height="44" fill="white"/>
+    <line x1="60" y1="922" x2="1180" y2="922" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="80" y="948" font-size="11" fill="#374151">Final Review and Submission</text>
+    <rect x="1112" y="930" width="68" height="28" rx="4" fill="#14532d" opacity="0.85"/>
+    <text x="1146" y="948" text-anchor="middle" font-size="9" fill="white" font-weight="700"></text>
+  <rect x="60" y="138" width="1120" height="828" fill="none" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Legend -->
+  <text x="60" y="986" font-size="13" font-weight="700" fill="#0f3460">Legend:</text>
+  <rect x="160" y="972" width="16" height="16" rx="2" fill="#7c3aed"/>
+    <text x="182" y="985" font-size="11" fill="#374151">Planning/Review</text><rect x="340" y="972" width="16" height="16" rx="2" fill="#1e3a8a"/>
+    <text x="362" y="985" font-size="11" fill="#374151">Design</text><rect x="520" y="972" width="16" height="16" rx="2" fill="#14532d"/>
+    <text x="542" y="985" font-size="11" fill="#374151">Core Dev</text><rect x="700" y="972" width="16" height="16" rx="2" fill="#92400e"/>
+    <text x="722" y="985" font-size="11" fill="#374151">Testing</text><rect x="880" y="972" width="16" height="16" rx="2" fill="#7c2d12"/>
+    <text x="902" y="985" font-size="11" fill="#374151">Admin Dev</text><rect x="1060" y="972" width="16" height="16" rx="2" fill="#475569"/>
+    <text x="1082" y="985" font-size="11" fill="#374151">Documentation</text>
+
+  <!-- COCOMO summary box -->
+  <rect x="60" y="1020" width="1120" height="30" rx="4" fill="#0f346015" stroke="#0f346040" stroke-width="1"/>
+  <text x="72" y="1040" font-size="13" font-weight="800" fill="#0f3460">Cost Summary (COCOMO Result)</text>
+  <rect x="60" y="1060" width="1120" height="240" rx="6" fill="#0f346008" stroke="#0f346030" stroke-width="1.5"/>
+  
+    <text x="100" y="1086" font-size="13" font-weight="400" fill="#374151">Total SLOC (estimated)</text>
+    <text x="720" y="1086" font-size="13" font-weight="600" fill="#0f3460">4,500 lines (4.5 KLOC)</text><line x1="80" y1="1114" x2="1160" y2="1114" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="100" y="1118" font-size="13" font-weight="400" fill="#374151">Effort Estimate (COCOMO)</text>
+    <text x="720" y="1118" font-size="13" font-weight="600" fill="#0f3460">11.7 Person-Months</text><line x1="80" y1="1146" x2="1160" y2="1146" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="100" y="1150" font-size="13" font-weight="400" fill="#374151">Schedule Estimate</text>
+    <text x="720" y="1150" font-size="13" font-weight="600" fill="#0f3460">5.3 Months</text><line x1="80" y1="1178" x2="1160" y2="1178" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="100" y="1182" font-size="13" font-weight="400" fill="#374151">Team Size</text>
+    <text x="720" y="1182" font-size="13" font-weight="600" fill="#0f3460">~2 persons (1 developer + 1 guide)</text><line x1="80" y1="1210" x2="1160" y2="1210" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="100" y="1214" font-size="13" font-weight="400" fill="#374151">Total Development Cost</text>
+    <text x="720" y="1214" font-size="13" font-weight="600" fill="#0f3460">Rs. 1,55,500</text><line x1="80" y1="1242" x2="1160" y2="1242" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="100" y="1246" font-size="13" font-weight="400" fill="#374151">Annual Infrastructure Cost</text>
+    <text x="720" y="1246" font-size="13" font-weight="600" fill="#0f3460">Rs. 41,800 / year</text><line x1="80" y1="1274" x2="1160" y2="1274" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="100" y="1278" font-size="14" font-weight="700" fill="#0f3460">Total Cost (Year 1)</text>
+    <text x="720" y="1278" font-size="14" font-weight="900" fill="#e94560">Rs. 1,97,300</text>
+
+  <rect x="60" y="1320" width="1120" height="30" rx="4" fill="#0f346015" stroke="#0f346040" stroke-width="1"/>
+  <text x="72" y="1340" font-size="13" font-weight="800" fill="#0f3460">Development Methodology Summary</text>
+  <rect x="60" y="1360" width="1120" height="220" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1"/>
+  
+    <text x="100" y="1380" font-size="12" font-weight="700" fill="#374151">SDLC Model:</text>
+    <text x="320" y="1380" font-size="12" fill="#6b7280">Agile Iterative -- 5 sprints of approximately 1 month each</text><line x1="80" y1="1410" x2="1160" y2="1410" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="100" y="1414" font-size="12" font-weight="700" fill="#374151">Version Control:</text>
+    <text x="320" y="1414" font-size="12" fill="#6b7280">Git checkpoint-based versioning (Replit automatic checkpoints)</text><line x1="80" y1="1444" x2="1160" y2="1444" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="100" y="1448" font-size="12" font-weight="700" fill="#374151">Testing Approach:</text>
+    <text x="320" y="1448" font-size="12" fill="#6b7280">Test-Driven for API routes; Component testing for React UI</text><line x1="80" y1="1478" x2="1160" y2="1478" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="100" y="1482" font-size="12" font-weight="700" fill="#374151">Code Review:</text>
+    <text x="320" y="1482" font-size="12" fill="#6b7280">Self-review + academic guide review after each feature module</text><line x1="80" y1="1512" x2="1160" y2="1512" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="100" y="1516" font-size="12" font-weight="700" fill="#374151">Deployment Strategy:</text>
+    <text x="320" y="1516" font-size="12" fill="#6b7280">Continuous deployment on Replit (dev server always live)</text><line x1="80" y1="1546" x2="1160" y2="1546" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="100" y="1550" font-size="12" font-weight="700" fill="#374151">Documentation:</text>
+    <text x="320" y="1550" font-size="12" fill="#6b7280">Inline JSDoc comments + separate project report (this document)</text>
+
+  <!-- Sign off -->
+  <rect x="60" y="1600" width="1120" height="100" rx="8" fill="#0f3460"/>
+  <text x="620" y="1638" text-anchor="middle" font-size="18" font-weight="700" fill="white">Project Report Prepared By</text>
+  <text x="620" y="1668" text-anchor="middle" font-size="16" font-weight="700" fill="#93c5fd">Akshaya Gardia</text>
+  <text x="620" y="1692" text-anchor="middle" font-size="13" fill="#bfdbfe">B.Tech Computer Science and Engineering  |  CUPGS, BPUT Rourkela  |  2024-25</text>
+
+  <text x="620" y="1760" text-anchor="middle" font-size="12" fill="#6b7280">Project: CUPGS Academic Feedback Manager  |  A Role-Based Anonymous Feedback System</text>
+
+  <rect x="0" y="1706" width="1240" height="48" fill="#0f3460"/>
+  <line x1="0" y1="1706" x2="1240" y2="1706" stroke="#e94560" stroke-width="3"/>
+  <text x="60" y="1736" font-size="11" fill="#94a3b8">CUPGS Academic Feedback Manager  |  Software Engineering Project Report</text>
+  <text x="1180" y="1736" text-anchor="end" font-size="11" fill="#94a3b8">Page 15 of 16</text>
+</svg>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1754" viewBox="0 0 1240 1754" font-family="Times New Roman,Georgia,serif">
+  <rect width="1240" height="1754" fill="white"/>
+  <rect x="0" y="0" width="1240" height="10" fill="#0f3460"/>
+  <rect x="0" y="10" width="1240" height="4" fill="#e94560"/>
+  <rect x="0" y="14" width="1240" height="56" fill="#0f3460"/>
+  <rect x="0" y="70" width="1240" height="4" fill="#e94560"/>
+  <text x="60" y="50" font-size="22" font-weight="800" fill="#ffffff">Chapter 1: Introduction</text>
+
+  <rect x="60" y="88" width="1120" height="30" rx="4" fill="#0f346015" stroke="#0f346040" stroke-width="1"/>
+  <text x="72" y="108" font-size="13" font-weight="800" fill="#0f3460">1.1  Background and Motivation</text>
+  <text x="80" y="130" font-size="12" fill="#374151" font-weight="normal">Academic feedback is one of the most critical instruments for improving the quality of education in any</text>
+<text x="80" y="152" font-size="12" fill="#374151" font-weight="normal">institution. It provides faculty with insights into their teaching effectiveness, helps departments</text>
+<text x="80" y="174" font-size="12" fill="#374151" font-weight="normal">identify curriculum gaps, and allows students to contribute meaningfully to their academic environment.</text>
+<text x="80" y="196" font-size="12" fill="#374151" font-weight="normal">However, traditional paper-based feedback systems suffer from significant limitations including lack of</text>
+<text x="80" y="218" font-size="12" fill="#374151" font-weight="normal">anonymity, high manual processing overhead, delayed results, and inability to generate structured</text>
+<text x="80" y="240" font-size="12" fill="#374151" font-weight="normal">analytics.</text>
+  <text x="80" y="298" font-size="12" fill="#374151" font-weight="normal">At the Centre for Urban and Planning Graduate Studies (CUPGS), BPUT Rourkela, feedback collection was</text>
+<text x="80" y="320" font-size="12" fill="#374151" font-weight="normal">carried out using physical forms that were manually tallied. This process was time-consuming, provided</text>
+<text x="80" y="342" font-size="12" fill="#374151" font-weight="normal">no real-time data to department heads, and offered no reliable anonymity to students — a critical</text>
+<text x="80" y="364" font-size="12" fill="#374151" font-weight="normal">deterrent to honest responses.</text>
+
+  <rect x="60" y="408" width="1120" height="30" rx="4" fill="#0f346015" stroke="#0f346040" stroke-width="1"/>
+  <text x="72" y="428" font-size="13" font-weight="800" fill="#0f3460">1.2  Problem Statement</text>
+  <text x="80" y="450" font-size="12" fill="#374151" font-weight="normal">The existing feedback mechanism at CUPGS is inadequate in the following respects:</text>
+  <circle cx="86" cy="471" r="4" fill="#0f3460"/><text x="98" y="474" font-size="12" fill="#374151">Physical paper forms are prone to loss and require days of manual data entry and aggregation.</text><circle cx="86" cy="497" r="4" fill="#0f3460"/><text x="98" y="500" font-size="12" fill="#374151">The absence of guaranteed anonymity suppresses honest student responses, reducing the value of</text><text x="98" y="520" font-size="12" fill="#374151">feedback.</text><circle cx="86" cy="543" r="4" fill="#0f3460"/><text x="98" y="546" font-size="12" fill="#374151">HODs receive feedback summaries weeks after the semester ends, making timely corrective action</text><text x="98" y="566" font-size="12" fill="#374151">impossible.</text><circle cx="86" cy="589" r="4" fill="#0f3460"/><text x="98" y="592" font-size="12" fill="#374151">No mechanism exists for department-specific customization of feedback questions.</text><circle cx="86" cy="615" r="4" fill="#0f3460"/><text x="98" y="618" font-size="12" fill="#374151">There is no control over the timing of feedback — students could submit at any point.</text><circle cx="86" cy="641" r="4" fill="#0f3460"/><text x="98" y="644" font-size="12" fill="#374151">Faculty performance data is not accessible to faculty themselves for self-improvement.</text>
+
+  <rect x="60" y="748" width="1120" height="30" rx="4" fill="#0f346015" stroke="#0f346040" stroke-width="1"/>
+  <text x="72" y="768" font-size="13" font-weight="800" fill="#0f3460">1.3  Objectives of the Project</text>
+  <text x="80" y="790" font-size="12" fill="#374151" font-weight="normal">The primary objectives of this project are:</text>
+  <circle cx="86" cy="811" r="4" fill="#0f3460"/><text x="98" y="814" font-size="12" fill="#374151">Develop a full-stack web application to digitize the academic feedback process at CUPGS.</text><circle cx="86" cy="837" r="4" fill="#0f3460"/><text x="98" y="840" font-size="12" fill="#374151">Guarantee complete student anonymity through a cryptographic Reference ID mechanism.</text><circle cx="86" cy="863" r="4" fill="#0f3460"/><text x="98" y="866" font-size="12" fill="#374151">Provide HODs with a real-time dashboard showing per-course analytics across 5 rating categories.</text><circle cx="86" cy="889" r="4" fill="#0f3460"/><text x="98" y="892" font-size="12" fill="#374151">Enable HODs to customize their department's feedback form with additional question types.</text><circle cx="86" cy="915" r="4" fill="#0f3460"/><text x="98" y="918" font-size="12" fill="#374151">Implement a role-based access control system for Student, Faculty, HOD, and Admin users.</text><circle cx="86" cy="941" r="4" fill="#0f3460"/><text x="98" y="944" font-size="12" fill="#374151">Enforce time-bound feedback collection through Admin-controlled feedback windows.</text><circle cx="86" cy="967" r="4" fill="#0f3460"/><text x="98" y="970" font-size="12" fill="#374151">Deploy the system as a Progressive Web App (PWA) for cross-platform accessibility.</text>
+
+  <rect x="60" y="1088" width="1120" height="30" rx="4" fill="#0f346015" stroke="#0f346040" stroke-width="1"/>
+  <text x="72" y="1108" font-size="13" font-weight="800" fill="#0f3460">1.4  Scope of the Project</text>
+  <text x="80" y="1130" font-size="12" fill="#374151" font-weight="normal">The CUPGS Academic Feedback Manager covers the following scope:</text>
+  <circle cx="86" cy="1151" r="4" fill="#0f3460"/><text x="98" y="1154" font-size="12" fill="#374151">Five engineering departments: CSE, ECE, EE, ME, and CE at CUPGS, BPUT Rourkela.</text><circle cx="86" cy="1177" r="4" fill="#0f3460"/><text x="98" y="1180" font-size="12" fill="#374151">Odd semester (July-October) and Even semester (November-June) feedback cycles.</text><circle cx="86" cy="1203" r="4" fill="#0f3460"/><text x="98" y="1206" font-size="12" fill="#374151">All courses registered in the system (268+ courses across 5 departments).</text><circle cx="86" cy="1229" r="4" fill="#0f3460"/><text x="98" y="1232" font-size="12" fill="#374151">Four user roles with distinct dashboards, permissions, and data visibility.</text><circle cx="86" cy="1255" r="4" fill="#0f3460"/><text x="98" y="1258" font-size="12" fill="#374151">Anonymous feedback with self-verification capability using Reference IDs.</text>
+  <text x="80" y="1290" font-size="12" fill="#6b7280" font-weight="normal">Out of scope: examination management, attendance systems, fee management, and integration with external</text>
+<text x="80" y="1311" font-size="12" fill="#6b7280" font-weight="normal">university ERP systems.</text>
+
+  <rect x="60" y="1350" width="1120" height="30" rx="4" fill="#0f346015" stroke="#0f346040" stroke-width="1"/>
+  <text x="72" y="1370" font-size="13" font-weight="800" fill="#0f3460">1.5  Organization of the Report</text>
+  <text x="80" y="1392" font-size="12" fill="#374151" font-weight="normal">This report is organized into the following chapters:</text>
+  <text x="80" y="1416" font-size="13" font-weight="700" fill="#0f3460">Chapter 2:</text>
+    <text x="200" y="1416" font-size="13" fill="#374151">Presents a literature review of existing academic feedback systems and relevant technologies.</text><text x="80" y="1458" font-size="13" font-weight="700" fill="#0f3460">Chapter 3:</text>
+    <text x="200" y="1458" font-size="13" fill="#374151">Defines the system requirements in the form of a Software Requirements Specification (SRS).</text><text x="80" y="1500" font-size="13" font-weight="700" fill="#0f3460">Chapter 4:</text>
+    <text x="200" y="1500" font-size="13" fill="#374151">Describes the system design including DFD (Level 0, 1, 2), ER diagram, and architecture.</text><text x="80" y="1542" font-size="13" font-weight="700" fill="#0f3460">Chapter 5:</text>
+    <text x="200" y="1542" font-size="13" fill="#374151">Covers the implementation details including technology stack, modules, and code structure.</text><text x="80" y="1584" font-size="13" font-weight="700" fill="#0f3460">Chapter 6:</text>
+    <text x="200" y="1584" font-size="13" fill="#374151">Describes the testing strategy including unit testing, integration testing, and UAT.</text><text x="80" y="1626" font-size="13" font-weight="700" fill="#0f3460">Chapter 7:</text>
+    <text x="200" y="1626" font-size="13" fill="#374151">Provides a cost estimation analysis using the COCOMO model and function point analysis.</text><text x="80" y="1668" font-size="13" font-weight="700" fill="#0f3460">Chapter 8:</text>
+    <text x="200" y="1668" font-size="13" fill="#374151">Presents the conclusion, key achievements, limitations, and future scope of the system.</text>
+
+  <rect x="0" y="1706" width="1240" height="48" fill="#0f3460"/>
+  <line x1="0" y1="1706" x2="1240" y2="1706" stroke="#e94560" stroke-width="3"/>
+  <text x="60" y="1736" font-size="11" fill="#94a3b8">CUPGS Academic Feedback Manager  |  Software Engineering Project Report</text>
+  <text x="1180" y="1736" text-anchor="end" font-size="11" fill="#94a3b8">Page 4 of 16</text>
+</svg>

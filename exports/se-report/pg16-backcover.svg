@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1754" viewBox="0 0 1240 1754" font-family="Times New Roman,Georgia,serif">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f3460"/>
+      <stop offset="100%" stop-color="#0a0a1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1240" height="1754" fill="url(#bg2)"/>
+  <rect x="0" y="0" width="1240" height="6" fill="#e94560"/>
+
+  <!-- Decorative circles -->
+  <circle cx="1100" cy="200" r="300" fill="#ffffff06"/>
+  <circle cx="140" cy="1500" r="250" fill="#ffffff04"/>
+
+  <!-- Frame -->
+  <rect x="60" y="100" width="1120" height="1504" fill="none" stroke="#ffffff20" stroke-width="2" rx="4"/>
+
+  <!-- Project details summary -->
+  <text x="620" y="240" text-anchor="middle" font-size="13" fill="#94a3b8" letter-spacing="4">SOFTWARE ENGINEERING PROJECT REPORT</text>
+
+  <text x="620" y="320" text-anchor="middle" font-size="34" font-weight="700" fill="white">CUPGS Academic</text>
+  <text x="620" y="368" text-anchor="middle" font-size="34" font-weight="700" fill="white">Feedback Manager</text>
+  <line x1="200" y1="396" x2="1040" y2="396" stroke="#e94560" stroke-width="2"/>
+
+  <!-- Key highlights -->
+  <text x="620" y="450" text-anchor="middle" font-size="14" fill="#93c5fd">Key Technical Highlights</text>
+  <circle cx="160" cy="474" r="4" fill="#e94560"/>
+    <text x="174" y="478" font-size="12" fill="#e2e8f0">Anonymous Reference ID feedback architecture</text><circle cx="160" cy="510" r="4" fill="#e94560"/>
+    <text x="174" y="514" font-size="12" fill="#e2e8f0">Drag-based half-star rating (0.5 increments) across 5 categories</text><circle cx="160" cy="546" r="4" fill="#e94560"/>
+    <text x="174" y="550" font-size="12" fill="#e2e8f0">Real-time HOD analytics with one-click PDF reports</text><circle cx="160" cy="582" r="4" fill="#e94560"/>
+    <text x="174" y="586" font-size="12" fill="#e2e8f0">HOD-driven custom form builder (no developer needed)</text><circle cx="660" cy="474" r="4" fill="#e94560"/>
+    <text x="674" y="478" font-size="12" fill="#e2e8f0">Admin-controlled time-bound feedback windows</text><circle cx="660" cy="510" r="4" fill="#e94560"/>
+    <text x="674" y="514" font-size="12" fill="#e2e8f0">Three-layer API rate limiting + Zod validation security</text><circle cx="660" cy="546" r="4" fill="#e94560"/>
+    <text x="674" y="550" font-size="12" fill="#e2e8f0">Progressive Web App (PWA) -- installable on any device</text><circle cx="660" cy="582" r="4" fill="#e94560"/>
+    <text x="674" y="586" font-size="12" fill="#e2e8f0">PostgreSQL + Drizzle ORM with full FK integrity</text>
+
+  <line x1="200" y1="640" x2="1040" y2="640" stroke="#ffffff20" stroke-width="1"/>
+
+  <!-- Tech stack pills -->
+  <text x="620" y="682" text-anchor="middle" font-size="13" fill="#94a3b8">Technology Stack</text>
+  <rect x="155" y="700" width="168" height="32" rx="16" fill="#ffffff15" stroke="#ffffff30" stroke-width="1"/>
+    <text x="239" y="721" text-anchor="middle" font-size="11" fill="#e2e8f0">React 18</text><rect x="347" y="700" width="168" height="32" rx="16" fill="#ffffff15" stroke="#ffffff30" stroke-width="1"/>
+    <text x="431" y="721" text-anchor="middle" font-size="11" fill="#e2e8f0">TypeScript</text><rect x="539" y="700" width="168" height="32" rx="16" fill="#ffffff15" stroke="#ffffff30" stroke-width="1"/>
+    <text x="623" y="721" text-anchor="middle" font-size="11" fill="#e2e8f0">Node.js</text><rect x="731" y="700" width="168" height="32" rx="16" fill="#ffffff15" stroke="#ffffff30" stroke-width="1"/>
+    <text x="815" y="721" text-anchor="middle" font-size="11" fill="#e2e8f0">Express.js</text><rect x="923" y="700" width="168" height="32" rx="16" fill="#ffffff15" stroke="#ffffff30" stroke-width="1"/>
+    <text x="1007" y="721" text-anchor="middle" font-size="11" fill="#e2e8f0">PostgreSQL</text><rect x="155" y="744" width="168" height="32" rx="16" fill="#ffffff15" stroke="#ffffff30" stroke-width="1"/>
+    <text x="239" y="765" text-anchor="middle" font-size="11" fill="#e2e8f0">Drizzle ORM</text><rect x="347" y="744" width="168" height="32" rx="16" fill="#ffffff15" stroke="#ffffff30" stroke-width="1"/>
+    <text x="431" y="765" text-anchor="middle" font-size="11" fill="#e2e8f0">Tailwind CSS</text><rect x="539" y="744" width="168" height="32" rx="16" fill="#ffffff15" stroke="#ffffff30" stroke-width="1"/>
+    <text x="623" y="765" text-anchor="middle" font-size="11" fill="#e2e8f0">jsPDF</text><rect x="731" y="744" width="168" height="32" rx="16" fill="#ffffff15" stroke="#ffffff30" stroke-width="1"/>
+    <text x="815" y="765" text-anchor="middle" font-size="11" fill="#e2e8f0">PWA</text><rect x="923" y="744" width="168" height="32" rx="16" fill="#ffffff15" stroke="#ffffff30" stroke-width="1"/>
+    <text x="1007" y="765" text-anchor="middle" font-size="11" fill="#e2e8f0">Zod</text>
+
+  <line x1="200" y1="794" x2="1040" y2="794" stroke="#ffffff20" stroke-width="1"/>
+
+  <!-- COCOMO summary -->
+  <text x="620" y="836" text-anchor="middle" font-size="13" fill="#94a3b8">Project Metrics (COCOMO II)</text>
+  <rect x="195" y="850" width="196" height="72" rx="6" fill="#ffffff10" stroke="#ffffff20" stroke-width="1"/>
+    <text x="293" y="886" text-anchor="middle" font-size="20" font-weight="700" fill="white">4,500 SLOC</text>
+    <text x="293" y="910" text-anchor="middle" font-size="11" fill="#94a3b8">Code Size</text><rect x="415" y="850" width="196" height="72" rx="6" fill="#ffffff10" stroke="#ffffff20" stroke-width="1"/>
+    <text x="513" y="886" text-anchor="middle" font-size="20" font-weight="700" fill="white">11.7 PM</text>
+    <text x="513" y="910" text-anchor="middle" font-size="11" fill="#94a3b8">Effort</text><rect x="635" y="850" width="196" height="72" rx="6" fill="#ffffff10" stroke="#ffffff20" stroke-width="1"/>
+    <text x="733" y="886" text-anchor="middle" font-size="20" font-weight="700" fill="white">5.3 Months</text>
+    <text x="733" y="910" text-anchor="middle" font-size="11" fill="#94a3b8">Schedule</text><rect x="855" y="850" width="196" height="72" rx="6" fill="#ffffff10" stroke="#ffffff20" stroke-width="1"/>
+    <text x="953" y="886" text-anchor="middle" font-size="20" font-weight="700" fill="white">Rs. 1,97,300</text>
+    <text x="953" y="910" text-anchor="middle" font-size="11" fill="#94a3b8">Total Cost (Yr 1)</text>
+
+  <line x1="200" y1="940" x2="1040" y2="940" stroke="#ffffff20" stroke-width="1"/>
+
+  <!-- Student info -->
+  <text x="620" y="990" text-anchor="middle" font-size="13" fill="#94a3b8" letter-spacing="3">PREPARED BY</text>
+  <text x="620" y="1040" text-anchor="middle" font-size="28" font-weight="700" fill="white">Akshaya Gardia</text>
+  <text x="620" y="1074" text-anchor="middle" font-size="15" fill="#93c5fd">B.Tech -- Computer Science &amp; Engineering</text>
+  <text x="620" y="1100" text-anchor="middle" font-size="14" fill="#bfdbfe">Centre for Urban &amp; Planning Graduate Studies (CUPGS)</text>
+  <text x="620" y="1124" text-anchor="middle" font-size="14" fill="#bfdbfe">Biju Patnaik University of Technology, Rourkela</text>
+  <text x="620" y="1152" text-anchor="middle" font-size="14" font-weight="700" fill="#e94560">Academic Year: 2024 - 2025</text>
+
+  <!-- Roll / Reg blanks -->
+  <line x1="300" y1="1200" x2="920" y2="1200" stroke="#ffffff20" stroke-width="1"/>
+  <text x="340" y="1234" font-size="13" fill="#64748b">Roll No.: _______________________</text>
+  <text x="680" y="1234" font-size="13" fill="#64748b">Reg. No.: _______________________</text>
+
+  <!-- Bottom -->
+  <rect x="0" y="1654" width="1240" height="100" fill="#000000a0"/>
+  <rect x="0" y="1654" width="1240" height="4" fill="#e94560"/>
+  <text x="620" y="1696" text-anchor="middle" font-size="14" fill="#93c5fd">BIJU PATNAIK UNIVERSITY OF TECHNOLOGY</text>
+  <text x="620" y="1722" text-anchor="middle" font-size="12" fill="#64748b">CUPGS, Rourkela, Odisha, India  |  2024-25</text>
+</svg>

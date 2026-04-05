@@ -30,3 +30,9 @@ id = "xMzK90-EMo1s3xH_66DAt"
 uri = "file://exports/CUPGS-Project-Documentation.pdf"
 type = "pdf"
 title = "CUPGS Project Documentation — 10-Page Report (English)"
+
+[[outputs]]
+id = "QnihQfJW0CrkUl0b8gGzt"
+uri = "file://exports/CUPGS-SE-Project-Report.pdf"
+type = "pdf"
+title = "CUPGS SE Project Report — Akshaya Gardia (16 Pages)"
