@@ -7,6 +7,7 @@ import feedbackRouter from "./feedback";
 import windowsRouter from "./windows";
 import analyticsRouter from "./analytics";
 import authRouter from "./auth";
+import formTemplatesRouter from "./formTemplates";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(coursesRouter);
 router.use(feedbackRouter);
 router.use(windowsRouter);
 router.use(analyticsRouter);
+router.use(formTemplatesRouter);
 
 export default router;

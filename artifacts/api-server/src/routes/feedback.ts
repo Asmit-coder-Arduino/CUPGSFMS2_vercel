@@ -4,12 +4,30 @@ import { eq, and, desc } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import {
   ListFeedbackQueryParams,
-  SubmitFeedbackBody,
   GetFeedbackParams,
 } from "@workspace/api-zod";
 import { containsProfanity } from "../lib/profanityFilter";
+import { z } from "zod";
 
 const router: IRouter = Router();
+
+// Extended submit schema — standard ratings made optional (default 3)
+// so HOD-disabled fields don't break submission.
+const SubmitFeedbackExtended = z.object({
+  courseId: z.number().int(),
+  facultyId: z.number().int().optional(),
+  studentYear: z.number().int().min(1).max(4).optional(),
+  section: z.string().max(10).optional(),
+  feedbackType: z.enum(["semester_end", "mid_semester", "event_based", "placement"]).default("semester_end"),
+  ratingCourseContent: z.number().int().min(1).max(5).default(3),
+  ratingTeachingQuality: z.number().int().min(1).max(5).default(3),
+  ratingLabFacilities: z.number().int().min(1).max(5).default(3),
+  ratingStudyMaterial: z.number().int().min(1).max(5).default(3),
+  ratingOverall: z.number().int().min(1).max(5).default(3),
+  comments: z.string().max(1000).optional(),
+  customAnswers: z.record(z.unknown()).optional(),
+  isAnonymous: z.boolean().default(true),
+});
 
 async function enrichFeedback(fb: typeof feedbackTable.$inferSelect) {
   const [course] = await db
@@ -62,13 +80,13 @@ router.get("/feedback", async (req, res): Promise<void> => {
 });
 
 router.post("/feedback", async (req, res): Promise<void> => {
-  const parsed = SubmitFeedbackBody.safeParse(req.body);
+  const parsed = SubmitFeedbackExtended.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
     return;
   }
 
-  // ── Profanity check on comments / suggestions ───────────────────────────
+  // Profanity check on comments
   if (parsed.data.comments && parsed.data.comments.trim().length > 0) {
     if (containsProfanity(parsed.data.comments)) {
       res.status(422).json({
@@ -79,10 +97,17 @@ router.post("/feedback", async (req, res): Promise<void> => {
     }
   }
 
-  // ── Input length limits ──────────────────────────────────────────────────
-  if (parsed.data.comments && parsed.data.comments.length > 1000) {
-    res.status(422).json({ error: "Comments must not exceed 1000 characters." });
-    return;
+  // Also check custom text answers for profanity
+  if (parsed.data.customAnswers) {
+    for (const [, val] of Object.entries(parsed.data.customAnswers)) {
+      if (typeof val === "string" && val.trim() && containsProfanity(val)) {
+        res.status(422).json({
+          error: "Your response contains inappropriate language. Please keep your feedback respectful.",
+          code: "PROFANITY_DETECTED",
+        });
+        return;
+      }
+    }
   }
 
   const [course] = await db
@@ -115,6 +140,7 @@ router.post("/feedback", async (req, res): Promise<void> => {
       ratingStudyMaterial: parsed.data.ratingStudyMaterial,
       ratingOverall: parsed.data.ratingOverall,
       comments: parsed.data.comments ?? null,
+      customAnswers: parsed.data.customAnswers ?? null,
       isAnonymous: parsed.data.isAnonymous ?? true,
     })
     .returning();

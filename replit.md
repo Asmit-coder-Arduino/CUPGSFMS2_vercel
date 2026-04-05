@@ -31,7 +31,7 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 
 ## Database Schema
 
-Tables: `departments`, `faculty`, `courses`, `feedback`, `feedback_windows`
+Tables: `departments`, `faculty`, `courses`, `feedback`, `feedback_windows`, `form_templates`
 
 ### Current Seed Data (Real CUPGS data)
 - **7 departments**: CSE (id=7), ECE (id=8), EE (id=9), ME (id=10), CE (id=11), IT (id=12), ChE (id=13)

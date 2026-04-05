@@ -10,8 +10,9 @@ import {
   Award, ChevronDown, ChevronUp, Plus, X, Calendar, Clock, CheckCircle2,
   XCircle, AlertCircle, BarChart3, BookMarked, CalendarRange,
   GraduationCap, Layers, ToggleLeft, ToggleRight, RefreshCw,
-  Pencil, Trash2, UserPlus, Mail, Phone, Building2, Lock,
+  Pencil, Trash2, UserPlus, Mail, Building2, Lock, Sparkles,
 } from "lucide-react";
+import FormBuilder from "@/components/FormBuilder";
 import { getApiUrl } from "@/lib/api";
 import { getCupgsLogoDataUrl } from "@/lib/pdfLogo";
 import jsPDF from "jspdf";
@@ -607,7 +608,7 @@ async function generatePDF(data: HodReportData) {
 
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
-type Tab = "analytics" | "faculty" | "courses" | "windows";
+type Tab = "analytics" | "faculty" | "courses" | "windows" | "formbuilder";
 
 export default function HodDashboard() {
   const { role, hod } = useRole();
@@ -738,6 +739,7 @@ export default function HodDashboard() {
     { id: "faculty" as Tab, label: "Faculty", icon: Users },
     { id: "courses" as Tab, label: "Courses", icon: BookMarked },
     { id: "windows" as Tab, label: "Feedback Windows", icon: CalendarRange },
+    { id: "formbuilder" as Tab, label: "Form Builder", icon: Sparkles },
   ];
 
   // Group courses by semester
@@ -1317,6 +1319,13 @@ export default function HodDashboard() {
             </div>
           )}
         </div>
+      )}
+
+      {/* ═══════════════════════════════════════════════
+          FORM BUILDER TAB
+      ═══════════════════════════════════════════════ */}
+      {tab === "formbuilder" && hod && (
+        <FormBuilder departmentId={hod.id} departmentName={hod.name} />
       )}
 
       {/* ── Modals ── */}
