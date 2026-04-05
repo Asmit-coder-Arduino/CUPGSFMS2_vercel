@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "DNYPbFPAJjS-si0mrrbw9"
+uri = "file://CUPGS_All_Credentials.xlsx"
+type = "table"
+title = "CUPGS All Role Credentials"
