@@ -6,8 +6,8 @@ import {
   ShieldCheck, Briefcase, Building2, FileDown, Home
 } from "lucide-react";
 import { useRole } from "@/contexts/RoleContext";
-import { Button } from "@/components/ui/button";
 import { usePlatform } from "@/hooks/usePlatform";
+import { CupgsLogo } from "@/components/CupgsLogo";
 
 type NavItem = { name: string; href: string; icon: React.ElementType };
 
@@ -17,27 +17,23 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const { isMobile, isIOS } = usePlatform();
 
   const guestNav: NavItem[] = [
-    { name: "Home", href: "/", icon: BookOpen },
+    { name: "Home", href: "/", icon: Home },
     { name: "Feedback", href: "/submit-feedback", icon: MessageSquare },
   ];
-
   const studentNav: NavItem[] = [
-    { name: "Home", href: "/", icon: BookOpen },
+    { name: "Home", href: "/", icon: Home },
     { name: "Feedback", href: "/submit-feedback", icon: MessageSquare },
   ];
-
   const facultyNav: NavItem[] = [
-    { name: "Home", href: "/", icon: BookOpen },
+    { name: "Home", href: "/", icon: Home },
     { name: "Dashboard", href: "/faculty-portal", icon: Briefcase },
   ];
-
   const hodNav: NavItem[] = [
-    { name: "Home", href: "/", icon: BookOpen },
+    { name: "Home", href: "/", icon: Home },
     { name: "Analytics", href: "/hod-dashboard", icon: Building2 },
   ];
-
   const adminNav: NavItem[] = [
-    { name: "Home", href: "/", icon: BookOpen },
+    { name: "Home", href: "/", icon: Home },
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Analytics", href: "/analytics", icon: LineChart },
     { name: "Reports", href: "/reports", icon: FileDown },
@@ -57,154 +53,145 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   const mobileBottomNav = navigation.slice(0, 5);
 
-  const renderSessionBadge = () => {
+  const getRoleAvatar = () => {
     if (role === "hod" && hod) {
-      return (
-        <div className="px-4 py-3 border-b border-sidebar-border">
-          <div className="flex items-center gap-2 mb-1">
-            <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-bold">
-              {hod.code}
-            </div>
-            <div className="min-w-0">
-              <div className="text-xs font-semibold truncate">{hod.hodName}</div>
-              <div className="text-xs text-sidebar-foreground/60 truncate">HOD — {hod.name}</div>
-            </div>
-          </div>
-          <div className="text-xs text-sidebar-foreground/50 mb-2">{hod.hodEmployeeId}</div>
-          <Button size="sm" variant="ghost" className="w-full h-7 text-xs gap-1.5 text-sidebar-foreground/70 hover:text-sidebar-foreground" onClick={logout}>
-            <LogOut className="w-3.5 h-3.5" /> Sign Out
-          </Button>
-        </div>
-      );
+      return {
+        initials: hod.code,
+        color: "from-indigo-500 to-violet-600",
+        name: hod.hodName,
+        sub: `HOD — ${hod.name}`,
+        id: hod.hodEmployeeId,
+      };
     }
     if (role === "faculty" && faculty) {
-      return (
-        <div className="px-4 py-3 border-b border-sidebar-border">
-          <div className="flex items-center gap-2 mb-1">
-            <div className="w-7 h-7 rounded-full bg-teal-600 flex items-center justify-center text-white text-xs font-bold">
-              {faculty.name.charAt(0)}
-            </div>
-            <div className="min-w-0">
-              <div className="text-xs font-semibold truncate">{faculty.name}</div>
-              <div className="text-xs text-sidebar-foreground/60 truncate">{faculty.designation}</div>
-            </div>
-          </div>
-          <div className="text-xs text-sidebar-foreground/50 mb-2">{faculty.departmentCode} | {faculty.employeeId}</div>
-          <Button size="sm" variant="ghost" className="w-full h-7 text-xs gap-1.5 text-sidebar-foreground/70 hover:text-sidebar-foreground" onClick={logout}>
-            <LogOut className="w-3.5 h-3.5" /> Sign Out
-          </Button>
-        </div>
-      );
+      return {
+        initials: faculty.name.charAt(0),
+        color: "from-teal-500 to-cyan-600",
+        name: faculty.name,
+        sub: faculty.designation,
+        id: `${faculty.departmentCode} | ${faculty.employeeId}`,
+      };
     }
     if (role === "student" && student) {
-      return (
-        <div className="px-4 py-3 border-b border-sidebar-border">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center">
-              <GraduationCap className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <div className="text-xs font-semibold">Student</div>
-              <div className="text-xs text-sidebar-foreground/60">{student.rollNumber}</div>
-              {student.departmentCode && <div className="text-xs text-sidebar-foreground/50">{student.departmentCode}</div>}
-            </div>
-          </div>
-          <Button size="sm" variant="ghost" className="w-full h-7 text-xs gap-1.5 text-sidebar-foreground/70 hover:text-sidebar-foreground" onClick={logout}>
-            <LogOut className="w-3.5 h-3.5" /> Sign Out
-          </Button>
-        </div>
-      );
+      return {
+        initials: "S",
+        color: "from-blue-500 to-sky-600",
+        name: "Student",
+        sub: student.rollNumber,
+        id: student.departmentCode || "",
+      };
     }
     if (role === "admin") {
-      return (
-        <div className="px-4 py-3 border-b border-sidebar-border">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-7 h-7 rounded-full bg-slate-600 flex items-center justify-center">
-              <ShieldCheck className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <div className="text-xs font-semibold">Administrator</div>
-              <div className="text-xs text-sidebar-foreground/60">Full Access</div>
-            </div>
-          </div>
-          <Button size="sm" variant="ghost" className="w-full h-7 text-xs gap-1.5 text-sidebar-foreground/70 hover:text-sidebar-foreground" onClick={logout}>
-            <LogOut className="w-3.5 h-3.5" /> Sign Out
-          </Button>
-        </div>
-      );
+      return {
+        initials: "A",
+        color: "from-slate-500 to-gray-600",
+        name: "Administrator",
+        sub: "Full Access",
+        id: "",
+      };
     }
     return null;
   };
 
+  const avatar = getRoleAvatar();
+
   return (
-    <div className="min-h-screen bg-background flex flex-col md:flex-row">
+    <div className="min-h-screen flex flex-col md:flex-row relative">
+      {/* Background blobs */}
+      <div className="bg-blob bg-blob-1" />
+      <div className="bg-blob bg-blob-2" />
+      <div className="bg-blob bg-blob-3" />
+
       {/* Desktop Sidebar */}
-      <div className="w-full md:w-64 bg-sidebar text-sidebar-foreground flex flex-col shadow-lg z-10 hidden md:flex">
-        <div className="p-6 border-b border-sidebar-border">
-          <div className="flex items-center gap-3 mb-1">
-            <img src="/icons/icon-72.png" alt="CUPGS" className="w-9 h-9 rounded-lg flex-shrink-0" />
+      <div className="w-full md:w-64 flex flex-col z-10 hidden md:flex glass-sidebar relative">
+        {/* Logo area */}
+        <div className="p-5 border-b border-white/[0.07]">
+          <div className="flex items-center gap-3">
+            <CupgsLogo size={42} className="flex-shrink-0 drop-shadow-lg" />
             <div>
-              <h1 className="text-lg font-bold tracking-tight leading-tight">CUPGS Feedback</h1>
-              <p className="text-xs text-sidebar-foreground/70">Academic Feedback System</p>
+              <h1 className="text-base font-bold tracking-tight text-white leading-tight">CUPGS Feedback</h1>
+              <p className="text-[11px] text-white/50 mt-0.5">Academic Feedback System</p>
             </div>
           </div>
         </div>
 
-        {renderSessionBadge()}
+        {/* Session badge */}
+        {avatar && (
+          <div className="mx-3 mt-3 mb-1 p-3 rounded-xl glass border-white/[0.07] animate-fade-in">
+            <div className="flex items-center gap-2.5">
+              <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${avatar.color} flex items-center justify-center text-white text-xs font-bold shadow-lg flex-shrink-0`}>
+                {avatar.initials}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-semibold text-white truncate">{avatar.name}</div>
+                <div className="text-[11px] text-white/50 truncate">{avatar.sub}</div>
+              </div>
+            </div>
+            {avatar.id && <div className="text-[10px] text-white/35 mt-1.5 pl-0.5 font-mono">{avatar.id}</div>}
+            <button
+              onClick={logout}
+              className="mt-2.5 w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[11px] text-white/50 hover:text-white hover:bg-white/10 transition-all duration-200"
+            >
+              <LogOut className="w-3 h-3" />
+              Sign Out
+            </button>
+          </div>
+        )}
 
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {navigation.map((item) => {
+        {/* Navigation */}
+        <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
+          {navigation.map((item, i) => {
             const isActive = location === item.href;
             return (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
-                  isActive
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
-                    : "hover:bg-sidebar-accent/50"
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 animate-nav-in glass-nav-item ${
+                  isActive ? "active text-white" : "text-white/55 hover:text-white"
                 }`}
+                style={{ animationDelay: `${i * 40}ms` }}
               >
-                <item.icon className="w-5 h-5" />
-                {item.name}
+                <item.icon className={`w-4.5 h-4.5 flex-shrink-0 ${isActive ? "text-sky-300" : ""}`} style={{ width: "1.1rem", height: "1.1rem" }} />
+                <span>{item.name}</span>
               </Link>
             );
           })}
         </nav>
-        <div className="p-4 border-t border-sidebar-border text-xs text-sidebar-foreground/50 text-center">
-          Centre for UG & PG Studies (CUPGS), BPUT
+
+        <div className="px-4 pb-4 pt-2 border-t border-white/[0.06] text-[10px] text-white/25 text-center leading-relaxed">
+          Centre for UG &amp; PG Studies (CUPGS)<br />BPUT Rourkela
         </div>
       </div>
 
       {/* Mobile Top Bar */}
-      <div className="md:hidden bg-sidebar text-sidebar-foreground px-4 py-3 flex items-center justify-between shadow-sm z-20 sticky top-0">
-        <div className="flex items-center gap-2">
-          <img src="/icons/icon-72.png" alt="CUPGS" className="w-7 h-7 rounded-md" />
-          <div className="font-bold text-sm">CUPGS Feedback</div>
-        </div>
-        <div className="flex items-center gap-2">
-          {role !== "guest" && (
-            <>
-              <div className="text-xs text-sidebar-foreground/60 truncate max-w-24">
-                {role === "faculty" && faculty?.name?.split(" ").pop()}
-                {role === "hod" && hod?.code}
-                {role === "student" && student?.rollNumber?.slice(-4)}
-                {role === "admin" && "Admin"}
-              </div>
-              <button
-                onClick={logout}
-                className="p-1.5 rounded-md bg-sidebar-accent/60 hover:bg-sidebar-accent transition-colors"
-                aria-label="Sign out"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-              </button>
-            </>
-          )}
+      <div className="md:hidden sticky top-0 z-30 glass-strong border-b border-white/[0.08]">
+        <div className="flex items-center justify-between px-4 py-2.5">
+          <div className="flex items-center gap-2.5">
+            <CupgsLogo size={32} className="flex-shrink-0" />
+            <div>
+              <span className="font-bold text-sm text-white">CUPGS Feedback</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {avatar && (
+              <>
+                <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${avatar.color} flex items-center justify-center text-white text-[11px] font-bold shadow`}>
+                  {avatar.initials}
+                </div>
+                <button
+                  onClick={logout}
+                  className="p-1.5 rounded-lg glass text-white/60 hover:text-white transition-all"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className={`flex-1 flex flex-col overflow-hidden ${isMobile ? "pb-20" : ""}`}>
+      <div className={`flex-1 flex flex-col overflow-hidden relative z-10 ${isMobile ? "pb-20" : ""}`}>
         <main className="flex-1 overflow-y-auto p-4 md:p-8">
           {children}
         </main>
@@ -212,7 +199,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
       {/* Mobile Bottom Navigation */}
       <div
-        className={`md:hidden fixed bottom-0 left-0 right-0 bg-sidebar text-sidebar-foreground border-t border-sidebar-border z-20 ${isIOS ? "safe-area-bottom" : ""}`}
+        className={`md:hidden fixed bottom-0 left-0 right-0 z-30 glass-strong border-t border-white/[0.08] ${isIOS ? "safe-area-bottom" : ""}`}
         style={{ paddingBottom: isIOS ? "env(safe-area-inset-bottom, 0px)" : undefined }}
       >
         <div className="flex items-stretch">
@@ -222,21 +209,26 @@ export function AppLayout({ children }: { children: ReactNode }) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 min-h-[56px] transition-colors ${
-                  isActive
-                    ? "text-white bg-sidebar-accent"
-                    : "text-sidebar-foreground/60 hover:text-sidebar-foreground"
+                className={`flex-1 flex flex-col items-center justify-center py-2.5 gap-1 min-h-[56px] transition-all duration-200 ${
+                  isActive ? "text-sky-400" : "text-white/40 hover:text-white/70"
                 }`}
               >
-                <item.icon className={`w-5 h-5 ${isActive ? "text-white" : ""}`} />
-                <span className="text-[10px] font-medium leading-tight">{item.name}</span>
+                <div className={`relative ${isActive ? "animate-pulse-ring rounded-full" : ""}`}>
+                  <item.icon className="w-5 h-5" />
+                  {isActive && (
+                    <div className="absolute inset-0 rounded-full bg-sky-400/20 scale-150 blur-sm" />
+                  )}
+                </div>
+                <span className={`text-[10px] font-medium leading-tight ${isActive ? "text-sky-300" : ""}`}>
+                  {item.name}
+                </span>
               </Link>
             );
           })}
           {role !== "guest" && (
             <button
               onClick={logout}
-              className="flex-1 flex flex-col items-center justify-center py-2 gap-0.5 min-h-[56px] text-sidebar-foreground/50 hover:text-sidebar-foreground transition-colors"
+              className="flex-1 flex flex-col items-center justify-center py-2.5 gap-1 min-h-[56px] text-white/35 hover:text-white/60 transition-all duration-200"
             >
               <LogOut className="w-5 h-5" />
               <span className="text-[10px] font-medium leading-tight">Sign Out</span>
