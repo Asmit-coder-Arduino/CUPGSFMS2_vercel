@@ -97,6 +97,39 @@ export default function SubmitFeedback() {
     });
   };
 
+  if (role !== "student" || !student) {
+    return (
+      <div className="p-6 max-w-2xl">
+        <div className="bg-card border rounded-xl p-10 text-center space-y-5 shadow-sm">
+          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto">
+            <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-xl font-bold mb-2">Student Login Required</h2>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Feedback can only be submitted by registered BPUT students. Please login with your Roll Number and Department to continue.
+            </p>
+          </div>
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800 text-left space-y-1">
+            <p className="font-semibold">How to login as Student:</p>
+            <p>1. Go to <strong>Home</strong> page</p>
+            <p>2. Click <strong>"Student Login"</strong></p>
+            <p>3. Enter your Roll Number (e.g., <code className="bg-amber-100 px-1 rounded">22CS0001</code>) and select your department</p>
+            <p>4. Come back here to submit feedback</p>
+          </div>
+          <a
+            href="/"
+            className="inline-block bg-primary text-primary-foreground font-semibold px-6 py-2.5 rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Go to Home — Login as Student
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   if (submitted) {
     const deptName = departments?.find(d => String(d.id) === selectedDeptId)?.name;
     return (
