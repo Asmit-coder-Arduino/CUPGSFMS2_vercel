@@ -22,6 +22,7 @@ import AdminReports from "./pages/AdminReports";
 
 import { AppLayout } from "./components/layout/AppLayout";
 import { InstallPrompt } from "./components/InstallPrompt";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,17 +59,19 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <RoleProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <Router />
-          </WouterRouter>
-        </RoleProvider>
-        <Toaster />
-        <InstallPrompt />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <RoleProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <Router />
+            </WouterRouter>
+          </RoleProvider>
+          <Toaster />
+          <InstallPrompt />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 
