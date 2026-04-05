@@ -11,6 +11,10 @@ export const facultyTable = pgTable("faculty", {
   departmentId: integer("department_id")
     .notNull()
     .references(() => departmentsTable.id),
+  employeeId: text("employee_id").unique(),
+  loginPin: text("login_pin"),
+  qualification: text("qualification"),
+  specialization: text("specialization"),
 });
 
 export const insertFacultySchema = createInsertSchema(facultyTable).omit({ id: true });

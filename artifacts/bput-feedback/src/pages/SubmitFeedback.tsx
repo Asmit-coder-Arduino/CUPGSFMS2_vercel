@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useListCourses, useListFaculty, useSubmitFeedback, getListFeedbackQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRole } from "@/contexts/RoleContext";
+import { Badge } from "@/components/ui/badge";
 
 function StarInput({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
   const [hover, setHover] = useState(0);
@@ -32,6 +34,7 @@ export default function SubmitFeedback() {
   const { data: faculty } = useListFaculty();
   const submitFeedback = useSubmitFeedback();
   const queryClient = useQueryClient();
+  const { role, student } = useRole();
 
   const [courseId, setCourseId] = useState("");
   const [facultyId, setFacultyId] = useState("");
@@ -112,6 +115,12 @@ export default function SubmitFeedback() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold">Submit Feedback</h1>
         <p className="text-muted-foreground text-sm mt-1">Your feedback helps improve academic quality at BPUT</p>
+        {role === "student" && student && (
+          <div className="mt-2 inline-flex items-center gap-2">
+            <Badge variant="secondary" className="text-xs">Roll No: {student.rollNumber}</Badge>
+            <span className="text-xs text-muted-foreground">Your identity remains anonymous to faculty.</span>
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">

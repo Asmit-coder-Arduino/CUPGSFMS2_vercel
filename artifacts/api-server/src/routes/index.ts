@@ -6,10 +6,12 @@ import coursesRouter from "./courses";
 import feedbackRouter from "./feedback";
 import windowsRouter from "./windows";
 import analyticsRouter from "./analytics";
+import authRouter from "./auth";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
+router.use(authRouter);
 router.use(departmentsRouter);
 router.use(facultyRouter);
 router.use(coursesRouter);

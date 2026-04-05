@@ -3,8 +3,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
+import { RoleProvider } from "./contexts/RoleContext";
 
-// Pages
 import Home from "./pages/Home";
 import SubmitFeedback from "./pages/SubmitFeedback";
 import Dashboard from "./pages/Dashboard";
@@ -16,6 +16,7 @@ import FacultyDetails from "./pages/FacultyDetails";
 import Courses from "./pages/Courses";
 import FeedbackList from "./pages/FeedbackList";
 import Windows from "./pages/Windows";
+import FacultyPortal from "./pages/FacultyPortal";
 
 import { AppLayout } from "./components/layout/AppLayout";
 
@@ -34,6 +35,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/submit-feedback" component={SubmitFeedback} />
+        <Route path="/faculty-portal" component={FacultyPortal} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/analytics" component={Analytics} />
         <Route path="/departments" component={Departments} />
@@ -53,9 +55,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
+        <RoleProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Router />
+          </WouterRouter>
+        </RoleProvider>
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
