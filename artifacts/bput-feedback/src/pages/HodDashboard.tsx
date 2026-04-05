@@ -540,7 +540,12 @@ async function generatePDF(data: HodReportData) {
   doc.text("HOD:", margin, y); doc.setFont("helvetica", "normal");
   doc.text(department.hodName ?? "—", margin + 14, y); y += 6;
   doc.setFont("helvetica", "bold"); doc.text("Academic Year:", margin, y);
-  doc.setFont("helvetica", "normal"); doc.text("2024-25 | Even Semester", margin + 30, y); y += 10;
+  const now = new Date();
+  const m = now.getMonth(); // 0=Jan … 11=Dec
+  const yr = now.getFullYear();
+  const acYear = m >= 3 ? `${yr}-${String(yr + 1).slice(2)}` : `${yr - 1}-${String(yr).slice(2)}`;
+  const semester = (m >= 6 && m <= 10) ? "Odd Semester" : "Even Semester";
+  doc.setFont("helvetica", "normal"); doc.text(`${acYear} | ${semester}`, margin + 30, y); y += 10;
 
   y = sectionTitle("Department Summary", y); y += 2;
   autoTable(doc, {
@@ -763,9 +768,9 @@ export default function HodDashboard() {
               <p className="text-muted-foreground text-sm">HOD: <span className="font-medium text-foreground">{hod.hodName}</span> &bull; {hod.hodEmployeeId}</p>
             </div>
           </div>
-          <p className="text-sm text-muted-foreground pl-1">Academic Year 2024-25 &bull; Department Management Portal</p>
+          <p className="text-sm text-muted-foreground pl-1">Academic Year {(() => { const m = new Date().getMonth(); const y = new Date().getFullYear(); return m >= 3 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`; })()} &bull; Department Management Portal</p>
         </div>
-        <Button onClick={() => { if (!data) return; setPdfLoading(true); setTimeout(() => { try { void generatePDF(data).catch(console.error); } catch(e){console.error(e);} finally{setPdfLoading(false);} }, 100); }}
+        <Button onClick={async () => { if (!data) return; setPdfLoading(true); try { await generatePDF(data); } catch(e){ console.error(e); } finally { setPdfLoading(false); } }}
           disabled={!data || pdfLoading || loading} className="bg-indigo-600 hover:bg-indigo-700 gap-2 shrink-0">
           <Download className="w-4 h-4" />
           {pdfLoading ? "Generating…" : "PDF Report"}

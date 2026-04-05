@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -480,7 +480,7 @@ export default function FormBuilder({ departmentId, departmentName }: FormBuilde
   }, [departmentId]);
 
   // Auto-load on mount
-  useState(() => { void loadTemplate(); });
+  useEffect(() => { void loadTemplate(); }, [loadTemplate]);
 
   const updateField = (id: string, updates: Partial<FieldConfig>) => {
     setTemplate(t => t ? { ...t, fields: t.fields.map(f => f.id === id ? { ...f, ...updates } : f) } : t);

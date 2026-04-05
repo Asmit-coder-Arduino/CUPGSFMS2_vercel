@@ -8,6 +8,9 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
+// ── Trust proxy (Replit runs behind a reverse proxy) ─────────────────────────
+app.set("trust proxy", 1);
+
 // ── Security headers (Helmet) ────────────────────────────────────────────────
 app.use(
   helmet({
@@ -68,8 +71,6 @@ const authLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: "Too many login attempts. Please try again after 15 minutes." },
-  keyGenerator: (req: Request) =>
-    (req.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim() ?? req.ip ?? "unknown",
 });
 
 // ── Feedback submission limiter — 20 submissions / 10 min ────────────────────
