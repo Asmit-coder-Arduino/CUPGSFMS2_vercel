@@ -1,43 +1,185 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useListCourses, useListFaculty, useListDepartments, getListFeedbackQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRole } from "@/contexts/RoleContext";
 import { Badge } from "@/components/ui/badge";
 import { getApiUrl } from "@/lib/api";
 import type { FieldConfig, FormTemplate } from "@/components/FormBuilder";
-import { Star, CheckSquare, List, AlignLeft, Info } from "lucide-react";
+import { CheckSquare, List, AlignLeft, Info } from "lucide-react";
 
-// ─── Star Input ───────────────────────────────────────────────────────────────
+// ─── Half-Star SVG ────────────────────────────────────────────────────────────
+// Uses clipPath to reliably render empty / half / full stars without gradient ID conflicts.
+
+function HalfStarSvg({ fill, size = 40, idx = 0 }: { fill: "empty" | "half" | "full"; size?: number; idx?: number }) {
+  const clipId = `hs-clip-${idx}`;
+  // Standard 5-point star path centred on 10,10 in a 20×20 viewBox
+  const STAR = "M10 1.5 L12.245 7.386 L18.511 7.386 L13.633 11.114 L15.878 17 L10 13.272 L4.122 17 L6.367 11.114 L1.489 7.386 L7.755 7.386 Z";
+  const AMBER = "#f59e0b";
+  const EMPTY_STROKE = "rgba(245,158,11,0.28)";
+
+  return (
+    <svg width={size} height={size} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+      <defs>
+        {fill === "half" && (
+          <clipPath id={clipId}>
+            <rect x="0" y="0" width="10" height="20" />
+          </clipPath>
+        )}
+      </defs>
+
+      {/* Outline / base (always shown) */}
+      <path d={STAR} fill="none" stroke={EMPTY_STROKE} strokeWidth="1" />
+
+      {/* Full fill */}
+      {fill === "full" && <path d={STAR} fill={AMBER} />}
+
+      {/* Half fill — clipped to left 50% */}
+      {fill === "half" && <path d={STAR} fill={AMBER} clipPath={`url(#${clipId})`} />}
+    </svg>
+  );
+}
+
+// ─── Half-Star Rating Input ───────────────────────────────────────────────────
+// Supports 0.5-step values (0.5 → 5.0) via hover, click, and drag.
+
+const LABELS: Record<number, string> = {
+  0.5: "Terrible", 1: "Bad", 1.5: "Very Poor", 2: "Poor",
+  2.5: "Below Avg", 3: "Average", 3.5: "Good", 4: "Very Good",
+  4.5: "Excellent", 5: "Outstanding!",
+};
+const LABEL_COLORS: Record<number, string> = {
+  0.5: "text-red-600", 1: "text-red-500", 1.5: "text-orange-600", 2: "text-orange-400",
+  2.5: "text-yellow-600", 3: "text-yellow-500", 3.5: "text-lime-500", 4: "text-green-500",
+  4.5: "text-emerald-500", 5: "text-emerald-600",
+};
 
 function StarInput({ label, description, value, onChange, required }: {
   label: string; description?: string; value: number; onChange: (v: number) => void; required?: boolean;
 }) {
-  const [hover, setHover] = useState(0);
+  const [hoverVal, setHoverVal] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const STAR_COUNT = 5;
+
+  // Given an x offset inside the container, compute the half-star value (0.5 increments).
+  const valueFromX = useCallback((clientX: number): number => {
+    const el = containerRef.current;
+    if (!el) return 0;
+    const rect = el.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const starW = rect.width / STAR_COUNT;
+    const starIndex = Math.floor(x / starW); // 0-based
+    const withinStar = (x - starIndex * starW) / starW; // 0..1
+    const clamped = Math.max(0, Math.min(STAR_COUNT - 1, starIndex));
+    return Math.min(STAR_COUNT, (clamped + (withinStar < 0.5 ? 0.5 : 1)));
+  }, []);
+
+  // Mouse events
+  const onMouseMove = useCallback((e: React.MouseEvent) => {
+    const v = valueFromX(e.clientX);
+    setHoverVal(v);
+    if (dragging) onChange(v);
+  }, [dragging, onChange, valueFromX]);
+
+  const onMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setDragging(true);
+    onChange(valueFromX(e.clientX));
+  }, [onChange, valueFromX]);
+
+  const onMouseUp = useCallback(() => setDragging(false), []);
+  const onMouseLeave = useCallback(() => { setHoverVal(0); setDragging(false); }, []);
+  const onClick = useCallback((e: React.MouseEvent) => { onChange(valueFromX(e.clientX)); }, [onChange, valueFromX]);
+
+  // Touch events
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    setDragging(true);
+    onChange(valueFromX(e.touches[0].clientX));
+  }, [onChange, valueFromX]);
+
+  const onTouchMove = useCallback((e: React.TouchEvent) => {
+    e.preventDefault();
+    const v = valueFromX(e.touches[0].clientX);
+    setHoverVal(v);
+    onChange(v);
+  }, [onChange, valueFromX]);
+
+  const onTouchEnd = useCallback(() => { setDragging(false); setHoverVal(0); }, []);
+
+  const displayVal = hoverVal || value;
+
+  // Determine fill for each star position 1..5
+  const starFills = Array.from({ length: STAR_COUNT }, (_, i) => {
+    const pos = i + 1; // 1..5
+    if (displayVal >= pos) return "full" as const;
+    if (displayVal >= pos - 0.5) return "half" as const;
+    return "empty" as const;
+  });
+
   return (
-    <div className="space-y-1">
+    <div className="space-y-1.5">
       <div className="flex items-center gap-1">
         <span className="text-sm font-medium">{label}</span>
         {required && <span className="text-red-500 text-xs">*</span>}
       </div>
       {description && <p className="text-xs text-muted-foreground">{description}</p>}
-      <div className="flex items-center gap-1.5 mt-1">
-        {[1, 2, 3, 4, 5].map((i) => (
-          <button
-            key={i} type="button"
-            onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(0)}
-            onClick={() => onChange(i)}
-            className="focus:outline-none transition-transform hover:scale-110"
-          >
-            <svg className={`w-8 h-8 ${i <= (hover || value) ? "text-amber-400" : "text-muted-foreground/25"} transition-colors`} fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-            </svg>
-          </button>
-        ))}
-        {value > 0 && (
-          <span className="text-sm font-bold ml-1 text-amber-600">
-            {["", "Poor", "Below Avg", "Average", "Good", "Excellent"][value]}
-          </span>
-        )}
+
+      <div className="flex items-center gap-3 mt-1 select-none">
+        {/* Star container — single drag surface */}
+        <div
+          ref={containerRef}
+          className={`flex gap-1 cursor-pointer touch-none ${dragging ? "scale-105" : ""} transition-transform`}
+          style={{ width: STAR_COUNT * 44 }}
+          onMouseMove={onMouseMove}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseLeave}
+          onClick={onClick}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          role="slider"
+          aria-label={label}
+          aria-valuemin={0.5}
+          aria-valuemax={5}
+          aria-valuenow={value}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowRight") onChange(Math.min(5, (value || 0) + 0.5));
+            if (e.key === "ArrowLeft") onChange(Math.max(0.5, (value || 0.5) - 0.5));
+          }}
+        >
+          {starFills.map((fill, i) => (
+            <HalfStarSvg key={i} fill={fill} size={40} idx={i} />
+          ))}
+        </div>
+
+        {/* Score + label */}
+        <div className="min-w-[72px]">
+          {displayVal > 0 ? (
+            <div className="flex flex-col leading-tight">
+              <span className={`text-xl font-black tabular-nums leading-none ${LABEL_COLORS[displayVal] ?? "text-amber-500"}`}>
+                {displayVal % 1 === 0 ? displayVal.toFixed(1) : displayVal}
+              </span>
+              <span className={`text-[10px] font-semibold uppercase tracking-wide ${LABEL_COLORS[displayVal] ?? "text-amber-500"}`}>
+                {LABELS[displayVal]}
+              </span>
+            </div>
+          ) : (
+            <span className="text-xs text-muted-foreground italic">Tap or drag</span>
+          )}
+        </div>
+      </div>
+
+      {/* Thin progress bar */}
+      <div className="h-1 rounded-full bg-muted/50 overflow-hidden w-48 ml-0.5">
+        <div
+          className="h-full rounded-full transition-all duration-150"
+          style={{
+            width: `${(displayVal / 5) * 100}%`,
+            background: displayVal >= 4 ? "#10b981" : displayVal >= 3 ? "#f59e0b" : displayVal >= 2 ? "#f97316" : "#ef4444",
+          }}
+        />
       </div>
     </div>
   );

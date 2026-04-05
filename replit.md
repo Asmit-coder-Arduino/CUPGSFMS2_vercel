@@ -43,8 +43,9 @@ Tables: `departments`, `faculty`, `courses`, `feedback`, `feedback_windows`, `fo
 - **2 feedback windows**: 1 active (Even Sem End 2024-25), 1 closed
 - **126+ feedback entries**: Seeded across 12 courses
 
-### Feedback Rating Parameters (all 1–5)
+### Feedback Rating Parameters (0.5–5.0, stored as REAL)
 - `rating_course_content`, `rating_teaching_quality`, `rating_lab_facilities`, `rating_study_material`, `rating_overall`
+- Supports half-star precision (0.5 increments via drag/touch/keyboard on frontend)
 
 ### Feedback Types
 `semester_end` | `mid_semester` | `event_based` | `placement`

@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, jsonb, real } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 import { coursesTable } from "./courses";
@@ -20,11 +20,11 @@ export const feedbackTable = pgTable("feedback", {
   studentYear: integer("student_year"),
   section: text("section"),
   feedbackType: text("feedback_type").notNull().default("semester_end"),
-  ratingCourseContent: integer("rating_course_content").notNull(),
-  ratingTeachingQuality: integer("rating_teaching_quality").notNull(),
-  ratingLabFacilities: integer("rating_lab_facilities").notNull(),
-  ratingStudyMaterial: integer("rating_study_material").notNull(),
-  ratingOverall: integer("rating_overall").notNull(),
+  ratingCourseContent: real("rating_course_content").notNull(),
+  ratingTeachingQuality: real("rating_teaching_quality").notNull(),
+  ratingLabFacilities: real("rating_lab_facilities").notNull(),
+  ratingStudyMaterial: real("rating_study_material").notNull(),
+  ratingOverall: real("rating_overall").notNull(),
   comments: text("comments"),
   customAnswers: jsonb("custom_answers"),
   isAnonymous: boolean("is_anonymous").notNull().default(true),
