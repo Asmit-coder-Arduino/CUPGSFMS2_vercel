@@ -3,20 +3,32 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: BPUT Feedback Manager API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: feedback
+    description: Feedback submission and retrieval
+  - name: courses
+    description: Course management
+  - name: faculty
+    description: Faculty management
+  - name: departments
+    description: Department management
+  - name: analytics
+    description: Analytics and reports
+  - name: windows
+    description: Feedback collection windows
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +36,393 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ── Departments ────────────────────────────────────────────────────────────
+  /departments:
+    get:
+      operationId: listDepartments
+      tags: [departments]
+      summary: List all departments
+      responses:
+        "200":
+          description: List of departments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Department"
+
+  # ── Faculty ────────────────────────────────────────────────────────────────
+  /faculty:
+    get:
+      operationId: listFaculty
+      tags: [faculty]
+      summary: List faculty members
+      parameters:
+        - name: departmentId
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of faculty
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Faculty"
+    post:
+      operationId: createFaculty
+      tags: [faculty]
+      summary: Create faculty member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFacultyBody"
+      responses:
+        "201":
+          description: Created faculty
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Faculty"
+
+  /faculty/{id}:
+    get:
+      operationId: getFaculty
+      tags: [faculty]
+      summary: Get faculty by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Faculty details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Faculty"
+
+  # ── Courses ────────────────────────────────────────────────────────────────
+  /courses:
+    get:
+      operationId: listCourses
+      tags: [courses]
+      summary: List courses
+      parameters:
+        - name: departmentId
+          in: query
+          schema:
+            type: integer
+        - name: semester
+          in: query
+          schema:
+            type: integer
+        - name: academicYear
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Course"
+    post:
+      operationId: createCourse
+      tags: [courses]
+      summary: Create a course
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCourseBody"
+      responses:
+        "201":
+          description: Created course
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Course"
+
+  /courses/{id}:
+    get:
+      operationId: getCourse
+      tags: [courses]
+      summary: Get course by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Course details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Course"
+
+  # ── Feedback ───────────────────────────────────────────────────────────────
+  /feedback:
+    get:
+      operationId: listFeedback
+      tags: [feedback]
+      summary: List feedback entries
+      parameters:
+        - name: courseId
+          in: query
+          schema:
+            type: integer
+        - name: departmentId
+          in: query
+          schema:
+            type: integer
+        - name: facultyId
+          in: query
+          schema:
+            type: integer
+        - name: semester
+          in: query
+          schema:
+            type: integer
+        - name: academicYear
+          in: query
+          schema:
+            type: string
+        - name: feedbackType
+          in: query
+          schema:
+            type: string
+            enum: [semester_end, mid_semester, event_based, placement]
+      responses:
+        "200":
+          description: List of feedback
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FeedbackEntry"
+    post:
+      operationId: submitFeedback
+      tags: [feedback]
+      summary: Submit feedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitFeedbackBody"
+      responses:
+        "201":
+          description: Submitted feedback
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeedbackEntry"
+
+  /feedback/{id}:
+    get:
+      operationId: getFeedback
+      tags: [feedback]
+      summary: Get feedback by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Feedback details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeedbackEntry"
+
+  # ── Feedback Windows ───────────────────────────────────────────────────────
+  /windows:
+    get:
+      operationId: listWindows
+      tags: [windows]
+      summary: List feedback collection windows
+      responses:
+        "200":
+          description: List of windows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FeedbackWindow"
+    post:
+      operationId: createWindow
+      tags: [windows]
+      summary: Create feedback window
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateWindowBody"
+      responses:
+        "201":
+          description: Created window
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeedbackWindow"
+
+  /windows/{id}:
+    get:
+      operationId: getWindow
+      tags: [windows]
+      summary: Get window by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Window details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeedbackWindow"
+    patch:
+      operationId: updateWindow
+      tags: [windows]
+      summary: Update feedback window
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateWindowBody"
+      responses:
+        "200":
+          description: Updated window
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeedbackWindow"
+
+  # ── Analytics ──────────────────────────────────────────────────────────────
+  /analytics/dashboard:
+    get:
+      operationId: getDashboardSummary
+      tags: [analytics]
+      summary: Dashboard summary — totals and highlights
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /analytics/department/{departmentId}:
+    get:
+      operationId: getDepartmentAnalytics
+      tags: [analytics]
+      summary: Department-wise analytics
+      parameters:
+        - name: departmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: academicYear
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Department analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DepartmentAnalytics"
+
+  /analytics/faculty/{facultyId}:
+    get:
+      operationId: getFacultyAnalytics
+      tags: [analytics]
+      summary: Faculty performance analytics
+      parameters:
+        - name: facultyId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Faculty analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FacultyAnalytics"
+
+  /analytics/trends:
+    get:
+      operationId: getTrends
+      tags: [analytics]
+      summary: Semester-wise trend data
+      parameters:
+        - name: departmentId
+          in: query
+          schema:
+            type: integer
+        - name: metric
+          in: query
+          schema:
+            type: string
+            enum: [overall, course_content, teaching_quality, lab_facilities, study_material]
+      responses:
+        "200":
+          description: Trend data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TrendPoint"
+
+  /analytics/top-rated:
+    get:
+      operationId: getTopRated
+      tags: [analytics]
+      summary: Top-rated faculty and courses
+      responses:
+        "200":
+          description: Top rated entities
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TopRated"
+
+# ── Components ─────────────────────────────────────────────────────────────
 components:
   schemas:
     HealthStatus:
@@ -31,6 +430,467 @@ components:
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
+    Department:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+        totalFaculty:
+          type: integer
+        totalCourses:
+          type: integer
+        avgRating:
+          type: number
+          format: float
+      required: [id, code, name, totalFaculty, totalCourses]
+
+    Faculty:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        designation:
+          type: string
+        departmentId:
+          type: integer
+        departmentName:
+          type: string
+        avgRating:
+          type: number
+          format: float
+        totalFeedbackCount:
+          type: integer
+      required: [id, name, designation, departmentId]
+
+    CreateFacultyBody:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        designation:
+          type: string
+        departmentId:
+          type: integer
+      required: [name, designation, departmentId]
+
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+        departmentId:
+          type: integer
+        departmentName:
+          type: string
+        facultyId:
+          type: integer
+        facultyName:
+          type: string
+        semester:
+          type: integer
+        academicYear:
+          type: string
+        credits:
+          type: integer
+        avgRating:
+          type: number
+          format: float
+        feedbackCount:
+          type: integer
+      required: [id, code, name, departmentId, semester, academicYear]
+
+    CreateCourseBody:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        departmentId:
+          type: integer
+        facultyId:
+          type: integer
+        semester:
+          type: integer
+        academicYear:
+          type: string
+        credits:
+          type: integer
+      required: [code, name, departmentId, semester, academicYear]
+
+    FeedbackEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+        referenceId:
+          type: string
+        courseId:
+          type: integer
+        courseName:
+          type: string
+        courseCode:
+          type: string
+        facultyId:
+          type: integer
+        facultyName:
+          type: string
+        departmentId:
+          type: integer
+        departmentName:
+          type: string
+        semester:
+          type: integer
+        academicYear:
+          type: string
+        studentYear:
+          type: integer
+        section:
+          type: string
+        feedbackType:
+          type: string
+          enum: [semester_end, mid_semester, event_based, placement]
+        ratingCourseContent:
+          type: integer
+          minimum: 1
+          maximum: 5
+        ratingTeachingQuality:
+          type: integer
+          minimum: 1
+          maximum: 5
+        ratingLabFacilities:
+          type: integer
+          minimum: 1
+          maximum: 5
+        ratingStudyMaterial:
+          type: integer
+          minimum: 1
+          maximum: 5
+        ratingOverall:
+          type: integer
+          minimum: 1
+          maximum: 5
+        comments:
+          type: string
+        isAnonymous:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - referenceId
+        - courseId
+        - departmentId
+        - semester
+        - academicYear
+        - feedbackType
+        - ratingCourseContent
+        - ratingTeachingQuality
+        - ratingLabFacilities
+        - ratingStudyMaterial
+        - ratingOverall
+        - isAnonymous
+        - createdAt
+
+    SubmitFeedbackBody:
+      type: object
+      properties:
+        courseId:
+          type: integer
+        facultyId:
+          type: integer
+        studentYear:
+          type: integer
+        section:
+          type: string
+        feedbackType:
+          type: string
+          enum: [semester_end, mid_semester, event_based, placement]
+        ratingCourseContent:
+          type: integer
+          minimum: 1
+          maximum: 5
+        ratingTeachingQuality:
+          type: integer
+          minimum: 1
+          maximum: 5
+        ratingLabFacilities:
+          type: integer
+          minimum: 1
+          maximum: 5
+        ratingStudyMaterial:
+          type: integer
+          minimum: 1
+          maximum: 5
+        ratingOverall:
+          type: integer
+          minimum: 1
+          maximum: 5
+        comments:
+          type: string
+        isAnonymous:
+          type: boolean
+      required:
+        - courseId
+        - feedbackType
+        - ratingCourseContent
+        - ratingTeachingQuality
+        - ratingLabFacilities
+        - ratingStudyMaterial
+        - ratingOverall
+
+    FeedbackWindow:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        feedbackType:
+          type: string
+          enum: [semester_end, mid_semester, event_based, placement]
+        academicYear:
+          type: string
+        semester:
+          type: integer
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        isActive:
+          type: boolean
+        departmentIds:
+          type: array
+          items:
+            type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, title, feedbackType, academicYear, semester, startDate, endDate, isActive, createdAt]
+
+    CreateWindowBody:
+      type: object
+      properties:
+        title:
+          type: string
+        feedbackType:
+          type: string
+          enum: [semester_end, mid_semester, event_based, placement]
+        academicYear:
+          type: string
+        semester:
+          type: integer
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        departmentIds:
+          type: array
+          items:
+            type: integer
+      required: [title, feedbackType, academicYear, semester, startDate, endDate]
+
+    UpdateWindowBody:
+      type: object
+      properties:
+        title:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        isActive:
+          type: boolean
+
+    DashboardSummary:
+      type: object
+      properties:
+        totalFeedback:
+          type: integer
+        totalCourses:
+          type: integer
+        totalFaculty:
+          type: integer
+        totalDepartments:
+          type: integer
+        avgOverallRating:
+          type: number
+          format: float
+        activeWindows:
+          type: integer
+        feedbackThisMonth:
+          type: integer
+        topDepartment:
+          type: string
+        recentFeedback:
+          type: array
+          items:
+            $ref: "#/components/schemas/FeedbackEntry"
+        ratingBreakdown:
+          type: object
+          properties:
+            courseContent:
+              type: number
+            teachingQuality:
+              type: number
+            labFacilities:
+              type: number
+            studyMaterial:
+              type: number
+            overall:
+              type: number
+          required: [courseContent, teachingQuality, labFacilities, studyMaterial, overall]
+      required:
+        - totalFeedback
+        - totalCourses
+        - totalFaculty
+        - totalDepartments
+        - avgOverallRating
+        - activeWindows
+        - feedbackThisMonth
+        - ratingBreakdown
+        - recentFeedback
+
+    DepartmentAnalytics:
+      type: object
+      properties:
+        departmentId:
+          type: integer
+        departmentName:
+          type: string
+        totalFeedback:
+          type: integer
+        avgRating:
+          type: number
+          format: float
+        avgCourseContent:
+          type: number
+          format: float
+        avgTeachingQuality:
+          type: number
+          format: float
+        avgLabFacilities:
+          type: number
+          format: float
+        avgStudyMaterial:
+          type: number
+          format: float
+        topCourses:
+          type: array
+          items:
+            $ref: "#/components/schemas/Course"
+        facultyPerformance:
+          type: array
+          items:
+            $ref: "#/components/schemas/Faculty"
+      required:
+        - departmentId
+        - departmentName
+        - totalFeedback
+        - avgRating
+        - avgCourseContent
+        - avgTeachingQuality
+        - avgLabFacilities
+        - avgStudyMaterial
+        - topCourses
+        - facultyPerformance
+
+    FacultyAnalytics:
+      type: object
+      properties:
+        facultyId:
+          type: integer
+        facultyName:
+          type: string
+        designation:
+          type: string
+        departmentName:
+          type: string
+        totalFeedback:
+          type: integer
+        avgOverall:
+          type: number
+          format: float
+        avgCourseContent:
+          type: number
+          format: float
+        avgTeachingQuality:
+          type: number
+          format: float
+        avgLabFacilities:
+          type: number
+          format: float
+        avgStudyMaterial:
+          type: number
+          format: float
+        courses:
+          type: array
+          items:
+            $ref: "#/components/schemas/Course"
+        recentComments:
+          type: array
+          items:
+            type: string
+      required:
+        - facultyId
+        - facultyName
+        - totalFeedback
+        - avgOverall
+        - avgCourseContent
+        - avgTeachingQuality
+        - avgLabFacilities
+        - avgStudyMaterial
+        - courses
+        - recentComments
+
+    TrendPoint:
+      type: object
+      properties:
+        academicYear:
+          type: string
+        semester:
+          type: integer
+        avgRating:
+          type: number
+          format: float
+        feedbackCount:
+          type: integer
+        label:
+          type: string
+      required: [academicYear, semester, avgRating, feedbackCount, label]
+
+    TopRated:
+      type: object
+      properties:
+        topFaculty:
+          type: array
+          items:
+            $ref: "#/components/schemas/Faculty"
+        topCourses:
+          type: array
+          items:
+            $ref: "#/components/schemas/Course"
+      required: [topFaculty, topCourses]

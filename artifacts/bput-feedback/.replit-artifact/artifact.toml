@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "BPUT Feedback Manager"
+version = "1.0.0"
+id = "artifacts/bput-feedback"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19149
+
+[services.development]
+run = "pnpm --filter @workspace/bput-feedback run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/bput-feedback", "run", "build" ]
+publicDir = "artifacts/bput-feedback/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19149"
+BASE_PATH = "/"

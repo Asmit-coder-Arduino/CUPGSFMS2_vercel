@@ -1,0 +1,65 @@
+import { Switch, Route, Router as WouterRouter } from "wouter";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import NotFound from "@/pages/not-found";
+
+// Pages
+import Home from "./pages/Home";
+import SubmitFeedback from "./pages/SubmitFeedback";
+import Dashboard from "./pages/Dashboard";
+import Analytics from "./pages/Analytics";
+import Departments from "./pages/Departments";
+import DepartmentDetails from "./pages/DepartmentDetails";
+import FacultyList from "./pages/FacultyList";
+import FacultyDetails from "./pages/FacultyDetails";
+import Courses from "./pages/Courses";
+import FeedbackList from "./pages/FeedbackList";
+import Windows from "./pages/Windows";
+
+import { AppLayout } from "./components/layout/AppLayout";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+function Router() {
+  return (
+    <AppLayout>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/submit-feedback" component={SubmitFeedback} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/analytics" component={Analytics} />
+        <Route path="/departments" component={Departments} />
+        <Route path="/departments/:id" component={DepartmentDetails} />
+        <Route path="/faculty" component={FacultyList} />
+        <Route path="/faculty/:id" component={FacultyDetails} />
+        <Route path="/courses" component={Courses} />
+        <Route path="/feedback" component={FeedbackList} />
+        <Route path="/windows" component={Windows} />
+        <Route component={NotFound} />
+      </Switch>
+    </AppLayout>
+  );
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+          <Router />
+        </WouterRouter>
+        <Toaster />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
