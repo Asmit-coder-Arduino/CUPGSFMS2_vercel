@@ -49,6 +49,18 @@ Tables: `departments`, `faculty`, `courses`, `feedback`, `feedback_windows`
 ### Reference ID Format
 `BPUT-{randomChars}` — generated on submission, returned to user
 
+## HOD Credentials (All 7 Branches)
+
+| Department | HOD Name | Employee ID | PIN |
+|---|---|---|---|
+| CSE | Dr. Srikanta Patnaik | `HOD/CSE/001` | `CSE@2025` |
+| ECE | Dr. Pradipta Kumar Sahu | `HOD/ECE/001` | `ECE@2025` |
+| EE | Dr. Rabi Narayan Mahapatra | `HOD/EE/001` | `EEE@2025` |
+| ME | Prof. Srihari Rath | `HOD/ME/001` | `MECH@2025` |
+| CE | Prof. Subhendu Sekhar Dey | `HOD/CE/001` | `CIVIL@2025` |
+| IT | Prof. Binod Kumar Pattanayak | `HOD/IT/001` | `IT@2025` |
+| ChE | Prof. Sarat Kumar Patel | `HOD/CHE/001` | `CHEM@2025` |
+
 ## Role-Based Access Control
 
 Three distinct roles managed via `RoleContext` (localStorage-persisted session):

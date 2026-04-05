@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useListCourses, useListFaculty, useSubmitFeedback, getListFeedbackQueryKey } from "@workspace/api-client-react";
+import { useListCourses, useListFaculty, useSubmitFeedback, useListDepartments, getListFeedbackQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRole } from "@/contexts/RoleContext";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +10,7 @@ function StarInput({ label, value, onChange }: { label: string; value: number; o
     <div className="flex items-center justify-between">
       <span className="text-sm font-medium">{label}</span>
       <div className="flex gap-1">
-        {[1,2,3,4,5].map((i) => (
+        {[1, 2, 3, 4, 5].map((i) => (
           <button
             key={i}
             type="button"
@@ -30,12 +30,16 @@ function StarInput({ label, value, onChange }: { label: string; value: number; o
 }
 
 export default function SubmitFeedback() {
-  const { data: courses, isLoading: coursesLoading } = useListCourses();
+  const { data: departments } = useListDepartments();
+  const { data: courses } = useListCourses();
   const { data: faculty } = useListFaculty();
   const submitFeedback = useSubmitFeedback();
   const queryClient = useQueryClient();
   const { role, student } = useRole();
 
+  const [selectedDeptId, setSelectedDeptId] = useState(
+    student?.departmentId ? String(student.departmentId) : ""
+  );
   const [courseId, setCourseId] = useState("");
   const [facultyId, setFacultyId] = useState("");
   const [feedbackType, setFeedbackType] = useState("semester_end");
@@ -47,13 +51,24 @@ export default function SubmitFeedback() {
   const [submitted, setSubmitted] = useState<string | null>(null);
   const [error, setError] = useState("");
 
+  const filteredCourses = selectedDeptId
+    ? courses?.filter(c => String((c as any).departmentId ?? "") === selectedDeptId)
+    : courses;
+
   const selectedCourse = courses?.find(c => c.id === parseInt(courseId));
   const relevantFaculty = selectedCourse?.facultyId
     ? faculty?.filter(f => f.id === selectedCourse.facultyId)
-    : faculty;
+    : (selectedDeptId ? faculty?.filter(f => String((f as any).departmentId ?? "") === selectedDeptId) : faculty);
+
+  const handleDeptChange = (val: string) => {
+    setSelectedDeptId(val);
+    setCourseId("");
+    setFacultyId("");
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!selectedDeptId) { setError("Please select your branch/department first."); return; }
     if (!courseId) { setError("Please select a course."); return; }
     if (Object.values(ratings).some(v => v === 0)) { setError("Please rate all parameters."); return; }
     setError("");
@@ -83,26 +98,31 @@ export default function SubmitFeedback() {
   };
 
   if (submitted) {
+    const deptName = departments?.find(d => String(d.id) === selectedDeptId)?.name;
     return (
       <div className="p-6 max-w-2xl">
         <div className="bg-card border rounded-lg p-8 text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-            <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
+            <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-xl font-bold">Feedback Submitted</h2>
-          <p className="text-muted-foreground">Thank you for your feedback. It will help improve academic quality.</p>
+          <h2 className="text-xl font-bold">Feedback Submitted Successfully</h2>
+          <p className="text-muted-foreground">Thank you! Your feedback has been recorded and will help improve academic quality at BPUT.</p>
+          {deptName && <p className="text-sm text-muted-foreground">Department: <strong>{deptName}</strong></p>}
           <div className="bg-muted rounded-md px-4 py-3 inline-block">
-            <p className="text-xs text-muted-foreground mb-1">Reference ID</p>
+            <p className="text-xs text-muted-foreground mb-1">Reference ID (save this)</p>
             <p className="font-mono font-bold text-primary">{submitted}</p>
           </div>
           <div>
             <button
-              onClick={() => { setSubmitted(null); setCourseId(""); setFacultyId(""); setComments(""); setRatings({ courseContent: 0, teachingQuality: 0, labFacilities: 0, studyMaterial: 0, overall: 0 }); }}
+              onClick={() => {
+                setSubmitted(null); setCourseId(""); setFacultyId(""); setComments("");
+                setRatings({ courseContent: 0, teachingQuality: 0, labFacilities: 0, studyMaterial: 0, overall: 0 });
+              }}
               className="text-sm text-primary underline underline-offset-2"
             >
-              Submit another feedback
+              Submit feedback for another course
             </button>
           </div>
         </div>
@@ -116,7 +136,7 @@ export default function SubmitFeedback() {
         <h1 className="text-2xl font-bold">Submit Feedback</h1>
         <p className="text-muted-foreground text-sm mt-1">Your feedback helps improve academic quality at BPUT</p>
         {role === "student" && student && (
-          <div className="mt-2 inline-flex items-center gap-2">
+          <div className="mt-2 flex items-center gap-2 flex-wrap">
             <Badge variant="secondary" className="text-xs">Roll No: {student.rollNumber}</Badge>
             <span className="text-xs text-muted-foreground">Your identity remains anonymous to faculty.</span>
           </div>
@@ -126,23 +146,45 @@ export default function SubmitFeedback() {
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md px-4 py-3">{error}</div>}
 
-        <div className="bg-card border rounded-lg p-5 space-y-4">
-          <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Course Information</h2>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-5 space-y-2">
+          <h2 className="font-semibold text-sm text-blue-800 flex items-center gap-2">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+            Step 1 — Select Your Branch / Department
+          </h2>
+          <p className="text-xs text-blue-600 mb-2">This filters courses to show only your department's courses.</p>
+          <select
+            className="w-full border border-blue-300 rounded-md px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium"
+            value={selectedDeptId}
+            onChange={e => handleDeptChange(e.target.value)}
+          >
+            <option value="">— Select your branch —</option>
+            {departments?.map(d => (
+              <option key={d.id} value={d.id}>{d.code} — {d.name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className={`bg-card border rounded-lg p-5 space-y-4 transition-opacity ${!selectedDeptId ? "opacity-50 pointer-events-none" : ""}`}>
+          <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Step 2 — Course & Details</h2>
           <div className="space-y-1">
             <label className="text-sm font-medium">Course <span className="text-destructive">*</span></label>
             <select
               className="w-full border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
               value={courseId}
               onChange={(e) => { setCourseId(e.target.value); setFacultyId(""); }}
+              disabled={!selectedDeptId}
             >
               <option value="">Select a course...</option>
-              {courses?.map(c => (
-                <option key={c.id} value={c.id}>{c.code} - {c.name} (Sem {c.semester})</option>
+              {filteredCourses?.map(c => (
+                <option key={c.id} value={c.id}>{c.code} — {c.name} (Sem {c.semester})</option>
               ))}
             </select>
+            {selectedDeptId && filteredCourses?.length === 0 && (
+              <p className="text-xs text-muted-foreground">No courses found for this department.</p>
+            )}
           </div>
           <div className="space-y-1">
-            <label className="text-sm font-medium">Faculty (optional)</label>
+            <label className="text-sm font-medium">Faculty</label>
             <select
               className="w-full border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
               value={facultyId}
@@ -168,7 +210,7 @@ export default function SubmitFeedback() {
               <label className="text-sm font-medium">Your Year</label>
               <select className="w-full border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary" value={studentYear} onChange={e => setStudentYear(e.target.value)}>
                 <option value="">Not specified</option>
-                {[1,2,3,4].map(y => <option key={y} value={y}>{y}{["st","nd","rd","th"][y-1]} Year</option>)}
+                {[1, 2, 3, 4].map(y => <option key={y} value={y}>{y}{["st", "nd", "rd", "th"][y - 1]} Year</option>)}
               </select>
             </div>
           </div>
@@ -184,21 +226,21 @@ export default function SubmitFeedback() {
           </div>
         </div>
 
-        <div className="bg-card border rounded-lg p-5 space-y-4">
-          <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Ratings <span className="text-destructive">*</span></h2>
-          <StarInput label="Course Content" value={ratings.courseContent} onChange={v => setRatings(r => ({...r, courseContent: v}))} />
-          <StarInput label="Teaching Quality" value={ratings.teachingQuality} onChange={v => setRatings(r => ({...r, teachingQuality: v}))} />
-          <StarInput label="Lab Facilities" value={ratings.labFacilities} onChange={v => setRatings(r => ({...r, labFacilities: v}))} />
-          <StarInput label="Study Material" value={ratings.studyMaterial} onChange={v => setRatings(r => ({...r, studyMaterial: v}))} />
+        <div className={`bg-card border rounded-lg p-5 space-y-4 transition-opacity ${!courseId ? "opacity-50 pointer-events-none" : ""}`}>
+          <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Step 3 — Ratings <span className="text-destructive">*</span></h2>
+          <StarInput label="Course Content" value={ratings.courseContent} onChange={v => setRatings(r => ({ ...r, courseContent: v }))} />
+          <StarInput label="Teaching Quality" value={ratings.teachingQuality} onChange={v => setRatings(r => ({ ...r, teachingQuality: v }))} />
+          <StarInput label="Lab Facilities" value={ratings.labFacilities} onChange={v => setRatings(r => ({ ...r, labFacilities: v }))} />
+          <StarInput label="Study Material" value={ratings.studyMaterial} onChange={v => setRatings(r => ({ ...r, studyMaterial: v }))} />
           <div className="border-t pt-4">
-            <StarInput label="Overall Satisfaction" value={ratings.overall} onChange={v => setRatings(r => ({...r, overall: v}))} />
+            <StarInput label="Overall Satisfaction" value={ratings.overall} onChange={v => setRatings(r => ({ ...r, overall: v }))} />
           </div>
         </div>
 
         <div className="bg-card border rounded-lg p-5 space-y-4">
-          <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Comments & Privacy</h2>
+          <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Step 4 — Comments & Privacy</h2>
           <div className="space-y-1">
-            <label className="text-sm font-medium">Comments / Suggestions</label>
+            <label className="text-sm font-medium">Comments / Suggestions (optional)</label>
             <textarea
               className="w-full border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
               rows={4}
@@ -218,8 +260,8 @@ export default function SubmitFeedback() {
 
         <button
           type="submit"
-          disabled={submitFeedback.isPending}
-          className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+          disabled={submitFeedback.isPending || !selectedDeptId || !courseId}
+          className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {submitFeedback.isPending ? "Submitting..." : "Submit Feedback"}
         </button>

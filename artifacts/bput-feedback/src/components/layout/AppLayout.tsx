@@ -2,7 +2,8 @@ import { Link, useLocation } from "wouter";
 import { ReactNode } from "react";
 import {
   BookOpen, LayoutDashboard, LineChart, Users, Building,
-  Calendar, List, MessageSquare, GraduationCap, LogOut, ShieldCheck, Briefcase
+  Calendar, List, MessageSquare, GraduationCap, LogOut,
+  ShieldCheck, Briefcase, Building2
 } from "lucide-react";
 import { useRole } from "@/contexts/RoleContext";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ type NavItem = { name: string; href: string; icon: React.ElementType };
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
-  const { role, faculty, student, logout } = useRole();
+  const { role, faculty, hod, student, logout } = useRole();
 
   const guestNav: NavItem[] = [
     { name: "Home", href: "/", icon: BookOpen },
@@ -28,6 +29,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
     { name: "My Dashboard", href: "/faculty-portal", icon: Briefcase },
   ];
 
+  const hodNav: NavItem[] = [
+    { name: "Home", href: "/", icon: BookOpen },
+    { name: "HOD Dashboard", href: "/hod-dashboard", icon: Building2 },
+  ];
+
   const adminNav: NavItem[] = [
     { name: "Home", href: "/", icon: BookOpen },
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -42,10 +48,30 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const navigation =
     role === "admin" ? adminNav :
     role === "faculty" ? facultyNav :
+    role === "hod" ? hodNav :
     role === "student" ? studentNav :
     guestNav;
 
   const renderSessionBadge = () => {
+    if (role === "hod" && hod) {
+      return (
+        <div className="px-4 py-3 border-b border-sidebar-border">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-bold">
+              {hod.code}
+            </div>
+            <div className="min-w-0">
+              <div className="text-xs font-semibold truncate">{hod.hodName}</div>
+              <div className="text-xs text-sidebar-foreground/60 truncate">HOD — {hod.name}</div>
+            </div>
+          </div>
+          <div className="text-xs text-sidebar-foreground/50 mb-2">{hod.hodEmployeeId}</div>
+          <Button size="sm" variant="ghost" className="w-full h-7 text-xs gap-1.5 text-sidebar-foreground/70 hover:text-sidebar-foreground" onClick={logout}>
+            <LogOut className="w-3.5 h-3.5" /> Sign Out
+          </Button>
+        </div>
+      );
+    }
     if (role === "faculty" && faculty) {
       return (
         <div className="px-4 py-3 border-b border-sidebar-border">
@@ -75,6 +101,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <div>
               <div className="text-xs font-semibold">Student</div>
               <div className="text-xs text-sidebar-foreground/60">{student.rollNumber}</div>
+              {student.departmentCode && <div className="text-xs text-sidebar-foreground/50">{student.departmentCode}</div>}
             </div>
           </div>
           <Button size="sm" variant="ghost" className="w-full h-7 text-xs gap-1.5 text-sidebar-foreground/70 hover:text-sidebar-foreground" onClick={logout}>

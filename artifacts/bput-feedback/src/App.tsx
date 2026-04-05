@@ -17,6 +17,7 @@ import Courses from "./pages/Courses";
 import FeedbackList from "./pages/FeedbackList";
 import Windows from "./pages/Windows";
 import FacultyPortal from "./pages/FacultyPortal";
+import HodDashboard from "./pages/HodDashboard";
 
 import { AppLayout } from "./components/layout/AppLayout";
 
@@ -36,6 +37,7 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/submit-feedback" component={SubmitFeedback} />
         <Route path="/faculty-portal" component={FacultyPortal} />
+        <Route path="/hod-dashboard" component={HodDashboard} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/analytics" component={Analytics} />
         <Route path="/departments" component={Departments} />
