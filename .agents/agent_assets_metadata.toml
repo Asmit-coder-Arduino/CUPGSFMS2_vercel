@@ -6,3 +6,9 @@ id = "DNYPbFPAJjS-si0mrrbw9"
 uri = "file://CUPGS_All_Credentials.xlsx"
 type = "table"
 title = "CUPGS All Role Credentials"
+
+[[outputs]]
+id = "ycUOxBz4X2IOsPDwFD8Ju"
+uri = "file://CUPGS_Credentials.xlsx"
+type = "table"
+title = "CUPGS_Credentials.xlsx — All Login Credentials"
