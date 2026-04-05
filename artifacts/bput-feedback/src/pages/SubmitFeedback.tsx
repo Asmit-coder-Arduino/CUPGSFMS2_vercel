@@ -109,7 +109,7 @@ export default function SubmitFeedback() {
           <div>
             <h2 className="text-xl font-bold mb-2">Student Login Required</h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Feedback can only be submitted by registered BPUT students. Please login with your Roll Number and Department to continue.
+              Feedback can only be submitted by registered CUPGS students. Please login with your Roll Number to continue.
             </p>
           </div>
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800 text-left space-y-1">
@@ -141,7 +141,7 @@ export default function SubmitFeedback() {
             </svg>
           </div>
           <h2 className="text-xl font-bold">Feedback Submitted Successfully</h2>
-          <p className="text-muted-foreground">Thank you! Your feedback has been recorded and will help improve academic quality at BPUT.</p>
+          <p className="text-muted-foreground">Thank you! Your feedback has been recorded and will help improve academic quality at CUPGS.</p>
           {deptName && <p className="text-sm text-muted-foreground">Department: <strong>{deptName}</strong></p>}
           <div className="bg-muted rounded-md px-4 py-3 inline-block">
             <p className="text-xs text-muted-foreground mb-1">Reference ID (save this)</p>
@@ -167,7 +167,7 @@ export default function SubmitFeedback() {
     <div className="p-6 max-w-2xl">
       <div className="mb-6">
         <h1 className="text-2xl font-bold">Submit Feedback</h1>
-        <p className="text-muted-foreground text-sm mt-1">Your feedback helps improve academic quality at BPUT</p>
+        <p className="text-muted-foreground text-sm mt-1">Your feedback helps improve academic quality at CUPGS</p>
         {role === "student" && student && (
           <div className="mt-2 flex items-center gap-2 flex-wrap">
             <Badge variant="secondary" className="text-xs">Roll No: {student.rollNumber}</Badge>

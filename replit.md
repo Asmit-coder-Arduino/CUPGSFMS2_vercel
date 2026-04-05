@@ -1,8 +1,8 @@
-# BPUT Feedback Manager
+# CUPGS Feedback Manager
 
 ## Project Overview
 
-Full-stack feedback management system for Biju Patnaik University of Technology (BPUT), Rourkela, Odisha. Handles student feedback submission (anonymous), faculty/course analytics, department-wise performance comparison, admin feedback window management, and role-based access control.
+Full-stack feedback management system for Centre for UG & PG Studies (CUPGS), the in-campus college of BPUT, Rourkela, Odisha. Handles student feedback submission (anonymous), faculty/course analytics, department-wise performance comparison, admin feedback window management, and role-based access control.
 
 ## Architecture
 
@@ -33,9 +33,12 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 
 Tables: `departments`, `faculty`, `courses`, `feedback`, `feedback_windows`
 
-### Current Seed Data (Production-quality)
+### Current Seed Data (Real CUPGS data)
 - **7 departments**: CSE (id=7), ECE (id=8), EE (id=9), ME (id=10), CE (id=11), IT (id=12), ChE (id=13)
-- **23 faculty**: IDs 9–31, authentic Odia-named faculty with real qualifications, employee IDs (`BPUT/DEPT/YEAR/NUM`), and 6-digit PINs
+  - CUPGS actively uses 5 departments: CSE, ECE, EE, ME, CE
+- **18 faculty**: Real CUPGS faculty scraped from bput.ac.in, employee IDs (`CUPGS/DEPT/NUM`), PIN `1234` for all
+  - HOD logins: PIN format `DEPT@2025` (e.g. `CSE@2025`), Employee ID `HOD/DEPT/001`
+- Real HODs: CSE=Dr. Debashreet Das, ECE=Dr. Prakash Kumar Panda, EE=Dr. Manas Ranjan Nayak, ME=Dr. Atal Bihari Harichandan, CE=Dr. Bibhuti Bhusan Mukharjee
 - **40 courses**: Realistic BPUT curriculum, Semesters 5 & 6, academic year 2024-25
 - **2 feedback windows**: 1 active (Even Sem End 2024-25), 1 closed
 - **126+ feedback entries**: Seeded across 12 courses

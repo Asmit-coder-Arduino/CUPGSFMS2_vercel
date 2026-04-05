@@ -115,9 +115,9 @@ export default function Home() {
           <BookOpen className="w-4 h-4" />
           Academic Year 2024–25 | Even Semester
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">BPUT Academic Feedback</h1>
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">CUPGS Academic Feedback</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Secure, structured feedback collection for Biju Patnaik University of Technology, Rourkela.
+          Secure, structured feedback collection for Centre for UG & PG Studies (CUPGS), BPUT Rourkela.
         </p>
         {role !== "guest" && (
           <div className="inline-flex items-center gap-3 mt-2 px-5 py-2.5 rounded-lg bg-green-50 border border-green-200 text-green-800 text-sm font-medium">
@@ -307,17 +307,17 @@ export default function Home() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Faculty Login</DialogTitle>
-            <DialogDescription>Use your BPUT Employee ID and 6-digit PIN to log in.</DialogDescription>
+            <DialogDescription>Use your CUPGS Employee ID and 4-digit PIN to log in.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 pt-2">
             <div className="space-y-1.5">
               <Label htmlFor="empId">Employee ID</Label>
-              <Input id="empId" placeholder="e.g. BPUT/CSE/2005/001" value={empId}
+              <Input id="empId" placeholder="e.g. CUPGS/CSE/001" value={empId}
                 onChange={e => { setEmpId(e.target.value); setError(""); }} />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="pin">6-Digit PIN</Label>
-              <Input id="pin" type="password" placeholder="••••••" maxLength={6} value={pin}
+              <Label htmlFor="pin">4-Digit PIN</Label>
+              <Input id="pin" type="password" placeholder="••••" maxLength={4} value={pin}
                 onChange={e => { setPin(e.target.value); setError(""); }}
                 onKeyDown={e => e.key === "Enter" && handleFacultyLogin()} />
             </div>

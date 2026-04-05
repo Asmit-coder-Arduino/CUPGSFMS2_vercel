@@ -100,7 +100,7 @@ function generatePDF(data: HodReportData) {
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("BPUT Academic Feedback Report", margin, 12);
+    doc.text("CUPGS Academic Feedback Report", margin, 12);
     doc.setFontSize(11);
     doc.setFont("helvetica", "normal");
     doc.text(`${department.name} (${department.code})`, margin, 20);
@@ -252,10 +252,10 @@ function generatePDF(data: HodReportData) {
     doc.setPage(i);
     doc.setFontSize(8);
     doc.setTextColor(150);
-    doc.text(`Page ${i} of ${pageCount} — BPUT Feedback Management System — Confidential`, pageW / 2, doc.internal.pageSize.getHeight() - 8, { align: "center" });
+    doc.text(`Page ${i} of ${pageCount} — CUPGS Feedback Management System — Confidential`, pageW / 2, doc.internal.pageSize.getHeight() - 8, { align: "center" });
   }
 
-  doc.save(`BPUT_${department.code}_Feedback_Report_${new Date().toISOString().slice(0, 10)}.pdf`);
+  doc.save(`CUPGS_${department.code}_Feedback_Report_${new Date().toISOString().slice(0, 10)}.pdf`);
 }
 
 export default function HodDashboard() {

@@ -136,7 +136,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-background flex flex-col md:flex-row">
       <div className="w-full md:w-64 bg-sidebar text-sidebar-foreground flex flex-col shadow-lg z-10 hidden md:flex">
         <div className="p-6 border-b border-sidebar-border">
-          <h1 className="text-xl font-bold tracking-tight">BPUT Feedback</h1>
+          <h1 className="text-xl font-bold tracking-tight">CUPGS Feedback</h1>
           <p className="text-xs text-sidebar-foreground/70 mt-1">Academic Feedback System</p>
         </div>
 
@@ -162,13 +162,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
           })}
         </nav>
         <div className="p-4 border-t border-sidebar-border text-xs text-sidebar-foreground/50 text-center">
-          Biju Patnaik University of Technology
+          Centre for UG & PG Studies (CUPGS), BPUT
         </div>
       </div>
 
       <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
         <div className="md:hidden bg-sidebar text-sidebar-foreground p-4 flex items-center justify-between">
-          <div className="font-bold">BPUT Feedback</div>
+          <div className="font-bold">CUPGS Feedback</div>
           <div className="flex gap-2 overflow-x-auto pb-1">
             {navigation.map(item => (
               <Link key={item.name} href={item.href} className="px-2 py-1 bg-sidebar-accent rounded text-xs whitespace-nowrap">
