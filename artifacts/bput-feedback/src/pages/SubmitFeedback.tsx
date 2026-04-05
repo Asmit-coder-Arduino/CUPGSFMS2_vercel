@@ -93,7 +93,11 @@ export default function SubmitFeedback() {
         setSubmitted(data.referenceId);
         queryClient.invalidateQueries({ queryKey: getListFeedbackQueryKey() });
       },
-      onError: () => setError("Failed to submit feedback. Please try again.")
+      onError: (err: unknown) => {
+        const msg = (err as { response?: { data?: { error?: string } }; message?: string })
+          ?.response?.data?.error ?? (err as { message?: string })?.message ?? "Failed to submit feedback. Please try again.";
+        setError(msg);
+      }
     });
   };
 
@@ -273,14 +277,21 @@ export default function SubmitFeedback() {
         <div className="bg-card border rounded-lg p-5 space-y-4">
           <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Step 4 — Comments & Privacy</h2>
           <div className="space-y-1">
-            <label className="text-sm font-medium">Comments / Suggestions (optional)</label>
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium">Comments / Suggestions (optional)</label>
+              <span className={`text-xs ${comments.length > 900 ? "text-amber-500 font-semibold" : "text-muted-foreground"}`}>
+                {comments.length}/1000
+              </span>
+            </div>
             <textarea
               className="w-full border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
               rows={4}
-              placeholder="Share any specific feedback, suggestions, or concerns..."
+              maxLength={1000}
+              placeholder="Share any specific feedback, suggestions, or concerns... (Please use respectful language)"
               value={comments}
               onChange={e => setComments(e.target.value)}
             />
+            <p className="text-xs text-muted-foreground">Feedback containing abusive or offensive language will be automatically rejected.</p>
           </div>
           <label className="flex items-center gap-3 cursor-pointer">
             <input type="checkbox" checked={isAnonymous} onChange={e => setIsAnonymous(e.target.checked)} className="w-4 h-4 rounded text-primary" />

@@ -7,6 +7,7 @@ import {
   SubmitFeedbackBody,
   GetFeedbackParams,
 } from "@workspace/api-zod";
+import { containsProfanity } from "../lib/profanityFilter";
 
 const router: IRouter = Router();
 
@@ -64,6 +65,23 @@ router.post("/feedback", async (req, res): Promise<void> => {
   const parsed = SubmitFeedbackBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
+    return;
+  }
+
+  // ── Profanity check on comments / suggestions ───────────────────────────
+  if (parsed.data.comments && parsed.data.comments.trim().length > 0) {
+    if (containsProfanity(parsed.data.comments)) {
+      res.status(422).json({
+        error: "Your feedback contains inappropriate language. Please keep your comments respectful and constructive.",
+        code: "PROFANITY_DETECTED",
+      });
+      return;
+    }
+  }
+
+  // ── Input length limits ──────────────────────────────────────────────────
+  if (parsed.data.comments && parsed.data.comments.length > 1000) {
+    res.status(422).json({ error: "Comments must not exceed 1000 characters." });
     return;
   }
 
