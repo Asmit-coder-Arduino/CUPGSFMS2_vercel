@@ -1,179 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="960" viewBox="0 0 1560 960" font-family="Arial,sans-serif">
-  <rect width="1560" height="960" fill="white"/>
-  <rect x="0" y="0" width="1560" height="42" fill="#1e3a8a"/>
-  <text x="780" y="26" text-anchor="middle" font-size="15" font-weight="800" fill="white">DFD Level 1 — Functional Decomposition · CUPGS Feedback System (Yourdon-Coad + Gane-Sarson Data Stores)</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1100" viewBox="0 0 1800 1100" font-family="Arial,Helvetica,sans-serif">
   <defs>
-    <marker id="a1" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto">
-      <polygon points="0 0,10 4,0 8" fill="#475569"/>
+    <linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0f4ff"/>
+      <stop offset="100%" stop-color="#e8eef8"/>
+    </linearGradient>
+    <marker id="arr1" markerWidth="12" markerHeight="9" refX="12" refY="4.5" orient="auto">
+      <polygon points="0 0,12 4.5,0 9" fill="#4b5563"/>
     </marker>
+    <filter id="sh1"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000022"/></filter>
   </defs>
+  <rect width="1800" height="1100" fill="url(#bg1)"/>
 
-  <!-- External Entities -->
-  <rect x="20" y="165" width="135" height="56" rx="4" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1.8"/>
-  <text x="87" y="188" text-anchor="middle" font-size="12" font-weight="700" fill="white">STUDENT</text>
-  <text x="87" y="204" text-anchor="middle" font-size="9" fill="#93c5fd">External Entity</text>
+  <!-- Header -->
+  <rect x="0" y="0" width="1800" height="56" fill="#1e3a8a"/>
+  <text x="900" y="22" text-anchor="middle" font-size="18" font-weight="800" fill="white">DFD Level 1 — Functional Decomposition</text>
+  <text x="900" y="42" text-anchor="middle" font-size="12" fill="#93c5fd">All Sub-Systems with Data Stores &amp; Flows · Yourdon-Coad + Gane-Sarson Notation</text>
+  <text x="1780" y="36" text-anchor="end" font-size="10" fill="#60a5fa">Page 2 of 4</text>
 
-  <rect x="20" y="500" width="135" height="56" rx="4" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1.8"/>
-  <text x="87" y="523" text-anchor="middle" font-size="12" font-weight="700" fill="white">FACULTY</text>
-  <text x="87" y="539" text-anchor="middle" font-size="9" fill="#93c5fd">External Entity</text>
+  <!-- ── External Entities (corners) ── -->
+  <rect x="20" y="170" width="150" height="60" rx="6" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2" filter="url(#sh1)"/>
+  <text x="95" y="196" text-anchor="middle" font-size="13" font-weight="700" fill="white">STUDENT</text>
+  <text x="95" y="213" text-anchor="middle" font-size="9" fill="#93c5fd">External Entity</text>
 
-  <rect x="1400" y="148" width="145" height="56" rx="4" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1.8"/>
-  <text x="1472" y="171" text-anchor="middle" font-size="12" font-weight="700" fill="white">HOD</text>
-  <text x="1472" y="187" text-anchor="middle" font-size="9" fill="#93c5fd">External Entity</text>
+  <rect x="20" y="530" width="150" height="60" rx="6" fill="#4c1d95" stroke="#7c3aed" stroke-width="2" filter="url(#sh1)"/>
+  <text x="95" y="556" text-anchor="middle" font-size="13" font-weight="700" fill="white">FACULTY</text>
+  <text x="95" y="573" text-anchor="middle" font-size="9" fill="#c4b5fd">External Entity</text>
 
-  <rect x="1400" y="496" width="145" height="56" rx="4" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1.8"/>
-  <text x="1472" y="519" text-anchor="middle" font-size="12" font-weight="700" fill="white">ADMIN</text>
-  <text x="1472" y="535" text-anchor="middle" font-size="9" fill="#93c5fd">External Entity</text>
+  <rect x="1630" y="170" width="150" height="60" rx="6" fill="#065f46" stroke="#059669" stroke-width="2" filter="url(#sh1)"/>
+  <text x="1705" y="196" text-anchor="middle" font-size="13" font-weight="700" fill="white">HOD</text>
+  <text x="1705" y="213" text-anchor="middle" font-size="9" fill="#6ee7b7">External Entity</text>
 
-  <!-- Processes -->
-  <circle cx="380" cy="205" r="70" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
-  <text x="380" y="193" text-anchor="middle" font-size="10" font-weight="800" fill="#86efac">1.0</text>
-  <text x="380" y="209" text-anchor="middle" font-size="12" font-weight="700" fill="white">Authentication</text>
+  <rect x="1630" y="530" width="150" height="60" rx="6" fill="#7c2d12" stroke="#ea580c" stroke-width="2" filter="url(#sh1)"/>
+  <text x="1705" y="556" text-anchor="middle" font-size="13" font-weight="700" fill="white">ADMIN</text>
+  <text x="1705" y="573" text-anchor="middle" font-size="9" fill="#fdba74">External Entity</text>
 
-  <circle cx="380" cy="510" r="70" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
-  <text x="380" y="497" text-anchor="middle" font-size="10" font-weight="800" fill="#86efac">2.0</text>
-  <text x="380" y="513" text-anchor="middle" font-size="12" font-weight="700" fill="white">Feedback</text>
-  <text x="380" y="529" text-anchor="middle" font-size="11" fill="#a7f3d0">Collection</text>
+  <!-- ── Processes ── -->
+  <!-- P1.0 Authentication (top-left) -->
+  <circle cx="420" cy="220" r="90" fill="#14532d" stroke="#16a34a" stroke-width="2.5" filter="url(#sh1)"/>
+  <text x="420" y="205" text-anchor="middle" font-size="11" font-weight="900" fill="#86efac">1.0</text>
+  <text x="420" y="224" text-anchor="middle" font-size="13" font-weight="700" fill="white">Authentication</text>
+  <text x="420" y="243" text-anchor="middle" font-size="11" fill="#bbf7d0">&amp; Session</text>
 
-  <circle cx="720" cy="205" r="70" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
-  <text x="720" y="193" text-anchor="middle" font-size="10" font-weight="800" fill="#86efac">3.0</text>
-  <text x="720" y="209" text-anchor="middle" font-size="12" font-weight="700" fill="white">Form Template</text>
-  <text x="720" y="225" text-anchor="middle" font-size="11" fill="#a7f3d0">Management</text>
+  <!-- P2.0 Feedback Collection (center-left) -->
+  <circle cx="420" cy="560" r="90" fill="#14532d" stroke="#16a34a" stroke-width="2.5" filter="url(#sh1)"/>
+  <text x="420" y="545" text-anchor="middle" font-size="11" font-weight="900" fill="#86efac">2.0</text>
+  <text x="420" y="564" text-anchor="middle" font-size="13" font-weight="700" fill="white">Feedback</text>
+  <text x="420" y="583" text-anchor="middle" font-size="11" fill="#bbf7d0">Collection</text>
 
-  <circle cx="720" cy="510" r="70" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
-  <text x="720" y="497" text-anchor="middle" font-size="10" font-weight="800" fill="#86efac">4.0</text>
-  <text x="720" y="513" text-anchor="middle" font-size="12" font-weight="700" fill="white">Analytics &amp;</text>
-  <text x="720" y="529" text-anchor="middle" font-size="11" fill="#a7f3d0">Reporting</text>
+  <!-- P3.0 Form Template (top-right) -->
+  <circle cx="1380" cy="220" r="90" fill="#14532d" stroke="#16a34a" stroke-width="2.5" filter="url(#sh1)"/>
+  <text x="1380" y="205" text-anchor="middle" font-size="11" font-weight="900" fill="#86efac">3.0</text>
+  <text x="1380" y="224" text-anchor="middle" font-size="13" font-weight="700" fill="white">Form Template</text>
+  <text x="1380" y="243" text-anchor="middle" font-size="11" fill="#bbf7d0">Management</text>
 
-  <circle cx="1080" cy="358" r="70" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
-  <text x="1080" y="345" text-anchor="middle" font-size="10" font-weight="800" fill="#86efac">5.0</text>
-  <text x="1080" y="362" text-anchor="middle" font-size="12" font-weight="700" fill="white">Institution</text>
-  <text x="1080" y="378" text-anchor="middle" font-size="11" fill="#a7f3d0">Management</text>
+  <!-- P4.0 Analytics (center-right) -->
+  <circle cx="1380" cy="560" r="90" fill="#14532d" stroke="#16a34a" stroke-width="2.5" filter="url(#sh1)"/>
+  <text x="1380" y="545" text-anchor="middle" font-size="11" font-weight="900" fill="#86efac">4.0</text>
+  <text x="1380" y="564" text-anchor="middle" font-size="13" font-weight="700" fill="white">Analytics &amp;</text>
+  <text x="1380" y="583" text-anchor="middle" font-size="11" fill="#bbf7d0">Reporting</text>
 
-  <!-- Data Stores (Gane-Sarson style) -->
-  <rect x="60" y="740" width="210" height="32" fill="#451a03" stroke="#92400e" stroke-width="1.5"/>
-  <rect x="60" y="740" width="34" height="32" fill="#92400e"/>
-  <text x="77" y="757" text-anchor="middle" font-size="10" font-weight="800" fill="white">D1</text>
-  <text x="60+34+88" y="757" text-anchor="middle" font-size="11" font-weight="600" fill="#fcd34d">Feedback</text>
+  <!-- P5.0 Institution Management (center) -->
+  <circle cx="900" cy="390" r="90" fill="#7c2d12" stroke="#ea580c" stroke-width="2.5" filter="url(#sh1)"/>
+  <text x="900" y="375" text-anchor="middle" font-size="11" font-weight="900" fill="#fed7aa">5.0</text>
+  <text x="900" y="394" text-anchor="middle" font-size="13" font-weight="700" fill="white">Institution</text>
+  <text x="900" y="413" text-anchor="middle" font-size="11" fill="#fdba74">Management</text>
 
-  <rect x="310" y="740" width="210" height="32" fill="#451a03" stroke="#92400e" stroke-width="1.5"/>
-  <rect x="310" y="740" width="34" height="32" fill="#92400e"/>
-  <text x="327" y="757" text-anchor="middle" font-size="10" font-weight="800" fill="white">D2</text>
-  <text x="310+34+88" y="757" text-anchor="middle" font-size="11" font-weight="600" fill="#fcd34d">Courses</text>
+  <!-- ── Data Stores (Gane-Sarson) ── -->
+  <!-- DS bottom row -->
+  <rect x="80" y="810" width="220" height="36" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="80" y="810" width="36" height="36" fill="#d97706"/>
+  <text x="98" y="832" text-anchor="middle" font-size="11" font-weight="800" fill="white">D1</text>
+  <text x="80+36+92" y="833" text-anchor="middle" font-size="12" font-weight="600" fill="#78350f">Feedback</text>
 
-  <rect x="560" y="740" width="210" height="32" fill="#451a03" stroke="#92400e" stroke-width="1.5"/>
-  <rect x="560" y="740" width="34" height="32" fill="#92400e"/>
-  <text x="577" y="757" text-anchor="middle" font-size="10" font-weight="800" fill="white">D3</text>
-  <text x="560+34+88" y="757" text-anchor="middle" font-size="11" font-weight="600" fill="#fcd34d">Faculty</text>
+  <rect x="340" y="810" width="220" height="36" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="340" y="810" width="36" height="36" fill="#d97706"/>
+  <text x="358" y="832" text-anchor="middle" font-size="11" font-weight="800" fill="white">D2</text>
+  <text x="340+36+92" y="833" text-anchor="middle" font-size="12" font-weight="600" fill="#78350f">Courses</text>
 
-  <rect x="810" y="740" width="220" height="32" fill="#451a03" stroke="#92400e" stroke-width="1.5"/>
-  <rect x="810" y="740" width="34" height="32" fill="#92400e"/>
-  <text x="827" y="757" text-anchor="middle" font-size="10" font-weight="800" fill="white">D4</text>
-  <text x="810+34+93" y="757" text-anchor="middle" font-size="11" font-weight="600" fill="#fcd34d">Departments</text>
+  <rect x="600" y="810" width="220" height="36" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="600" y="810" width="36" height="36" fill="#d97706"/>
+  <text x="618" y="832" text-anchor="middle" font-size="11" font-weight="800" fill="white">D3</text>
+  <text x="600+36+92" y="833" text-anchor="middle" font-size="12" font-weight="600" fill="#78350f">Faculty</text>
 
-  <rect x="580" y="80" width="235" height="32" fill="#451a03" stroke="#92400e" stroke-width="1.5"/>
-  <rect x="580" y="80" width="34" height="32" fill="#92400e"/>
-  <text x="597" y="97" text-anchor="middle" font-size="10" font-weight="800" fill="white">D5</text>
-  <text x="580+34+100" y="97" text-anchor="middle" font-size="11" font-weight="600" fill="#fcd34d">Form Templates</text>
+  <rect x="860" y="810" width="240" height="36" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="860" y="810" width="36" height="36" fill="#d97706"/>
+  <text x="878" y="832" text-anchor="middle" font-size="11" font-weight="800" fill="white">D4</text>
+  <text x="860+36+102" y="833" text-anchor="middle" font-size="12" font-weight="600" fill="#78350f">Departments</text>
 
-  <rect x="60" y="370" width="230" height="32" fill="#451a03" stroke="#92400e" stroke-width="1.5"/>
-  <rect x="60" y="370" width="34" height="32" fill="#92400e"/>
-  <text x="77" y="387" text-anchor="middle" font-size="10" font-weight="800" fill="white">D6</text>
-  <text x="60+34+98" y="387" text-anchor="middle" font-size="11" font-weight="600" fill="#fcd34d">Feedback Windows</text>
+  <rect x="1140" y="810" width="240" height="36" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="1140" y="810" width="36" height="36" fill="#d97706"/>
+  <text x="1158" y="832" text-anchor="middle" font-size="11" font-weight="800" fill="white">D5</text>
+  <text x="1140+36+102" y="833" text-anchor="middle" font-size="12" font-weight="600" fill="#78350f">Form Templates</text>
 
-  <!-- Flow Labels helper: using small rounded rect + text -->
-  <!-- Student <-> Auth -->
-  <line x1="155" y1="180" x2="310" y2="205" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="168" y="178" width="130" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="233" y="188" text-anchor="middle" font-size="9" fill="#1e293b">Login Credentials</text>
+  <rect x="860" y="130" width="240" height="36" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="860" y="130" width="36" height="36" fill="#d97706"/>
+  <text x="878" y="152" text-anchor="middle" font-size="11" font-weight="800" fill="white">D6</text>
+  <text x="860+36+102" y="153" text-anchor="middle" font-size="12" font-weight="600" fill="#78350f">Feedback Windows</text>
 
-  <line x1="312" y1="222" x2="155" y2="210" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="168" y="208" width="120" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="228" y="218" text-anchor="middle" font-size="9" fill="#1e293b">Auth Token</text>
+  <!-- ── Flow Lines ── (key ones with labels) -->
+  <!-- Student ↔ P1 Auth -->
+  <line x1="170" y1="195" x2="330" y2="213" stroke="#4b5563" stroke-width="1.8" marker-end="url(#arr1)"/>
+  <rect x="178" y="183" width="142" height="20" rx="3" fill="white" stroke="#93c5fd" stroke-width="0.8"/>
+  <text x="249" y="196" text-anchor="middle" font-size="10" fill="#1e3a8a">Login Credentials</text>
+  <line x1="332" y1="230" x2="170" y2="218" stroke="#4b5563" stroke-width="1.8" marker-end="url(#arr1)"/>
+  <rect x="178" y="218" width="130" height="20" rx="3" fill="white" stroke="#93c5fd" stroke-width="0.8"/>
+  <text x="243" y="231" text-anchor="middle" font-size="10" fill="#1e3a8a">Auth Token</text>
 
-  <!-- Student <-> Feedback -->
-  <line x1="155" y1="525" x2="310" y2="518" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="168" y="510" width="140" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="238" y="520" text-anchor="middle" font-size="9" fill="#1e293b">Feedback Submission</text>
+  <!-- Student ↔ P2 Feedback -->
+  <line x1="170" y1="548" x2="330" y2="548" stroke="#4b5563" stroke-width="1.8" marker-end="url(#arr1)"/>
+  <rect x="176" y="528" width="148" height="20" rx="3" fill="white" stroke="#93c5fd" stroke-width="0.8"/>
+  <text x="250" y="541" text-anchor="middle" font-size="10" fill="#1e3a8a">Feedback Submission</text>
+  <line x1="330" y1="567" x2="170" y2="575" stroke="#4b5563" stroke-width="1.8" marker-end="url(#arr1)"/>
+  <rect x="176" y="568" width="144" height="20" rx="3" fill="white" stroke="#93c5fd" stroke-width="0.8"/>
+  <text x="248" y="581" text-anchor="middle" font-size="10" fill="#1e3a8a">Ref ID / Confirm</text>
 
-  <line x1="312" y1="535" x2="155" y2="545" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="168" y="538" width="130" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="233" y="548" text-anchor="middle" font-size="9" fill="#1e293b">Ref ID / Confirm</text>
+  <!-- HOD ↔ P3 Form Template -->
+  <line x1="1630" y1="195" x2="1470" y2="207" stroke="#4b5563" stroke-width="1.8" marker-end="url(#arr1)"/>
+  <rect x="1480" y="182" width="144" height="20" rx="3" fill="white" stroke="#6ee7b7" stroke-width="0.8"/>
+  <text x="1552" y="195" text-anchor="middle" font-size="10" fill="#065f46">Form Config Request</text>
+  <line x1="1470" y1="222" x2="1630" y2="218" stroke="#4b5563" stroke-width="1.8" marker-end="url(#arr1)"/>
+  <rect x="1480" y="218" width="136" height="20" rx="3" fill="white" stroke="#6ee7b7" stroke-width="0.8"/>
+  <text x="1548" y="231" text-anchor="middle" font-size="10" fill="#065f46">Template Saved OK</text>
 
-  <!-- HOD <-> Form Template -->
-  <line x1="1400" y1="170" x2="790" y2="195" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="1060" y="168" width="156" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="1138" y="178" text-anchor="middle" font-size="9" fill="#1e293b">Form Config Request</text>
+  <!-- HOD ← P4 Analytics -->
+  <line x1="1470" y1="546" x2="1630" y2="546" stroke="#4b5563" stroke-width="1.8" marker-end="url(#arr1)"/>
+  <rect x="1478" y="526" width="146" height="20" rx="3" fill="white" stroke="#6ee7b7" stroke-width="0.8"/>
+  <text x="1551" y="539" text-anchor="middle" font-size="10" fill="#065f46">Analytics / PDF Report</text>
 
-  <line x1="790" y1="214" x2="1400" y2="193" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="1060" y="198" width="140" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="1130" y="208" text-anchor="middle" font-size="9" fill="#1e293b">Template Saved</text>
+  <!-- Admin ↔ P5 Institution -->
+  <line x1="1630" y1="548" x2="990" y2="420" stroke="#4b5563" stroke-width="1.8" marker-end="url(#arr1)"/>
+  <rect x="1310" y="476" width="136" height="20" rx="3" fill="white" stroke="#fdba74" stroke-width="0.8"/>
+  <text x="1378" y="489" text-anchor="middle" font-size="10" fill="#7c2d12">Mgmt Request</text>
+  <line x1="990" y1="430" x2="1630" y2="572" stroke="#4b5563" stroke-width="1.8" marker-end="url(#arr1)"/>
+  <rect x="1316" y="512" width="142" height="20" rx="3" fill="white" stroke="#fdba74" stroke-width="0.8"/>
+  <text x="1387" y="525" text-anchor="middle" font-size="10" fill="#7c2d12">System Dashboard</text>
 
-  <!-- HOD <- Analytics -->
-  <line x1="790" y1="496" x2="1400" y2="506" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="1060" y="482" width="160" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="1140" y="492" text-anchor="middle" font-size="9" fill="#1e293b">Dept Analytics / PDF</text>
+  <!-- P1 → P2 (auth validated) -->
+  <line x1="420" y1="310" x2="420" y2="470" stroke="#4b5563" stroke-width="1.8" marker-end="url(#arr1)"/>
+  <rect x="428" y="378" width="118" height="20" rx="3" fill="white" stroke="#86efac" stroke-width="0.8"/>
+  <text x="487" y="391" text-anchor="middle" font-size="10" fill="#14532d">Auth Validated</text>
 
-  <!-- Admin <-> Institution -->
-  <line x1="1400" y1="520" x2="1150" y2="398" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="1260" y="440" width="132" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="1326" y="450" text-anchor="middle" font-size="9" fill="#1e293b">Mgmt Request</text>
+  <!-- P2 ↔ D1 Feedback store -->
+  <line x1="380" y1="648" x2="240" y2="810" stroke="#4b5563" stroke-width="1.6" marker-end="url(#arr1)"/>
+  <rect x="272" y="718" width="108" height="20" rx="3" fill="white" stroke="#d97706" stroke-width="0.8"/>
+  <text x="326" y="731" text-anchor="middle" font-size="10" fill="#78350f">Store Feedback</text>
+  <line x1="220" y1="810" x2="360" y2="648" stroke="#4b5563" stroke-width="1.6" marker-end="url(#arr1)"/>
+  <rect x="166" y="720" width="118" height="20" rx="3" fill="white" stroke="#d97706" stroke-width="0.8"/>
+  <text x="225" y="733" text-anchor="middle" font-size="10" fill="#78350f">Feedback Records</text>
 
-  <line x1="1148" y1="406" x2="1400" y2="533" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="1258" y="462" width="148" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="1332" y="472" text-anchor="middle" font-size="9" fill="#1e293b">System Dashboard</text>
+  <!-- P2 → D2 Courses -->
+  <line x1="430" y1="648" x2="460" y2="810" stroke="#4b5563" stroke-width="1.6" marker-end="url(#arr1)"/>
+  <rect x="442" y="718" width="100" height="20" rx="3" fill="white" stroke="#d97706" stroke-width="0.8"/>
+  <text x="492" y="731" text-anchor="middle" font-size="10" fill="#78350f">Course Lookup</text>
 
-  <!-- Process Links -->
-  <line x1="380" y1="275" x2="380" y2="440" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="390" y="348" width="108" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="444" y="358" text-anchor="middle" font-size="9" fill="#1e293b">Auth Validated</text>
+  <!-- P3 ↔ D5 Form Templates -->
+  <line x1="1380" y1="310" x2="1260" y2="810" stroke="#4b5563" stroke-width="1.6" marker-end="url(#arr1)"/>
+  <rect x="1286" y="548" width="112" height="20" rx="3" fill="white" stroke="#d97706" stroke-width="0.8"/>
+  <text x="1342" y="561" text-anchor="middle" font-size="10" fill="#78350f">Save Template</text>
+  <line x1="1246" y1="810" x2="1366" y2="310" stroke="#4b5563" stroke-width="1.6" marker-end="url(#arr1)"/>
+  <rect x="1174" y="568" width="110" height="20" rx="3" fill="white" stroke="#d97706" stroke-width="0.8"/>
+  <text x="1229" y="581" text-anchor="middle" font-size="10" fill="#78350f">Load Template</text>
 
-  <line x1="450" y1="205" x2="650" y2="205" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="510" y="194" width="100" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="560" y="204" text-anchor="middle" font-size="9" fill="#1e293b">Auth Check</text>
+  <!-- P2 ↔ D6 Feedback Windows -->
+  <line x1="900" y1="166" x2="506" y2="490" stroke="#4b5563" stroke-width="1.6" stroke-dasharray="6,3" marker-end="url(#arr1)"/>
+  <rect x="680" y="288" width="136" height="20" rx="3" fill="white" stroke="#d97706" stroke-width="0.8"/>
+  <text x="748" y="301" text-anchor="middle" font-size="10" fill="#78350f">Window Status Check</text>
 
-  <line x1="450" y1="510" x2="650" y2="510" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="508" y="498" width="112" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="564" y="508" text-anchor="middle" font-size="9" fill="#1e293b">Form Applied</text>
+  <!-- P4 read D1 -->
+  <line x1="1280" y1="630" x2="300" y2="810" stroke="#4b5563" stroke-width="1.6" stroke-dasharray="6,3" marker-end="url(#arr1)"/>
+  <rect x="750" y="720" width="126" height="20" rx="3" fill="white" stroke="#d97706" stroke-width="0.8"/>
+  <text x="813" y="733" text-anchor="middle" font-size="10" fill="#78350f">Read All Feedback</text>
 
-  <line x1="720" y1="275" x2="720" y2="440" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="728" y="348" width="106" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="781" y="358" text-anchor="middle" font-size="9" fill="#1e293b">Form Config</text>
+  <!-- P5 → D4 Departments -->
+  <line x1="900" y1="480" x2="980" y2="810" stroke="#4b5563" stroke-width="1.6" marker-end="url(#arr1)"/>
+  <rect x="900" y="638" width="110" height="20" rx="3" fill="white" stroke="#d97706" stroke-width="0.8"/>
+  <text x="955" y="651" text-anchor="middle" font-size="10" fill="#78350f">Manage Depts</text>
 
-  <line x1="790" y1="510" x2="1010" y2="400" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="872" y="448" width="126" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="935" y="458" text-anchor="middle" font-size="9" fill="#1e293b">Aggregated Data</text>
-
-  <!-- Data Store flows -->
-  <line x1="350" y1="578" x2="218" y2="740" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="248" y="648" width="118" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="307" y="658" text-anchor="middle" font-size="9" fill="#1e293b">Store Feedback</text>
-
-  <line x1="216" y1="740" x2="348" y2="580" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="146" y="660" width="128" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="210" y="670" text-anchor="middle" font-size="9" fill="#1e293b">Feedback Records</text>
-
-  <line x1="720" y1="96" x2="720" y2="135" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="728" y="106" width="116" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="786" y="116" text-anchor="middle" font-size="9" fill="#1e293b">Save Template</text>
-
-  <line x1="736" y1="135" x2="736" y2="96" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="744" y="108" width="116" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="802" y="118" text-anchor="middle" font-size="9" fill="#1e293b">Load Template</text>
-
-  <line x1="362" y1="466" x2="290" y2="402" stroke="#475569" stroke-width="1.5" marker-end="url(#a1)"/>
-  <rect x="292" y="424" width="112" height="16" rx="3" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.6"/>
-  <text x="348" y="434" text-anchor="middle" font-size="9" fill="#1e293b">Check Window</text>
-
-  <!-- Legend -->
-  <rect x="20" y="910" width="460" height="40" rx="5" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="34" y="924" font-size="9" font-weight="700" fill="#1e293b">LEGEND</text>
-  <rect x="34" y="932" width="20" height="12" rx="2" fill="#1e3a8a"/>
-  <text x="60" y="942" font-size="9" fill="#1e293b">External Entity</text>
-  <circle cx="150" cy="938" r="8" fill="#14532d" stroke="#16a34a" stroke-width="1"/>
-  <text x="164" y="942" font-size="9" fill="#1e293b">Process (Circle)</text>
-  <rect x="256" y="932" width="22" height="12" fill="#92400e"/>
-  <rect x="278" y="932" width="62" height="12" fill="#451a03"/>
-  <text x="346" y="942" font-size="9" fill="#1e293b">Data Store (Gane-Sarson)</text>
+  <!-- ── Legend ── -->
+  <rect x="20" y="1020" width="560" height="66" rx="8" fill="white" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="36" y="1040" font-size="11" font-weight="700" fill="#1e293b">LEGEND</text>
+  <rect x="36" y="1048" width="20" height="14" rx="2" fill="#1e3a8a"/>
+  <text x="62" y="1060" font-size="10" fill="#374151">External Entity</text>
+  <circle cx="154" cy="1055" r="10" fill="#14532d" stroke="#16a34a" stroke-width="1"/>
+  <text x="170" y="1059" font-size="10" fill="#374151">Process (Circle)</text>
+  <rect x="268" y="1048" width="24" height="14" fill="#d97706"/>
+  <rect x="292" y="1048" width="70" height="14" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="370" y="1059" font-size="10" fill="#374151">Data Store (Gane-Sarson)</text>
+  <line x1="506" y1="1055" x2="546" y2="1055" stroke="#4b5563" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="554" y="1059" font-size="10" fill="#374151">DB Read</text>
 </svg>

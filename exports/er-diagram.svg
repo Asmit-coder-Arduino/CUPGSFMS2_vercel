@@ -1,170 +1,328 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="1000" viewBox="0 0 1560 1000" font-family="Arial,sans-serif">
-  <rect width="1560" height="1000" fill="#0f172a"/>
-  <rect x="0" y="0" width="1560" height="42" fill="#1e40af"/>
-  <text x="780" y="26" text-anchor="middle" font-size="15" font-weight="800" fill="white">ER Diagram — Entity Relationship Diagram · CUPGS Feedback System (Chen Notation)</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1100" viewBox="0 0 1800 1100" font-family="Arial,Helvetica,sans-serif">
   <defs>
-    <marker id="ae" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto">
-      <polygon points="0 0,10 4,0 8" fill="#64748b"/>
+    <linearGradient id="bg3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eef2f7"/>
+      <stop offset="100%" stop-color="#dde6f0"/>
+    </linearGradient>
+    <marker id="rel" markerWidth="10" markerHeight="8" refX="0" refY="4" orient="auto">
+      <line x1="0" y1="4" x2="10" y2="0" stroke="#64748b" stroke-width="1.2"/>
+      <line x1="0" y1="4" x2="10" y2="8" stroke="#64748b" stroke-width="1.2"/>
     </marker>
+    <filter id="sh3"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#00000025"/></filter>
   </defs>
+  <rect width="1800" height="1100" fill="url(#bg3)"/>
 
-  <!-- Entity: DEPARTMENTS -->
-  <rect x="580" y="90" width="220" height="148" rx="6" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2"/>
-  <rect x="580" y="90" width="220" height="32" rx="6" fill="#1d4ed8"/>
-  <rect x="580" y="116" width="220" height="6" fill="#1d4ed8"/>
-  <text x="690" y="110" text-anchor="middle" font-size="13" font-weight="800" fill="white">DEPARTMENTS</text>
-  <text x="592" y="136" font-size="9" fill="#fbbf24" font-weight="700">PK  id (serial)</text>
-  <line x1="584" y1="144" x2="796" y2="144" stroke="#3b82f6" stroke-width="0.5"/>
-  <text x="592" y="156" font-size="9" fill="#e2e8f0">code (varchar) UNIQUE</text>
-  <text x="592" y="168" font-size="9" fill="#e2e8f0">name (varchar)</text>
-  <text x="592" y="180" font-size="9" fill="#e2e8f0">hod_name (varchar)</text>
-  <text x="592" y="192" font-size="9" fill="#e2e8f0">hod_employee_id (varchar)</text>
-  <text x="592" y="204" font-size="9" fill="#e2e8f0">created_at (timestamptz)</text>
-  <text x="592" y="216" font-size="9" fill="#e2e8f0">updated_at (timestamptz)</text>
-  <text x="592" y="228" font-size="9" fill="#e2e8f0">updated_by (varchar)</text>
+  <!-- Header -->
+  <rect x="0" y="0" width="1800" height="56" fill="#1e3a5f"/>
+  <text x="900" y="22" text-anchor="middle" font-size="18" font-weight="800" fill="white">CUPGS FMS · ER Diagram · All Entities — Relationship Map</text>
+  <text x="900" y="42" text-anchor="middle" font-size="11" fill="#93c5fd">All 6 database entities with primary keys and foreign key links · Crow's Foot / Chen Notation</text>
+  <text x="1780" y="26" text-anchor="end" font-size="10" fill="#93c5fd">Page 4 of 4</text>
+  <text x="1780" y="42" text-anchor="end" font-size="10" fill="#93c5fd">26/3/2025</text>
 
-  <!-- Entity: COURSES -->
-  <rect x="1090" y="80" width="215" height="162" rx="6" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2"/>
-  <rect x="1090" y="80" width="215" height="32" rx="6" fill="#1d4ed8"/>
-  <rect x="1090" y="106" width="215" height="6" fill="#1d4ed8"/>
-  <text x="1198" y="100" text-anchor="middle" font-size="13" font-weight="800" fill="white">COURSES</text>
-  <text x="1102" y="126" font-size="9" fill="#fbbf24" font-weight="700">PK  id (serial)</text>
-  <line x1="1094" y1="134" x2="1301" y2="134" stroke="#3b82f6" stroke-width="0.5"/>
-  <text x="1102" y="146" font-size="9" fill="#e2e8f0">code (varchar) UNIQUE</text>
-  <text x="1102" y="158" font-size="9" fill="#e2e8f0">name (varchar)</text>
-  <text x="1102" y="170" font-size="9" fill="#e2e8f0">department_id (FK)</text>
-  <text x="1102" y="182" font-size="9" fill="#93c5fd">faculty_id (FK nullable)</text>
-  <text x="1102" y="194" font-size="9" fill="#e2e8f0">semester (int)</text>
-  <text x="1102" y="206" font-size="9" fill="#e2e8f0">academic_year (varchar)</text>
-  <text x="1102" y="218" font-size="9" fill="#e2e8f0">credits (int)</text>
-  <text x="1102" y="230" font-size="9" fill="#e2e8f0">is_active (boolean)</text>
+  <!-- ════════════════════════════════════════════
+       ENTITY HELPER MACRO — repeated per entity
+       Each entity: header (colored), PK row (orange bg), FK rows (green badge), attr rows
+       ════════════════════════════════════════════ -->
 
-  <!-- Entity: FACULTY -->
-  <rect x="56" y="80" width="220" height="148" rx="6" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2"/>
-  <rect x="56" y="80" width="220" height="32" rx="6" fill="#1d4ed8"/>
-  <rect x="56" y="106" width="220" height="6" fill="#1d4ed8"/>
-  <text x="166" y="100" text-anchor="middle" font-size="13" font-weight="800" fill="white">FACULTY</text>
-  <text x="68" y="126" font-size="9" fill="#fbbf24" font-weight="700">PK  id (serial)</text>
-  <line x1="60" y1="134" x2="272" y2="134" stroke="#3b82f6" stroke-width="0.5"/>
-  <text x="68" y="146" font-size="9" fill="#e2e8f0">employee_id (varchar) UNIQUE</text>
-  <text x="68" y="158" font-size="9" fill="#e2e8f0">name (varchar)</text>
-  <text x="68" y="170" font-size="9" fill="#e2e8f0">designation (varchar)</text>
-  <text x="68" y="182" font-size="9" fill="#e2e8f0">email (varchar)</text>
-  <text x="68" y="194" font-size="9" fill="#e2e8f0">phone (varchar)</text>
-  <text x="68" y="206" font-size="9" fill="#e2e8f0">department_id (FK)</text>
-  <text x="68" y="218" font-size="9" fill="#e2e8f0">is_active (boolean)</text>
+  <!-- ── ENTITY: DEPARTMENTS (center-top) ── -->
+  <!-- Header -->
+  <rect x="680" y="90" width="260" height="32" rx="5" fill="#1a7a6e"/>
+  <rect x="680" y="116" width="260" height="8" fill="#1a7a6e"/>
+  <text x="810" y="111" text-anchor="middle" font-size="13" font-weight="800" fill="white">departments</text>
+  <!-- Body -->
+  <rect x="680" y="122" width="260" height="196" rx="0" fill="white" stroke="#1a7a6e" stroke-width="1.5"/>
+  <rect x="680" y="90" width="260" height="32" rx="5" fill="#1a7a6e"/>
+  <!-- PK row -->
+  <rect x="680" y="122" width="260" height="24" fill="#fff7ed"/>
+  <rect x="684" y="126" width="28" height="16" rx="3" fill="#ea580c"/>
+  <text x="698" y="138" text-anchor="middle" font-size="9" font-weight="800" fill="white">PK</text>
+  <text x="720" y="138" font-size="10" fill="#1e293b">id</text>
+  <text x="930" y="138" text-anchor="end" font-size="9" fill="#6b7280">serial</text>
+  <!-- Fields -->
+  <line x1="682" y1="146" x2="938" y2="146" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="694" y="160" font-size="10" fill="#1e293b">code</text><text x="934" y="160" text-anchor="end" font-size="9" fill="#6b7280">varchar · UNIQUE</text>
+  <line x1="682" y1="165" x2="938" y2="165" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="694" y="180" font-size="10" fill="#1e293b">name</text><text x="934" y="180" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="682" y1="184" x2="938" y2="184" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="694" y="199" font-size="10" fill="#1e293b">hod_name</text><text x="934" y="199" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="682" y1="203" x2="938" y2="203" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="694" y="218" font-size="10" fill="#1e293b">hod_employee_id</text><text x="934" y="218" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="682" y1="222" x2="938" y2="222" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="694" y="237" font-size="10" fill="#1e293b">created_at</text><text x="934" y="237" text-anchor="end" font-size="9" fill="#6b7280">timestamptz</text>
+  <line x1="682" y1="241" x2="938" y2="241" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="694" y="256" font-size="10" fill="#1e293b">updated_at</text><text x="934" y="256" text-anchor="end" font-size="9" fill="#6b7280">timestamptz</text>
+  <line x1="682" y1="260" x2="938" y2="260" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="694" y="275" font-size="10" fill="#1e293b">updated_by</text><text x="934" y="275" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <!-- Entity border full -->
+  <rect x="680" y="90" width="260" height="228" rx="5" fill="none" stroke="#1a7a6e" stroke-width="2"/>
 
-  <!-- Entity: FEEDBACK -->
-  <rect x="510" y="560" width="260" height="280" rx="6" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2"/>
-  <rect x="510" y="560" width="260" height="32" rx="6" fill="#1d4ed8"/>
-  <rect x="510" y="586" width="260" height="6" fill="#1d4ed8"/>
-  <text x="640" y="580" text-anchor="middle" font-size="13" font-weight="800" fill="white">FEEDBACK</text>
-  <text x="522" y="604" font-size="9" fill="#fbbf24" font-weight="700">PK  id (serial)</text>
-  <line x1="514" y1="612" x2="766" y2="612" stroke="#3b82f6" stroke-width="0.5"/>
-  <text x="522" y="624" font-size="9" fill="#e2e8f0">reference_id UNIQUE</text>
-  <text x="522" y="636" font-size="9" fill="#e2e8f0">course_id (FK)</text>
-  <text x="522" y="648" font-size="9" fill="#93c5fd">faculty_id (FK nullable)</text>
-  <text x="522" y="660" font-size="9" fill="#e2e8f0">department_id (FK)</text>
-  <text x="522" y="672" font-size="9" fill="#e2e8f0">semester, academic_year</text>
-  <text x="522" y="684" font-size="9" fill="#e2e8f0">student_year, section</text>
-  <text x="522" y="696" font-size="9" fill="#e2e8f0">feedback_type</text>
-  <text x="522" y="708" font-size="9" fill="#e2e8f0">rating_teaching_quality (real)</text>
-  <text x="522" y="720" font-size="9" fill="#e2e8f0">rating_course_content (real)</text>
-  <text x="522" y="732" font-size="9" fill="#e2e8f0">rating_lab_facilities (real)</text>
-  <text x="522" y="744" font-size="9" fill="#e2e8f0">rating_study_material (real)</text>
-  <text x="522" y="756" font-size="9" fill="#e2e8f0">rating_overall (real)</text>
-  <text x="522" y="768" font-size="9" fill="#e2e8f0">comments (text)</text>
-  <text x="522" y="780" font-size="9" fill="#e2e8f0">is_anonymous (boolean)</text>
-  <text x="522" y="792" font-size="9" fill="#e2e8f0">custom_answers (jsonb)</text>
-  <text x="522" y="804" font-size="9" fill="#e2e8f0">submitted_at (timestamptz)</text>
+  <!-- ── ENTITY: FACULTY (left-top) ── -->
+  <rect x="70" y="90" width="260" height="32" rx="5" fill="#1a7a6e"/>
+  <rect x="70" y="116" width="260" height="8" fill="#1a7a6e"/>
+  <text x="200" y="111" text-anchor="middle" font-size="13" font-weight="800" fill="white">faculty</text>
+  <rect x="70" y="122" width="260" height="196" fill="white"/>
+  <!-- PK -->
+  <rect x="70" y="122" width="260" height="24" fill="#fff7ed"/>
+  <rect x="74" y="126" width="28" height="16" rx="3" fill="#ea580c"/>
+  <text x="88" y="138" text-anchor="middle" font-size="9" font-weight="800" fill="white">PK</text>
+  <text x="110" y="138" font-size="10" fill="#1e293b">id</text>
+  <text x="324" y="138" text-anchor="end" font-size="9" fill="#6b7280">serial</text>
+  <!-- FK: department_id -->
+  <line x1="72" y1="146" x2="328" y2="146" stroke="#e5e7eb" stroke-width="0.8"/>
+  <rect x="74" y="149" width="28" height="16" rx="3" fill="#0f766e"/>
+  <text x="88" y="161" text-anchor="middle" font-size="9" font-weight="800" fill="white">FK</text>
+  <text x="110" y="161" font-size="10" fill="#1e293b">department_id</text>
+  <text x="324" y="161" text-anchor="end" font-size="9" fill="#6b7280">↑ departments</text>
+  <!-- Other fields -->
+  <line x1="72" y1="165" x2="328" y2="165" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="84" y="180" font-size="10" fill="#1e293b">employee_id</text><text x="324" y="180" text-anchor="end" font-size="9" fill="#6b7280">varchar · UNIQUE</text>
+  <line x1="72" y1="184" x2="328" y2="184" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="84" y="199" font-size="10" fill="#1e293b">name</text><text x="324" y="199" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="72" y1="203" x2="328" y2="203" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="84" y="218" font-size="10" fill="#1e293b">designation</text><text x="324" y="218" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="72" y1="222" x2="328" y2="222" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="84" y="237" font-size="10" fill="#1e293b">email</text><text x="324" y="237" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="72" y1="241" x2="328" y2="241" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="84" y="256" font-size="10" fill="#1e293b">phone</text><text x="324" y="256" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="72" y1="260" x2="328" y2="260" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="84" y="275" font-size="10" fill="#1e293b">is_active</text><text x="324" y="275" text-anchor="end" font-size="9" fill="#6b7280">boolean</text>
+  <rect x="70" y="90" width="260" height="228" rx="5" fill="none" stroke="#1a7a6e" stroke-width="2"/>
 
-  <!-- Entity: FORM_TEMPLATES -->
-  <rect x="1090" y="558" width="240" height="100" rx="6" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2"/>
-  <rect x="1090" y="558" width="240" height="32" rx="6" fill="#1d4ed8"/>
-  <rect x="1090" y="584" width="240" height="6" fill="#1d4ed8"/>
-  <text x="1210" y="578" text-anchor="middle" font-size="13" font-weight="800" fill="white">FORM_TEMPLATES</text>
-  <text x="1102" y="602" font-size="9" fill="#fbbf24" font-weight="700">PK  id (serial)</text>
-  <line x1="1094" y1="610" x2="1326" y2="610" stroke="#3b82f6" stroke-width="0.5"/>
-  <text x="1102" y="622" font-size="9" fill="#e2e8f0">department_id (FK) UNIQUE</text>
-  <text x="1102" y="634" font-size="9" fill="#e2e8f0">fields (jsonb)</text>
-  <text x="1102" y="646" font-size="9" fill="#e2e8f0">created_at / updated_at</text>
+  <!-- ── ENTITY: COURSES (right-top) ── -->
+  <rect x="1290" y="90" width="280" height="32" rx="5" fill="#1a7a6e"/>
+  <rect x="1290" y="116" width="280" height="8" fill="#1a7a6e"/>
+  <text x="1430" y="111" text-anchor="middle" font-size="13" font-weight="800" fill="white">courses</text>
+  <rect x="1290" y="122" width="280" height="210" fill="white"/>
+  <!-- PK -->
+  <rect x="1290" y="122" width="280" height="24" fill="#fff7ed"/>
+  <rect x="1294" y="126" width="28" height="16" rx="3" fill="#ea580c"/>
+  <text x="1308" y="138" text-anchor="middle" font-size="9" font-weight="800" fill="white">PK</text>
+  <text x="1330" y="138" font-size="10" fill="#1e293b">id</text>
+  <text x="1564" y="138" text-anchor="end" font-size="9" fill="#6b7280">serial</text>
+  <!-- FK: department_id -->
+  <line x1="1292" y1="146" x2="1568" y2="146" stroke="#e5e7eb" stroke-width="0.8"/>
+  <rect x="1294" y="149" width="28" height="16" rx="3" fill="#0f766e"/>
+  <text x="1308" y="161" text-anchor="middle" font-size="9" font-weight="800" fill="white">FK</text>
+  <text x="1330" y="161" font-size="10" fill="#1e293b">department_id</text>
+  <text x="1564" y="161" text-anchor="end" font-size="9" fill="#6b7280">↑ departments</text>
+  <!-- FK: faculty_id optional -->
+  <line x1="1292" y1="165" x2="1568" y2="165" stroke="#e5e7eb" stroke-width="0.8"/>
+  <rect x="1294" y="168" width="28" height="16" rx="3" fill="#0f766e" opacity="0.6"/>
+  <text x="1308" y="180" text-anchor="middle" font-size="9" font-weight="700" fill="white">FK?</text>
+  <text x="1330" y="180" font-size="10" fill="#64748b">faculty_id</text>
+  <text x="1564" y="180" text-anchor="end" font-size="9" fill="#94a3b8">↑ faculty (nullable)</text>
+  <!-- Fields -->
+  <line x1="1292" y1="184" x2="1568" y2="184" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="1304" y="199" font-size="10" fill="#1e293b">code</text><text x="1564" y="199" text-anchor="end" font-size="9" fill="#6b7280">varchar · UNIQUE</text>
+  <line x1="1292" y1="203" x2="1568" y2="203" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="1304" y="218" font-size="10" fill="#1e293b">name</text><text x="1564" y="218" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="1292" y1="222" x2="1568" y2="222" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="1304" y="237" font-size="10" fill="#1e293b">semester</text><text x="1564" y="237" text-anchor="end" font-size="9" fill="#6b7280">int</text>
+  <line x1="1292" y1="241" x2="1568" y2="241" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="1304" y="256" font-size="10" fill="#1e293b">academic_year</text><text x="1564" y="256" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="1292" y1="260" x2="1568" y2="260" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="1304" y="275" font-size="10" fill="#1e293b">credits</text><text x="1564" y="275" text-anchor="end" font-size="9" fill="#6b7280">int</text>
+  <line x1="1292" y1="279" x2="1568" y2="279" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="1304" y="294" font-size="10" fill="#1e293b">is_active</text><text x="1564" y="294" text-anchor="end" font-size="9" fill="#6b7280">boolean</text>
+  <rect x="1290" y="90" width="280" height="244" rx="5" fill="none" stroke="#1a7a6e" stroke-width="2"/>
 
-  <!-- Entity: FEEDBACK_WINDOWS -->
-  <rect x="56" y="558" width="240" height="130" rx="6" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2"/>
-  <rect x="56" y="558" width="240" height="32" rx="6" fill="#1d4ed8"/>
-  <rect x="56" y="584" width="240" height="6" fill="#1d4ed8"/>
-  <text x="176" y="578" text-anchor="middle" font-size="13" font-weight="800" fill="white">FEEDBACK_WINDOWS</text>
-  <text x="68" y="602" font-size="9" fill="#fbbf24" font-weight="700">PK  id (serial)</text>
-  <line x1="60" y1="610" x2="292" y2="610" stroke="#3b82f6" stroke-width="0.5"/>
-  <text x="68" y="622" font-size="9" fill="#e2e8f0">title (varchar)</text>
-  <text x="68" y="634" font-size="9" fill="#93c5fd">department_id (FK nullable)</text>
-  <text x="68" y="646" font-size="9" fill="#e2e8f0">is_active (boolean)</text>
-  <text x="68" y="658" font-size="9" fill="#e2e8f0">start_date (timestamptz)</text>
-  <text x="68" y="670" font-size="9" fill="#e2e8f0">end_date (timestamptz)</text>
+  <!-- ── ENTITY: FEEDBACK (center, large, brown) ── -->
+  <rect x="650" y="510" width="340" height="32" rx="5" fill="#92400e"/>
+  <rect x="650" y="536" width="340" height="8" fill="#92400e"/>
+  <text x="820" y="531" text-anchor="middle" font-size="13" font-weight="800" fill="white">feedback</text>
+  <rect x="650" y="542" width="340" height="426" fill="white"/>
+  <!-- PK -->
+  <rect x="650" y="542" width="340" height="24" fill="#fff7ed"/>
+  <rect x="654" y="546" width="28" height="16" rx="3" fill="#ea580c"/>
+  <text x="668" y="558" text-anchor="middle" font-size="9" font-weight="800" fill="white">PK</text>
+  <text x="690" y="558" font-size="10" fill="#1e293b">id</text>
+  <text x="984" y="558" text-anchor="end" font-size="9" fill="#6b7280">serial</text>
+  <!-- reference_id -->
+  <line x1="652" y1="566" x2="988" y2="566" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="581" font-size="10" fill="#1e293b">reference_id</text><text x="984" y="581" text-anchor="end" font-size="9" fill="#6b7280">varchar · UNIQUE</text>
+  <!-- FK: course_id -->
+  <line x1="652" y1="585" x2="988" y2="585" stroke="#e5e7eb" stroke-width="0.8"/>
+  <rect x="654" y="588" width="28" height="16" rx="3" fill="#0f766e"/>
+  <text x="668" y="600" text-anchor="middle" font-size="9" font-weight="800" fill="white">FK</text>
+  <text x="690" y="600" font-size="10" fill="#1e293b">course_id</text><text x="984" y="600" text-anchor="end" font-size="9" fill="#6b7280">↑ courses</text>
+  <!-- FK: faculty_id optional -->
+  <line x1="652" y1="604" x2="988" y2="604" stroke="#e5e7eb" stroke-width="0.8"/>
+  <rect x="654" y="607" width="28" height="16" rx="3" fill="#0f766e" opacity="0.6"/>
+  <text x="668" y="619" text-anchor="middle" font-size="9" font-weight="700" fill="white">FK?</text>
+  <text x="690" y="619" font-size="10" fill="#64748b">faculty_id</text><text x="984" y="619" text-anchor="end" font-size="9" fill="#94a3b8">↑ faculty (nullable)</text>
+  <!-- FK: department_id -->
+  <line x1="652" y1="623" x2="988" y2="623" stroke="#e5e7eb" stroke-width="0.8"/>
+  <rect x="654" y="626" width="28" height="16" rx="3" fill="#0f766e"/>
+  <text x="668" y="638" text-anchor="middle" font-size="9" font-weight="800" fill="white">FK</text>
+  <text x="690" y="638" font-size="10" fill="#1e293b">department_id</text><text x="984" y="638" text-anchor="end" font-size="9" fill="#6b7280">↑ departments</text>
+  <!-- Rest of fields -->
+  <line x1="652" y1="642" x2="988" y2="642" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="657" font-size="10" fill="#1e293b">semester</text><text x="984" y="657" text-anchor="end" font-size="9" fill="#6b7280">int</text>
+  <line x1="652" y1="661" x2="988" y2="661" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="676" font-size="10" fill="#1e293b">academic_year</text><text x="984" y="676" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="652" y1="680" x2="988" y2="680" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="695" font-size="10" fill="#1e293b">student_year · section</text><text x="984" y="695" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="652" y1="699" x2="988" y2="699" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="714" font-size="10" fill="#1e293b">feedback_type</text><text x="984" y="714" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="652" y1="718" x2="988" y2="718" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="733" font-size="10" fill="#1e293b">rating_teaching_quality</text><text x="984" y="733" text-anchor="end" font-size="9" fill="#6b7280">real</text>
+  <line x1="652" y1="737" x2="988" y2="737" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="752" font-size="10" fill="#1e293b">rating_course_content</text><text x="984" y="752" text-anchor="end" font-size="9" fill="#6b7280">real</text>
+  <line x1="652" y1="756" x2="988" y2="756" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="771" font-size="10" fill="#1e293b">rating_lab_facilities</text><text x="984" y="771" text-anchor="end" font-size="9" fill="#6b7280">real</text>
+  <line x1="652" y1="775" x2="988" y2="775" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="790" font-size="10" fill="#1e293b">rating_overall</text><text x="984" y="790" text-anchor="end" font-size="9" fill="#6b7280">real</text>
+  <line x1="652" y1="794" x2="988" y2="794" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="809" font-size="10" fill="#1e293b">comments</text><text x="984" y="809" text-anchor="end" font-size="9" fill="#6b7280">text</text>
+  <line x1="652" y1="813" x2="988" y2="813" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="828" font-size="10" fill="#1e293b">is_anonymous</text><text x="984" y="828" text-anchor="end" font-size="9" fill="#6b7280">boolean</text>
+  <line x1="652" y1="832" x2="988" y2="832" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="847" font-size="10" fill="#1e293b">custom_answers</text><text x="984" y="847" text-anchor="end" font-size="9" fill="#6b7280">jsonb</text>
+  <line x1="652" y1="851" x2="988" y2="851" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="664" y="866" font-size="10" fill="#1e293b">submitted_at</text><text x="984" y="866" text-anchor="end" font-size="9" fill="#6b7280">timestamptz</text>
+  <rect x="650" y="510" width="340" height="458" rx="5" fill="none" stroke="#92400e" stroke-width="2.5"/>
 
-  <!-- Relationship Diamonds (Chen) -->
-  <!-- DEPARTMENTS OFFERS COURSES -->
-  <polygon points="880,164 940,164 910,184 880,164" fill="#7c3aed" stroke="#a78bfa" stroke-width="1.5"/>
-  <text x="910" y="178" text-anchor="middle" font-size="9" font-weight="700" fill="white">OFFERS</text>
-  <line x1="800" y1="164" x2="880" y2="170" stroke="#64748b" stroke-width="1.5"/>
-  <line x1="940" y1="170" x2="1090" y2="158" stroke="#64748b" stroke-width="1.5"/>
-  <text x="818" y="158" font-size="11" font-weight="800" fill="#f59e0b">1</text>
-  <text x="1072" y="152" font-size="11" font-weight="800" fill="#f59e0b">N</text>
+  <!-- ── ENTITY: FORM_TEMPLATES (right-bottom) ── -->
+  <rect x="1290" y="510" width="280" height="32" rx="5" fill="#6b21a8"/>
+  <rect x="1290" y="536" width="280" height="8" fill="#6b21a8"/>
+  <text x="1430" y="531" text-anchor="middle" font-size="13" font-weight="800" fill="white">form_templates</text>
+  <rect x="1290" y="542" width="280" height="130" fill="white"/>
+  <!-- PK -->
+  <rect x="1290" y="542" width="280" height="24" fill="#fff7ed"/>
+  <rect x="1294" y="546" width="28" height="16" rx="3" fill="#ea580c"/>
+  <text x="1308" y="558" text-anchor="middle" font-size="9" font-weight="800" fill="white">PK</text>
+  <text x="1330" y="558" font-size="10" fill="#1e293b">id</text>
+  <text x="1564" y="558" text-anchor="end" font-size="9" fill="#6b7280">serial</text>
+  <!-- FK: department_id -->
+  <line x1="1292" y1="566" x2="1568" y2="566" stroke="#e5e7eb" stroke-width="0.8"/>
+  <rect x="1294" y="569" width="28" height="16" rx="3" fill="#0f766e"/>
+  <text x="1308" y="581" text-anchor="middle" font-size="9" font-weight="800" fill="white">FK</text>
+  <text x="1330" y="581" font-size="10" fill="#1e293b">department_id</text>
+  <text x="1564" y="581" text-anchor="end" font-size="9" fill="#6b7280">↑ departments · UNIQUE</text>
+  <!-- fields -->
+  <line x1="1292" y1="585" x2="1568" y2="585" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="1304" y="600" font-size="10" fill="#1e293b">fields</text><text x="1564" y="600" text-anchor="end" font-size="9" fill="#6b7280">jsonb</text>
+  <line x1="1292" y1="604" x2="1568" y2="604" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="1304" y="619" font-size="10" fill="#1e293b">created_at</text><text x="1564" y="619" text-anchor="end" font-size="9" fill="#6b7280">timestamptz</text>
+  <line x1="1292" y1="623" x2="1568" y2="623" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="1304" y="638" font-size="10" fill="#1e293b">updated_at</text><text x="1564" y="638" text-anchor="end" font-size="9" fill="#6b7280">timestamptz</text>
+  <line x1="1292" y1="642" x2="1568" y2="642" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="1304" y="657" font-size="10" fill="#1e293b">updated_by</text><text x="1564" y="657" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <rect x="1290" y="510" width="280" height="162" rx="5" fill="none" stroke="#6b21a8" stroke-width="2"/>
 
-  <!-- DEPARTMENTS EMPLOYS FACULTY -->
-  <polygon points="316,164 376,164 346,184 316,164" fill="#7c3aed" stroke="#a78bfa" stroke-width="1.5"/>
-  <text x="346" y="178" text-anchor="middle" font-size="9" font-weight="700" fill="white">EMPLOYS</text>
-  <line x1="580" y1="164" x2="376" y2="170" stroke="#64748b" stroke-width="1.5"/>
-  <line x1="316" y1="170" x2="276" y2="154" stroke="#64748b" stroke-width="1.5"/>
-  <text x="564" y="158" font-size="11" font-weight="800" fill="#f59e0b">1</text>
-  <text x="278" y="148" font-size="11" font-weight="800" fill="#f59e0b">N</text>
+  <!-- ── ENTITY: FEEDBACK_WINDOWS (left-bottom) ── -->
+  <rect x="70" y="510" width="280" height="32" rx="5" fill="#6b21a8"/>
+  <rect x="70" y="536" width="280" height="8" fill="#6b21a8"/>
+  <text x="210" y="531" text-anchor="middle" font-size="13" font-weight="800" fill="white">feedback_windows</text>
+  <rect x="70" y="542" width="280" height="156" fill="white"/>
+  <!-- PK -->
+  <rect x="70" y="542" width="280" height="24" fill="#fff7ed"/>
+  <rect x="74" y="546" width="28" height="16" rx="3" fill="#ea580c"/>
+  <text x="88" y="558" text-anchor="middle" font-size="9" font-weight="800" fill="white">PK</text>
+  <text x="110" y="558" font-size="10" fill="#1e293b">id</text>
+  <text x="344" y="558" text-anchor="end" font-size="9" fill="#6b7280">serial</text>
+  <!-- FK: department_id optional -->
+  <line x1="72" y1="566" x2="348" y2="566" stroke="#e5e7eb" stroke-width="0.8"/>
+  <rect x="74" y="569" width="28" height="16" rx="3" fill="#0f766e" opacity="0.6"/>
+  <text x="88" y="581" text-anchor="middle" font-size="9" font-weight="700" fill="white">FK?</text>
+  <text x="110" y="581" font-size="10" fill="#64748b">department_id</text>
+  <text x="344" y="581" text-anchor="end" font-size="9" fill="#94a3b8">↑ departments (nullable)</text>
+  <!-- fields -->
+  <line x1="72" y1="585" x2="348" y2="585" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="84" y="600" font-size="10" fill="#1e293b">title</text><text x="344" y="600" text-anchor="end" font-size="9" fill="#6b7280">varchar</text>
+  <line x1="72" y1="604" x2="348" y2="604" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="84" y="619" font-size="10" fill="#1e293b">is_active</text><text x="344" y="619" text-anchor="end" font-size="9" fill="#6b7280">boolean</text>
+  <line x1="72" y1="623" x2="348" y2="623" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="84" y="638" font-size="10" fill="#1e293b">start_date</text><text x="344" y="638" text-anchor="end" font-size="9" fill="#6b7280">timestamptz</text>
+  <line x1="72" y1="642" x2="348" y2="642" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="84" y="657" font-size="10" fill="#1e293b">end_date</text><text x="344" y="657" text-anchor="end" font-size="9" fill="#6b7280">timestamptz</text>
+  <line x1="72" y1="661" x2="348" y2="661" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="84" y="676" font-size="10" fill="#1e293b">description</text><text x="344" y="676" text-anchor="end" font-size="9" fill="#6b7280">text</text>
+  <rect x="70" y="510" width="280" height="198" rx="5" fill="none" stroke="#6b21a8" stroke-width="2"/>
 
-  <!-- COURSES TEACHES via FEEDBACK -->
-  <polygon points="750,430 810,430 780,450 750,430" fill="#7c3aed" stroke="#a78bfa" stroke-width="1.5"/>
-  <text x="780" y="444" text-anchor="middle" font-size="9" font-weight="700" fill="white">RECORDED IN</text>
-  <line x1="1090" y1="220" x2="780" y2="430" stroke="#64748b" stroke-width="1.3"/>
-  <line x1="780" y1="450" x2="710" y2="560" stroke="#64748b" stroke-width="1.3"/>
-  <text x="1068" y="214" font-size="11" font-weight="800" fill="#f59e0b">1</text>
-  <text x="716" y="554" font-size="11" font-weight="800" fill="#f59e0b">N</text>
+  <!-- ════════════════════════════════════════════
+       RELATIONSHIP LINES (dashed) with 1:N badges
+       ════════════════════════════════════════════ -->
 
-  <!-- DEPT HAS FORM_TEMPLATE -->
-  <polygon points="1170,388 1230,388 1200,408 1170,388" fill="#7c3aed" stroke="#a78bfa" stroke-width="1.5"/>
-  <text x="1200" y="402" text-anchor="middle" font-size="9" font-weight="700" fill="white">HAS FORM</text>
-  <line x1="1200" y1="238" x2="1200" y2="388" stroke="#64748b" stroke-width="1.3"/>
-  <line x1="1200" y1="408" x2="1200" y2="558" stroke="#64748b" stroke-width="1.3"/>
-  <text x="1208" y="254" font-size="11" font-weight="800" fill="#f59e0b">1</text>
-  <text x="1208" y="554" font-size="11" font-weight="800" fill="#f59e0b">1</text>
+  <!-- DEPARTMENTS 1 → N FACULTY -->
+  <line x1="330" y1="200" x2="680" y2="200" stroke="#64748b" stroke-width="1.8" stroke-dasharray="8,4"/>
+  <!-- Cardinality badges -->
+  <rect x="332" y="188" width="30" height="20" rx="4" fill="#ea580c"/>
+  <text x="347" y="202" text-anchor="middle" font-size="10" font-weight="800" fill="white">1</text>
+  <rect x="650" y="188" width="30" height="20" rx="4" fill="#ea580c"/>
+  <text x="665" y="202" text-anchor="middle" font-size="10" font-weight="800" fill="white">N</text>
 
-  <!-- DEPT SCOPES FEEDBACK_WINDOWS -->
-  <polygon points="320,420 380,420 350,440 320,420" fill="#7c3aed" stroke="#a78bfa" stroke-width="1.5"/>
-  <text x="350" y="434" text-anchor="middle" font-size="9" font-weight="700" fill="white">SCOPES</text>
-  <line x1="580" y1="200" x2="350" y2="420" stroke="#64748b" stroke-width="1.3"/>
-  <line x1="350" y1="440" x2="230" y2="558" stroke="#64748b" stroke-width="1.3"/>
-  <text x="562" y="194" font-size="11" font-weight="800" fill="#f59e0b">1</text>
-  <text x="228" y="552" font-size="11" font-weight="800" fill="#f59e0b">0..N</text>
+  <!-- DEPARTMENTS 1 → N COURSES -->
+  <line x1="940" y1="200" x2="1290" y2="200" stroke="#64748b" stroke-width="1.8" stroke-dasharray="8,4"/>
+  <rect x="942" y="188" width="30" height="20" rx="4" fill="#ea580c"/>
+  <text x="957" y="202" text-anchor="middle" font-size="10" font-weight="800" fill="white">1</text>
+  <rect x="1260" y="188" width="30" height="20" rx="4" fill="#ea580c"/>
+  <text x="1275" y="202" text-anchor="middle" font-size="10" font-weight="800" fill="white">N</text>
 
-  <!-- FEEDBACK BELONGS TO DEPT -->
-  <polygon points="620,430 680,430 650,450 620,430" fill="#7c3aed" stroke="#a78bfa" stroke-width="1.5"/>
-  <text x="650" y="444" text-anchor="middle" font-size="9" font-weight="700" fill="white">BELONGS TO</text>
-  <line x1="690" y1="238" x2="650" y2="430" stroke="#64748b" stroke-width="1.3"/>
-  <line x1="650" y1="450" x2="640" y2="560" stroke="#64748b" stroke-width="1.3"/>
-  <text x="696" y="232" font-size="11" font-weight="800" fill="#f59e0b">1</text>
-  <text x="642" y="554" font-size="11" font-weight="800" fill="#f59e0b">N</text>
+  <!-- DEPARTMENTS 1 → N FEEDBACK (via vertical line from dept bottom → feedback top) -->
+  <line x1="810" y1="318" x2="810" y2="510" stroke="#64748b" stroke-width="1.8" stroke-dasharray="8,4"/>
+  <rect x="796" y="320" width="30" height="20" rx="4" fill="#ea580c"/>
+  <text x="811" y="334" text-anchor="middle" font-size="10" font-weight="800" fill="white">1</text>
+  <rect x="796" y="490" width="30" height="20" rx="4" fill="#ea580c"/>
+  <text x="811" y="504" text-anchor="middle" font-size="10" font-weight="800" fill="white">N</text>
 
-  <!-- Optional FK: Faculty -> Feedback (dashed) -->
-  <line x1="276" y1="192" x2="510" y2="650" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="8,4"/>
-  <text x="330" y="470" font-size="9" fill="#818cf8" transform="rotate(-58, 330, 470)">0..1 optional FK</text>
+  <!-- DEPARTMENTS 1 → 1 FORM_TEMPLATES -->
+  <line x1="940" y1="600" x2="1290" y2="600" stroke="#64748b" stroke-width="1.8" stroke-dasharray="8,4"/>
+  <rect x="942" y="588" width="30" height="20" rx="4" fill="#9333ea"/>
+  <text x="957" y="602" text-anchor="middle" font-size="10" font-weight="800" fill="white">1</text>
+  <rect x="1260" y="588" width="30" height="20" rx="4" fill="#9333ea"/>
+  <text x="1275" y="602" text-anchor="middle" font-size="10" font-weight="800" fill="white">1</text>
+  <line x1="940" y1="310" x2="1290" y2="540" stroke="#94a3b8" stroke-width="1.4" stroke-dasharray="5,4"/>
+  <!-- Connector: Dept right edge → through → form_templates -->
 
-  <!-- Legend -->
-  <rect x="20" y="948" width="540" height="42" rx="5" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-  <text x="36" y="963" font-size="10" font-weight="800" fill="white">LEGEND — Chen Notation</text>
-  <rect x="36" y="970" width="22" height="14" rx="3" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1"/>
-  <text x="64" y="981" font-size="9" fill="#e2e8f0">Entity</text>
-  <polygon points="130,984 156,977 130,970 104,977" fill="#7c3aed" stroke="#a78bfa" stroke-width="1"/>
-  <text x="162" y="981" font-size="9" fill="#e2e8f0">Relationship (Diamond)</text>
-  <text x="332" y="981" font-size="11" fill="#f59e0b" font-weight="700">1, N</text>
-  <text x="356" y="981" font-size="9" fill="#e2e8f0">= Cardinality</text>
-  <line x1="436" y1="977" x2="472" y2="977" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="6,3"/>
-  <text x="478" y="981" font-size="9" fill="#e2e8f0">Optional FK</text>
+  <!-- COURSES 1 → N FEEDBACK -->
+  <line x1="1430" y1="334" x2="1430" y2="460" stroke="#64748b" stroke-width="1.8" stroke-dasharray="8,4"/>
+  <line x1="1430" y1="460" x2="990" y2="580" stroke="#64748b" stroke-width="1.8" stroke-dasharray="8,4"/>
+  <rect x="1418" y="335" width="30" height="20" rx="4" fill="#ea580c"/>
+  <text x="1433" y="349" text-anchor="middle" font-size="10" font-weight="800" fill="white">1</text>
+  <rect x="970" y="572" width="30" height="20" rx="4" fill="#ea580c"/>
+  <text x="985" y="586" text-anchor="middle" font-size="10" font-weight="800" fill="white">N</text>
+
+  <!-- FACULTY 0..1 → N FEEDBACK (optional) -->
+  <line x1="200" y1="318" x2="200" y2="460" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="200" y1="460" x2="650" y2="612" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <rect x="186" y="320" width="32" height="20" rx="4" fill="#0f766e"/>
+  <text x="202" y="334" text-anchor="middle" font-size="9" font-weight="800" fill="white">0..1</text>
+  <rect x="624" y="604" width="28" height="20" rx="4" fill="#ea580c"/>
+  <text x="638" y="618" text-anchor="middle" font-size="10" font-weight="800" fill="white">N</text>
+
+  <!-- DEPARTMENTS 1 → 0..N FEEDBACK_WINDOWS -->
+  <line x1="680" y1="580" x2="350" y2="580" stroke="#64748b" stroke-width="1.8" stroke-dasharray="8,4"/>
+  <rect x="652" y="568" width="30" height="20" rx="4" fill="#ea580c"/>
+  <text x="667" y="582" text-anchor="middle" font-size="10" font-weight="800" fill="white">1</text>
+  <rect x="320" y="568" width="36" height="20" rx="4" fill="#ea580c"/>
+  <text x="338" y="582" text-anchor="middle" font-size="10" font-weight="800" fill="white">0..N</text>
+
+  <!-- ════════════════════════════════════════════
+       LEGEND (bottom-right, matching reference)
+       ════════════════════════════════════════════ -->
+  <rect x="1480" y="870" width="300" height="178" rx="8" fill="#1e3a5f" filter="url(#sh3)"/>
+  <text x="1630" y="892" text-anchor="middle" font-size="12" font-weight="800" fill="white">LEGEND</text>
+  <!-- PK badge -->
+  <rect x="1500" y="904" width="28" height="18" rx="3" fill="#ea580c"/>
+  <text x="1514" y="917" text-anchor="middle" font-size="9" font-weight="800" fill="white">PK</text>
+  <text x="1536" y="917" font-size="10" fill="#e2e8f0">Primary Key</text>
+  <!-- FK badge -->
+  <rect x="1500" y="928" width="28" height="18" rx="3" fill="#0f766e"/>
+  <text x="1514" y="941" text-anchor="middle" font-size="9" font-weight="800" fill="white">FK</text>
+  <text x="1536" y="941" font-size="10" fill="#e2e8f0">Foreign Key</text>
+  <!-- FK? badge -->
+  <rect x="1500" y="952" width="28" height="18" rx="3" fill="#0f766e" opacity="0.6"/>
+  <text x="1514" y="965" text-anchor="middle" font-size="9" font-weight="700" fill="white">FK?</text>
+  <text x="1536" y="965" font-size="10" fill="#e2e8f0">Optional FK (nullable)</text>
+  <!-- Relationship line -->
+  <line x1="1500" y1="985" x2="1548" y2="985" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="8,4"/>
+  <text x="1556" y="989" font-size="10" fill="#e2e8f0">Relationship (dashed)</text>
+  <!-- Cardinality badge -->
+  <rect x="1500" y="1000" width="28" height="18" rx="4" fill="#ea580c"/>
+  <text x="1514" y="1013" text-anchor="middle" font-size="10" font-weight="800" fill="white">1:N</text>
+  <text x="1536" y="1013" font-size="10" fill="#e2e8f0">Cardinality Badge</text>
+  <!-- Columns label -->
+  <text x="1500" y="1036" font-size="9" fill="#93c5fd">Columns: KEY | Field Name | Data Type</text>
 </svg>
