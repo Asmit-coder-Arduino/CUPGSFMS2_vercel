@@ -332,14 +332,30 @@ export default function SubmitFeedback() {
     : courses;
 
   const selectedCourse = courses?.find(c => c.id === parseInt(courseId));
-  const relevantFaculty = selectedCourse?.facultyId
-    ? faculty?.filter(f => f.id === selectedCourse.facultyId)
-    : (selectedDeptId ? faculty?.filter(f => String((f as any).departmentId ?? "") === selectedDeptId) : faculty);
+
+  // ── Faculty integrity logic ──────────────────────────────────────────────
+  // If the course has a pre-assigned faculty → lock to that faculty (auto-select, no dropdown).
+  // If the course has no assigned faculty → let student pick from dept faculty list.
+  const courseHasAssignedFaculty = !!selectedCourse?.facultyId;
+  const assignedFaculty = courseHasAssignedFaculty
+    ? faculty?.find(f => f.id === selectedCourse!.facultyId)
+    : null;
+  const deptFacultyList = selectedDeptId
+    ? faculty?.filter(f => String((f as any).departmentId ?? "") === selectedDeptId)
+    : faculty ?? [];
 
   const handleDeptChange = (val: string) => {
     setSelectedDeptId(val);
     setCourseId(""); setFacultyId("");
     setRatings(INITIAL_RATINGS); setCustomAnswers({});
+  };
+
+  // When course changes → auto-assign faculty if the course has one
+  const handleCourseChange = (val: string) => {
+    setCourseId(val);
+    const course = courses?.find(c => c.id === parseInt(val));
+    // Auto-lock to the course's assigned faculty; clear if none
+    setFacultyId(course?.facultyId ? String(course.facultyId) : "");
   };
 
   // Validate and submit
@@ -535,26 +551,69 @@ export default function SubmitFeedback() {
             <select
               className="w-full border rounded-xl px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
               value={courseId}
-              onChange={(e) => { setCourseId(e.target.value); setFacultyId(""); }}
+              onChange={(e) => handleCourseChange(e.target.value)}
               disabled={!selectedDeptId}
             >
               <option value="">Select a course...</option>
-              {filteredCourses?.map(c => <option key={c.id} value={c.id}>{c.code} — {c.name} (Sem {c.semester})</option>)}
+              {filteredCourses?.map(c => (
+                <option key={c.id} value={c.id}>
+                  {c.code} — {c.name} (Sem {c.semester}){(c as any).facultyId ? "" : " · Faculty TBA"}
+                </option>
+              ))}
             </select>
             {selectedDeptId && filteredCourses?.length === 0 && (
               <p className="text-xs text-muted-foreground">No courses found for this department.</p>
             )}
           </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Faculty</label>
-            <select
-              className="w-full border rounded-xl px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              value={facultyId}
-              onChange={(e) => setFacultyId(e.target.value)}
-            >
-              <option value="">Not specified</option>
-              {relevantFaculty?.map(f => <option key={f.id} value={f.id}>{f.name} ({f.designation})</option>)}
-            </select>
+
+          {/* Faculty — auto-locked when course has assigned faculty, dropdown otherwise */}
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium">Faculty</label>
+              {courseHasAssignedFaculty && (
+                <span className="text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                  Auto-assigned
+                </span>
+              )}
+            </div>
+
+            {courseHasAssignedFaculty && assignedFaculty ? (
+              /* Locked read-only faculty card */
+              <div className="flex items-center gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl">
+                <div className="w-9 h-9 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
+                  {assignedFaculty.name.split(" ").filter((w: string) => w.match(/^[A-Z]/)).slice(0, 2).map((w: string) => w[0]).join("")}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200 truncate">{assignedFaculty.name}</p>
+                  <p className="text-xs text-emerald-600 dark:text-emerald-400">{(assignedFaculty as any).designation} · {(assignedFaculty as any).employeeId}</p>
+                </div>
+                <svg className="w-5 h-5 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            ) : (
+              /* Optional faculty dropdown from dept list */
+              <div className="space-y-1">
+                <select
+                  className="w-full border rounded-xl px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  value={facultyId}
+                  onChange={(e) => setFacultyId(e.target.value)}
+                  disabled={!courseId}
+                >
+                  <option value="">— Not specified (optional) —</option>
+                  {deptFacultyList?.map(f => (
+                    <option key={f.id} value={f.id}>{f.name} · {(f as any).designation}</option>
+                  ))}
+                </select>
+                {courseId && (
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    No faculty assigned to this course yet. You may optionally select one.
+                  </p>
+                )}
+              </div>
+            )}
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
