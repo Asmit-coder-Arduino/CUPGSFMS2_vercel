@@ -3,35 +3,37 @@ import { ReactNode } from "react";
 import {
   BookOpen, LayoutDashboard, LineChart, Users, Building,
   Calendar, List, MessageSquare, GraduationCap, LogOut,
-  ShieldCheck, Briefcase, Building2, FileDown
+  ShieldCheck, Briefcase, Building2, FileDown, Home
 } from "lucide-react";
 import { useRole } from "@/contexts/RoleContext";
 import { Button } from "@/components/ui/button";
+import { usePlatform } from "@/hooks/usePlatform";
 
 type NavItem = { name: string; href: string; icon: React.ElementType };
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   const { role, faculty, hod, student, logout } = useRole();
+  const { isMobile, isIOS } = usePlatform();
 
   const guestNav: NavItem[] = [
     { name: "Home", href: "/", icon: BookOpen },
-    { name: "Submit Feedback", href: "/submit-feedback", icon: MessageSquare },
+    { name: "Feedback", href: "/submit-feedback", icon: MessageSquare },
   ];
 
   const studentNav: NavItem[] = [
     { name: "Home", href: "/", icon: BookOpen },
-    { name: "Submit Feedback", href: "/submit-feedback", icon: MessageSquare },
+    { name: "Feedback", href: "/submit-feedback", icon: MessageSquare },
   ];
 
   const facultyNav: NavItem[] = [
     { name: "Home", href: "/", icon: BookOpen },
-    { name: "My Dashboard", href: "/faculty-portal", icon: Briefcase },
+    { name: "Dashboard", href: "/faculty-portal", icon: Briefcase },
   ];
 
   const hodNav: NavItem[] = [
     { name: "Home", href: "/", icon: BookOpen },
-    { name: "HOD Dashboard", href: "/hod-dashboard", icon: Building2 },
+    { name: "Analytics", href: "/hod-dashboard", icon: Building2 },
   ];
 
   const adminNav: NavItem[] = [
@@ -52,6 +54,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
     role === "hod" ? hodNav :
     role === "student" ? studentNav :
     guestNav;
+
+  const mobileBottomNav = navigation.slice(0, 5);
 
   const renderSessionBadge = () => {
     if (role === "hod" && hod) {
@@ -134,10 +138,16 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row">
+      {/* Desktop Sidebar */}
       <div className="w-full md:w-64 bg-sidebar text-sidebar-foreground flex flex-col shadow-lg z-10 hidden md:flex">
         <div className="p-6 border-b border-sidebar-border">
-          <h1 className="text-xl font-bold tracking-tight">CUPGS Feedback</h1>
-          <p className="text-xs text-sidebar-foreground/70 mt-1">Academic Feedback System</p>
+          <div className="flex items-center gap-3 mb-1">
+            <img src="/icons/icon-72.png" alt="CUPGS" className="w-9 h-9 rounded-lg flex-shrink-0" />
+            <div>
+              <h1 className="text-lg font-bold tracking-tight leading-tight">CUPGS Feedback</h1>
+              <p className="text-xs text-sidebar-foreground/70">Academic Feedback System</p>
+            </div>
+          </div>
         </div>
 
         {renderSessionBadge()}
@@ -166,25 +176,73 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
-        <div className="md:hidden bg-sidebar text-sidebar-foreground p-4 flex items-center justify-between">
-          <div className="font-bold">CUPGS Feedback</div>
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {navigation.map(item => (
-              <Link key={item.name} href={item.href} className="px-2 py-1 bg-sidebar-accent rounded text-xs whitespace-nowrap">
-                {item.name}
-              </Link>
-            ))}
-            {role !== "guest" && (
-              <button onClick={logout} className="px-2 py-1 bg-sidebar-accent/60 rounded text-xs whitespace-nowrap flex items-center gap-1">
-                <LogOut className="w-3 h-3" /> Out
-              </button>
-            )}
-          </div>
+      {/* Mobile Top Bar */}
+      <div className="md:hidden bg-sidebar text-sidebar-foreground px-4 py-3 flex items-center justify-between shadow-sm z-20 sticky top-0">
+        <div className="flex items-center gap-2">
+          <img src="/icons/icon-72.png" alt="CUPGS" className="w-7 h-7 rounded-md" />
+          <div className="font-bold text-sm">CUPGS Feedback</div>
         </div>
+        <div className="flex items-center gap-2">
+          {role !== "guest" && (
+            <>
+              <div className="text-xs text-sidebar-foreground/60 truncate max-w-24">
+                {role === "faculty" && faculty?.name?.split(" ").pop()}
+                {role === "hod" && hod?.code}
+                {role === "student" && student?.rollNumber?.slice(-4)}
+                {role === "admin" && "Admin"}
+              </div>
+              <button
+                onClick={logout}
+                className="p-1.5 rounded-md bg-sidebar-accent/60 hover:bg-sidebar-accent transition-colors"
+                aria-label="Sign out"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className={`flex-1 flex flex-col overflow-hidden ${isMobile ? "pb-20" : ""}`}>
         <main className="flex-1 overflow-y-auto p-4 md:p-8">
           {children}
         </main>
+      </div>
+
+      {/* Mobile Bottom Navigation */}
+      <div
+        className={`md:hidden fixed bottom-0 left-0 right-0 bg-sidebar text-sidebar-foreground border-t border-sidebar-border z-20 ${isIOS ? "safe-area-bottom" : ""}`}
+        style={{ paddingBottom: isIOS ? "env(safe-area-inset-bottom, 0px)" : undefined }}
+      >
+        <div className="flex items-stretch">
+          {mobileBottomNav.map((item) => {
+            const isActive = location === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 min-h-[56px] transition-colors ${
+                  isActive
+                    ? "text-white bg-sidebar-accent"
+                    : "text-sidebar-foreground/60 hover:text-sidebar-foreground"
+                }`}
+              >
+                <item.icon className={`w-5 h-5 ${isActive ? "text-white" : ""}`} />
+                <span className="text-[10px] font-medium leading-tight">{item.name}</span>
+              </Link>
+            );
+          })}
+          {role !== "guest" && (
+            <button
+              onClick={logout}
+              className="flex-1 flex flex-col items-center justify-center py-2 gap-0.5 min-h-[56px] text-sidebar-foreground/50 hover:text-sidebar-foreground transition-colors"
+            >
+              <LogOut className="w-5 h-5" />
+              <span className="text-[10px] font-medium leading-tight">Sign Out</span>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

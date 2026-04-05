@@ -156,3 +156,100 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+/* ── Safe-area support for notched devices ── */
+.safe-area-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.safe-area-top    { padding-top:    env(safe-area-inset-top,    0px); }
+
+/* ── iOS Platform ── */
+.os-ios body {
+  -webkit-overflow-scrolling: touch;
+  font-size: 16px;
+}
+.os-ios button, .os-ios [role="button"] {
+  min-height: 44px;
+  cursor: pointer;
+}
+.os-ios input, .os-ios select, .os-ios textarea {
+  font-size: 16px !important; /* prevents iOS zoom on focus */
+}
+.os-ios .min-h-screen {
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+}
+.os-ios.is-standalone {
+  padding-top: env(safe-area-inset-top, 44px);
+}
+
+/* ── Android Platform ── */
+.os-android body {
+  font-size: 15px;
+}
+.os-android button, .os-android [role="button"] {
+  min-height: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.os-android .card, .os-android [class*="card"] {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.08);
+}
+.os-android .shadow-sm { box-shadow: 0 2px 6px rgba(0,0,0,0.10); }
+.os-android .shadow-lg { box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+
+/* ── Windows Platform ── */
+.os-windows body {
+  font-size: 14px;
+  font-family: 'Segoe UI', 'Inter', sans-serif;
+}
+.os-windows button {
+  min-height: 36px;
+  border-radius: 4px !important;
+}
+.os-windows input {
+  height: 34px;
+}
+
+/* ── macOS Platform ── */
+.os-mac body {
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.os-mac button {
+  letter-spacing: -0.01em;
+}
+
+/* ── Linux Platform ── (compact, information-dense) */
+.os-linux body {
+  font-size: 13px;
+  line-height: 1.4;
+}
+.os-linux .p-4 { padding: 0.75rem; }
+.os-linux .p-6 { padding: 1rem; }
+.os-linux .p-8 { padding: 1.25rem; }
+.os-linux .space-y-10 > * + * { margin-top: 1.5rem; }
+.os-linux .text-4xl { font-size: 1.75rem; }
+.os-linux .text-5xl { font-size: 2rem; }
+.os-linux button {
+  min-height: 32px;
+  font-size: 0.8125rem;
+}
+.os-linux .gap-5 { gap: 0.75rem; }
+
+/* ── Mobile universal ── */
+.is-mobile {
+  touch-action: manipulation;
+}
+.is-mobile .md\:p-8 {
+  padding: 1rem !important;
+}
+
+/* ── Standalone PWA (installed app) ── */
+.is-standalone {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.is-standalone.os-android {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+

@@ -3,6 +3,7 @@ import { useRole } from "@/contexts/RoleContext";
 import { useLocation } from "wouter";
 import { useListDepartments } from "@workspace/api-client-react";
 import { getApiUrl } from "@/lib/api";
+import { getCupgsLogoDataUrl } from "@/lib/pdfLogo";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {
@@ -27,7 +28,7 @@ function ratingColor(v: number | null): [number, number, number] {
   return [200, 0, 0];
 }
 
-function drawCoverPage(doc: jsPDF, title: string, subtitle: string, generatedAt: string) {
+function drawCoverPage(doc: jsPDF, title: string, subtitle: string, generatedAt: string, logoUrl?: string | null) {
   const pw = doc.internal.pageSize.getWidth();
   const ph = doc.internal.pageSize.getHeight();
 
@@ -36,6 +37,12 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, generatedAt:
 
   doc.setFillColor(...BPUT_BLUE);
   doc.rect(0, 70, pw, 15, "F");
+
+  if (logoUrl) {
+    try {
+      doc.addImage(logoUrl, "PNG", 12, 6, 18, 18);
+    } catch {}
+  }
 
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(9);
@@ -269,14 +276,15 @@ interface FullReport {
   generatedAt: string;
 }
 
-function generateOverallPDF(data: FullReport) {
+async function generateOverallPDF(data: FullReport) {
+  const logoUrl = await getCupgsLogoDataUrl();
   const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
   const pw = doc.internal.pageSize.getWidth();
   const ph = doc.internal.pageSize.getHeight();
   const M = 15;
   const contentW = pw - M * 2;
 
-  drawCoverPage(doc, "Institution Feedback Report", "Comprehensive Academic Feedback Analysis — All Departments", data.generatedAt);
+  drawCoverPage(doc, "Institution Feedback Report", "Comprehensive Academic Feedback Analysis — All Departments", data.generatedAt, logoUrl);
 
   doc.addPage();
   addPageHeader(doc, "Executive Summary");
@@ -496,7 +504,8 @@ interface HodReportData {
   generatedAt: string;
 }
 
-function generateDeptPDF(data: HodReportData, isAdmin = true) {
+async function generateDeptPDF(data: HodReportData, isAdmin = true) {
+  const logoUrl = await getCupgsLogoDataUrl();
   const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
   const pw = doc.internal.pageSize.getWidth();
   const ph = doc.internal.pageSize.getHeight();
@@ -508,7 +517,8 @@ function generateDeptPDF(data: HodReportData, isAdmin = true) {
     doc,
     `${department.code} — Department Report`,
     department.name,
-    generatedAt
+    generatedAt,
+    logoUrl
   );
 
   doc.addPage();
@@ -664,7 +674,7 @@ export default function AdminReports() {
       if (!res.ok) throw new Error("Failed to fetch report data");
       const data: FullReport = await res.json();
       setFullData(data);
-      generateOverallPDF(data);
+      await generateOverallPDF(data);
       setOverallState("done");
       setTimeout(() => setOverallState("idle"), 3000);
     } catch {
@@ -679,7 +689,7 @@ export default function AdminReports() {
       const res = await fetch(`${getApiUrl()}/api/departments/${deptId}/hod-report`);
       if (!res.ok) throw new Error("Failed");
       const data: HodReportData = await res.json();
-      generateDeptPDF(data, true);
+      await generateDeptPDF(data, true);
       setDeptStates(prev => ({ ...prev, [deptId]: "done" }));
       setTimeout(() => setDeptStates(prev => ({ ...prev, [deptId]: "idle" })), 3000);
     } catch {

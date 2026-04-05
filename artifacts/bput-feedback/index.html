@@ -2,9 +2,43 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1" />
     <title>CUPGS Feedback Manager</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0d4773" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- iOS PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="CUPGS Feedback" />
+    <link rel="apple-touch-icon" href="/icons/icon-152.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96.png" />
+    <link rel="apple-touch-icon" sizes="128x128" href="/icons/icon-128.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/icons/icon-96.png" sizes="96x96" />
+
+    <!-- SEO / OpenGraph -->
+    <meta name="description" content="Academic Feedback System for CUPGS (Centre for UG & PG Studies), BPUT Rourkela" />
+    <meta property="og:title" content="CUPGS Feedback Manager" />
+    <meta property="og:description" content="Submit and manage academic feedback — CUPGS, BPUT Rourkela" />
+    <meta property="og:image" content="/opengraph.jpg" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Windows Tiles -->
+    <meta name="msapplication-TileColor" content="#0d4773" />
+    <meta name="msapplication-TileImage" content="/icons/icon-144.png" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">

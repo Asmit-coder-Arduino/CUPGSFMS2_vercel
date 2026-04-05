@@ -21,6 +21,7 @@ import HodDashboard from "./pages/HodDashboard";
 import AdminReports from "./pages/AdminReports";
 
 import { AppLayout } from "./components/layout/AppLayout";
+import { InstallPrompt } from "./components/InstallPrompt";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -65,6 +66,7 @@ function App() {
           </WouterRouter>
         </RoleProvider>
         <Toaster />
+        <InstallPrompt />
       </TooltipProvider>
     </QueryClientProvider>
   );

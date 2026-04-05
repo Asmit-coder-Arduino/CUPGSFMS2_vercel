@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, BookOpen, MessageSquare, Users, TrendingUp, Download, FileText, Award, ChevronDown, ChevronUp } from "lucide-react";
 import { getApiUrl } from "@/lib/api";
+import { getCupgsLogoDataUrl } from "@/lib/pdfLogo";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -88,7 +89,8 @@ function RatingBar({ label, value }: { label: string; value: number | null }) {
   );
 }
 
-function generatePDF(data: HodReportData) {
+async function generatePDF(data: HodReportData) {
+  const logoUrl = await getCupgsLogoDataUrl();
   const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
   const { department, summary, facultyStats, courseStats, recentComments, generatedAt } = data;
   const pageW = doc.internal.pageSize.getWidth();
@@ -97,13 +99,16 @@ function generatePDF(data: HodReportData) {
   const addHeader = (title: string) => {
     doc.setFillColor(13, 71, 115);
     doc.rect(0, 0, pageW, 28, "F");
+    if (logoUrl) {
+      try { doc.addImage(logoUrl, "PNG", 4, 4, 20, 20); } catch {}
+    }
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("CUPGS Academic Feedback Report", margin, 12);
+    doc.text("CUPGS Academic Feedback Report", logoUrl ? margin + 14 : margin, 12);
     doc.setFontSize(11);
     doc.setFont("helvetica", "normal");
-    doc.text(`${department.name} (${department.code})`, margin, 20);
+    doc.text(`${department.name} (${department.code})`, logoUrl ? margin + 14 : margin, 20);
     doc.setFontSize(9);
     doc.text(`Generated: ${new Date(generatedAt).toLocaleString("en-IN")}`, pageW - margin, 20, { align: "right" });
     doc.setTextColor(0, 0, 0);
@@ -282,7 +287,7 @@ export default function HodDashboard() {
     if (!data) return;
     setPdfLoading(true);
     setTimeout(() => {
-      try { generatePDF(data); }
+      try { void generatePDF(data).catch(console.error); }
       catch (e) { console.error(e); }
       finally { setPdfLoading(false); }
     }, 100);
