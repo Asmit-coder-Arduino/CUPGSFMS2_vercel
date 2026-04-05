@@ -241,4 +241,112 @@ router.get("/departments/:id/hod-report", async (req, res): Promise<void> => {
   });
 });
 
+router.get("/admin/full-report", async (req, res): Promise<void> => {
+  const departments = await db.select().from(departmentsTable).orderBy(departmentsTable.code);
+
+  const allFeedback = await db
+    .select({
+      id: feedbackTable.id,
+      courseId: feedbackTable.courseId,
+      facultyId: feedbackTable.facultyId,
+      departmentId: feedbackTable.departmentId,
+      ratingCourseContent: feedbackTable.ratingCourseContent,
+      ratingTeachingQuality: feedbackTable.ratingTeachingQuality,
+      ratingLabFacilities: feedbackTable.ratingLabFacilities,
+      ratingStudyMaterial: feedbackTable.ratingStudyMaterial,
+      ratingOverall: feedbackTable.ratingOverall,
+      comments: feedbackTable.comments,
+      section: feedbackTable.section,
+      createdAt: feedbackTable.createdAt,
+    })
+    .from(feedbackTable)
+    .orderBy(desc(feedbackTable.createdAt));
+
+  const allFaculty = await db
+    .select({ id: facultyTable.id, name: facultyTable.name, designation: facultyTable.designation, employeeId: facultyTable.employeeId, departmentId: facultyTable.departmentId })
+    .from(facultyTable);
+
+  const allCourses = await db
+    .select({ id: coursesTable.id, code: coursesTable.code, name: coursesTable.name, semester: coursesTable.semester, departmentId: coursesTable.departmentId, facultyId: coursesTable.facultyId, academicYear: coursesTable.academicYear })
+    .from(coursesTable);
+
+  const calcAvg = (arr: number[]) => arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : null;
+
+  const deptStats = departments.map(dept => {
+    const fb = allFeedback.filter(f => f.departmentId === dept.id);
+    const faculty = allFaculty.filter(f => f.departmentId === dept.id);
+    const courses = allCourses.filter(c => c.departmentId === dept.id);
+
+    const facultyStats = faculty.map(f => {
+      const ffb = fb.filter(x => x.facultyId === f.id);
+      return {
+        ...f,
+        feedbackCount: ffb.length,
+        avgOverall: calcAvg(ffb.map(x => x.ratingOverall)),
+        avgCourseContent: calcAvg(ffb.map(x => x.ratingCourseContent)),
+        avgTeachingQuality: calcAvg(ffb.map(x => x.ratingTeachingQuality)),
+        avgLabFacilities: calcAvg(ffb.map(x => x.ratingLabFacilities)),
+        avgStudyMaterial: calcAvg(ffb.map(x => x.ratingStudyMaterial)),
+      };
+    }).sort((a, b) => (b.avgOverall ?? 0) - (a.avgOverall ?? 0));
+
+    return {
+      id: dept.id,
+      code: dept.code,
+      name: dept.name,
+      hodName: dept.hodName,
+      totalFaculty: faculty.length,
+      totalCourses: courses.length,
+      totalFeedback: fb.length,
+      avgOverall: calcAvg(fb.map(f => f.ratingOverall)),
+      avgCourseContent: calcAvg(fb.map(f => f.ratingCourseContent)),
+      avgTeachingQuality: calcAvg(fb.map(f => f.ratingTeachingQuality)),
+      avgLabFacilities: calcAvg(fb.map(f => f.ratingLabFacilities)),
+      avgStudyMaterial: calcAvg(fb.map(f => f.ratingStudyMaterial)),
+      facultyStats,
+    };
+  });
+
+  const allRatings = allFeedback;
+  const topFaculty = allFaculty
+    .map(f => {
+      const fb = allFeedback.filter(x => x.facultyId === f.id);
+      const dept = departments.find(d => d.id === f.departmentId);
+      return {
+        ...f,
+        departmentCode: dept?.code ?? "—",
+        feedbackCount: fb.length,
+        avgOverall: calcAvg(fb.map(x => x.ratingOverall)),
+      };
+    })
+    .filter(f => f.feedbackCount > 0)
+    .sort((a, b) => (b.avgOverall ?? 0) - (a.avgOverall ?? 0))
+    .slice(0, 10);
+
+  const recentComments = allFeedback.filter(f => f.comments).slice(0, 20).map(f => ({
+    comment: f.comments,
+    courseCode: allCourses.find(c => c.id === f.courseId)?.code ?? "—",
+    deptCode: departments.find(d => d.id === f.departmentId)?.code ?? "—",
+    createdAt: f.createdAt,
+  }));
+
+  res.json({
+    overall: {
+      totalFeedback: allFeedback.length,
+      totalDepartments: departments.length,
+      totalFaculty: allFaculty.length,
+      totalCourses: allCourses.length,
+      avgOverall: calcAvg(allRatings.map(f => f.ratingOverall)),
+      avgCourseContent: calcAvg(allRatings.map(f => f.ratingCourseContent)),
+      avgTeachingQuality: calcAvg(allRatings.map(f => f.ratingTeachingQuality)),
+      avgLabFacilities: calcAvg(allRatings.map(f => f.ratingLabFacilities)),
+      avgStudyMaterial: calcAvg(allRatings.map(f => f.ratingStudyMaterial)),
+    },
+    departments: deptStats,
+    topFaculty,
+    recentComments,
+    generatedAt: new Date().toISOString(),
+  });
+});
+
 export default router;

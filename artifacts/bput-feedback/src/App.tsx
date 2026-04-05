@@ -18,6 +18,7 @@ import FeedbackList from "./pages/FeedbackList";
 import Windows from "./pages/Windows";
 import FacultyPortal from "./pages/FacultyPortal";
 import HodDashboard from "./pages/HodDashboard";
+import AdminReports from "./pages/AdminReports";
 
 import { AppLayout } from "./components/layout/AppLayout";
 
@@ -47,6 +48,7 @@ function Router() {
         <Route path="/courses" component={Courses} />
         <Route path="/feedback" component={FeedbackList} />
         <Route path="/windows" component={Windows} />
+        <Route path="/reports" component={AdminReports} />
         <Route component={NotFound} />
       </Switch>
     </AppLayout>

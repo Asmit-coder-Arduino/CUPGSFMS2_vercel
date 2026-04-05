@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import {
   BookOpen, LayoutDashboard, LineChart, Users, Building,
   Calendar, List, MessageSquare, GraduationCap, LogOut,
-  ShieldCheck, Briefcase, Building2
+  ShieldCheck, Briefcase, Building2, FileDown
 } from "lucide-react";
 import { useRole } from "@/contexts/RoleContext";
 import { Button } from "@/components/ui/button";
@@ -38,6 +38,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
     { name: "Home", href: "/", icon: BookOpen },
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Analytics", href: "/analytics", icon: LineChart },
+    { name: "Reports", href: "/reports", icon: FileDown },
     { name: "Departments", href: "/departments", icon: Building },
     { name: "Faculty", href: "/faculty", icon: Users },
     { name: "Courses", href: "/courses", icon: List },
