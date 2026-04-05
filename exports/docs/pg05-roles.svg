@@ -9,92 +9,77 @@
   
   <rect x="40" y="88" width="1160" height="36" rx="4" fill="#1e3a8a"/>
   <text x="56" y="112" font-size="16" font-weight="800" fill="white">4.1. Role Overview</text>
-  <!-- 4 role summary cards -->
-  <rect x="40" y="128" width="280" height="80" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/>
+  <rect x="40" y="128" width="280" height="70" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/>
     <rect x="40" y="128" width="280" height="8" rx="4" fill="#1e3a8a"/>
-    <text x="180" y="162" text-anchor="middle" font-size="22"></text>
-    <text x="180" y="186" text-anchor="middle" font-size="16" font-weight="800" fill="#1e3a8a">STUDENT</text><rect x="342" y="128" width="280" height="80" rx="8" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="2"/>
+    <text x="180" y="178" text-anchor="middle" font-size="15" font-weight="800" fill="#1e3a8a">STUDENT</text><rect x="342" y="128" width="280" height="70" rx="8" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="2"/>
     <rect x="342" y="128" width="280" height="8" rx="4" fill="#4c1d95"/>
-    <text x="482" y="162" text-anchor="middle" font-size="22"></text>
-    <text x="482" y="186" text-anchor="middle" font-size="16" font-weight="800" fill="#4c1d95">FACULTY</text><rect x="644" y="128" width="280" height="80" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2"/>
+    <text x="482" y="178" text-anchor="middle" font-size="15" font-weight="800" fill="#4c1d95">FACULTY</text><rect x="644" y="128" width="280" height="70" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2"/>
     <rect x="644" y="128" width="280" height="8" rx="4" fill="#065f46"/>
-    <text x="784" y="162" text-anchor="middle" font-size="22"></text>
-    <text x="784" y="186" text-anchor="middle" font-size="16" font-weight="800" fill="#065f46">HOD</text><rect x="946" y="128" width="280" height="80" rx="8" fill="#fef2f2" stroke="#fecaca" stroke-width="2"/>
+    <text x="784" y="178" text-anchor="middle" font-size="15" font-weight="800" fill="#065f46">HOD (Head of Department)</text><rect x="946" y="128" width="280" height="70" rx="8" fill="#fef2f2" stroke="#fecaca" stroke-width="2"/>
     <rect x="946" y="128" width="280" height="8" rx="4" fill="#7c2d12"/>
-    <text x="1086" y="162" text-anchor="middle" font-size="22"></text>
-    <text x="1086" y="186" text-anchor="middle" font-size="16" font-weight="800" fill="#7c2d12">ADMIN</text>
-
-  <!-- Detailed role cards -->
-  
-    <rect x="40" y="226" width="1160" height="356" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
-    <rect x="40" y="226" width="1160" height="44" rx="8" fill="#1e3a8a"/>
-    <text x="60" y="254" font-size="20"></text>
-    <text x="90" y="254" font-size="17" font-weight="800" fill="white">STUDENT ROLE</text>
-    <text x="1180" y="254" text-anchor="end" font-size="12" fill="white">Login: CUPGS/DEPT/NNN  |  PIN: 4-digit PIN (default: 1234)</text>
-
-    <text x="60" y="294" font-size="13" font-weight="700" fill="#1e3a8a">[OK] CAN DO:</text>
-    <circle cx="68" cy="306" r="4" fill="#1e3a8a"/><text x="80" y="310" font-size="12" fill="#0f172a">Submit anonymous feedback for enrolled courses</text><circle cx="68" cy="338" r="4" fill="#1e3a8a"/><text x="80" y="342" font-size="12" fill="#0f172a">Drag-based half-star rating (0.5 to 5.0)</text><circle cx="68" cy="370" r="4" fill="#1e3a8a"/><text x="80" y="374" font-size="12" fill="#0f172a">Add text comments per category</text><circle cx="68" cy="402" r="4" fill="#1e3a8a"/><text x="80" y="406" font-size="12" fill="#0f172a">Answer HOD's custom questions</text><circle cx="68" cy="434" r="4" fill="#1e3a8a"/><text x="80" y="438" font-size="12" fill="#0f172a">Get unique Reference ID after submit</text>
-    <line x1="630" y1="276" x2="630" y2="566" stroke="#bfdbfe" stroke-width="1"/>
-    <text x="660" y="294" font-size="13" font-weight="700" fill="#dc2626">[NO] CANNOT DO:</text>
-    <circle cx="668" cy="306" r="4" fill="#dc2626"/><text x="680" y="310" font-size="12" fill="#0f172a">See other students' feedback</text><circle cx="668" cy="338" r="4" fill="#dc2626"/><text x="680" y="342" font-size="12" fill="#0f172a">See faculty names in analytics</text><circle cx="668" cy="370" r="4" fill="#dc2626"/><text x="680" y="374" font-size="12" fill="#0f172a">Access HOD or Admin panels</text><circle cx="668" cy="402" r="4" fill="#dc2626"/><text x="680" y="406" font-size="12" fill="#0f172a">Submit feedback outside active windows</text>
-    <rect x="40" y="598" width="1160" height="356" rx="8" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="1.5"/>
-    <rect x="40" y="598" width="1160" height="44" rx="8" fill="#4c1d95"/>
-    <text x="60" y="626" font-size="20"></text>
-    <text x="90" y="626" font-size="17" font-weight="800" fill="white">FACULTY ROLE</text>
-    <text x="1180" y="626" text-anchor="end" font-size="12" fill="white">Login: CUPGS/DEPT/NNN (same format)  |  PIN: 4-digit PIN</text>
-
-    <text x="60" y="666" font-size="13" font-weight="700" fill="#4c1d95">[OK] CAN DO:</text>
-    <circle cx="68" cy="678" r="4" fill="#4c1d95"/><text x="80" y="682" font-size="12" fill="#0f172a">View own course feedback analytics</text><circle cx="68" cy="710" r="4" fill="#4c1d95"/><text x="80" y="714" font-size="12" fill="#0f172a">See average ratings per category</text><circle cx="68" cy="742" r="4" fill="#4c1d95"/><text x="80" y="746" font-size="12" fill="#0f172a">See anonymous student comments</text><circle cx="68" cy="774" r="4" fill="#4c1d95"/><text x="80" y="778" font-size="12" fill="#0f172a">Compare own performance across semesters</text><circle cx="68" cy="806" r="4" fill="#4c1d95"/><text x="80" y="810" font-size="12" fill="#0f172a">View rating distribution charts</text>
-    <line x1="630" y1="648" x2="630" y2="938" stroke="#e9d5ff" stroke-width="1"/>
-    <text x="660" y="666" font-size="13" font-weight="700" fill="#dc2626">[NO] CANNOT DO:</text>
-    <circle cx="668" cy="678" r="4" fill="#dc2626"/><text x="680" y="682" font-size="12" fill="#0f172a">Submit feedback</text><circle cx="668" cy="710" r="4" fill="#dc2626"/><text x="680" y="714" font-size="12" fill="#0f172a">See which student gave which rating</text><circle cx="668" cy="742" r="4" fill="#dc2626"/><text x="680" y="746" font-size="12" fill="#0f172a">Access other faculty's feedback</text><circle cx="668" cy="774" r="4" fill="#dc2626"/><text x="680" y="778" font-size="12" fill="#0f172a">Access HOD/Admin features</text>
-    <rect x="40" y="970" width="1160" height="356" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5"/>
-    <rect x="40" y="970" width="1160" height="44" rx="8" fill="#065f46"/>
-    <text x="60" y="998" font-size="20"></text>
-    <text x="90" y="998" font-size="17" font-weight="800" fill="white">HOD ROLE</text>
-    <text x="1180" y="998" text-anchor="end" font-size="12" fill="white">Login: HOD/DEPT/001  |  PIN: DEPT@2025 (e.g., CSE@2025)</text>
-
-    <text x="60" y="1038" font-size="13" font-weight="700" fill="#065f46">[OK] CAN DO:</text>
-    <circle cx="68" cy="1050" r="4" fill="#065f46"/><text x="80" y="1054" font-size="12" fill="#0f172a">View entire department analytics dashboard</text><circle cx="68" cy="1082" r="4" fill="#065f46"/><text x="80" y="1086" font-size="12" fill="#0f172a">See per-course rating breakdown (5 categories)</text><circle cx="68" cy="1114" r="4" fill="#065f46"/><text x="80" y="1118" font-size="12" fill="#0f172a">Compare all courses in department</text><circle cx="68" cy="1146" r="4" fill="#065f46"/><text x="80" y="1150" font-size="12" fill="#0f172a">Download PDF report (one click)</text><circle cx="68" cy="1178" r="4" fill="#065f46"/><text x="80" y="1182" font-size="12" fill="#0f172a">Customize feedback form (add/remove questions)</text>
-    <line x1="630" y1="1020" x2="630" y2="1310" stroke="#bbf7d0" stroke-width="1"/>
-    <text x="660" y="1038" font-size="13" font-weight="700" fill="#dc2626">[NO] CANNOT DO:</text>
-    <circle cx="668" cy="1050" r="4" fill="#dc2626"/><text x="680" y="1054" font-size="12" fill="#0f172a">See individual student responses</text><circle cx="668" cy="1082" r="4" fill="#dc2626"/><text x="680" y="1086" font-size="12" fill="#0f172a">Access other departments' data</text><circle cx="668" cy="1114" r="4" fill="#dc2626"/><text x="680" y="1118" font-size="12" fill="#0f172a">Create/delete courses or faculty</text><circle cx="668" cy="1146" r="4" fill="#dc2626"/><text x="680" y="1150" font-size="12" fill="#0f172a">Modify Admin-level settings</text>
-    <rect x="40" y="1342" width="1160" height="356" rx="8" fill="#fef2f2" stroke="#fecaca" stroke-width="1.5"/>
-    <rect x="40" y="1342" width="1160" height="44" rx="8" fill="#7c2d12"/>
-    <text x="60" y="1370" font-size="20"></text>
-    <text x="90" y="1370" font-size="17" font-weight="800" fill="white">ADMIN ROLE</text>
-    <text x="1180" y="1370" text-anchor="end" font-size="12" fill="white">Login: bput@admin2025  |  PIN: Admin password</text>
-
-    <text x="60" y="1410" font-size="13" font-weight="700" fill="#7c2d12">[OK] CAN DO:</text>
-    <circle cx="68" cy="1422" r="4" fill="#7c2d12"/><text x="80" y="1426" font-size="12" fill="#0f172a">Institution-wide analytics dashboard</text><circle cx="68" cy="1454" r="4" fill="#7c2d12"/><text x="80" y="1458" font-size="12" fill="#0f172a">All departments combined overview</text><circle cx="68" cy="1486" r="4" fill="#7c2d12"/><text x="80" y="1490" font-size="12" fill="#0f172a">Create/edit/delete departments</text><circle cx="68" cy="1518" r="4" fill="#7c2d12"/><text x="80" y="1522" font-size="12" fill="#0f172a">Manage courses (add, assign faculty)</text><circle cx="68" cy="1550" r="4" fill="#7c2d12"/><text x="80" y="1554" font-size="12" fill="#0f172a">Manage faculty records</text>
-    <line x1="630" y1="1392" x2="630" y2="1682" stroke="#fecaca" stroke-width="1"/>
-    <text x="660" y="1410" font-size="13" font-weight="700" fill="#dc2626">[NO] CANNOT DO:</text>
-    <circle cx="668" cy="1422" r="4" fill="#dc2626"/><text x="680" y="1426" font-size="12" fill="#0f172a">See individual anonymous feedback content</text><circle cx="668" cy="1454" r="4" fill="#dc2626"/><text x="680" y="1458" font-size="12" fill="#0f172a">Override HOD's custom form for a dept</text>
+    <text x="1086" y="178" text-anchor="middle" font-size="15" font-weight="800" fill="#7c2d12">ADMIN</text>
 
   
-  <rect x="40" y="1710" width="1160" height="36" rx="4" fill="#1e3a8a"/>
-  <text x="56" y="1734" font-size="16" font-weight="800" fill="white">4.2. Access Matrix Summary</text>
-  <!-- Compact matrix -->
-  <rect x="40" y="1750" width="1160" height="36" rx="4" fill="#0f172a"/>
-  <text x="80" y="1773" font-size="12" font-weight="700" fill="white">Feature</text><text x="380" y="1773" font-size="12" font-weight="700" fill="white">Student</text><text x="584" y="1773" font-size="12" font-weight="700" fill="white">Faculty</text><text x="788" y="1773" font-size="12" font-weight="700" fill="white">HOD</text><text x="992" y="1773" font-size="12" font-weight="700" fill="white">Admin</text>
-  <rect x="40" y="1786" width="1160" height="32" fill="#f8fafc"/>
-    <text x="80" y="1807" font-size="11" fill="#0f172a">Submit Feedback</text>
-    <text x="382" y="1807" font-size="14">[OK]</text><text x="586" y="1807" font-size="14">[NO]</text><text x="790" y="1807" font-size="14">[NO]</text><text x="994" y="1807" font-size="14">[NO]</text><rect x="40" y="1818" width="1160" height="32" fill="white"/>
-    <text x="80" y="1839" font-size="11" fill="#0f172a">View Own Course Ratings</text>
-    <text x="382" y="1839" font-size="14">[NO]</text><text x="586" y="1839" font-size="14">[OK]</text><text x="790" y="1839" font-size="14">[OK]</text><text x="994" y="1839" font-size="14">[OK]</text><rect x="40" y="1850" width="1160" height="32" fill="#f8fafc"/>
-    <text x="80" y="1871" font-size="11" fill="#0f172a">Dept Analytics</text>
-    <text x="382" y="1871" font-size="14">[NO]</text><text x="586" y="1871" font-size="14">[NO]</text><text x="790" y="1871" font-size="14">[OK]</text><text x="994" y="1871" font-size="14">[OK]</text><rect x="40" y="1882" width="1160" height="32" fill="white"/>
-    <text x="80" y="1903" font-size="11" fill="#0f172a">Download PDF Report</text>
-    <text x="382" y="1903" font-size="14">[NO]</text><text x="586" y="1903" font-size="14">[NO]</text><text x="790" y="1903" font-size="14">[OK]</text><text x="994" y="1903" font-size="14">[OK]</text><rect x="40" y="1914" width="1160" height="32" fill="#f8fafc"/>
-    <text x="80" y="1935" font-size="11" fill="#0f172a">Custom Form Builder</text>
-    <text x="382" y="1935" font-size="14">[NO]</text><text x="586" y="1935" font-size="14">[NO]</text><text x="790" y="1935" font-size="14">[OK]</text><text x="994" y="1935" font-size="14">[NO]</text><rect x="40" y="1946" width="1160" height="32" fill="white"/>
-    <text x="80" y="1967" font-size="11" fill="#0f172a">Manage Courses/Faculty</text>
-    <text x="382" y="1967" font-size="14">[NO]</text><text x="586" y="1967" font-size="14">[NO]</text><text x="790" y="1967" font-size="14">[NO]</text><text x="994" y="1967" font-size="14">[OK]</text><rect x="40" y="1978" width="1160" height="32" fill="#f8fafc"/>
-    <text x="80" y="1999" font-size="11" fill="#0f172a">Control Feedback Windows</text>
-    <text x="382" y="1999" font-size="14">[NO]</text><text x="586" y="1999" font-size="14">[NO]</text><text x="790" y="1999" font-size="14">[NO]</text><text x="994" y="1999" font-size="14">[OK]</text>
-  <rect x="40" y="1750" width="1160" height="260" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+    <rect x="40" y="210" width="1160" height="356" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+    <rect x="40" y="210" width="1160" height="44" rx="8" fill="#1e3a8a"/>
+    <text x="60" y="238" font-size="17" font-weight="800" fill="white">STUDENT</text>
+    <text x="1180" y="238" text-anchor="end" font-size="11" fill="white">ID: CUPGS/DEPT/NNN  |  PIN/Pass: 4-digit PIN (default: 1234)</text>
+    <text x="60" y="272" font-size="13" font-weight="700" fill="#1e3a8a">CAN DO:</text>
+    <circle cx="68" cy="284" r="4" fill="#1e3a8a"/><text x="80" y="288" font-size="12" fill="#0f172a">Submit anonymous feedback for enrolled courses</text><circle cx="68" cy="316" r="4" fill="#1e3a8a"/><text x="80" y="320" font-size="12" fill="#0f172a">Use drag-based half-star rating (0.5 to 5.0 per category)</text><circle cx="68" cy="348" r="4" fill="#1e3a8a"/><text x="80" y="352" font-size="12" fill="#0f172a">Add optional text comments per rating category</text><circle cx="68" cy="380" r="4" fill="#1e3a8a"/><text x="80" y="384" font-size="12" fill="#0f172a">Answer HOD's custom questions if configured</text><circle cx="68" cy="412" r="4" fill="#1e3a8a"/><text x="80" y="416" font-size="12" fill="#0f172a">Receive a unique Reference ID after each submission</text><circle cx="68" cy="444" r="4" fill="#1e3a8a"/><text x="80" y="448" font-size="12" fill="#0f172a">Verify own submission using the Reference ID</text>
+    <line x1="630" y1="260" x2="630" y2="550" stroke="#bfdbfe" stroke-width="1"/>
+    <text x="660" y="272" font-size="13" font-weight="700" fill="#dc2626">CANNOT DO:</text>
+    <circle cx="668" cy="284" r="4" fill="#dc2626"/><text x="680" y="288" font-size="12" fill="#0f172a">View other students' feedback or ratings</text><circle cx="668" cy="316" r="4" fill="#dc2626"/><text x="680" y="320" font-size="12" fill="#0f172a">See faculty names linked to specific ratings</text><circle cx="668" cy="348" r="4" fill="#dc2626"/><text x="680" y="352" font-size="12" fill="#0f172a">Access HOD, Admin, or Faculty dashboards</text><circle cx="668" cy="380" r="4" fill="#dc2626"/><text x="680" y="384" font-size="12" fill="#0f172a">Submit feedback outside active feedback windows</text>
+    <rect x="40" y="582" width="1160" height="356" rx="8" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="1.5"/>
+    <rect x="40" y="582" width="1160" height="44" rx="8" fill="#4c1d95"/>
+    <text x="60" y="610" font-size="17" font-weight="800" fill="white">FACULTY</text>
+    <text x="1180" y="610" text-anchor="end" font-size="11" fill="white">ID: CUPGS/DEPT/NNN (same ID format)  |  PIN/Pass: 4-digit PIN</text>
+    <text x="60" y="644" font-size="13" font-weight="700" fill="#4c1d95">CAN DO:</text>
+    <circle cx="68" cy="656" r="4" fill="#4c1d95"/><text x="80" y="660" font-size="12" fill="#0f172a">View analytics for own assigned courses only</text><circle cx="68" cy="688" r="4" fill="#4c1d95"/><text x="80" y="692" font-size="12" fill="#0f172a">See average ratings per category across all feedback</text><circle cx="68" cy="720" r="4" fill="#4c1d95"/><text x="80" y="724" font-size="12" fill="#0f172a">Read anonymous student comments (no identity revealed)</text><circle cx="68" cy="752" r="4" fill="#4c1d95"/><text x="80" y="756" font-size="12" fill="#0f172a">Compare own performance across semesters</text><circle cx="68" cy="784" r="4" fill="#4c1d95"/><text x="80" y="788" font-size="12" fill="#0f172a">View rating distribution and submission count</text>
+    <line x1="630" y1="632" x2="630" y2="922" stroke="#e9d5ff" stroke-width="1"/>
+    <text x="660" y="644" font-size="13" font-weight="700" fill="#dc2626">CANNOT DO:</text>
+    <circle cx="668" cy="656" r="4" fill="#dc2626"/><text x="680" y="660" font-size="12" fill="#0f172a">Submit any feedback</text><circle cx="668" cy="688" r="4" fill="#dc2626"/><text x="680" y="692" font-size="12" fill="#0f172a">Identify which student gave which rating</text><circle cx="668" cy="720" r="4" fill="#dc2626"/><text x="680" y="724" font-size="12" fill="#0f172a">Access another faculty member's data</text><circle cx="668" cy="752" r="4" fill="#dc2626"/><text x="680" y="756" font-size="12" fill="#0f172a">Access HOD or Admin dashboards</text>
+    <rect x="40" y="954" width="1160" height="356" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5"/>
+    <rect x="40" y="954" width="1160" height="44" rx="8" fill="#065f46"/>
+    <text x="60" y="982" font-size="17" font-weight="800" fill="white">HOD (Head of Department)</text>
+    <text x="1180" y="982" text-anchor="end" font-size="11" fill="white">ID: HOD/DEPT/001  |  PIN/Pass: DEPT@2025 (e.g. CSE@2025 for CSE HOD)</text>
+    <text x="60" y="1016" font-size="13" font-weight="700" fill="#065f46">CAN DO:</text>
+    <circle cx="68" cy="1028" r="4" fill="#065f46"/><text x="80" y="1032" font-size="12" fill="#0f172a">View full department analytics dashboard</text><circle cx="68" cy="1060" r="4" fill="#065f46"/><text x="80" y="1064" font-size="12" fill="#0f172a">See per-course rating breakdown across 5 categories</text><circle cx="68" cy="1092" r="4" fill="#065f46"/><text x="80" y="1096" font-size="12" fill="#0f172a">Sort and compare all courses in the department</text><circle cx="68" cy="1124" r="4" fill="#065f46"/><text x="80" y="1128" font-size="12" fill="#0f172a">Download a formatted PDF report with one click</text><circle cx="68" cy="1156" r="4" fill="#065f46"/><text x="80" y="1160" font-size="12" fill="#0f172a">Add, edit, and remove custom feedback questions</text><circle cx="68" cy="1188" r="4" fill="#065f46"/><text x="80" y="1192" font-size="12" fill="#0f172a">View current feedback window status and dates</text>
+    <line x1="630" y1="1004" x2="630" y2="1294" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="660" y="1016" font-size="13" font-weight="700" fill="#dc2626">CANNOT DO:</text>
+    <circle cx="668" cy="1028" r="4" fill="#dc2626"/><text x="680" y="1032" font-size="12" fill="#0f172a">Access individual student responses or identities</text><circle cx="668" cy="1060" r="4" fill="#dc2626"/><text x="680" y="1064" font-size="12" fill="#0f172a">View data from other departments</text><circle cx="668" cy="1092" r="4" fill="#dc2626"/><text x="680" y="1096" font-size="12" fill="#0f172a">Create or delete courses and faculty records</text><circle cx="668" cy="1124" r="4" fill="#dc2626"/><text x="680" y="1128" font-size="12" fill="#0f172a">Create or control feedback windows (Admin only)</text>
+    <rect x="40" y="1326" width="1160" height="356" rx="8" fill="#fef2f2" stroke="#fecaca" stroke-width="1.5"/>
+    <rect x="40" y="1326" width="1160" height="44" rx="8" fill="#7c2d12"/>
+    <text x="60" y="1354" font-size="17" font-weight="800" fill="white">ADMIN</text>
+    <text x="1180" y="1354" text-anchor="end" font-size="11" fill="white">ID: bput@admin2025  |  PIN/Pass: Admin-configured password</text>
+    <text x="60" y="1388" font-size="13" font-weight="700" fill="#7c2d12">CAN DO:</text>
+    <circle cx="68" cy="1400" r="4" fill="#7c2d12"/><text x="80" y="1404" font-size="12" fill="#0f172a">View institution-wide analytics across all departments</text><circle cx="68" cy="1432" r="4" fill="#7c2d12"/><text x="80" y="1436" font-size="12" fill="#0f172a">Manage departments (add, edit, update HOD info)</text><circle cx="68" cy="1464" r="4" fill="#7c2d12"/><text x="80" y="1468" font-size="12" fill="#0f172a">Add, edit, and assign faculty to courses</text><circle cx="68" cy="1496" r="4" fill="#7c2d12"/><text x="80" y="1500" font-size="12" fill="#0f172a">Create feedback windows (title, dates, dept or global)</text><circle cx="68" cy="1528" r="4" fill="#7c2d12"/><text x="80" y="1532" font-size="12" fill="#0f172a">Toggle feedback windows open or closed at any time</text><circle cx="68" cy="1560" r="4" fill="#7c2d12"/><text x="80" y="1564" font-size="12" fill="#0f172a">Compare cross-department performance metrics</text>
+    <line x1="630" y1="1376" x2="630" y2="1666" stroke="#fecaca" stroke-width="1"/>
+    <text x="660" y="1388" font-size="13" font-weight="700" fill="#dc2626">CANNOT DO:</text>
+    <circle cx="668" cy="1400" r="4" fill="#dc2626"/><text x="680" y="1404" font-size="12" fill="#0f172a">View individual anonymous feedback content or comments</text><circle cx="668" cy="1432" r="4" fill="#dc2626"/><text x="680" y="1436" font-size="12" fill="#0f172a">Override a HOD's department-specific custom form configuration</text>
+
+  
+  <rect x="40" y="1698" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="1722" font-size="16" font-weight="800" fill="white">4.2. Access Matrix Summary</text>
+  <rect x="40" y="1738" width="1160" height="36" rx="4" fill="#0f172a"/>
+  <text x="80" y="1761" font-size="12" font-weight="700" fill="white">Feature</text><text x="380" y="1761" font-size="12" font-weight="700" fill="white">Student</text><text x="584" y="1761" font-size="12" font-weight="700" fill="white">Faculty</text><text x="788" y="1761" font-size="12" font-weight="700" fill="white">HOD</text><text x="992" y="1761" font-size="12" font-weight="700" fill="white">Admin</text>
+  <rect x="40" y="1774" width="1160" height="32" fill="#f8fafc"/>
+    <text x="80" y="1795" font-size="11" fill="#0f172a">Submit Feedback</text>
+    <text x="382" y="1795" font-size="12" font-weight="700" fill="#14532d">YES</text><text x="586" y="1795" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="790" y="1795" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="994" y="1795" font-size="12" font-weight="700" fill="#dc2626">NO</text><rect x="40" y="1806" width="1160" height="32" fill="white"/>
+    <text x="80" y="1827" font-size="11" fill="#0f172a">View Own Course Ratings</text>
+    <text x="382" y="1827" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="586" y="1827" font-size="12" font-weight="700" fill="#14532d">YES</text><text x="790" y="1827" font-size="12" font-weight="700" fill="#14532d">YES</text><text x="994" y="1827" font-size="12" font-weight="700" fill="#14532d">YES</text><rect x="40" y="1838" width="1160" height="32" fill="#f8fafc"/>
+    <text x="80" y="1859" font-size="11" fill="#0f172a">Department Analytics</text>
+    <text x="382" y="1859" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="586" y="1859" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="790" y="1859" font-size="12" font-weight="700" fill="#14532d">YES</text><text x="994" y="1859" font-size="12" font-weight="700" fill="#14532d">YES</text><rect x="40" y="1870" width="1160" height="32" fill="white"/>
+    <text x="80" y="1891" font-size="11" fill="#0f172a">Download PDF Report</text>
+    <text x="382" y="1891" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="586" y="1891" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="790" y="1891" font-size="12" font-weight="700" fill="#14532d">YES</text><text x="994" y="1891" font-size="12" font-weight="700" fill="#14532d">YES</text><rect x="40" y="1902" width="1160" height="32" fill="#f8fafc"/>
+    <text x="80" y="1923" font-size="11" fill="#0f172a">Custom Form Builder</text>
+    <text x="382" y="1923" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="586" y="1923" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="790" y="1923" font-size="12" font-weight="700" fill="#14532d">YES</text><text x="994" y="1923" font-size="12" font-weight="700" fill="#dc2626">NO</text><rect x="40" y="1934" width="1160" height="32" fill="white"/>
+    <text x="80" y="1955" font-size="11" fill="#0f172a">Manage Courses / Faculty</text>
+    <text x="382" y="1955" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="586" y="1955" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="790" y="1955" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="994" y="1955" font-size="12" font-weight="700" fill="#14532d">YES</text><rect x="40" y="1966" width="1160" height="32" fill="#f8fafc"/>
+    <text x="80" y="1987" font-size="11" fill="#0f172a">Control Feedback Windows</text>
+    <text x="382" y="1987" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="586" y="1987" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="790" y="1987" font-size="12" font-weight="700" fill="#dc2626">NO</text><text x="994" y="1987" font-size="12" font-weight="700" fill="#14532d">YES</text>
+  <rect x="40" y="1738" width="1160" height="260" fill="none" stroke="#e5e7eb" stroke-width="1"/>
 
   <rect x="0" y="1714" width="1240" height="40" fill="#0f172a"/>
-  <text x="620" y="1738" text-anchor="middle" font-size="10" fill="#475569">CUPGS Feedback Manager — Project Documentation</text>
+  <text x="620" y="1738" text-anchor="middle" font-size="10" fill="#475569">CUPGS Feedback Manager  |  Project Documentation</text>
   <text x="1200" y="1738" text-anchor="end" font-size="10" fill="#475569">5 / 10</text>
 </svg>
