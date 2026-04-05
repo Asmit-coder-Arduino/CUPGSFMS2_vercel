@@ -190,8 +190,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* ── Main Content ── */}
-      <div className={`flex-1 flex flex-col overflow-hidden relative z-10 ${isMobile ? "pb-20" : ""}`}>
-        <main className="flex-1 overflow-y-auto p-4 md:p-8">
+      <div className="flex-1 flex flex-col overflow-hidden relative z-10">
+        <main className={`flex-1 overflow-y-auto p-4 md:p-8 mobile-content ${isMobile ? "pb-24" : ""}`}>
           {children}
         </main>
       </div>

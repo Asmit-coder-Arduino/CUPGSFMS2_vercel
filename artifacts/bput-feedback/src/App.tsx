@@ -2,6 +2,7 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useState, useCallback } from "react";
 import NotFound from "@/pages/not-found";
 import { RoleProvider } from "./contexts/RoleContext";
 
@@ -22,6 +23,7 @@ import AdminReports from "./pages/AdminReports";
 
 import { AppLayout } from "./components/layout/AppLayout";
 import { InstallPrompt } from "./components/InstallPrompt";
+import { SplashScreen } from "./components/SplashScreen";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 const queryClient = new QueryClient({
@@ -58,11 +60,15 @@ function Router() {
 }
 
 function App() {
+  const [splashDone, setSplashDone] = useState(false);
+  const handleSplashDone = useCallback(() => setSplashDone(true), []);
+
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <RoleProvider>
+            {!splashDone && <SplashScreen onDone={handleSplashDone} />}
             <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
               <Router />
             </WouterRouter>
