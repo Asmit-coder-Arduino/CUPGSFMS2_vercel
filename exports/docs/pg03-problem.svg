@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1754" viewBox="0 0 1240 1754" font-family="Arial,Helvetica,sans-serif">
+  <rect width="1240" height="1754" fill="white"/>
+  <rect x="0" y="0" width="1240" height="72" fill="#1e3a8a"/>
+  <text x="60" y="32" font-size="13" fill="#93c5fd">CUPGS Academic Feedback Management System</text>
+  <text x="60" y="54" font-size="20" font-weight="800" fill="white">2. Problem Statement &amp; Solution Approach</text>
+  <text x="1180" y="42" text-anchor="end" font-size="12" fill="#93c5fd">Page 3 of 10</text>
+
+  
+  <rect x="40" y="88" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="112" font-size="16" font-weight="800" fill="white">2.1. Problem Statement</text>
+  <rect x="40" y="128" width="1160" height="180" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1.5"/>
+  <text x="60" y="156" font-size="14" font-weight="800" fill="#dc2626">Existing Problems at CUPGS:</text>
+  <circle cx="68" cy="166" r="4" fill="#dc2626"/><text x="80" y="170" font-size="12" fill="#0f172a">Manual paper-based feedback system — time-consuming, error-prone, hard to aggregate</text><circle cx="68" cy="198" r="4" fill="#dc2626"/><text x="80" y="202" font-size="12" fill="#0f172a">No anonymity guarantee — students identify hone ke darr se honest feedback nahi dete</text><circle cx="68" cy="230" r="4" fill="#dc2626"/><text x="80" y="234" font-size="12" fill="#0f172a">HOD ko manually sab forms collect aur calculate karne padte hain — weeks lag jaate hain</text><circle cx="68" cy="262" r="4" fill="#dc2626"/><text x="80" y="266" font-size="12" fill="#0f172a">Faculty-wise ya course-wise comparison possible nahi tha — koi analytics nahi</text><circle cx="68" cy="294" r="4" fill="#dc2626"/><text x="80" y="298" font-size="12" fill="#0f172a">Custom questions add karna impossible tha — ek hi standard form sabke liye</text><circle cx="68" cy="326" r="4" fill="#dc2626"/><text x="80" y="330" font-size="12" fill="#0f172a">Feedback window control nahi tha — koi bhi kabhi bhi feedback de sakta tha</text>
+
+  
+  <rect x="40" y="320" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="344" font-size="16" font-weight="800" fill="white">2.2. Solution — How CUPGS Feedback Manager Solves It</text>
+
+  <rect x="40" y="364" width="560" height="86" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <text x="56" y="386" font-size="12" fill="#dc2626">[NO] Paper forms - no digitization</text>
+    <rect x="640" y="364" width="560" height="86" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+    <text x="656" y="386" font-size="12" fill="#14532d">[OK] 100% digital — web-based form submit, PostgreSQL mein</text>
+<text x="656" y="406" font-size="12" fill="#14532d">store, instant available</text>
+    <text x="620" y="410" text-anchor="middle" font-size="20"></text><rect x="40" y="464" width="560" height="86" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <text x="56" y="486" font-size="12" fill="#dc2626">[NO] No anonymity — fear of identification</text>
+    <rect x="640" y="464" width="560" height="86" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+    <text x="656" y="486" font-size="12" fill="#14532d">[OK] Reference ID system — sirf student jaanta hai apna code,</text>
+<text x="656" y="506" font-size="12" fill="#14532d">faculty/HOD identify nahi kar sakta</text>
+    <text x="620" y="510" text-anchor="middle" font-size="20"></text><rect x="40" y="564" width="560" height="86" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <text x="56" y="586" font-size="12" fill="#dc2626">[NO] Manual aggregation — weeks of work</text>
+    <rect x="640" y="564" width="560" height="86" rx="6" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="1"/>
+    <text x="656" y="586" font-size="12" fill="#14532d">[OK] Real-time HOD dashboard — ek click mein department</text>
+<text x="656" y="606" font-size="12" fill="#14532d">analytics, PDF report download</text>
+    <text x="620" y="610" text-anchor="middle" font-size="20"></text><rect x="40" y="664" width="560" height="86" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <text x="56" y="686" font-size="12" fill="#dc2626">[NO] No course-wise comparison</text>
+    <rect x="640" y="664" width="560" height="86" rx="6" fill="#fff7ed" stroke="#fed7aa" stroke-width="1"/>
+    <text x="656" y="686" font-size="12" fill="#14532d">[OK] Per-course rating breakdown — 5 categories mein har course</text>
+<text x="656" y="706" font-size="12" fill="#14532d">ki average rating visible</text>
+    <text x="620" y="710" text-anchor="middle" font-size="20"></text><rect x="40" y="764" width="560" height="86" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <text x="56" y="786" font-size="12" fill="#dc2626">[NO] Standard form only</text>
+    <rect x="640" y="764" width="560" height="86" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="656" y="786" font-size="12" fill="#14532d">[OK] HOD form builder — custom text/rating/choice questions add</text>
+<text x="656" y="806" font-size="12" fill="#14532d">kar sakta hai apne dept ke liye</text>
+    <text x="620" y="810" text-anchor="middle" font-size="20"></text><rect x="40" y="864" width="560" height="86" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <text x="56" y="886" font-size="12" fill="#dc2626">[NO] No access control on timing</text>
+    <rect x="640" y="864" width="560" height="86" rx="6" fill="#fefce8" stroke="#fef08a" stroke-width="1"/>
+    <text x="656" y="886" font-size="12" fill="#14532d">[OK] Feedback window system — Admin specific dates pe window</text>
+<text x="656" y="906" font-size="12" fill="#14532d">khol/band kar sakta hai</text>
+    <text x="620" y="910" text-anchor="middle" font-size="20"></text>
+
+  
+  <rect x="40" y="970" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="994" font-size="16" font-weight="800" fill="white">2.3. Unique Features Not Found in Typical Systems</text>
+  <rect x="40" y="1010" width="1160" height="280" rx="6" fill="#f0f4ff" stroke="#dbeafe" stroke-width="1"/>
+
+  <text x="56" y="1036" font-size="13" font-weight="700" fill="#1e3a8a"> Half-Star Drag Rating</text>
+    <text x="56" y="1052" font-size="11" fill="#64748b">Sirf click nahi — drag karke 0.5 step pe rating set karo.</text>
+<text x="56" y="1070" font-size="11" fill="#64748b">Mouse aur touch dono pe kaam karta hai. Visually engaging</text>
+<text x="56" y="1088" font-size="11" fill="#64748b">aur precise.</text><text x="646" y="1036" font-size="13" font-weight="700" fill="#1e3a8a"> Reference ID Anonymity</text>
+    <text x="646" y="1052" font-size="11" fill="#64748b">Har submission pe unique FB-YYYYMMDD-XXXXXX format ka</text>
+<text x="646" y="1070" font-size="11" fill="#64748b">reference ID milta hai. Student apna feedback verify kar</text>
+<text x="646" y="1088" font-size="11" fill="#64748b">sakta hai, koi aur nahi.</text><text x="56" y="1124" font-size="13" font-weight="700" fill="#1e3a8a"> Live HOD Analytics</text>
+    <text x="56" y="1140" font-size="11" fill="#64748b">HOD dashboard real-time data show karta hai — department</text>
+<text x="56" y="1158" font-size="11" fill="#64748b">average, per-course breakdown, rating category comparison,</text>
+<text x="56" y="1176" font-size="11" fill="#64748b">top/bottom performers.</text><text x="646" y="1124" font-size="13" font-weight="700" fill="#1e3a8a"> HOD Form Builder</text>
+    <text x="646" y="1140" font-size="11" fill="#64748b">HOD apne dashboard se custom questions add/remove kar sakta</text>
+<text x="646" y="1158" font-size="11" fill="#64748b">hai bina developer ke. Fields: short text, long text, single</text>
+<text x="646" y="1176" font-size="11" fill="#64748b">choice, rating scale.</text><text x="56" y="1212" font-size="13" font-weight="700" fill="#1e3a8a"> Faculty-Course Integrity</text>
+    <text x="56" y="1228" font-size="11" fill="#64748b">Agar course mein faculty assign nahi hai (Faculty TBA), toh</text>
+<text x="56" y="1246" font-size="11" fill="#64748b">feedback dene pe faculty section optional rehta hai.</text>
+<text x="56" y="1264" font-size="11" fill="#64748b">Assigned courses mein auto-lock hota hai.</text><text x="646" y="1212" font-size="13" font-weight="700" fill="#1e3a8a"> One-Click PDF Report</text>
+    <text x="646" y="1228" font-size="11" fill="#64748b">HOD 'Download PDF' click kare toh complete department report</text>
+<text x="646" y="1246" font-size="11" fill="#64748b">milti hai — college header, all courses, ratings table,</text>
+<text x="646" y="1264" font-size="11" fill="#64748b">charts, semester info.</text>
+
+  
+  <rect x="40" y="1306" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="1330" font-size="16" font-weight="800" fill="white">2.4. Comparison with Traditional System</text>
+  <!-- Table header -->
+  <rect x="40" y="1346" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="250" y="1369" text-anchor="middle" font-size="12" font-weight="700" fill="white">Feature</text>
+  <text x="700" y="1369" text-anchor="middle" font-size="12" font-weight="700" fill="white">Traditional Paper System</text>
+  <text x="1060" y="1369" text-anchor="middle" font-size="12" font-weight="700" fill="white">CUPGS Feedback Manager</text>
+  <line x1="460" y1="1346" x2="460" y2="1686" stroke="#3b82f6" stroke-width="1"/>
+  <line x1="860" y1="1346" x2="860" y2="1686" stroke="#3b82f6" stroke-width="1"/>
+
+  <rect x="40" y="1382" width="1160" height="38" fill="#f8fafc"/>
+    <text x="60" y="1406" font-size="12" font-weight="600" fill="#0f172a">Feedback Submission</text>
+    <text x="480" y="1406" font-size="11" fill="#dc2626">[N] Physical form + pen</text>
+    <text x="880" y="1406" font-size="11" fill="#14532d">[Y] Digital web form, any device</text><rect x="40" y="1420" width="1160" height="38" fill="white"/>
+    <text x="60" y="1444" font-size="12" font-weight="600" fill="#0f172a">Anonymity</text>
+    <text x="480" y="1444" font-size="11" fill="#dc2626">[N] None — handwriting visible</text>
+    <text x="880" y="1444" font-size="11" fill="#14532d">[Y] 100% — reference ID only</text><rect x="40" y="1458" width="1160" height="38" fill="#f8fafc"/>
+    <text x="60" y="1482" font-size="12" font-weight="600" fill="#0f172a">Result Time</text>
+    <text x="480" y="1482" font-size="11" fill="#dc2626">[N] 2–4 weeks manual count</text>
+    <text x="880" y="1482" font-size="11" fill="#14532d">[Y] Instant — real-time dashboard</text><rect x="40" y="1496" width="1160" height="38" fill="white"/>
+    <text x="60" y="1520" font-size="12" font-weight="600" fill="#0f172a">Custom Questions</text>
+    <text x="480" y="1520" font-size="11" fill="#dc2626">[N] Reprint forms needed</text>
+    <text x="880" y="1520" font-size="11" fill="#14532d">[Y] HOD adds in 1 click</text><rect x="40" y="1534" width="1160" height="38" fill="#f8fafc"/>
+    <text x="60" y="1558" font-size="12" font-weight="600" fill="#0f172a">Rating System</text>
+    <text x="480" y="1558" font-size="11" fill="#dc2626">[N] 1–5 whole numbers only</text>
+    <text x="880" y="1558" font-size="11" fill="#14532d">[Y] 0.5–5.0 half-star drag</text><rect x="40" y="1572" width="1160" height="38" fill="white"/>
+    <text x="60" y="1596" font-size="12" font-weight="600" fill="#0f172a">Report Format</text>
+    <text x="480" y="1596" font-size="11" fill="#dc2626">[N] Handwritten summary</text>
+    <text x="880" y="1596" font-size="11" fill="#14532d">[Y] Auto-generated PDF report</text><rect x="40" y="1610" width="1160" height="38" fill="#f8fafc"/>
+    <text x="60" y="1634" font-size="12" font-weight="600" fill="#0f172a">Access Control</text>
+    <text x="480" y="1634" font-size="11" fill="#dc2626">[N] No timing control</text>
+    <text x="880" y="1634" font-size="11" fill="#14532d">[Y] Admin-controlled windows</text><rect x="40" y="1648" width="1160" height="38" fill="white"/>
+    <text x="60" y="1672" font-size="12" font-weight="600" fill="#0f172a">Data Storage</text>
+    <text x="480" y="1672" font-size="11" fill="#dc2626">[N] Physical files (losable)</text>
+    <text x="880" y="1672" font-size="11" fill="#14532d">[Y] PostgreSQL — permanent, secure</text>
+  <rect x="40" y="1346" width="1160" height="340" rx="0" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+
+  <rect x="0" y="1714" width="1240" height="40" fill="#0f172a"/>
+  <text x="620" y="1738" text-anchor="middle" font-size="10" fill="#475569">CUPGS Feedback Manager — Project Documentation</text>
+  <text x="1200" y="1738" text-anchor="end" font-size="10" fill="#475569">3 / 10</text>
+</svg>

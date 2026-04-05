@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1754" viewBox="0 0 1240 1754" font-family="Arial,Helvetica,sans-serif">
+  <rect width="1240" height="1754" fill="white"/>
+  <rect x="0" y="0" width="1240" height="72" fill="#1e3a8a"/>
+  <text x="60" y="32" font-size="13" fill="#93c5fd">CUPGS Academic Feedback Management System</text>
+  <text x="60" y="54" font-size="20" font-weight="800" fill="white">7. How To Use The System (Step-by-Step)</text>
+  <text x="1180" y="42" text-anchor="end" font-size="12" fill="#93c5fd">Page 8 of 10</text>
+
+  
+    <rect x="40" y="88" width="1160" height="380" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+    <rect x="40" y="88" width="1160" height="48" rx="8" fill="#1e3a8a"/>
+    <text x="68" y="118" font-size="22"></text>
+    <text x="100" y="118" font-size="17" font-weight="800" fill="white">STUDENT — Step by Step Guide</text>
+
+    <rect x="56" y="148" width="370" height="90" rx="6" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+      <rect x="56" y="148" width="370" height="8" rx="3" fill="#1e3a8a"/>
+      <rect x="66" y="166" width="26" height="26" rx="13" fill="#1e3a8a"/>
+      <text x="79" y="183" text-anchor="middle" font-size="12" font-weight="800" fill="white">1</text>
+      <text x="102" y="180" font-size="12" font-weight="700" fill="#1e3a8a">Open App</text>
+      <text x="102" y="194" font-size="10" fill="#64748b">Browser mein app URL open karo ya</text>
+<text x="102" y="211" font-size="10" fill="#64748b">installed PWA launch karo</text><rect x="446" y="148" width="370" height="90" rx="6" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+      <rect x="446" y="148" width="370" height="8" rx="3" fill="#1e3a8a"/>
+      <rect x="456" y="166" width="26" height="26" rx="13" fill="#1e3a8a"/>
+      <text x="469" y="183" text-anchor="middle" font-size="12" font-weight="800" fill="white">2</text>
+      <text x="492" y="180" font-size="12" font-weight="700" fill="#1e3a8a">Select Role</text>
+      <text x="492" y="194" font-size="10" fill="#64748b">'Student' select karo login page pe</text><rect x="836" y="148" width="370" height="90" rx="6" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+      <rect x="836" y="148" width="370" height="8" rx="3" fill="#1e3a8a"/>
+      <rect x="846" y="166" width="26" height="26" rx="13" fill="#1e3a8a"/>
+      <text x="859" y="183" text-anchor="middle" font-size="12" font-weight="800" fill="white">3</text>
+      <text x="882" y="180" font-size="12" font-weight="700" fill="#1e3a8a">Login</text>
+      <text x="882" y="194" font-size="10" fill="#64748b">ID: CUPGS/CSE/042 (example), PIN: 1234 </text>
+<text x="882" y="211" font-size="10" fill="#64748b">Login karo</text><rect x="56" y="248" width="370" height="90" rx="6" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+      <rect x="56" y="248" width="370" height="8" rx="3" fill="#1e3a8a"/>
+      <rect x="66" y="266" width="26" height="26" rx="13" fill="#1e3a8a"/>
+      <text x="79" y="283" text-anchor="middle" font-size="12" font-weight="800" fill="white">4</text>
+      <text x="102" y="280" font-size="12" font-weight="700" fill="#1e3a8a">Select Course</text>
+      <text x="102" y="294" font-size="10" fill="#64748b">Department  Course dropdown se apna</text>
+<text x="102" y="311" font-size="10" fill="#64748b">course choose karo</text><rect x="446" y="248" width="370" height="90" rx="6" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+      <rect x="446" y="248" width="370" height="8" rx="3" fill="#1e3a8a"/>
+      <rect x="456" y="266" width="26" height="26" rx="13" fill="#1e3a8a"/>
+      <text x="469" y="283" text-anchor="middle" font-size="12" font-weight="800" fill="white">5</text>
+      <text x="492" y="280" font-size="12" font-weight="700" fill="#1e3a8a">Rate Faculty</text>
+      <text x="492" y="294" font-size="10" fill="#64748b">Har category ke liye star rating drag karo</text>
+<text x="492" y="311" font-size="10" fill="#64748b">(0.5 step mein)</text><rect x="836" y="248" width="370" height="90" rx="6" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+      <rect x="836" y="248" width="370" height="8" rx="3" fill="#1e3a8a"/>
+      <rect x="846" y="266" width="26" height="26" rx="13" fill="#1e3a8a"/>
+      <text x="859" y="283" text-anchor="middle" font-size="12" font-weight="800" fill="white">6</text>
+      <text x="882" y="280" font-size="12" font-weight="700" fill="#1e3a8a">Add Comments</text>
+      <text x="882" y="294" font-size="10" fill="#64748b">Optional text comments add karo (har</text>
+<text x="882" y="311" font-size="10" fill="#64748b">category ke liye)</text><rect x="56" y="348" width="370" height="90" rx="6" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+      <rect x="56" y="348" width="370" height="8" rx="3" fill="#1e3a8a"/>
+      <rect x="66" y="366" width="26" height="26" rx="13" fill="#1e3a8a"/>
+      <text x="79" y="383" text-anchor="middle" font-size="12" font-weight="800" fill="white">7</text>
+      <text x="102" y="380" font-size="12" font-weight="700" fill="#1e3a8a">Custom Questions</text>
+      <text x="102" y="394" font-size="10" fill="#64748b">Agar HOD ne custom questions add kiye</text>
+<text x="102" y="411" font-size="10" fill="#64748b">hain, unhe bhi fill karo</text><rect x="446" y="348" width="370" height="90" rx="6" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+      <rect x="446" y="348" width="370" height="8" rx="3" fill="#1e3a8a"/>
+      <rect x="456" y="366" width="26" height="26" rx="13" fill="#1e3a8a"/>
+      <text x="469" y="383" text-anchor="middle" font-size="12" font-weight="800" fill="white">8</text>
+      <text x="492" y="380" font-size="12" font-weight="700" fill="#1e3a8a">Submit</text>
+      <text x="492" y="394" font-size="10" fill="#64748b">'Submit Feedback' button dabao  Reference</text>
+<text x="492" y="411" font-size="10" fill="#64748b">ID note karo</text><rect x="836" y="348" width="370" height="90" rx="6" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+      <rect x="836" y="348" width="370" height="8" rx="3" fill="#1e3a8a"/>
+      <rect x="846" y="366" width="26" height="26" rx="13" fill="#1e3a8a"/>
+      <text x="859" y="383" text-anchor="middle" font-size="12" font-weight="800" fill="white">9</text>
+      <text x="882" y="380" font-size="12" font-weight="700" fill="#1e3a8a">Verify (Optional)</text>
+      <text x="882" y="394" font-size="10" fill="#64748b">Reference ID se apna submission verify kar</text>
+<text x="882" y="411" font-size="10" fill="#64748b">sakte ho</text>
+    <rect x="40" y="484" width="1160" height="380" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5"/>
+    <rect x="40" y="484" width="1160" height="48" rx="8" fill="#065f46"/>
+    <text x="68" y="514" font-size="22"></text>
+    <text x="100" y="514" font-size="17" font-weight="800" fill="white">HOD — Step by Step Guide</text>
+
+    <rect x="56" y="544" width="370" height="90" rx="6" fill="white" stroke="#bbf7d0" stroke-width="1"/>
+      <rect x="56" y="544" width="370" height="8" rx="3" fill="#065f46"/>
+      <rect x="66" y="562" width="26" height="26" rx="13" fill="#065f46"/>
+      <text x="79" y="579" text-anchor="middle" font-size="12" font-weight="800" fill="white">1</text>
+      <text x="102" y="576" font-size="12" font-weight="700" fill="#065f46">Login</text>
+      <text x="102" y="590" font-size="10" fill="#64748b">ID: HOD/CSE/001, Password: CSE@2025</text><rect x="446" y="544" width="370" height="90" rx="6" fill="white" stroke="#bbf7d0" stroke-width="1"/>
+      <rect x="446" y="544" width="370" height="8" rx="3" fill="#065f46"/>
+      <rect x="456" y="562" width="26" height="26" rx="13" fill="#065f46"/>
+      <text x="469" y="579" text-anchor="middle" font-size="12" font-weight="800" fill="white">2</text>
+      <text x="492" y="576" font-size="12" font-weight="700" fill="#065f46">Dashboard View</text>
+      <text x="492" y="590" font-size="10" fill="#64748b">Department analytics automatically load</text>
+<text x="492" y="607" font-size="10" fill="#64748b">hogi</text><rect x="836" y="544" width="370" height="90" rx="6" fill="white" stroke="#bbf7d0" stroke-width="1"/>
+      <rect x="836" y="544" width="370" height="8" rx="3" fill="#065f46"/>
+      <rect x="846" y="562" width="26" height="26" rx="13" fill="#065f46"/>
+      <text x="859" y="579" text-anchor="middle" font-size="12" font-weight="800" fill="white">3</text>
+      <text x="882" y="576" font-size="12" font-weight="700" fill="#065f46">View Analytics</text>
+      <text x="882" y="590" font-size="10" fill="#64748b">Per-course rating table dekho — 5</text>
+<text x="882" y="607" font-size="10" fill="#64748b">categories mein breakdown</text><rect x="56" y="644" width="370" height="90" rx="6" fill="white" stroke="#bbf7d0" stroke-width="1"/>
+      <rect x="56" y="644" width="370" height="8" rx="3" fill="#065f46"/>
+      <rect x="66" y="662" width="26" height="26" rx="13" fill="#065f46"/>
+      <text x="79" y="679" text-anchor="middle" font-size="12" font-weight="800" fill="white">4</text>
+      <text x="102" y="676" font-size="12" font-weight="700" fill="#065f46">Filter/Sort</text>
+      <text x="102" y="690" font-size="10" fill="#64748b">Courses ko sort karo — best/worst</text>
+<text x="102" y="707" font-size="10" fill="#64748b">performing</text><rect x="446" y="644" width="370" height="90" rx="6" fill="white" stroke="#bbf7d0" stroke-width="1"/>
+      <rect x="446" y="644" width="370" height="8" rx="3" fill="#065f46"/>
+      <rect x="456" y="662" width="26" height="26" rx="13" fill="#065f46"/>
+      <text x="469" y="679" text-anchor="middle" font-size="12" font-weight="800" fill="white">5</text>
+      <text x="492" y="676" font-size="12" font-weight="700" fill="#065f46">Download PDF</text>
+      <text x="492" y="690" font-size="10" fill="#64748b">'Download PDF Report' click karo —</text>
+<text x="492" y="707" font-size="10" fill="#64748b">complete report milegi</text><rect x="836" y="644" width="370" height="90" rx="6" fill="white" stroke="#bbf7d0" stroke-width="1"/>
+      <rect x="836" y="644" width="370" height="8" rx="3" fill="#065f46"/>
+      <rect x="846" y="662" width="26" height="26" rx="13" fill="#065f46"/>
+      <text x="859" y="679" text-anchor="middle" font-size="12" font-weight="800" fill="white">6</text>
+      <text x="882" y="676" font-size="12" font-weight="700" fill="#065f46">Form Builder</text>
+      <text x="882" y="690" font-size="10" fill="#64748b">'Customize Form' section mein custom</text>
+<text x="882" y="707" font-size="10" fill="#64748b">questions add karo</text><rect x="56" y="744" width="370" height="90" rx="6" fill="white" stroke="#bbf7d0" stroke-width="1"/>
+      <rect x="56" y="744" width="370" height="8" rx="3" fill="#065f46"/>
+      <rect x="66" y="762" width="26" height="26" rx="13" fill="#065f46"/>
+      <text x="79" y="779" text-anchor="middle" font-size="12" font-weight="800" fill="white">7</text>
+      <text x="102" y="776" font-size="12" font-weight="700" fill="#065f46">Window Status</text>
+      <text x="102" y="790" font-size="10" fill="#64748b">Active feedback window hai ya nahi — dates</text>
+<text x="102" y="807" font-size="10" fill="#64748b">dekho</text>
+    <rect x="40" y="880" width="1160" height="380" rx="8" fill="#fef2f2" stroke="#fecaca" stroke-width="1.5"/>
+    <rect x="40" y="880" width="1160" height="48" rx="8" fill="#7c2d12"/>
+    <text x="68" y="910" font-size="22"></text>
+    <text x="100" y="910" font-size="17" font-weight="800" fill="white">ADMIN — Step by Step Guide</text>
+
+    <rect x="56" y="940" width="370" height="90" rx="6" fill="white" stroke="#fecaca" stroke-width="1"/>
+      <rect x="56" y="940" width="370" height="8" rx="3" fill="#7c2d12"/>
+      <rect x="66" y="958" width="26" height="26" rx="13" fill="#7c2d12"/>
+      <text x="79" y="975" text-anchor="middle" font-size="12" font-weight="800" fill="white">1</text>
+      <text x="102" y="972" font-size="12" font-weight="700" fill="#7c2d12">Login</text>
+      <text x="102" y="986" font-size="10" fill="#64748b">ID: bput@admin2025, Password enter karo</text><rect x="446" y="940" width="370" height="90" rx="6" fill="white" stroke="#fecaca" stroke-width="1"/>
+      <rect x="446" y="940" width="370" height="8" rx="3" fill="#7c2d12"/>
+      <rect x="456" y="958" width="26" height="26" rx="13" fill="#7c2d12"/>
+      <text x="469" y="975" text-anchor="middle" font-size="12" font-weight="800" fill="white">2</text>
+      <text x="492" y="972" font-size="12" font-weight="700" fill="#7c2d12">Institution Dashboard</text>
+      <text x="492" y="986" font-size="10" fill="#64748b">All departments ka combined analytics</text>
+<text x="492" y="1003" font-size="10" fill="#64748b">dekho</text><rect x="836" y="940" width="370" height="90" rx="6" fill="white" stroke="#fecaca" stroke-width="1"/>
+      <rect x="836" y="940" width="370" height="8" rx="3" fill="#7c2d12"/>
+      <rect x="846" y="958" width="26" height="26" rx="13" fill="#7c2d12"/>
+      <text x="859" y="975" text-anchor="middle" font-size="12" font-weight="800" fill="white">3</text>
+      <text x="882" y="972" font-size="12" font-weight="700" fill="#7c2d12">Manage Courses</text>
+      <text x="882" y="986" font-size="10" fill="#64748b">Course add karo, faculty assign karo,</text>
+<text x="882" y="1003" font-size="10" fill="#64748b">semester set karo</text><rect x="56" y="1040" width="370" height="90" rx="6" fill="white" stroke="#fecaca" stroke-width="1"/>
+      <rect x="56" y="1040" width="370" height="8" rx="3" fill="#7c2d12"/>
+      <rect x="66" y="1058" width="26" height="26" rx="13" fill="#7c2d12"/>
+      <text x="79" y="1075" text-anchor="middle" font-size="12" font-weight="800" fill="white">4</text>
+      <text x="102" y="1072" font-size="12" font-weight="700" fill="#7c2d12">Manage Faculty</text>
+      <text x="102" y="1086" font-size="10" fill="#64748b">Faculty records add/edit/delete karo</text><rect x="446" y="1040" width="370" height="90" rx="6" fill="white" stroke="#fecaca" stroke-width="1"/>
+      <rect x="446" y="1040" width="370" height="8" rx="3" fill="#7c2d12"/>
+      <rect x="456" y="1058" width="26" height="26" rx="13" fill="#7c2d12"/>
+      <text x="469" y="1075" text-anchor="middle" font-size="12" font-weight="800" fill="white">5</text>
+      <text x="492" y="1072" font-size="12" font-weight="700" fill="#7c2d12">Feedback Windows</text>
+      <text x="492" y="1086" font-size="10" fill="#64748b">New window create karo — title, start</text>
+<text x="492" y="1103" font-size="10" fill="#64748b">date, end date set karo</text><rect x="836" y="1040" width="370" height="90" rx="6" fill="white" stroke="#fecaca" stroke-width="1"/>
+      <rect x="836" y="1040" width="370" height="8" rx="3" fill="#7c2d12"/>
+      <rect x="846" y="1058" width="26" height="26" rx="13" fill="#7c2d12"/>
+      <text x="859" y="1075" text-anchor="middle" font-size="12" font-weight="800" fill="white">6</text>
+      <text x="882" y="1072" font-size="12" font-weight="700" fill="#7c2d12">Toggle Window</text>
+      <text x="882" y="1086" font-size="10" fill="#64748b">Window active/inactive karo — students</text>
+<text x="882" y="1103" font-size="10" fill="#64748b">control ho</text><rect x="56" y="1140" width="370" height="90" rx="6" fill="white" stroke="#fecaca" stroke-width="1"/>
+      <rect x="56" y="1140" width="370" height="8" rx="3" fill="#7c2d12"/>
+      <rect x="66" y="1158" width="26" height="26" rx="13" fill="#7c2d12"/>
+      <text x="79" y="1175" text-anchor="middle" font-size="12" font-weight="800" fill="white">7</text>
+      <text x="102" y="1172" font-size="12" font-weight="700" fill="#7c2d12">Cross-Dept View</text>
+      <text x="102" y="1186" font-size="10" fill="#64748b">Sab departments ka performance comparison</text>
+<text x="102" y="1203" font-size="10" fill="#64748b">dekho</text>
+    <rect x="40" y="1276" width="1160" height="380" rx="8" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="1.5"/>
+    <rect x="40" y="1276" width="1160" height="48" rx="8" fill="#4c1d95"/>
+    <text x="68" y="1306" font-size="22"></text>
+    <text x="100" y="1306" font-size="17" font-weight="800" fill="white">FACULTY — Step by Step Guide</text>
+
+    <rect x="56" y="1336" width="370" height="90" rx="6" fill="white" stroke="#e9d5ff" stroke-width="1"/>
+      <rect x="56" y="1336" width="370" height="8" rx="3" fill="#4c1d95"/>
+      <rect x="66" y="1354" width="26" height="26" rx="13" fill="#4c1d95"/>
+      <text x="79" y="1371" text-anchor="middle" font-size="12" font-weight="800" fill="white">1</text>
+      <text x="102" y="1368" font-size="12" font-weight="700" fill="#4c1d95">Login</text>
+      <text x="102" y="1382" font-size="10" fill="#64748b">ID: CUPGS/CSE/101 (example), PIN: 1234</text><rect x="446" y="1336" width="370" height="90" rx="6" fill="white" stroke="#e9d5ff" stroke-width="1"/>
+      <rect x="446" y="1336" width="370" height="8" rx="3" fill="#4c1d95"/>
+      <rect x="456" y="1354" width="26" height="26" rx="13" fill="#4c1d95"/>
+      <text x="469" y="1371" text-anchor="middle" font-size="12" font-weight="800" fill="white">2</text>
+      <text x="492" y="1368" font-size="12" font-weight="700" fill="#4c1d95">My Courses</text>
+      <text x="492" y="1382" font-size="10" fill="#64748b">Apne assigned courses ki list dekho</text><rect x="836" y="1336" width="370" height="90" rx="6" fill="white" stroke="#e9d5ff" stroke-width="1"/>
+      <rect x="836" y="1336" width="370" height="8" rx="3" fill="#4c1d95"/>
+      <rect x="846" y="1354" width="26" height="26" rx="13" fill="#4c1d95"/>
+      <text x="859" y="1371" text-anchor="middle" font-size="12" font-weight="800" fill="white">3</text>
+      <text x="882" y="1368" font-size="12" font-weight="700" fill="#4c1d95">View Ratings</text>
+      <text x="882" y="1382" font-size="10" fill="#64748b">Har course ki average rating aur breakdown</text>
+<text x="882" y="1399" font-size="10" fill="#64748b">dekho</text><rect x="56" y="1436" width="370" height="90" rx="6" fill="white" stroke="#e9d5ff" stroke-width="1"/>
+      <rect x="56" y="1436" width="370" height="8" rx="3" fill="#4c1d95"/>
+      <rect x="66" y="1454" width="26" height="26" rx="13" fill="#4c1d95"/>
+      <text x="79" y="1471" text-anchor="middle" font-size="12" font-weight="800" fill="white">4</text>
+      <text x="102" y="1468" font-size="12" font-weight="700" fill="#4c1d95">Read Comments</text>
+      <text x="102" y="1482" font-size="10" fill="#64748b">Anonymous student comments padhte hain (no</text>
+<text x="102" y="1499" font-size="10" fill="#64748b">names shown)</text><rect x="446" y="1436" width="370" height="90" rx="6" fill="white" stroke="#e9d5ff" stroke-width="1"/>
+      <rect x="446" y="1436" width="370" height="8" rx="3" fill="#4c1d95"/>
+      <rect x="456" y="1454" width="26" height="26" rx="13" fill="#4c1d95"/>
+      <text x="469" y="1471" text-anchor="middle" font-size="12" font-weight="800" fill="white">5</text>
+      <text x="492" y="1468" font-size="12" font-weight="700" fill="#4c1d95">Track Progress</text>
+      <text x="492" y="1482" font-size="10" fill="#64748b">Semester-wise performance compare karo</text>
+
+  <rect x="0" y="1714" width="1240" height="40" fill="#0f172a"/>
+  <text x="620" y="1738" text-anchor="middle" font-size="10" fill="#475569">CUPGS Feedback Manager — Project Documentation</text>
+  <text x="1200" y="1738" text-anchor="end" font-size="10" fill="#475569">8 / 10</text>
+</svg>

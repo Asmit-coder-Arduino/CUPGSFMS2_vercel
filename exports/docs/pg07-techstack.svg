@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1754" viewBox="0 0 1240 1754" font-family="Arial,Helvetica,sans-serif">
+  <rect width="1240" height="1754" fill="white"/>
+  <rect x="0" y="0" width="1240" height="72" fill="#1e3a8a"/>
+  <text x="60" y="32" font-size="13" fill="#93c5fd">CUPGS Academic Feedback Management System</text>
+  <text x="60" y="54" font-size="20" font-weight="800" fill="white">6. Technology Stack &amp; Design System</text>
+  <text x="1180" y="42" text-anchor="end" font-size="12" fill="#93c5fd">Page 7 of 10</text>
+
+  
+  <rect x="40" y="88" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="112" font-size="16" font-weight="800" fill="white">6.1. Complete Technology Stack</text>
+
+  <rect x="40" y="128" width="1160" height="390" rx="6" fill="#fafafa" stroke="#e5e7eb" stroke-width="1"/>
+    <rect x="40" y="128" width="1160" height="36" rx="4" fill="#1e3a8a20" stroke="#1e3a8a40" stroke-width="1"/>
+    <text x="60" y="151" font-size="13" font-weight="800" fill="#1e3a8a">FRONTEND STACK</text>
+    
+      <rect x="56" y="172" width="120" height="26" rx="4" fill="#1e3a8a"/>
+      <text x="116" y="190" text-anchor="middle" font-size="11" font-weight="700" fill="white">React 18</text>
+      <text x="192" y="190" font-size="11" fill="#64748b">UI library — component-based, hooks-based state management</text><line x1="56" y1="206" x2="1184" y2="206" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="210" width="120" height="26" rx="4" fill="#1e3a8a"/>
+      <text x="116" y="228" text-anchor="middle" font-size="11" font-weight="700" fill="white">TypeScript</text>
+      <text x="192" y="228" font-size="11" fill="#64748b">Type-safe JavaScript — compile-time error catching</text><line x1="56" y1="244" x2="1184" y2="244" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="248" width="120" height="26" rx="4" fill="#1e3a8a"/>
+      <text x="116" y="266" text-anchor="middle" font-size="11" font-weight="700" fill="white">Vite</text>
+      <text x="192" y="266" font-size="11" fill="#64748b">Build tool — lightning-fast HMR, optimized production builds</text><line x1="56" y1="282" x2="1184" y2="282" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="286" width="120" height="26" rx="4" fill="#1e3a8a"/>
+      <text x="116" y="304" text-anchor="middle" font-size="11" font-weight="700" fill="white">Tailwind CSS</text>
+      <text x="192" y="304" font-size="11" fill="#64748b">Utility-first CSS — responsive, dark theme, custom design</text><line x1="56" y1="320" x2="1184" y2="320" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="324" width="120" height="26" rx="4" fill="#1e3a8a"/>
+      <text x="116" y="342" text-anchor="middle" font-size="11" font-weight="700" fill="white">shadcn/ui</text>
+      <text x="192" y="342" font-size="11" fill="#64748b">Accessible component library — buttons, cards, dialogs, forms</text><line x1="56" y1="358" x2="1184" y2="358" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="362" width="120" height="26" rx="4" fill="#1e3a8a"/>
+      <text x="116" y="380" text-anchor="middle" font-size="11" font-weight="700" fill="white">React Query</text>
+      <text x="192" y="380" font-size="11" fill="#64748b">Server state management — caching, background updates, loading states</text><line x1="56" y1="396" x2="1184" y2="396" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="400" width="120" height="26" rx="4" fill="#1e3a8a"/>
+      <text x="116" y="418" text-anchor="middle" font-size="11" font-weight="700" fill="white">React Hook Form</text>
+      <text x="192" y="418" font-size="11" fill="#64748b">Form management — validation, error handling, submit state</text><line x1="56" y1="434" x2="1184" y2="434" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="438" width="120" height="26" rx="4" fill="#1e3a8a"/>
+      <text x="116" y="456" text-anchor="middle" font-size="11" font-weight="700" fill="white">jsPDF + html2canvas</text>
+      <text x="192" y="456" font-size="11" fill="#64748b">PDF generation — HOD report, one-click download</text><line x1="56" y1="472" x2="1184" y2="472" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="476" width="120" height="26" rx="4" fill="#1e3a8a"/>
+      <text x="116" y="494" text-anchor="middle" font-size="11" font-weight="700" fill="white">Framer Motion</text>
+      <text x="192" y="494" font-size="11" fill="#64748b">Animations — smooth transitions, drag interactions</text><rect x="40" y="498" width="1160" height="314" rx="6" fill="#fafafa" stroke="#e5e7eb" stroke-width="1"/>
+    <rect x="40" y="498" width="1160" height="36" rx="4" fill="#14532d20" stroke="#14532d40" stroke-width="1"/>
+    <text x="60" y="521" font-size="13" font-weight="800" fill="#14532d">BACKEND STACK</text>
+    
+      <rect x="56" y="542" width="120" height="26" rx="4" fill="#14532d"/>
+      <text x="116" y="560" text-anchor="middle" font-size="11" font-weight="700" fill="white">Node.js</text>
+      <text x="192" y="560" font-size="11" fill="#64748b">JavaScript runtime — non-blocking I/O, event-driven</text><line x1="56" y1="576" x2="1184" y2="576" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="580" width="120" height="26" rx="4" fill="#14532d"/>
+      <text x="116" y="598" text-anchor="middle" font-size="11" font-weight="700" fill="white">Express.js</text>
+      <text x="192" y="598" font-size="11" fill="#64748b">HTTP server framework — routing, middleware, sessions</text><line x1="56" y1="614" x2="1184" y2="614" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="618" width="120" height="26" rx="4" fill="#14532d"/>
+      <text x="116" y="636" text-anchor="middle" font-size="11" font-weight="700" fill="white">TypeScript</text>
+      <text x="192" y="636" font-size="11" fill="#64748b">Type safety on server too — shared types with frontend</text><line x1="56" y1="652" x2="1184" y2="652" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="656" width="120" height="26" rx="4" fill="#14532d"/>
+      <text x="116" y="674" text-anchor="middle" font-size="11" font-weight="700" fill="white">express-session</text>
+      <text x="192" y="674" font-size="11" fill="#64748b">Server-side session management — authentication state</text><line x1="56" y1="690" x2="1184" y2="690" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="694" width="120" height="26" rx="4" fill="#14532d"/>
+      <text x="116" y="712" text-anchor="middle" font-size="11" font-weight="700" fill="white">express-rate-limit</text>
+      <text x="192" y="712" font-size="11" fill="#64748b">API rate limiting — brute force + DoS protection</text><line x1="56" y1="728" x2="1184" y2="728" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="732" width="120" height="26" rx="4" fill="#14532d"/>
+      <text x="116" y="750" text-anchor="middle" font-size="11" font-weight="700" fill="white">Zod</text>
+      <text x="192" y="750" font-size="11" fill="#64748b">Schema validation library — parse and validate all API inputs</text><line x1="56" y1="766" x2="1184" y2="766" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="770" width="120" height="26" rx="4" fill="#14532d"/>
+      <text x="116" y="788" text-anchor="middle" font-size="11" font-weight="700" fill="white">Pino</text>
+      <text x="192" y="788" font-size="11" fill="#64748b">Structured logging — JSON format, production-grade performance</text><rect x="40" y="868" width="1160" height="238" rx="6" fill="#fafafa" stroke="#e5e7eb" stroke-width="1"/>
+    <rect x="40" y="868" width="1160" height="36" rx="4" fill="#7c2d1220" stroke="#7c2d1240" stroke-width="1"/>
+    <text x="60" y="891" font-size="13" font-weight="800" fill="#7c2d12">DATABASE STACK</text>
+    
+      <rect x="56" y="912" width="120" height="26" rx="4" fill="#7c2d12"/>
+      <text x="116" y="930" text-anchor="middle" font-size="11" font-weight="700" fill="white">PostgreSQL</text>
+      <text x="192" y="930" font-size="11" fill="#64748b">Relational database — ACID compliant, JSON support, production-grade</text><line x1="56" y1="946" x2="1184" y2="946" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="950" width="120" height="26" rx="4" fill="#7c2d12"/>
+      <text x="116" y="968" text-anchor="middle" font-size="11" font-weight="700" fill="white">Drizzle ORM</text>
+      <text x="192" y="968" font-size="11" fill="#64748b">Type-safe ORM — schema-first, SQL-like queries, no magic</text><line x1="56" y1="984" x2="1184" y2="984" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="988" width="120" height="26" rx="4" fill="#7c2d12"/>
+      <text x="116" y="1006" text-anchor="middle" font-size="11" font-weight="700" fill="white">Drizzle Kit</text>
+      <text x="192" y="1006" font-size="11" fill="#64748b">Database migrations — push schema changes safely</text><line x1="56" y1="1022" x2="1184" y2="1022" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="1026" width="120" height="26" rx="4" fill="#7c2d12"/>
+      <text x="116" y="1044" text-anchor="middle" font-size="11" font-weight="700" fill="white">JSONB columns</text>
+      <text x="192" y="1044" font-size="11" fill="#64748b">feedback.custom_answers aur form_templates.fields ke liye</text><line x1="56" y1="1060" x2="1184" y2="1060" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="1064" width="120" height="26" rx="4" fill="#7c2d12"/>
+      <text x="116" y="1082" text-anchor="middle" font-size="11" font-weight="700" fill="white">real type</text>
+      <text x="192" y="1082" font-size="11" fill="#64748b">Rating columns 0.5 steps support karne ke liye float precision</text><rect x="40" y="1238" width="1160" height="200" rx="6" fill="#fafafa" stroke="#e5e7eb" stroke-width="1"/>
+    <rect x="40" y="1238" width="1160" height="36" rx="4" fill="#4c1d9520" stroke="#4c1d9540" stroke-width="1"/>
+    <text x="60" y="1261" font-size="13" font-weight="800" fill="#4c1d95">INFRASTRUCTURE STACK</text>
+    
+      <rect x="56" y="1282" width="120" height="26" rx="4" fill="#4c1d95"/>
+      <text x="116" y="1300" text-anchor="middle" font-size="11" font-weight="700" fill="white">Replit</text>
+      <text x="192" y="1300" font-size="11" fill="#64748b">Cloud development + hosting platform</text><line x1="56" y1="1316" x2="1184" y2="1316" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="1320" width="120" height="26" rx="4" fill="#4c1d95"/>
+      <text x="116" y="1338" text-anchor="middle" font-size="11" font-weight="700" fill="white">pnpm workspaces</text>
+      <text x="192" y="1338" font-size="11" fill="#64748b">Monorepo — api-server aur bput-feedback packages</text><line x1="56" y1="1354" x2="1184" y2="1354" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="1358" width="120" height="26" rx="4" fill="#4c1d95"/>
+      <text x="116" y="1376" text-anchor="middle" font-size="11" font-weight="700" fill="white">PWA (Manifest+SW)</text>
+      <text x="192" y="1376" font-size="11" fill="#64748b">Installable app, offline capability, mobile-optimized</text><line x1="56" y1="1392" x2="1184" y2="1392" stroke="#e5e7eb" stroke-width="0.5"/>
+      <rect x="56" y="1396" width="120" height="26" rx="4" fill="#4c1d95"/>
+      <text x="116" y="1414" text-anchor="middle" font-size="11" font-weight="700" fill="white">Environment secrets</text>
+      <text x="192" y="1414" font-size="11" fill="#64748b">SESSION_SECRET securely stored, never in code</text>
+
+  
+  <rect x="40" y="1558" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="1582" font-size="16" font-weight="800" fill="white">6.2. UI Design System</text>
+  <rect x="40" y="1598" width="1160" height="90" rx="6" fill="#0f172a"/>
+  <text x="620" y="1628" text-anchor="middle" font-size="14" font-weight="800" fill="white">Dark Glassmorphism Theme</text>
+  <text x="620" y="1652" text-anchor="middle" font-size="12" fill="#94a3b8">Background: #0f172a (Slate 900) · Cards: backdrop-blur + rgba white overlay</text>
+  <text x="620" y="1674" text-anchor="middle" font-size="12" fill="#94a3b8">Primary: #1e3a8a Blue · Accent: #2563eb · Success: #14532d Green · Error: #dc2626 Red</text>
+
+  <!-- Color swatches -->
+  <rect x="40" y="1704" width="114" height="50" rx="6" fill="#0f172a" stroke="#374151" stroke-width="1"/>
+    <text x="97" y="1772" text-anchor="middle" font-size="9" fill="#64748b">Background</text>
+    <text x="97" y="1784" text-anchor="middle" font-size="8" fill="#64748b">#0f172a</text><rect x="170" y="1704" width="114" height="50" rx="6" fill="#1e293b" stroke="#374151" stroke-width="1"/>
+    <text x="227" y="1772" text-anchor="middle" font-size="9" fill="#64748b">Card BG</text>
+    <text x="227" y="1784" text-anchor="middle" font-size="8" fill="#64748b">#1e293b</text><rect x="300" y="1704" width="114" height="50" rx="6" fill="#1e3a8a" stroke="#374151" stroke-width="1"/>
+    <text x="357" y="1772" text-anchor="middle" font-size="9" fill="#64748b">Primary</text>
+    <text x="357" y="1784" text-anchor="middle" font-size="8" fill="#64748b">#1e3a8a</text><rect x="430" y="1704" width="114" height="50" rx="6" fill="#2563eb" stroke="#374151" stroke-width="1"/>
+    <text x="487" y="1772" text-anchor="middle" font-size="9" fill="#64748b">Accent</text>
+    <text x="487" y="1784" text-anchor="middle" font-size="8" fill="#64748b">#2563eb</text><rect x="560" y="1704" width="114" height="50" rx="6" fill="#14532d" stroke="#374151" stroke-width="1"/>
+    <text x="617" y="1772" text-anchor="middle" font-size="9" fill="#64748b">Success</text>
+    <text x="617" y="1784" text-anchor="middle" font-size="8" fill="#64748b">#14532d</text><rect x="690" y="1704" width="114" height="50" rx="6" fill="#7c2d12" stroke="#374151" stroke-width="1"/>
+    <text x="747" y="1772" text-anchor="middle" font-size="9" fill="#64748b">Danger</text>
+    <text x="747" y="1784" text-anchor="middle" font-size="8" fill="#64748b">#7c2d12</text><rect x="820" y="1704" width="114" height="50" rx="6" fill="#4c1d95" stroke="#374151" stroke-width="1"/>
+    <text x="877" y="1772" text-anchor="middle" font-size="9" fill="#64748b">Faculty</text>
+    <text x="877" y="1784" text-anchor="middle" font-size="8" fill="#64748b">#4c1d95</text><rect x="950" y="1704" width="114" height="50" rx="6" fill="#065f46" stroke="#374151" stroke-width="1"/>
+    <text x="1007" y="1772" text-anchor="middle" font-size="9" fill="#64748b">HOD</text>
+    <text x="1007" y="1784" text-anchor="middle" font-size="8" fill="#64748b">#065f46</text><rect x="1080" y="1704" width="114" height="50" rx="6" fill="#f8fafc" stroke="#374151" stroke-width="1"/>
+    <text x="1137" y="1772" text-anchor="middle" font-size="9" fill="#64748b">Light Text</text>
+    <text x="1137" y="1784" text-anchor="middle" font-size="8" fill="#64748b">#f8fafc</text>
+
+  
+  <rect x="40" y="1800" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="1824" font-size="16" font-weight="800" fill="white">6.3. PWA Features</text>
+  <rect x="40" y="1840" width="1160" height="100" rx="6" fill="#fafafa" stroke="#e5e7eb" stroke-width="1"/>
+  <circle cx="68" cy="1854" r="4" fill="#2563eb"/><text x="80" y="1858" font-size="12" fill="#0f172a">Installable on Android/iOS/Windows/Mac — 'Add to Home Screen' prompt</text><circle cx="68" cy="1886" r="4" fill="#2563eb"/><text x="80" y="1890" font-size="12" fill="#0f172a">Responsive design — works on 320px mobile to 4K desktop screens</text><circle cx="68" cy="1918" r="4" fill="#2563eb"/><text x="80" y="1922" font-size="12" fill="#0f172a">Splash screen on app open — CUPGS branding with loading animation</text><circle cx="68" cy="1950" r="4" fill="#2563eb"/><text x="80" y="1954" font-size="12" fill="#0f172a">Dark theme optimized — OLED-friendly, reduces eye strain</text>
+
+  <rect x="0" y="1714" width="1240" height="40" fill="#0f172a"/>
+  <text x="620" y="1738" text-anchor="middle" font-size="10" fill="#475569">CUPGS Feedback Manager — Project Documentation</text>
+  <text x="1200" y="1738" text-anchor="end" font-size="10" fill="#475569">7 / 10</text>
+</svg>

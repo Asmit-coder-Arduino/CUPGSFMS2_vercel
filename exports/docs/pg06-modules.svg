@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1754" viewBox="0 0 1240 1754" font-family="Arial,Helvetica,sans-serif">
+  <rect width="1240" height="1754" fill="white"/>
+  <rect x="0" y="0" width="1240" height="72" fill="#1e3a8a"/>
+  <text x="60" y="32" font-size="13" fill="#93c5fd">CUPGS Academic Feedback Management System</text>
+  <text x="60" y="54" font-size="20" font-weight="800" fill="white">5. Module-wise Explanation</text>
+  <text x="1180" y="42" text-anchor="end" font-size="12" fill="#93c5fd">Page 6 of 10</text>
+
+  
+    
+  <rect x="40" y="88" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="112" font-size="16" font-weight="800" fill="white">5.1. Authentication Module</text>
+    <rect x="40" y="128" width="1160" height="358" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+    <text x="64" y="152" font-size="24"></text>
+    <text x="100" y="153" font-size="14" font-weight="700" fill="#1e3a8a">Authentication Module</text>
+    <text x="100" y="170" font-size="12" fill="#64748b">Role-based login system jo different dashboard pe redirect karta hai.</text>
+    <line x1="56" y1="194" x2="1184" y2="194" stroke="#bfdbfe" stroke-width="1"/>
+    <text x="64" y="214" font-size="13" font-weight="700" fill="#1e3a8a">Step-by-Step Flow:</text>
+    <rect x="64" y="216" width="24" height="24" rx="12" fill="#1e3a8a"/>
+      <text x="76" y="233" text-anchor="middle" font-size="11" font-weight="800" fill="white">1</text>
+      <text x="100" y="233" font-size="12" fill="#0f172a">User apna Role select karta hai (Student / Faculty / HOD / Admin)</text><rect x="64" y="246" width="24" height="24" rx="12" fill="#1e3a8a"/>
+      <text x="76" y="263" text-anchor="middle" font-size="11" font-weight="800" fill="white">2</text>
+      <text x="100" y="263" font-size="12" fill="#0f172a">ID aur PIN/Password enter karta hai</text><rect x="64" y="276" width="24" height="24" rx="12" fill="#1e3a8a"/>
+      <text x="76" y="293" text-anchor="middle" font-size="11" font-weight="800" fill="white">3</text>
+      <text x="100" y="293" font-size="12" fill="#0f172a">Server ID pattern check karta hai — CUPGS/DEPT/NNN ya HOD/DEPT/001</text><rect x="64" y="306" width="24" height="24" rx="12" fill="#1e3a8a"/>
+      <text x="76" y="323" text-anchor="middle" font-size="11" font-weight="800" fill="white">4</text>
+      <text x="100" y="323" font-size="12" fill="#0f172a">Valid hone pe session create hota hai, invalid pe error message</text><rect x="64" y="336" width="24" height="24" rx="12" fill="#1e3a8a"/>
+      <text x="76" y="353" text-anchor="middle" font-size="11" font-weight="800" fill="white">5</text>
+      <text x="100" y="353" font-size="12" fill="#0f172a">Session-based auth — browser close karne pe auto logout</text><rect x="64" y="366" width="24" height="24" rx="12" fill="#1e3a8a"/>
+      <text x="76" y="383" text-anchor="middle" font-size="11" font-weight="800" fill="white">6</text>
+      <text x="100" y="383" font-size="12" fill="#0f172a">Rate limit: 10 failed attempts per 15 min per IP ke baad block</text>
+    
+  <rect x="40" y="494" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="518" font-size="16" font-weight="800" fill="white">5.2. Feedback Submission Module</text>
+    <rect x="40" y="534" width="1160" height="358" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="64" y="558" font-size="24"></text>
+    <text x="100" y="559" font-size="14" font-weight="700" fill="#14532d">Feedback Submission Module</text>
+    <text x="100" y="576" font-size="12" fill="#64748b">Core module — student ka anonymous feedback collect karta hai.</text>
+    <line x1="56" y1="600" x2="1184" y2="600" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="64" y="620" font-size="13" font-weight="700" fill="#14532d">Step-by-Step Flow:</text>
+    <rect x="64" y="622" width="24" height="24" rx="12" fill="#14532d"/>
+      <text x="76" y="639" text-anchor="middle" font-size="11" font-weight="800" fill="white">1</text>
+      <text x="100" y="639" font-size="12" fill="#0f172a">Student apna Department aur Course select karta hai</text><rect x="64" y="652" width="24" height="24" rx="12" fill="#14532d"/>
+      <text x="76" y="669" text-anchor="middle" font-size="11" font-weight="800" fill="white">2</text>
+      <text x="100" y="669" font-size="12" fill="#0f172a">Faculty automatically course se assign hoti hai (ya TBA show hota)</text><rect x="64" y="682" width="24" height="24" rx="12" fill="#14532d"/>
+      <text x="76" y="699" text-anchor="middle" font-size="11" font-weight="800" fill="white">3</text>
+      <text x="100" y="699" font-size="12" fill="#0f172a">Semester aur Academic Year auto-calculate hota hai</text><rect x="64" y="712" width="24" height="24" rx="12" fill="#14532d"/>
+      <text x="76" y="729" text-anchor="middle" font-size="11" font-weight="800" fill="white">4</text>
+      <text x="100" y="729" font-size="12" fill="#0f172a">Drag-based star rating — 5 categories mein 0.5 step pe</text><rect x="64" y="742" width="24" height="24" rx="12" fill="#14532d"/>
+      <text x="76" y="759" text-anchor="middle" font-size="11" font-weight="800" fill="white">5</text>
+      <text x="100" y="759" font-size="12" fill="#0f172a">Text comments optional — each category ke liye</text><rect x="64" y="772" width="24" height="24" rx="12" fill="#14532d"/>
+      <text x="76" y="789" text-anchor="middle" font-size="11" font-weight="800" fill="white">6</text>
+      <text x="100" y="789" font-size="12" fill="#0f172a">HOD ke custom questions (agar configured ho) appear hote hain</text><rect x="64" y="802" width="24" height="24" rx="12" fill="#14532d"/>
+      <text x="76" y="819" text-anchor="middle" font-size="11" font-weight="800" fill="white">7</text>
+      <text x="100" y="819" font-size="12" fill="#0f172a">Submit pe: server validate  integrity check  store  Ref ID return</text>
+    
+  <rect x="40" y="900" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="924" font-size="16" font-weight="800" fill="white">5.3. HOD Analytics &amp; Dashboard Module</text>
+    <rect x="40" y="940" width="1160" height="358" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
+    <text x="64" y="964" font-size="24"></text>
+    <text x="100" y="965" font-size="14" font-weight="700" fill="#065f46">HOD Analytics &amp; Dashboard Module</text>
+    <text x="100" y="982" font-size="12" fill="#64748b">HOD ka main tool — real-time department performance analytics.</text>
+    <line x1="56" y1="1006" x2="1184" y2="1006" stroke="#6ee7b7" stroke-width="1"/>
+    <text x="64" y="1026" font-size="13" font-weight="700" fill="#065f46">Step-by-Step Flow:</text>
+    <rect x="64" y="1028" width="24" height="24" rx="12" fill="#065f46"/>
+      <text x="76" y="1045" text-anchor="middle" font-size="11" font-weight="800" fill="white">1</text>
+      <text x="100" y="1045" font-size="12" fill="#0f172a">Department summary: total feedback count, overall average rating</text><rect x="64" y="1058" width="24" height="24" rx="12" fill="#065f46"/>
+      <text x="76" y="1075" text-anchor="middle" font-size="11" font-weight="800" fill="white">2</text>
+      <text x="100" y="1075" font-size="12" fill="#0f172a">Per-course table: har course ki 5-category rating breakdown</text><rect x="64" y="1088" width="24" height="24" rx="12" fill="#065f46"/>
+      <text x="76" y="1105" text-anchor="middle" font-size="11" font-weight="800" fill="white">3</text>
+      <text x="100" y="1105" font-size="12" fill="#0f172a">Sorting: best/worst performing courses identify karo</text><rect x="64" y="1118" width="24" height="24" rx="12" fill="#065f46"/>
+      <text x="76" y="1135" text-anchor="middle" font-size="11" font-weight="800" fill="white">4</text>
+      <text x="100" y="1135" font-size="12" fill="#0f172a">Trend view: semester-wise comparison</text><rect x="64" y="1148" width="24" height="24" rx="12" fill="#065f46"/>
+      <text x="76" y="1165" text-anchor="middle" font-size="11" font-weight="800" fill="white">5</text>
+      <text x="100" y="1165" font-size="12" fill="#0f172a">PDF Report: college header, date, all courses, ratings, download</text><rect x="64" y="1178" width="24" height="24" rx="12" fill="#065f46"/>
+      <text x="76" y="1195" text-anchor="middle" font-size="11" font-weight="800" fill="white">6</text>
+      <text x="100" y="1195" font-size="12" fill="#0f172a">Form Builder: custom questions add/remove/reorder karo</text><rect x="64" y="1208" width="24" height="24" rx="12" fill="#065f46"/>
+      <text x="76" y="1225" text-anchor="middle" font-size="11" font-weight="800" fill="white">7</text>
+      <text x="100" y="1225" font-size="12" fill="#0f172a">Window status: active hai ya nahi, dates dikhai deti hain</text>
+    
+  <rect x="40" y="1306" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="1330" font-size="16" font-weight="800" fill="white">5.4. Admin Institution Management Module</text>
+    <rect x="40" y="1346" width="1160" height="358" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <text x="64" y="1370" font-size="24"></text>
+    <text x="100" y="1371" font-size="14" font-weight="700" fill="#7c2d12">Admin Institution Management Module</text>
+    <text x="100" y="1388" font-size="12" fill="#64748b">Admin ka complete control — institution-wide management.</text>
+    <line x1="56" y1="1412" x2="1184" y2="1412" stroke="#fecaca" stroke-width="1"/>
+    <text x="64" y="1432" font-size="13" font-weight="700" fill="#7c2d12">Step-by-Step Flow:</text>
+    <rect x="64" y="1434" width="24" height="24" rx="12" fill="#7c2d12"/>
+      <text x="76" y="1451" text-anchor="middle" font-size="11" font-weight="800" fill="white">1</text>
+      <text x="100" y="1451" font-size="12" fill="#0f172a">Department-wise analytics summary (all 5 departments)</text><rect x="64" y="1464" width="24" height="24" rx="12" fill="#7c2d12"/>
+      <text x="76" y="1481" text-anchor="middle" font-size="11" font-weight="800" fill="white">2</text>
+      <text x="100" y="1481" font-size="12" fill="#0f172a">Highest/lowest rated courses across institution</text><rect x="64" y="1494" width="24" height="24" rx="12" fill="#7c2d12"/>
+      <text x="76" y="1511" text-anchor="middle" font-size="11" font-weight="800" fill="white">3</text>
+      <text x="100" y="1511" font-size="12" fill="#0f172a">Course management: add, edit, assign faculty, deactivate</text><rect x="64" y="1524" width="24" height="24" rx="12" fill="#7c2d12"/>
+      <text x="76" y="1541" text-anchor="middle" font-size="11" font-weight="800" fill="white">4</text>
+      <text x="100" y="1541" font-size="12" fill="#0f172a">Faculty management: add, edit, department assign</text><rect x="64" y="1554" width="24" height="24" rx="12" fill="#7c2d12"/>
+      <text x="76" y="1571" text-anchor="middle" font-size="11" font-weight="800" fill="white">5</text>
+      <text x="100" y="1571" font-size="12" fill="#0f172a">Feedback Window: create with title, dates, dept (or global)</text><rect x="64" y="1584" width="24" height="24" rx="12" fill="#7c2d12"/>
+      <text x="76" y="1601" text-anchor="middle" font-size="11" font-weight="800" fill="white">6</text>
+      <text x="100" y="1601" font-size="12" fill="#0f172a">Window control: toggle active/inactive, delete windows</text><rect x="64" y="1614" width="24" height="24" rx="12" fill="#7c2d12"/>
+      <text x="76" y="1631" text-anchor="middle" font-size="11" font-weight="800" fill="white">7</text>
+      <text x="100" y="1631" font-size="12" fill="#0f172a">Cross-department comparison analytics</text>
+
+  <rect x="0" y="1714" width="1240" height="40" fill="#0f172a"/>
+  <text x="620" y="1738" text-anchor="middle" font-size="10" fill="#475569">CUPGS Feedback Manager — Project Documentation</text>
+  <text x="1200" y="1738" text-anchor="end" font-size="10" fill="#475569">6 / 10</text>
+</svg>

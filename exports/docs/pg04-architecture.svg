@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1754" viewBox="0 0 1240 1754" font-family="Arial,Helvetica,sans-serif">
+  <rect width="1240" height="1754" fill="white"/>
+  <rect x="0" y="0" width="1240" height="72" fill="#1e3a8a"/>
+  <text x="60" y="32" font-size="13" fill="#93c5fd">CUPGS Academic Feedback Management System</text>
+  <text x="60" y="54" font-size="20" font-weight="800" fill="white">3. System Architecture &amp; Features</text>
+  <text x="1180" y="42" text-anchor="end" font-size="12" fill="#93c5fd">Page 4 of 10</text>
+
+  
+  <rect x="40" y="88" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="112" font-size="16" font-weight="800" fill="white">3.1. Three-Tier Architecture</text>
+
+  <!-- Architecture Diagram -->
+  <!-- Tier 1: Frontend -->
+  <rect x="40" y="128" width="1160" height="100" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/>
+  <rect x="40" y="128" width="8" height="100" rx="4" fill="#2563eb"/>
+  <text x="68" y="156" font-size="13" font-weight="800" fill="#2563eb">TIER 1 — PRESENTATION LAYER (Frontend)</text>
+  <text x="68" y="176" font-size="11" fill="#64748b">React 18 + TypeScript + Vite + Tailwind CSS + shadcn/ui components</text>
+  <text x="68" y="196" font-size="11" fill="#64748b">Pages: Login · Submit Feedback · HOD Dashboard · Admin Panel · Faculty View</text>
+  <text x="68" y="214" font-size="11" fill="#64748b">PWA: Installable, Offline-capable, Responsive (Mobile + Desktop + Tablet)</text>
+
+  <text x="620" y="242" text-anchor="middle" font-size="18" fill="#64748b">[ REST API -- HTTP/JSON -- Axios ]</text>
+
+  <!-- Tier 2: Backend -->
+  <rect x="40" y="254" width="1160" height="100" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2"/>
+  <rect x="40" y="254" width="8" height="100" rx="4" fill="#14532d"/>
+  <text x="68" y="282" font-size="13" font-weight="800" fill="#14532d">TIER 2 — APPLICATION LAYER (Backend API)</text>
+  <text x="68" y="302" font-size="11" fill="#64748b">Node.js + Express.js + TypeScript · Runs on PORT 8080</text>
+  <text x="68" y="322" font-size="11" fill="#64748b">Routes: /api/auth · /api/feedback · /api/departments · /api/courses · /api/faculty · /api/windows</text>
+  <text x="68" y="340" font-size="11" fill="#64748b">Middleware: Rate Limiting · Session Management · Input Validation (Zod) · Trust Proxy</text>
+
+  <text x="620" y="368" text-anchor="middle" font-size="18" fill="#64748b">[ Drizzle ORM -- SQL Queries ]</text>
+
+  <!-- Tier 3: Database -->
+  <rect x="40" y="380" width="1160" height="100" rx="8" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="2"/>
+  <rect x="40" y="380" width="8" height="100" rx="4" fill="#7c3aed"/>
+  <text x="68" y="408" font-size="13" font-weight="800" fill="#7c3aed">TIER 3 — DATA LAYER (Database)</text>
+  <text x="68" y="428" font-size="11" fill="#64748b">PostgreSQL · 6 Tables · Replit managed database</text>
+  <text x="68" y="448" font-size="11" fill="#64748b">Tables: departments · courses · faculty · feedback · form_templates · feedback_windows</text>
+  <text x="68" y="466" font-size="11" fill="#64748b">Features: Real FK constraints · JSONB custom answers · real type for 0.5 ratings</text>
+
+  
+  <rect x="40" y="494" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="518" font-size="16" font-weight="800" fill="white">3.2. Frontend Pages &amp; Routing</text>
+  <rect x="40" y="534" width="1160" height="360" rx="6" fill="#fafafa" stroke="#e5e7eb" stroke-width="1"/>
+
+  <rect x="56" y="544" width="110" height="28" rx="4" fill="#1e3a8a"/>
+    <text x="111" y="563" text-anchor="middle" font-size="10" font-weight="700" fill="white">/</text>
+    <text x="180" y="562" font-size="13" font-weight="700" fill="#1e3a8a">Login Page</text>
+    <text x="180" y="576" font-size="11" fill="#64748b">Role-select karo (Student/Faculty/HOD/Admin)  ID aur PIN enter karo  dashboard pe redirect</text><rect x="56" y="612" width="110" height="28" rx="4" fill="#14532d"/>
+    <text x="111" y="631" text-anchor="middle" font-size="10" font-weight="700" fill="white">/submit-feedback</text>
+    <text x="180" y="630" font-size="13" font-weight="700" fill="#1e3a8a">Submit Feedback</text>
+    <text x="180" y="644" font-size="11" fill="#64748b">Course select karo  semester auto-fill  drag-star rating  comments  submit  Ref ID milega</text><rect x="56" y="680" width="110" height="28" rx="4" fill="#065f46"/>
+    <text x="111" y="699" text-anchor="middle" font-size="10" font-weight="700" fill="white">/hod-dashboard</text>
+    <text x="180" y="698" font-size="13" font-weight="700" fill="#1e3a8a">HOD Dashboard</text>
+    <text x="180" y="712" font-size="11" fill="#64748b">Department analytics, per-course rating table, PDF download, feedback window toggle, form builder</text><rect x="56" y="748" width="110" height="28" rx="4" fill="#7c2d12"/>
+    <text x="111" y="767" text-anchor="middle" font-size="10" font-weight="700" fill="white">/admin</text>
+    <text x="180" y="766" font-size="13" font-weight="700" fill="#1e3a8a">Admin Panel</text>
+    <text x="180" y="780" font-size="11" fill="#64748b">Institution-wide analytics, all departments overview, course/faculty management, window control</text><rect x="56" y="816" width="110" height="28" rx="4" fill="#4c1d95"/>
+    <text x="111" y="835" text-anchor="middle" font-size="10" font-weight="700" fill="white">/faculty</text>
+    <text x="180" y="834" font-size="13" font-weight="700" fill="#1e3a8a">Faculty View</text>
+    <text x="180" y="848" font-size="11" fill="#64748b">Apne assigned courses ka feedback dekho, rating breakdown, student comments (anonymous)</text>
+
+  
+  <rect x="40" y="908" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="932" font-size="16" font-weight="800" fill="white">3.3. API Endpoints Overview</text>
+  <rect x="40" y="948" width="1160" height="36" rx="4" fill="#0f172a"/>
+  <text x="160" y="971" text-anchor="middle" font-size="12" font-weight="700" fill="white">Method</text>
+  <text x="420" y="971" text-anchor="middle" font-size="12" font-weight="700" fill="white">Endpoint</text>
+  <text x="850" y="971" text-anchor="middle" font-size="12" font-weight="700" fill="white">Purpose</text>
+
+  <rect x="40" y="984" width="1160" height="38" fill="#f8fafc"/>
+    <rect x="56" y="991" width="65" height="24" rx="4" fill="#0284c7"/>
+    <text x="88" y="1007" text-anchor="middle" font-size="11" font-weight="800" fill="white">POST</text>
+    <text x="280" y="1008" font-size="11" font-weight="600" fill="#0f172a" font-family="Courier New,monospace">/api/auth/login</text>
+    <text x="640" y="1008" font-size="11" fill="#64748b">Student/Faculty/HOD/Admin login</text><rect x="40" y="1022" width="1160" height="38" fill="white"/>
+    <rect x="56" y="1029" width="65" height="24" rx="4" fill="#14532d"/>
+    <text x="88" y="1045" text-anchor="middle" font-size="11" font-weight="800" fill="white">POST</text>
+    <text x="280" y="1046" font-size="11" font-weight="600" fill="#0f172a" font-family="Courier New,monospace">/api/feedback</text>
+    <text x="640" y="1046" font-size="11" fill="#64748b">Submit anonymous feedback</text><rect x="40" y="1060" width="1160" height="38" fill="#f8fafc"/>
+    <rect x="56" y="1067" width="65" height="24" rx="4" fill="#14532d"/>
+    <text x="88" y="1083" text-anchor="middle" font-size="11" font-weight="800" fill="white">GET</text>
+    <text x="280" y="1084" font-size="11" font-weight="600" fill="#0f172a" font-family="Courier New,monospace">/api/feedback/check/:refId</text>
+    <text x="640" y="1084" font-size="11" fill="#64748b">Reference ID se apna feedback verify karo</text><rect x="40" y="1098" width="1160" height="38" fill="white"/>
+    <rect x="56" y="1105" width="65" height="24" rx="4" fill="#7c3aed"/>
+    <text x="88" y="1121" text-anchor="middle" font-size="11" font-weight="800" fill="white">GET</text>
+    <text x="280" y="1122" font-size="11" font-weight="600" fill="#0f172a" font-family="Courier New,monospace">/api/departments/:id/hod-report</text>
+    <text x="640" y="1122" font-size="11" fill="#64748b">HOD analytics data fetch karo</text><rect x="40" y="1136" width="1160" height="38" fill="#f8fafc"/>
+    <rect x="56" y="1143" width="65" height="24" rx="4" fill="#7c3aed"/>
+    <text x="88" y="1159" text-anchor="middle" font-size="11" font-weight="800" fill="white">GET</text>
+    <text x="280" y="1160" font-size="11" font-weight="600" fill="#0f172a" font-family="Courier New,monospace">/api/departments/:id/form-template</text>
+    <text x="640" y="1160" font-size="11" fill="#64748b">Custom form template load karo</text><rect x="40" y="1174" width="1160" height="38" fill="white"/>
+    <rect x="56" y="1181" width="65" height="24" rx="4" fill="#7c3aed"/>
+    <text x="88" y="1197" text-anchor="middle" font-size="11" font-weight="800" fill="white">POST</text>
+    <text x="280" y="1198" font-size="11" font-weight="600" fill="#0f172a" font-family="Courier New,monospace">/api/departments/:id/form-template</text>
+    <text x="640" y="1198" font-size="11" fill="#64748b">HOD form save karo</text><rect x="40" y="1212" width="1160" height="38" fill="#f8fafc"/>
+    <rect x="56" y="1219" width="65" height="24" rx="4" fill="#d97706"/>
+    <text x="88" y="1235" text-anchor="middle" font-size="11" font-weight="800" fill="white">GET</text>
+    <text x="280" y="1236" font-size="11" font-weight="600" fill="#0f172a" font-family="Courier New,monospace">/api/windows</text>
+    <text x="640" y="1236" font-size="11" fill="#64748b">Active feedback windows list</text><rect x="40" y="1250" width="1160" height="38" fill="white"/>
+    <rect x="56" y="1257" width="65" height="24" rx="4" fill="#dc2626"/>
+    <text x="88" y="1273" text-anchor="middle" font-size="11" font-weight="800" fill="white">POST</text>
+    <text x="280" y="1274" font-size="11" font-weight="600" fill="#0f172a" font-family="Courier New,monospace">/api/windows</text>
+    <text x="640" y="1274" font-size="11" fill="#64748b">Admin — new window create karo</text><rect x="40" y="1288" width="1160" height="38" fill="#f8fafc"/>
+    <rect x="56" y="1295" width="65" height="24" rx="4" fill="#dc2626"/>
+    <text x="88" y="1311" text-anchor="middle" font-size="11" font-weight="800" fill="white">GET</text>
+    <text x="280" y="1312" font-size="11" font-weight="600" fill="#0f172a" font-family="Courier New,monospace">/api/analytics/dashboard</text>
+    <text x="640" y="1312" font-size="11" fill="#64748b">Admin institution-wide analytics</text><rect x="40" y="1326" width="1160" height="38" fill="white"/>
+    <rect x="56" y="1333" width="65" height="24" rx="4" fill="#475569"/>
+    <text x="88" y="1349" text-anchor="middle" font-size="11" font-weight="800" fill="white">GET</text>
+    <text x="280" y="1350" font-size="11" font-weight="600" fill="#0f172a" font-family="Courier New,monospace">/api/courses</text>
+    <text x="640" y="1350" font-size="11" fill="#64748b">Courses list with faculty info</text>
+  <rect x="40" y="948" width="1160" height="416" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+
+  
+  <rect x="40" y="1372" width="1160" height="36" rx="4" fill="#1e3a8a"/>
+  <text x="56" y="1396" font-size="16" font-weight="800" fill="white">3.4. Rate Limiting &amp; Security</text>
+  <rect x="40" y="1412" width="1160" height="280" rx="6" fill="#fafafa" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="60" y="1438" font-size="13" font-weight="700" fill="#1e3a8a"> Global Rate Limit</text>
+    <text x="280" y="1438" font-size="12" fill="#64748b">100 requests per 15 minutes per IP — DoS attack se protection</text>
+    <line x1="56" y1="1450" x2="1180" y2="1450" stroke="#e5e7eb" stroke-width="0.8"/><text x="60" y="1482" font-size="13" font-weight="700" fill="#1e3a8a"> Auth Rate Limit</text>
+    <text x="280" y="1482" font-size="12" fill="#64748b">10 login attempts per 15 minutes — brute force attack prevent</text>
+    <line x1="56" y1="1494" x2="1180" y2="1494" stroke="#e5e7eb" stroke-width="0.8"/><text x="60" y="1526" font-size="13" font-weight="700" fill="#1e3a8a"> Feedback Rate Limit</text>
+    <text x="280" y="1526" font-size="12" fill="#64748b">20 submissions per 10 minutes — spam prevent</text>
+    <line x1="56" y1="1538" x2="1180" y2="1538" stroke="#e5e7eb" stroke-width="0.8"/><text x="60" y="1570" font-size="13" font-weight="700" fill="#1e3a8a"> Session Security</text>
+    <text x="280" y="1570" font-size="12" fill="#64748b">Express-session + SESSION_SECRET environment variable mein store</text>
+    <line x1="56" y1="1582" x2="1180" y2="1582" stroke="#e5e7eb" stroke-width="0.8"/><text x="60" y="1614" font-size="13" font-weight="700" fill="#1e3a8a">[OK] Input Validation</text>
+    <text x="280" y="1614" font-size="12" fill="#64748b">Zod schema validation — har route pe type-safe input check</text>
+    <line x1="56" y1="1626" x2="1180" y2="1626" stroke="#e5e7eb" stroke-width="0.8"/><text x="60" y="1658" font-size="13" font-weight="700" fill="#1e3a8a"> Trust Proxy</text>
+    <text x="280" y="1658" font-size="12" fill="#64748b">app.set('trust proxy', 1) — reverse proxy ke peeche correct IP</text>
+    
+
+  <rect x="0" y="1714" width="1240" height="40" fill="#0f172a"/>
+  <text x="620" y="1738" text-anchor="middle" font-size="10" fill="#475569">CUPGS Feedback Manager — Project Documentation</text>
+  <text x="1200" y="1738" text-anchor="end" font-size="10" fill="#475569">4 / 10</text>
+</svg>
