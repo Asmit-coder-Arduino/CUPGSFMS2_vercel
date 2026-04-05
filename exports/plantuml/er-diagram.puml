@@ -1,0 +1,203 @@
+@startuml ER_Diagram_CUPGS
+
+!theme plain
+skinparam backgroundColor #EEF2F7
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+
+skinparam entity {
+  BackgroundColor white
+  HeaderBackgroundColor #1A7A6E
+  FontColor #1E293B
+  BorderColor #1A7A6E
+  BorderThickness 2
+}
+
+skinparam arrow {
+  Color #64748B
+  FontColor #1E293B
+  FontSize 10
+}
+
+skinparam note {
+  BackgroundColor #FFF7ED
+  BorderColor #EA580C
+  FontSize 9
+}
+
+title <b>CUPGS FMS · ER Diagram · All Entities — Relationship Map</b>\nAll 6 database entities with PK/FK links · Crow's Foot / Chen Notation
+
+' ════════════════════════════════════════════
+' ENTITY DEFINITIONS
+' ════════════════════════════════════════════
+
+entity "**departments**" as DEPT #header:1A7A6E {
+  * <b>id</b>              : serial       <<PK>>
+  ==
+  * code              : varchar       <<UNIQUE>>
+  * name              : varchar
+  hod_name            : varchar
+  hod_employee_id     : varchar
+  created_at          : timestamptz
+  updated_at          : timestamptz
+  updated_by          : varchar
+}
+
+entity "**faculty**" as FAC #header:1A7A6E {
+  * <b>id</b>              : serial       <<PK>>
+  ==
+  + <b>department_id</b>   : int          <<FK>>
+  --
+  * employee_id       : varchar       <<UNIQUE>>
+  * name              : varchar
+  designation         : varchar
+  email               : varchar
+  phone               : varchar
+  is_active           : boolean
+}
+
+entity "**courses**" as COURSE #header:1A7A6E {
+  * <b>id</b>              : serial       <<PK>>
+  ==
+  + <b>department_id</b>   : int          <<FK>>
+  ~ <b>faculty_id</b>      : int          <<FK nullable>>
+  --
+  * code              : varchar       <<UNIQUE>>
+  * name              : varchar
+  semester            : int
+  academic_year       : varchar
+  credits             : int
+  is_active           : boolean
+}
+
+entity "**feedback**" as FB #header:92400E {
+  * <b>id</b>              : serial       <<PK>>
+  ==
+  + <b>course_id</b>       : int          <<FK>>
+  ~ <b>faculty_id</b>      : int          <<FK nullable>>
+  + <b>department_id</b>   : int          <<FK>>
+  --
+  * reference_id      : varchar       <<UNIQUE>>
+  semester            : int
+  academic_year       : varchar
+  student_year        : varchar
+  section             : varchar
+  feedback_type       : varchar
+  rating_teaching_quality   : real
+  rating_course_content     : real
+  rating_lab_facilities     : real
+  rating_study_material     : real
+  rating_overall            : real
+  comments            : text
+  is_anonymous        : boolean
+  custom_answers      : jsonb
+  submitted_at        : timestamptz
+}
+
+entity "**form_templates**" as FT #header:6B21A8 {
+  * <b>id</b>              : serial       <<PK>>
+  ==
+  + <b>department_id</b>   : int          <<FK UNIQUE>>
+  --
+  fields              : jsonb
+  created_at          : timestamptz
+  updated_at          : timestamptz
+  updated_by          : varchar
+}
+
+entity "**feedback_windows**" as FW #header:6B21A8 {
+  * <b>id</b>              : serial       <<PK>>
+  ==
+  ~ <b>department_id</b>   : int          <<FK nullable>>
+  --
+  title               : varchar
+  is_active           : boolean
+  start_date          : timestamptz
+  end_date            : timestamptz
+  description         : text
+}
+
+' ════════════════════════════════════════════
+' RELATIONSHIPS (Crow's Foot Notation)
+' ════════════════════════════════════════════
+
+' DEPARTMENTS 1 ──< FACULTY (one dept employs many faculty)
+DEPT ||--o{ FAC : "EMPLOYS\n<size:9>1 : N</size>"
+
+' DEPARTMENTS 1 ──< COURSES (one dept offers many courses)
+DEPT ||--o{ COURSE : "OFFERS\n<size:9>1 : N</size>"
+
+' DEPARTMENTS 1 ──< FEEDBACK (one dept has many feedback records)
+DEPT ||--o{ FB : "RECEIVES\n<size:9>1 : N</size>"
+
+' DEPARTMENTS 1 ──|| FORM_TEMPLATES (one dept has exactly one template)
+DEPT ||--|| FT : "HAS FORM\n<size:9>1 : 1</size>"
+
+' DEPARTMENTS 1 ──o{ FEEDBACK_WINDOWS (one dept scopes 0..N windows)
+DEPT ||--o{ FW : "SCOPES\n<size:9>1 : 0..N</size>"
+
+' COURSES 1 ──< FEEDBACK (one course has many feedback records)
+COURSE ||--o{ FB : "RECORDED IN\n<size:9>1 : N</size>"
+
+' FACULTY 0..1 ──< FEEDBACK (faculty can be null, many feedback per faculty)
+FAC |o--o{ FB : "GIVEN FOR\n<size:9>0..1 : N</size>"
+
+' FACULTY 0..1 ──< COURSES (faculty can be unassigned)
+FAC |o--o{ COURSE : "TEACHES\n<size:9>0..1 : N</size>"
+
+' ════════════════════════════════════════════
+' NOTES
+' ════════════════════════════════════════════
+
+note right of FB
+  <b>Central Entity</b>
+  Anonymous feedback with
+  reference_id for tracking.
+  Rating columns use **real** type
+  for 0.5-step half-star ratings.
+  custom_answers stores HOD's
+  custom form responses (JSONB).
+end note
+
+note right of FT
+  <b>HOD Customizable</b>
+  One template per department.
+  Stores custom question fields
+  as JSONB array. HOD can add
+  text, rating, or choice fields.
+end note
+
+note right of COURSE
+  <b>Faculty-Course Integrity</b>
+  faculty_id is nullable —
+  "Faculty TBA" when unassigned.
+  Enforced at feedback submission
+  to prevent cross-dept fraud.
+end note
+
+note right of FW
+  <b>Feedback Window Control</b>
+  department_id nullable = global window.
+  When is_active = true and current
+  time is between start/end date,
+  students can submit feedback.
+end note
+
+' ════════════════════════════════════════════
+' LEGEND
+' ════════════════════════════════════════════
+legend bottom right
+  |=  Symbol      |=  Meaning                         |
+  | <b>*</b>      | NOT NULL (required field)          |
+  | <b>+</b>      | Foreign Key (FK) — required        |
+  | <b>~</b>      | Foreign Key (FK) — nullable/opt    |
+  | <<PK>>        | Primary Key                        |
+  | <<FK>>        | Foreign Key reference              |
+  | <<UNIQUE>>    | Unique constraint                  |
+  | ||--o{        | One-to-Many (Crow's Foot)          |
+  | ||--||        | One-to-One                         |
+  | \|o--o{       | Zero-or-one to Many (optional)     |
+  Crow's Foot · Chen Notation
+endlegend
+
+@enduml

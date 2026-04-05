@@ -18,3 +18,9 @@ id = "OA7nVdbZKzkulRJ6IOiT5"
 uri = "file://exports/CUPGS-SE-Diagrams.pdf"
 type = "pdf"
 title = "CUPGS SE Diagrams — Redesigned Professional Layout (4 Pages)"
+
+[[outputs]]
+id = "y0EiIzTG1zDvJAXLgHeyg"
+uri = "file://exports/plantuml/CUPGS-PlantUML-Diagrams.tar.gz"
+type = "unspecified"
+title = "CUPGS PlantUML Diagrams — All 4 Files (.tar.gz archive)"
