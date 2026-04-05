@@ -101,11 +101,23 @@ Three distinct roles managed via `RoleContext` (localStorage-persisted session):
 - `health.ts` — GET /api/health
 - `auth.ts` — Faculty/admin login, faculty portal data endpoint
 - `departments.ts` — CRUD for departments
-- `faculty.ts` — CRUD for faculty
-- `courses.ts` — CRUD for courses
+- `faculty.ts` — GET /faculty, POST /faculty, GET /faculty/:id, PATCH /faculty/:id, DELETE /faculty/:id (blocked if has feedback; auto-unassigns from courses)
+- `courses.ts` — GET /courses, POST /courses, GET /courses/:id, PATCH /courses/:id (incl. facultyId assignment), DELETE /courses/:id (blocked if has feedback)
 - `feedback.ts` — Submit + list feedback
-- `windows.ts` — CRUD for feedback windows
+- `windows.ts` — CRUD for feedback windows (PATCH toggles active/inactive)
 - `analytics.ts` — Dashboard summary, department/faculty analytics, trends, top-rated
+
+### Faculty API Fields (PATCH-able)
+name, email, designation, employeeId, loginPin, qualification, specialization
+
+### Course API Fields (PATCH-able)
+code, name, semester, academicYear, credits, facultyId (null to unassign)
+
+## HOD Dashboard (4 Tabs)
+- **Analytics**: Summary cards, rating bars (5 params), faculty accordion, course-wise table, recent comments, PDF download
+- **Faculty Management**: Add/Edit/Delete faculty (full form: name, designation, employeeId, loginPin, email, qualification, specialization); view assigned courses; delete protection with 409 if feedback exists
+- **Course Management**: Add/Edit/Delete courses grouped by semester; assign faculty dropdown; unassigned warning; delete protection
+- **Feedback Windows**: Create/toggle active/inactive windows; progress bar for running windows; status badges
 
 ## Key Conventions
 - API base URL: relative (`""`) — Replit proxy routes `/api/*` to the API server
