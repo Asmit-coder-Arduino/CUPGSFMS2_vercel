@@ -114,6 +114,66 @@ uri = "file://artifacts/bput-feedback/public/bg-led-green.png"
 type = "image"
 title = "green LED glow bg"
 
+[[generated]]
+id = "O5b4ZWVD7Xtb-R3YsNTNZ"
+uri = "file://artifacts/bput-feedback/public/bg-nature-mountains.png"
+type = "image"
+title = "misty mountains scenery"
+
+[[generated]]
+id = "kgnmmuvkBue2EmdUi9RV4"
+uri = "file://artifacts/bput-feedback/public/bg-nature-waterfall.png"
+type = "image"
+title = "jungle waterfall scenery"
+
+[[generated]]
+id = "90oApHGp93nCFJ6w53GQE"
+uri = "file://artifacts/bput-feedback/public/bg-nature-lake.png"
+type = "image"
+title = "starry lake scenery"
+
+[[generated]]
+id = "y2Jfq9bzWnMqF0REmyzPg"
+uri = "file://artifacts/bput-feedback/public/bg-nature-sakura.png"
+type = "image"
+title = "cherry blossom night"
+
+[[generated]]
+id = "qOpjqaDXn1lgpK51TZg7w"
+uri = "file://artifacts/bput-feedback/public/bg-nature-coast.png"
+type = "image"
+title = "dramatic ocean coast"
+
+[[generated]]
+id = "l3LETBnbF3_Ks6naRp8Mx"
+uri = "file://artifacts/bput-feedback/public/bg-bput-main.png"
+type = "image"
+title = "BPUT main building"
+
+[[generated]]
+id = "TAO4Itny9cABgDYGBi3Bx"
+uri = "file://artifacts/bput-feedback/public/bg-bput-garden.png"
+type = "image"
+title = "BPUT campus garden"
+
+[[generated]]
+id = "4X9abnVOe0vrf-k5tNK-q"
+uri = "file://artifacts/bput-feedback/public/bg-bput-library.png"
+type = "image"
+title = "BPUT library building"
+
+[[generated]]
+id = "c5DXFfioQXVfmheA8IMS3"
+uri = "file://artifacts/bput-feedback/public/bg-bput-aerial.png"
+type = "image"
+title = "BPUT aerial campus view"
+
+[[generated]]
+id = "DjGf8ALnJs5XWz05UIhvY"
+uri = "file://artifacts/bput-feedback/public/bg-bput-gate.png"
+type = "image"
+title = "BPUT entrance gate night"
+
 [[outputs]]
 id = "DNYPbFPAJjS-si0mrrbw9"
 uri = "file://CUPGS_All_Credentials.xlsx"

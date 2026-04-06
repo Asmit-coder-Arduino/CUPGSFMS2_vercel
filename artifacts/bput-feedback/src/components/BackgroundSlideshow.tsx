@@ -22,6 +22,16 @@ const BG_IMAGES = [
   { src: "/bg-led-gold.png", label: "LED Gold" },
   { src: "/bg-led-pink.png", label: "LED Pink" },
   { src: "/bg-led-green.png", label: "LED Green" },
+  { src: "/bg-nature-mountains.png", label: "Misty Mountains" },
+  { src: "/bg-nature-waterfall.png", label: "Waterfall" },
+  { src: "/bg-nature-lake.png", label: "Starry Lake" },
+  { src: "/bg-nature-sakura.png", label: "Sakura Night" },
+  { src: "/bg-nature-coast.png", label: "Ocean Coast" },
+  { src: "/bg-bput-main.png", label: "BPUT Main" },
+  { src: "/bg-bput-garden.png", label: "BPUT Garden" },
+  { src: "/bg-bput-library.png", label: "BPUT Library" },
+  { src: "/bg-bput-aerial.png", label: "BPUT Aerial" },
+  { src: "/bg-bput-gate.png", label: "BPUT Gate" },
 ];
 
 const INTERVAL = 10000;
@@ -146,63 +156,48 @@ export function BackgroundSlideshow() {
         onClick={showPanel}
       >
         <div
-          className="flex items-center gap-1 overflow-hidden transition-all duration-500 ease-out"
+          className="flex items-center gap-1.5 overflow-hidden transition-all duration-500 ease-out"
           style={{
-            maxWidth: showControls ? "400px" : "0px",
+            maxWidth: showControls ? "320px" : "0px",
             opacity: showControls ? 1 : 0,
           }}
         >
           <button
             onClick={(e) => { e.stopPropagation(); handlePrev(); }}
-            className="w-7 h-7 rounded-full flex items-center justify-center text-white/60 hover:text-white/90 transition-colors flex-shrink-0"
+            className="w-8 h-8 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors flex-shrink-0"
             style={{
               background: "rgba(0,0,0,0.5)",
               backdropFilter: "blur(10px)",
             }}
           >
-            <ChevronLeft className="w-3.5 h-3.5" />
+            <ChevronLeft className="w-4 h-4" />
           </button>
 
           <div
-            className="flex items-center gap-1 px-2 py-1.5 rounded-full flex-shrink-0"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full flex-shrink-0"
             style={{
               background: "rgba(0,0,0,0.5)",
               backdropFilter: "blur(10px)",
             }}
           >
-            {BG_IMAGES.map((bg, i) => (
-              <button
-                key={i}
-                onClick={(e) => { e.stopPropagation(); goTo(i); }}
-                title={bg.label}
-                className="transition-all duration-300 flex-shrink-0"
-                style={{
-                  width: i === curr ? "14px" : "5px",
-                  height: "5px",
-                  borderRadius: "99px",
-                  background:
-                    i === curr
-                      ? "rgba(255,255,255,0.9)"
-                      : "rgba(255,255,255,0.25)",
-                }}
-              />
-            ))}
+            <span className="text-[11px] text-white/70 font-medium whitespace-nowrap">
+              {curr + 1}/{BG_IMAGES.length}
+            </span>
+            <span className="text-[11px] text-white/45 whitespace-nowrap">
+              {BG_IMAGES[curr].label}
+            </span>
           </div>
 
           <button
             onClick={(e) => { e.stopPropagation(); handleNext(); }}
-            className="w-7 h-7 rounded-full flex items-center justify-center text-white/60 hover:text-white/90 transition-colors flex-shrink-0"
+            className="w-8 h-8 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors flex-shrink-0"
             style={{
               background: "rgba(0,0,0,0.5)",
               backdropFilter: "blur(10px)",
             }}
           >
-            <ChevronRight className="w-3.5 h-3.5" />
+            <ChevronRight className="w-4 h-4" />
           </button>
-
-          <span className="text-[10px] text-white/50 font-medium whitespace-nowrap pl-1 flex-shrink-0">
-            {BG_IMAGES[curr].label}
-          </span>
         </div>
 
         <button
