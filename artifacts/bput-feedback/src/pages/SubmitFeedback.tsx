@@ -291,7 +291,7 @@ export default function SubmitFeedback() {
   const { data: courses } = useListCourses();
   const { data: faculty } = useListFaculty();
   const queryClient = useQueryClient();
-  const { role, student } = useRole();
+  const { role, student, logout } = useRole();
 
   const [selectedDeptId, setSelectedDeptId] = useState(
     student?.departmentId ? String(student.departmentId) : ""
@@ -335,7 +335,17 @@ export default function SubmitFeedback() {
 
   const triggerReceiptDownload = useCallback((d: NonNullable<typeof submitted>) => {
     const receiptUrl = `${getApiUrl()}/api/feedback/receipt/${encodeURIComponent(d.referenceId)}`;
-    window.open(receiptUrl, "_blank");
+    try {
+      const link = document.createElement("a");
+      link.href = receiptUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch {
+      window.open(receiptUrl, "_blank");
+    }
   }, []);
 
   useEffect(() => {
@@ -416,11 +426,6 @@ export default function SubmitFeedback() {
             return;
           }
         }
-      }
-      // Comment required?
-      if (formTemplate.commentRequired && !comments.trim()) {
-        setError(`"${formTemplate.commentLabel}" is required.`);
-        return;
       }
     } else {
       // No template — validate all 5 standard ratings
@@ -579,6 +584,7 @@ export default function SubmitFeedback() {
             </button>
             <button
               onClick={() => {
+                logout();
                 setSubmitted(null); setCourseId(""); setFacultyId(""); setComments("");
                 setRatings(INITIAL_RATINGS); setCustomAnswers({});
               }}
@@ -804,30 +810,9 @@ export default function SubmitFeedback() {
           )}
         </div>
 
-        {/* Step 4 — Comments & Privacy */}
+        {/* Step 4 — Privacy */}
         <div className="bg-card border rounded-xl p-5 space-y-4">
-          <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Step 4 — Comments & Privacy</h2>
-          <div className="space-y-1">
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-medium">
-                {formTemplate?.commentLabel || "Comments / Suggestions"}
-                {formTemplate?.commentRequired
-                  ? <span className="text-red-500 ml-1">*</span>
-                  : <span className="text-muted-foreground text-xs ml-1">(optional)</span>}
-              </label>
-              <span className={`text-xs ${comments.length > 900 ? "text-amber-500 font-semibold" : "text-muted-foreground"}`}>
-                {comments.length}/1000
-              </span>
-            </div>
-            <textarea
-              className="w-full border rounded-xl px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-              rows={4} maxLength={1000}
-              placeholder="Share any specific feedback, suggestions, or concerns... (Please use respectful language)"
-              value={comments}
-              onChange={e => setComments(e.target.value)}
-            />
-            <p className="text-xs text-muted-foreground">Feedback containing abusive or offensive language will be automatically rejected.</p>
-          </div>
+          <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Step 4 — Privacy</h2>
           <label className="flex items-center gap-3 cursor-pointer">
             <input type="checkbox" checked={isAnonymous} onChange={e => setIsAnonymous(e.target.checked)} className="w-4 h-4 rounded text-primary" />
             <div>
