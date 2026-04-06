@@ -8,6 +8,7 @@ import {
   GraduationCap, ExternalLink, LogOut, ChevronRight
 } from "lucide-react";
 import { CupgsLogo } from "@/components/CupgsLogo";
+import { BackgroundSlideshow } from "@/components/BackgroundSlideshow";
 
 function ThemeToggleBtn() {
   const { isDark, toggleTheme } = useTheme();
@@ -39,7 +40,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col relative">
-      {/* Background blobs */}
+      <BackgroundSlideshow />
       <div className="bg-blob bg-blob-1" />
       <div className="bg-blob bg-blob-2" />
       <div className="bg-blob bg-blob-3" />

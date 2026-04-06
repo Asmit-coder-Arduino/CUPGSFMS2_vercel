@@ -10,6 +10,7 @@ import { useRole } from "@/contexts/RoleContext";
 import { usePlatform } from "@/hooks/usePlatform";
 import { useTheme } from "@/contexts/ThemeContext";
 import { CupgsLogo } from "@/components/CupgsLogo";
+import { BackgroundSlideshow } from "@/components/BackgroundSlideshow";
 
 type NavItem = { name: string; href: string; icon: React.ElementType };
 
@@ -93,6 +94,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row relative">
+      <BackgroundSlideshow />
       {/* Dark-only floating blobs */}
       <div className="bg-blob bg-blob-1" />
       <div className="bg-blob bg-blob-2" />

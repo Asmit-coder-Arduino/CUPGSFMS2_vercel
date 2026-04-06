@@ -1,5 +1,28 @@
 uploads = []
-generated = []
+
+[[generated]]
+id = "TBHFpwPcsILLEHx7inIw1"
+uri = "file://artifacts/bput-feedback/public/bg-aurora.png"
+type = "image"
+title = "aurora gradient wallpaper"
+
+[[generated]]
+id = "g9jygQyU9F10ZsI3irRAc"
+uri = "file://artifacts/bput-feedback/public/bg-liquid.png"
+type = "image"
+title = "liquid glass wallpaper"
+
+[[generated]]
+id = "kh-Hx7H4_n6m3NCuX8yTS"
+uri = "file://artifacts/bput-feedback/public/bg-nebula.png"
+type = "image"
+title = "cosmic nebula wallpaper"
+
+[[generated]]
+id = "Ux8tqvGs2ZxoOf0lxzzRp"
+uri = "file://artifacts/bput-feedback/public/bg-ocean.png"
+type = "image"
+title = "deep ocean glow wallpaper"
 
 [[outputs]]
 id = "DNYPbFPAJjS-si0mrrbw9"
