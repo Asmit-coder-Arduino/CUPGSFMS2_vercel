@@ -1,4 +1,4 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -22,6 +22,7 @@ import HodDashboard from "./pages/HodDashboard";
 import AdminReports from "./pages/AdminReports";
 
 import { AppLayout } from "./components/layout/AppLayout";
+import { HomePageLayout } from "./components/HomePageLayout";
 import { InstallPrompt } from "./components/InstallPrompt";
 import { SplashScreen } from "./components/SplashScreen";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -35,11 +36,10 @@ const queryClient = new QueryClient({
   },
 });
 
-function Router() {
+function DashboardRoutes() {
   return (
     <AppLayout>
       <Switch>
-        <Route path="/" component={Home} />
         <Route path="/submit-feedback" component={SubmitFeedback} />
         <Route path="/faculty-portal" component={FacultyPortal} />
         <Route path="/hod-dashboard" component={HodDashboard} />
@@ -56,6 +56,19 @@ function Router() {
         <Route component={NotFound} />
       </Switch>
     </AppLayout>
+  );
+}
+
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={() => (
+        <HomePageLayout>
+          <Home />
+        </HomePageLayout>
+      )} />
+      <Route component={DashboardRoutes} />
+    </Switch>
   );
 }
 
