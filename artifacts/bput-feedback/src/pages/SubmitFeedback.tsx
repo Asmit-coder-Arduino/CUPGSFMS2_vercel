@@ -427,6 +427,10 @@ export default function SubmitFeedback() {
           }
         }
       }
+      if (formTemplate.commentRequired && !comments.trim()) {
+        setError(`"${formTemplate.commentLabel}" is required.`);
+        return;
+      }
     } else {
       // No template — validate all 5 standard ratings
       if (Object.values(ratings).some(v => v === 0)) {
@@ -810,9 +814,30 @@ export default function SubmitFeedback() {
           )}
         </div>
 
-        {/* Step 4 — Privacy */}
+        {/* Step 4 — Comments & Privacy */}
         <div className="bg-card border rounded-xl p-5 space-y-4">
-          <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Step 4 — Privacy</h2>
+          <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Step 4 — Comments & Privacy</h2>
+          <div className="space-y-1">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium">
+                {formTemplate?.commentLabel || "Comments / Suggestions"}
+                {formTemplate?.commentRequired
+                  ? <span className="text-red-500 ml-1">*</span>
+                  : <span className="text-muted-foreground text-xs ml-1">(optional)</span>}
+              </label>
+              <span className={`text-xs ${comments.length > 900 ? "text-amber-500 font-semibold" : "text-muted-foreground"}`}>
+                {comments.length}/1000
+              </span>
+            </div>
+            <textarea
+              className="w-full border rounded-xl px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+              rows={4} maxLength={1000}
+              placeholder="Share any specific feedback, suggestions, or concerns... (Please use respectful language)"
+              value={comments}
+              onChange={e => setComments(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">Feedback containing abusive or offensive language will be automatically rejected.</p>
+          </div>
           <label className="flex items-center gap-3 cursor-pointer">
             <input type="checkbox" checked={isAnonymous} onChange={e => setIsAnonymous(e.target.checked)} className="w-4 h-4 rounded text-primary" />
             <div>
