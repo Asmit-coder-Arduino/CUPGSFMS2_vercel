@@ -378,7 +378,7 @@ function TopTeachersSection() {
   const [selectedFacultyId, setSelectedFacultyId] = useState<number | null>(null);
   const [localLikes, setLocalLikes] = useState<Record<number, { liked: boolean; count: number }>>({});
 
-  const { data, isLoading, error } = useQuery<{ faculty: TopFaculty[] }>({
+  const { data, isLoading, error } = useQuery<{ topFaculty: TopFaculty[]; topCourses: unknown[] }>({
     queryKey: ["top-rated"],
     queryFn: async () => {
       const res = await fetch(`${getApiUrl()}/api/analytics/top-rated`);
@@ -393,7 +393,7 @@ function TopTeachersSection() {
     refetchOnWindowFocus: true,
   });
 
-  const top3: TopFaculty[] = (data?.faculty ?? []).slice(0, 3);
+  const top3: TopFaculty[] = (data?.topFaculty ?? []).slice(0, 3);
 
   const refresh = async () => {
     setSpinning(true);
