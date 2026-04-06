@@ -53,13 +53,14 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
           className="border-b text-xs"
           style={{
             background: isDark
-              ? "rgba(6,3,15,0.98)"
-              : "rgba(15,23,42,0.97)",
-            borderColor: isDark ? "rgba(139,92,246,0.15)" : "rgba(255,255,255,0.1)",
-            backdropFilter: "blur(20px)",
+              ? "rgba(5,2,12,0.35)"
+              : "rgba(10,16,36,0.55)",
+            borderColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.12)",
+            backdropFilter: "blur(32px) saturate(180%)",
+            WebkitBackdropFilter: "blur(32px) saturate(180%)",
           }}
         >
-          <div className="max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-between">
+          <div className="w-full px-4 md:px-10 xl:px-16 py-1.5 flex items-center justify-between">
             <div className="flex items-center gap-4 text-white/50">
               <a href="https://www.bput.ac.in" target="_blank" rel="noreferrer"
                 className="hover:text-white/80 transition-colors flex items-center gap-1">
@@ -83,14 +84,15 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
         <div
           style={{
             background: isDark
-              ? "linear-gradient(135deg, rgba(6,3,15,0.97) 0%, rgba(10,5,25,0.97) 100%)"
-              : "linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)",
-            borderBottom: `1px solid ${isDark ? "rgba(139,92,246,0.2)" : "rgba(139,92,246,0.3)"}`,
-            backdropFilter: "blur(24px)",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
+              ? "rgba(8,4,22,0.45)"
+              : "rgba(12,18,48,0.55)",
+            borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.15)"}`,
+            backdropFilter: "blur(36px) saturate(200%)",
+            WebkitBackdropFilter: "blur(36px) saturate(200%)",
+            boxShadow: "0 4px 32px rgba(0,0,0,0.25)",
           }}
         >
-          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+          <div className="w-full px-4 md:px-10 xl:px-16 py-3 flex items-center gap-4">
             {/* BPUT Official Logo */}
             <a href="https://www.bput.ac.in" target="_blank" rel="noreferrer" className="flex-shrink-0">
               <img
@@ -148,13 +150,14 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
         <nav
           style={{
             background: isDark
-              ? "rgba(139,92,246,0.12)"
-              : "rgba(109,40,217,0.85)",
-            borderBottom: `1px solid ${isDark ? "rgba(139,92,246,0.2)" : "rgba(139,92,246,0.4)"}`,
-            backdropFilter: "blur(12px)",
+              ? "rgba(139,92,246,0.08)"
+              : "rgba(109,40,217,0.55)",
+            borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.18)"}`,
+            backdropFilter: "blur(24px) saturate(180%)",
+            WebkitBackdropFilter: "blur(24px) saturate(180%)",
           }}
         >
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="w-full px-4 md:px-10 xl:px-16">
             <div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-1">
               {[
                 { label: "Home", href: "/" },
@@ -193,7 +196,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
 
       {/* ══════════ MAIN CONTENT ══════════ */}
       <main className="flex-1 relative z-10">
-        <div className="max-w-6xl mx-auto px-4 py-8 pb-12">
+        <div className="w-full px-4 md:px-10 xl:px-16 py-8 pb-12">
           {children}
         </div>
       </main>
@@ -206,7 +209,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
             : "linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)",
           borderTop: `1px solid ${isDark ? "rgba(139,92,246,0.15)" : "rgba(139,92,246,0.25)"}`,
         }}>
-        <div className="max-w-7xl mx-auto px-4 py-10">
+        <div className="w-full px-4 md:px-10 xl:px-16 py-10">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 
             {/* Col 1: Logo + About */}

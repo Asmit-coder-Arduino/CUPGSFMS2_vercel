@@ -24,12 +24,10 @@ import { CupgsLogo } from "@/components/CupgsLogo";
    BPUT Campus slide data
 ───────────────────────────────── */
 const SLIDES = [
-  { url: "https://www.bput.ac.in/images/banner/Untitled-1_29.jpg", caption: "BPUT Campus — Rourkela, Odisha" },
-  { url: "https://www.bput.ac.in/images/banner/Untitled-1_28.jpg", caption: "Centre for UG & PG Studies" },
-  { url: "https://www.bput.ac.in/images/banner/Untitled-1_27.jpg", caption: "Excellence in Technical Education" },
-  { url: "https://www.bput.ac.in/images/banner/Untitled-1_26.jpg", caption: "World-Class Infrastructure" },
-  { url: "https://www.bput.ac.in/images/banner/2_4.jpg",           caption: "Shaping Future Engineers" },
-  { url: "https://www.bput.ac.in/images/banner/1_4.jpg",           caption: "Research & Innovation Hub" },
+  { url: "/campus1.jpg", caption: "BPUT Campus — Rourkela, Odisha" },
+  { url: "/campus2.jpg", caption: "Centre for UG & PG Studies" },
+  { url: "/campus3.jpg", caption: "Excellence in Technical Education" },
+  { url: "/campus4.jpg", caption: "Shaping Future Engineers" },
 ];
 
 /* ─────────────────────────────────

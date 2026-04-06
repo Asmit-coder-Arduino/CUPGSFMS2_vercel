@@ -410,6 +410,72 @@ function WindowStatus({ w }: { w: WindowItem }) {
   return <Badge className="text-xs gap-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 border-0"><CheckCircle2 className="w-3 h-3" /> Active</Badge>;
 }
 
+// ─── Window Card ─────────────────────────────────────────────────────────────
+
+function WindowCard({ w, togglingWindow, toggleWindow }: {
+  w: WindowItem;
+  togglingWindow: number | null;
+  toggleWindow: (w: WindowItem) => void;
+}) {
+  const now = new Date(), start = new Date(w.startDate), end = new Date(w.endDate);
+  const daysLeft = Math.ceil((end.getTime() - now.getTime()) / 86400000);
+  const elapsed = Math.min(100, Math.max(0, Math.round(((now.getTime() - start.getTime()) / (end.getTime() - start.getTime())) * 100)));
+  const isRunning = w.isActive && now >= start && now <= end;
+  const isGlobal = w.departmentIds.length === 0;
+  const typeLabel: Record<string, string> = { semester_end: "Semester End", mid_semester: "Mid-Semester", event_based: "Event Based", placement: "Placement" };
+  return (
+    <Card className={`shadow-sm overflow-hidden transition-all ${isRunning ? "border-emerald-300 dark:border-emerald-800" : ""}`}>
+      {isRunning && <div className="h-1 bg-gradient-to-r from-emerald-400 to-teal-500" />}
+      <CardContent className="p-4">
+        <div className="flex items-start gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <h3 className="font-semibold text-sm">{w.title}</h3>
+              <WindowStatus w={w} />
+              <Badge variant="outline" className="text-xs">{typeLabel[w.feedbackType] ?? w.feedbackType}</Badge>
+              <Badge variant="outline" className="text-xs">Sem {w.semester}</Badge>
+              {isGlobal && (
+                <Badge className="text-xs gap-1 bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border-0">
+                  <GraduationCap className="w-3 h-3" /> All Depts
+                </Badge>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{new Date(w.startDate).toLocaleDateString("en-IN")} — {new Date(w.endDate).toLocaleDateString("en-IN")}</span>
+              <span className="flex items-center gap-1"><Layers className="w-3 h-3" />{w.academicYear}</span>
+            </div>
+            {isRunning && (
+              <div className="mt-2.5">
+                <div className="flex justify-between text-xs mb-1">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-medium">{daysLeft <= 0 ? "Closes today!" : `${daysLeft} day${daysLeft !== 1 ? "s" : ""} remaining`}</span>
+                  <span className="text-muted-foreground">{elapsed}% elapsed</span>
+                </div>
+                <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full" style={{ width: `${elapsed}%` }} />
+                </div>
+              </div>
+            )}
+          </div>
+          <button
+            onClick={() => toggleWindow(w)}
+            disabled={togglingWindow === w.id}
+            title={w.isActive ? "Deactivate" : "Activate"}
+            className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+              w.isActive
+                ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:bg-emerald-900/20 dark:text-emerald-300 dark:border-emerald-800"
+                : "bg-muted text-muted-foreground border-border hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200"
+            }`}
+          >
+            {togglingWindow === w.id
+              ? <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+              : w.isActive ? <><ToggleRight className="w-4 h-4" />Active</> : <><ToggleLeft className="w-4 h-4" />Inactive</>}
+          </button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 // ─── Window Form Modal ────────────────────────────────────────────────────────
 
 function CreateWindowModal({ deptId, onClose, onSaved }: {
@@ -1234,82 +1300,57 @@ export default function HodDashboard() {
 
           {windowsLoading ? (
             <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}</div>
-          ) : windows.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 bg-muted/20 rounded-2xl border border-dashed">
-              <Calendar className="w-12 h-12 text-muted-foreground/30 mb-3" />
-              <p className="font-medium text-muted-foreground">No feedback windows</p>
-              <p className="text-sm text-muted-foreground/70 mb-4">Create a window to allow student submissions</p>
-              <Button size="sm" className="bg-teal-600 hover:bg-teal-700 gap-1.5" onClick={() => setShowCreateWindow(true)}>
-                <Plus className="w-4 h-4" /> Create Window
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {windows.map(w => {
-                const now = new Date(), start = new Date(w.startDate), end = new Date(w.endDate);
-                const daysLeft = Math.ceil((end.getTime() - now.getTime()) / 86400000);
-                const elapsed = Math.min(100, Math.max(0, Math.round(((now.getTime() - start.getTime()) / (end.getTime() - start.getTime())) * 100)));
-                const isRunning = w.isActive && now >= start && now <= end;
-                const typeLabel: Record<string, string> = { semester_end: "Semester End", mid_semester: "Mid-Semester", event_based: "Event Based", placement: "Placement" };
+          ) : (() => {
+            // Show windows relevant to this HOD's dept: global (departmentIds=[]) OR includes this dept
+            const deptId = hod?.id ?? -1;
+            const relevantWindows = windows.filter(w =>
+              w.departmentIds.length === 0 || w.departmentIds.includes(deptId)
+            );
+            const globalWindows = relevantWindows.filter(w => w.departmentIds.length === 0);
+            const deptWindows   = relevantWindows.filter(w => w.departmentIds.length > 0);
 
-                return (
-                  <Card key={w.id} className={`shadow-sm overflow-hidden transition-all ${isRunning ? "border-emerald-300 dark:border-emerald-800" : ""}`}>
-                    {isRunning && <div className="h-1 bg-gradient-to-r from-emerald-400 to-teal-500" />}
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 flex-wrap mb-1">
-                            <h3 className="font-semibold text-sm">{w.title}</h3>
-                            <WindowStatus w={w} />
-                            <Badge variant="outline" className="text-xs">{typeLabel[w.feedbackType] ?? w.feedbackType}</Badge>
-                            <Badge variant="outline" className="text-xs">Sem {w.semester}</Badge>
-                          </div>
-                          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{new Date(w.startDate).toLocaleDateString("en-IN")} — {new Date(w.endDate).toLocaleDateString("en-IN")}</span>
-                            <span className="flex items-center gap-1"><Layers className="w-3 h-3" />{w.academicYear}</span>
-                            {w.departmentIds.length === 0 && <span className="flex items-center gap-1 text-blue-600 dark:text-blue-400"><GraduationCap className="w-3 h-3" />All Departments</span>}
-                          </div>
-                          {isRunning && (
-                            <div className="mt-2.5">
-                              <div className="flex justify-between text-xs mb-1">
-                                <span className="text-emerald-600 dark:text-emerald-400 font-medium">{daysLeft <= 0 ? "Closes today!" : `${daysLeft} day${daysLeft !== 1 ? "s" : ""} remaining`}</span>
-                                <span className="text-muted-foreground">{elapsed}% elapsed</span>
-                              </div>
-                              <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full" style={{ width: `${elapsed}%` }} />
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        <button
-                          onClick={() => toggleWindow(w)}
-                          disabled={togglingWindow === w.id}
-                          title={w.isActive ? "Deactivate" : "Activate"}
-                          className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
-                            w.isActive
-                              ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:bg-emerald-900/20 dark:text-emerald-300 dark:border-emerald-800"
-                              : "bg-muted text-muted-foreground border-border hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200"
-                          }`}
-                        >
-                          {togglingWindow === w.id
-                            ? <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                            : w.isActive ? <><ToggleRight className="w-4 h-4" />Active</> : <><ToggleLeft className="w-4 h-4" />Inactive</>}
-                        </button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
+            return relevantWindows.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 bg-muted/20 rounded-2xl border border-dashed">
+                <Calendar className="w-12 h-12 text-muted-foreground/30 mb-3" />
+                <p className="font-medium text-muted-foreground">No feedback windows</p>
+                <p className="text-sm text-muted-foreground/70 mb-4">Create a department window or ask Admin to create a global window</p>
+                <Button size="sm" className="bg-teal-600 hover:bg-teal-700 gap-1.5" onClick={() => setShowCreateWindow(true)}>
+                  <Plus className="w-4 h-4" /> Create Window
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {/* Global windows (Admin-created or HOD marked forAll) */}
+                {globalWindows.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1.5 px-1">
+                      <GraduationCap className="w-3.5 h-3.5" /> Institution-wide Windows (visible to all departments)
+                    </p>
+                    {globalWindows.map(w => <WindowCard key={w.id} w={w} togglingWindow={togglingWindow} toggleWindow={toggleWindow} />)}
+                  </div>
+                )}
+                {/* Department-specific windows */}
+                {deptWindows.length > 0 && (
+                  <div className="space-y-2">
+                    {globalWindows.length > 0 && <p className="text-xs font-semibold text-teal-600 dark:text-teal-400 flex items-center gap-1.5 px-1 pt-1">
+                      <Building2 className="w-3.5 h-3.5" /> Your Department Windows
+                    </p>}
+                    {deptWindows.map(w => <WindowCard key={w.id} w={w} togglingWindow={togglingWindow} toggleWindow={toggleWindow} />)}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
-          {windows.length > 0 && (
+          {windows.filter(w => w.departmentIds.length === 0 || w.departmentIds.includes(hod?.id ?? -1)).length > 0 && (() => {
+            const rel = windows.filter(w => w.departmentIds.length === 0 || w.departmentIds.includes(hod?.id ?? -1));
+            return (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
-                { label: "Total Windows", value: windows.length, icon: CalendarRange, color: "text-teal-600" },
-                { label: "Active", value: windows.filter(w => w.isActive).length, icon: CheckCircle2, color: "text-emerald-600" },
-                { label: "Currently Open", value: windows.filter(w => { const n=new Date(); return w.isActive && n>=new Date(w.startDate) && n<=new Date(w.endDate); }).length, icon: Clock, color: "text-blue-600" },
-                { label: "Expired", value: windows.filter(w => new Date() > new Date(w.endDate)).length, icon: XCircle, color: "text-red-500" },
+                { label: "Total Windows", value: rel.length, icon: CalendarRange, color: "text-teal-600" },
+                { label: "Active", value: rel.filter(w => w.isActive).length, icon: CheckCircle2, color: "text-emerald-600" },
+                { label: "Currently Open", value: rel.filter(w => { const n=new Date(); return w.isActive && n>=new Date(w.startDate) && n<=new Date(w.endDate); }).length, icon: Clock, color: "text-blue-600" },
+                { label: "Expired", value: rel.filter(w => new Date() > new Date(w.endDate)).length, icon: XCircle, color: "text-red-500" },
               ].map(({ label, value, icon: Icon, color }) => (
                 <Card key={label} className="shadow-sm">
                   <CardContent className="p-4 flex items-center gap-3">
@@ -1322,7 +1363,7 @@ export default function HodDashboard() {
                 </Card>
               ))}
             </div>
-          )}
+          );})()}
         </div>
       )}
 

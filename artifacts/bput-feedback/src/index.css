@@ -348,46 +348,60 @@ body {
 .dark .bg-blob-light { display: none; }
 
 /* ══════════════════════════════════════
-   SIDEBAR — Dark glass with gradient
+   SIDEBAR — Liquid glass
 ══════════════════════════════════════ */
 .glass-sidebar {
-  background: rgba(6, 3, 15, 0.95);
-  border-right: 1px solid rgba(139,92,246,0.12);
-  box-shadow: inset -1px 0 0 rgba(255,255,255,0.04);
+  background: rgba(8, 4, 20, 0.55);
+  border-right: 1px solid rgba(255,255,255,0.06);
+  box-shadow: inset -1px 0 0 rgba(255,255,255,0.03);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
 }
 
 /* ══════════════════════════════════════
-   CARDS — Premium Glassmorphism
+   CARDS — Liquid Glassmorphism
 ══════════════════════════════════════ */
+@keyframes liquidShimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
 .glass-card {
-  background: rgba(255,255,255,0.92);
-  border: 1px solid rgba(139,92,246,0.15);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 20px rgba(139,92,246,0.06);
+  background: rgba(255,255,255,0.52);
+  border: 1px solid rgba(255,255,255,0.65);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06),
+              inset 0 1px 0 rgba(255,255,255,0.9);
   transition: transform 0.3s cubic-bezier(.22,1,.36,1),
               box-shadow 0.3s ease,
+              background 0.3s ease,
               border-color 0.3s ease;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
 }
 .glass-card:hover {
   transform: translateY(-4px) scale(1.005);
-  box-shadow: 0 12px 40px rgba(139,92,246,0.18), 0 4px 12px rgba(0,0,0,0.06);
-  border-color: rgba(139,92,246,0.35);
+  background: rgba(255,255,255,0.65);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06),
+              inset 0 1px 0 rgba(255,255,255,0.95);
+  border-color: rgba(255,255,255,0.8);
 }
 
-/* Dark glass card */
+/* Dark liquid glass card */
 .dark .glass-card {
-  background: rgba(255,255,255,0.04);
+  background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.07);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45),
+              inset 0 1px 0 rgba(255,255,255,0.05),
+              inset 0 0 0 1px rgba(255,255,255,0.04);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
 }
 .dark .glass-card:hover {
-  background: rgba(255,255,255,0.07);
-  border-color: rgba(139,92,246,0.35);
-  box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(139,92,246,0.25),
-              0 0 40px rgba(139,92,246,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.055);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.55),
+              inset 0 1px 0 rgba(255,255,255,0.08),
+              0 0 0 1px rgba(255,255,255,0.06);
   transform: translateY(-5px) scale(1.007);
 }
 
@@ -419,29 +433,29 @@ body {
    GLASS UTILITIES
 ══════════════════════════════════════ */
 .glass {
-  background: rgba(255,255,255,0.88);
-  border: 1px solid rgba(139,92,246,0.12);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 .dark .glass {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
 }
 
 .glass-strong {
-  background: rgba(255,255,255,0.95);
-  border-bottom: 1px solid rgba(139,92,246,0.1);
-  box-shadow: 0 1px 12px rgba(0,0,0,0.06);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.72);
+  border-bottom: 1px solid rgba(255,255,255,0.7);
+  box-shadow: 0 1px 20px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,1);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
 }
 .dark .glass-strong {
-  background: rgba(6,3,15,0.92);
-  border-color: rgba(139,92,246,0.12);
+  background: rgba(6,3,15,0.55);
+  border-color: rgba(255,255,255,0.06);
   box-shadow: 0 1px 0 rgba(255,255,255,0.04);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
 }
 
 /* ══════════════════════════════════════
@@ -666,16 +680,25 @@ body {
    STAT CARD — Premium numbers
 ══════════════════════════════════════ */
 .stat-card {
-  background: rgba(255,255,255,0.9);
-  border: 1px solid rgba(139,92,246,0.12);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.62);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.85);
   border-radius: 16px;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  transition: all 0.25s ease;
+}
+.stat-card:hover {
+  background: rgba(255,255,255,0.65);
+  transform: translateY(-2px);
 }
 .dark .stat-card {
-  background: rgba(255,255,255,0.04);
-  border-color: rgba(255,255,255,0.08);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.07);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.dark .stat-card:hover {
+  background: rgba(255,255,255,0.05);
 }
 
 /* ══════════════════════════════════════
