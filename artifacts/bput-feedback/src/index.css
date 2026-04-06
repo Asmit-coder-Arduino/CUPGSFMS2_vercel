@@ -348,165 +348,144 @@ body {
 .dark .bg-blob-light { display: none; }
 
 /* ══════════════════════════════════════
-   SIDEBAR — Liquid glass
+   CSS GLASS — Universal transparent glass
+   Source: https://css.glass
 ══════════════════════════════════════ */
-.glass-sidebar {
-  background: rgba(8, 4, 20, 0.55);
-  border-right: 1px solid rgba(255,255,255,0.06);
-  box-shadow: inset -1px 0 0 rgba(255,255,255,0.03);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-}
 
-/* ══════════════════════════════════════
-   CARDS — Liquid Glassmorphism
-══════════════════════════════════════ */
-@keyframes liquidShimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
+/* Core glass mixin values */
+/* background: rgba(3,255,234,0) → alpha=0 = fully transparent */
+/* backdrop-filter: blur(7.9px) → the blur IS the glass effect */
 
-.glass-card {
-  background: rgba(255, 255, 255, 0);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
+.glass-card,
+.glass,
+.glass-strong {
+  background: rgba(3, 255, 234, 0);
   border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(7.9px);
   -webkit-backdrop-filter: blur(7.9px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transition: transform 0.3s cubic-bezier(.22,1,.36,1),
               box-shadow 0.3s ease,
               border-color 0.3s ease;
 }
+
 .glass-card:hover {
   transform: translateY(-4px) scale(1.005);
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
-/* Dark mode — same transparent glass */
-.dark .glass-card {
-  background: rgba(255, 255, 255, 0);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(7.9px);
-  -webkit-backdrop-filter: blur(7.9px);
+.dark .glass-card,
+.dark .glass,
+.dark .glass-strong {
+  background: rgba(3, 255, 234, 0);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.07);
 }
+
 .dark .glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.38);
+  border-color: rgba(255, 255, 255, 0.14);
   transform: translateY(-5px) scale(1.007);
 }
 
-/* ══════════════════════════════════════
-   ROLE CARDS — Colorless glass hover
-══════════════════════════════════════ */
+/* Sidebar — slight dark tint so content doesn't bleed through too much */
+.glass-sidebar {
+  background: rgba(3, 255, 234, 0);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.9px);
+  -webkit-backdrop-filter: blur(7.9px);
+}
+
+/* Role card hover — same glass, just lift */
 .role-card-blue:hover,
 .role-card-emerald:hover,
 .role-card-violet:hover,
 .role-card-rose:hover {
-  border-color: rgba(255,255,255,0.18) !important;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5),
-              inset 0 1px 0 rgba(255,255,255,0.1) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* ══════════════════════════════════════
-   GLASS UTILITIES
+   NAV ITEMS — Glass hover
 ══════════════════════════════════════ */
-.glass {
-  background: rgba(255, 255, 255, 0);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.glass-nav-item {
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.glass-nav-item:hover {
+  background: rgba(3, 255, 234, 0);
   backdrop-filter: blur(7.9px);
   -webkit-backdrop-filter: blur(7.9px);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transform: translateX(3px);
 }
-.dark .glass {
-  background: rgba(255, 255, 255, 0);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-strong {
-  background: rgba(255, 255, 255, 0);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 1px 20px rgba(0,0,0,0.08);
-  backdrop-filter: blur(32px) saturate(200%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%);
-}
-.dark .glass-strong {
-  background: rgba(6,3,15,0.55);
-  border-color: rgba(255,255,255,0.06);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.04);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-}
-
-/* ══════════════════════════════════════
-   NAV ITEMS
-══════════════════════════════════════ */
-.glass-nav-item { transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease; }
-.glass-nav-item:hover { background: rgba(139,92,246,0.1); transform: translateX(3px); }
 .glass-nav-item.active {
-  background: rgba(139,92,246,0.18);
-  border: 1px solid rgba(139,92,246,0.3);
-}
-.dark .glass-nav-item:hover { background: rgba(139,92,246,0.12); }
-.dark .glass-nav-item.active {
-  background: linear-gradient(135deg, rgba(139,92,246,0.32), rgba(109,40,217,0.22));
-  border: 1px solid rgba(139,92,246,0.35);
-  box-shadow: 0 2px 16px rgba(139,92,246,0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+  background: rgba(3, 255, 234, 0);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.9px);
+  -webkit-backdrop-filter: blur(7.9px);
 }
 
 /* ══════════════════════════════════════
-   GLASS BUTTONS — Transparent glass, text visible
+   GLASS BUTTONS — Dark-tinted glass
+   (dark tint keeps white text readable)
 ══════════════════════════════════════ */
 .btn-gradient-blue,
 .btn-gradient-teal,
 .btn-gradient-indigo,
 .btn-gradient-slate {
-  background: rgba(0, 0, 0, 0.22) !important;
+  background: rgba(0, 0, 0, 0.25) !important;
   border: 1px solid rgba(255, 255, 255, 0.20) !important;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   backdrop-filter: blur(7.9px) !important;
   -webkit-backdrop-filter: blur(7.9px) !important;
   color: rgba(255, 255, 255, 0.92) !important;
+  border-radius: 12px;
   transition: all 0.25s cubic-bezier(.22,1,.36,1);
 }
 .btn-gradient-blue:hover:not(:disabled),
 .btn-gradient-teal:hover:not(:disabled),
 .btn-gradient-indigo:hover:not(:disabled),
 .btn-gradient-slate:hover:not(:disabled) {
-  background: rgba(0, 0, 0, 0.35) !important;
+  background: rgba(0, 0, 0, 0.38) !important;
   border-color: rgba(255, 255, 255, 0.32) !important;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2) !important;
   transform: translateY(-2px) scale(1.01);
 }
 
 /* ══════════════════════════════════════
-   ACCENT LINES — Colorless glass
+   ACCENT LINES — Glass bar
 ══════════════════════════════════════ */
 .accent-line-blue,
 .accent-line-teal,
 .accent-line-indigo,
 .accent-line-slate {
-  background: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(7.9px);
+  -webkit-backdrop-filter: blur(7.9px);
 }
 
 /* ══════════════════════════════════════
-   ICON CIRCLES — Colorless glass
+   ICON CIRCLES — Glass
 ══════════════════════════════════════ */
 .icon-circle-blue,
 .icon-circle-teal,
 .icon-circle-indigo,
 .icon-circle-slate {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(3, 255, 234, 0);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.9px);
+  -webkit-backdrop-filter: blur(7.9px);
 }
 
 .dark .icon-circle-blue,
 .dark .icon-circle-teal,
 .dark .icon-circle-indigo,
 .dark .icon-circle-slate {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.12);
+  border-color: rgba(255, 255, 255, 0.10);
 }
 
 /* ══════════════════════════════════════
@@ -632,28 +611,30 @@ body {
 }
 
 /* ══════════════════════════════════════
-   STAT CARD — Premium numbers
+   STAT CARD — css.glass
 ══════════════════════════════════════ */
 .stat-card {
-  background: rgba(255,255,255,0.5);
-  border: 1px solid rgba(255,255,255,0.62);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.85);
+  background: rgba(3, 255, 234, 0);
   border-radius: 16px;
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.9px);
+  -webkit-backdrop-filter: blur(7.9px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transition: all 0.25s ease;
 }
 .stat-card:hover {
-  background: rgba(255,255,255,0.65);
   transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 .dark .stat-card {
-  background: rgba(255,255,255,0.03);
-  border-color: rgba(255,255,255,0.07);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+  background: rgba(3, 255, 234, 0);
+  border-color: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.25);
 }
 .dark .stat-card:hover {
-  background: rgba(255,255,255,0.05);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 /* ══════════════════════════════════════
