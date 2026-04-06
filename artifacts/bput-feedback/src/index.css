@@ -247,6 +247,32 @@
   50%       { opacity: 0.8; transform: scale(1.1); }
 }
 
+/* Background slideshow — Ken Burns + crossfade */
+@keyframes bgFadeIn {
+  0%   { opacity: 0; }
+  100% { opacity: 0.55; }
+}
+@keyframes kenBurns_0 {
+  0%   { transform: scale(1.0)  translate(0%, 0%); }
+  100% { transform: scale(1.15) translate(-2%, -1%); }
+}
+@keyframes kenBurns_1 {
+  0%   { transform: scale(1.0)  translate(0%, 0%); }
+  100% { transform: scale(1.12) translate(2%, 1.5%); }
+}
+@keyframes kenBurns_2 {
+  0%   { transform: scale(1.0)  translate(0%, 0%); }
+  100% { transform: scale(1.18) translate(-1.5%, 2%); }
+}
+@keyframes kenBurns_3 {
+  0%   { transform: scale(1.0)  translate(0%, 0%); }
+  100% { transform: scale(1.14) translate(1%, -2%); }
+}
+@keyframes kenBurns_4 {
+  0%   { transform: scale(1.0)  translate(0%, 0%); }
+  100% { transform: scale(1.16) translate(0.5%, 1.5%); }
+}
+
 /* ══════════════════════════════════════
    ANIMATION UTILITIES
 ══════════════════════════════════════ */
