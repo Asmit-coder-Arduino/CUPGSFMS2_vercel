@@ -57,7 +57,9 @@ const RoleContext = createContext<RoleContextType>({
   logout: () => {},
 });
 
-const STORAGE_KEY = "bput_session";
+// ─── sessionStorage: per-tab, not shared between browser tabs ───
+// This ensures User A's session in Tab 1 doesn't bleed into Tab 2.
+const SESSION_KEY = "bput_tab_session";
 
 export function RoleProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<Role>("guest");
@@ -65,9 +67,12 @@ export function RoleProvider({ children }: { children: ReactNode }) {
   const [hod, setHodState] = useState<HodUser | null>(null);
   const [student, setStudentState] = useState<StudentUser | null>(null);
 
+  // On mount: restore from sessionStorage (this tab only)
   useEffect(() => {
+    // Also clear any old localStorage sessions to avoid confusion
+    try { localStorage.removeItem("bput_session"); } catch {}
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = sessionStorage.getItem(SESSION_KEY);
       if (stored) {
         const session = JSON.parse(stored);
         setRole(session.role ?? "guest");
@@ -79,7 +84,9 @@ export function RoleProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const save = (r: Role, f: FacultyUser | null, h: HodUser | null, s: StudentUser | null) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ role: r, faculty: f, hod: h, student: s }));
+    try {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ role: r, faculty: f, hod: h, student: s }));
+    } catch {}
     setRole(r);
     setFacultyState(f);
     setHodState(h);
@@ -91,8 +98,11 @@ export function RoleProvider({ children }: { children: ReactNode }) {
   const setStudent = (user: StudentUser) => save("student", null, null, user);
   const setAdmin = () => save("admin", null, null, null);
   const logout = () => {
-    localStorage.removeItem(STORAGE_KEY);
-    save("guest", null, null, null);
+    try { sessionStorage.removeItem(SESSION_KEY); } catch {}
+    setRole("guest");
+    setFacultyState(null);
+    setHodState(null);
+    setStudentState(null);
   };
 
   return (
