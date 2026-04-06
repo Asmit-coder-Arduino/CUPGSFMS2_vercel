@@ -193,8 +193,8 @@ router.get("/feedback/track/:referenceId", async (req, res): Promise<void> => {
     res.json({
       found: false,
       referenceId: refId,
-      status: "NOT_FOUND",
-      message: "No feedback found with this Reference ID. Please check the ID and try again.",
+      status: "DELETED",
+      message: "This feedback has been deleted or does not exist. It may have been removed by the HOD.",
     });
     return;
   }
