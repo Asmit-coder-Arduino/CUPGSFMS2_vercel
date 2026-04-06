@@ -16,7 +16,8 @@ import {
   CheckCircle2, Building2, ArrowRight, Sparkles,
   Lock, BarChart3, FileText, Trophy, Medal,
   Award, ChevronRight, TrendingUp, Building, Zap,
-  ChevronLeft, Wifi, RefreshCw, Star,
+  ChevronLeft, Wifi, RefreshCw, Star, Heart,
+  MessageCircle, Brain, X,
 } from "lucide-react";
 import { CupgsLogo } from "@/components/CupgsLogo";
 
@@ -196,34 +197,176 @@ interface TopFaculty {
   departmentCode: string;
   avgRating: number;
   totalFeedbackCount: number;
+  photoUrl: string | null;
+  likeCount: number;
+}
+
+interface TopFacultyDetail {
+  faculty: { id: number; name: string; designation: string; departmentName: string; departmentCode: string; photoUrl: string | null };
+  ratings: { avgOverall: number | null; avgContent: number | null; avgTeaching: number | null; avgLab: number | null; avgMaterial: number | null; totalFeedback: number };
+  comments: { comment: string; courseCode: string; courseName: string; createdAt: string; ratingOverall: number }[];
+  likeCount: number;
+  likedByMe: boolean;
+  aiAnalysis: string;
 }
 
 const RANK_CFG = [
   {
     rank: 1, label: "Top Rated", icon: Trophy,
     barGrad: "rgba(255,255,255,0.18)",
-    numGrad: "rgba(255,255,255,0.10)",
-    border: "rgba(255,255,255,0.18)", glow: "rgba(255,255,255,0.04)",
     badge: "text-white/70 bg-white/5 border-white/15",
-    pulse: false,
   },
   {
     rank: 2, label: "2nd Place", icon: Medal,
     barGrad: "rgba(255,255,255,0.12)",
-    numGrad: "rgba(255,255,255,0.07)",
-    border: "rgba(255,255,255,0.12)", glow: "rgba(255,255,255,0.03)",
     badge: "text-white/60 bg-white/5 border-white/10",
-    pulse: false,
   },
   {
     rank: 3, label: "3rd Place", icon: Award,
     barGrad: "rgba(255,255,255,0.10)",
-    numGrad: "rgba(255,255,255,0.06)",
-    border: "rgba(255,255,255,0.10)", glow: "rgba(255,255,255,0.02)",
     badge: "text-white/55 bg-white/5 border-white/10",
-    pulse: false,
   },
 ];
+
+function getSessionId() {
+  let sid = sessionStorage.getItem("bput_like_session");
+  if (!sid) { sid = "sess_" + Math.random().toString(36).slice(2) + Date.now(); sessionStorage.setItem("bput_like_session", sid); }
+  return sid;
+}
+
+/* ─────────────────────────────────
+   Faculty Detail Modal
+───────────────────────────────── */
+function FacultyDetailModal({ facultyId, open, onClose }: { facultyId: number | null; open: boolean; onClose: () => void }) {
+  const [detail, setDetail] = useState<TopFacultyDetail | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [likeAnimating, setLikeAnimating] = useState(false);
+
+  useEffect(() => {
+    if (!open || !facultyId) return;
+    setLoading(true);
+    setDetail(null);
+    fetch(`${getApiUrl()}/api/faculty/${facultyId}/top-detail?sessionId=${getSessionId()}`)
+      .then(r => r.json())
+      .then(d => { setDetail(d); setLiked(d.likedByMe); setLikeCount(d.likeCount); })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [open, facultyId]);
+
+  const toggleLike = async () => {
+    if (!facultyId) return;
+    setLikeAnimating(true);
+    setTimeout(() => setLikeAnimating(false), 600);
+    try {
+      const res = await fetch(`${getApiUrl()}/api/faculty/${facultyId}/like`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId: getSessionId() }),
+      });
+      const data = await res.json();
+      setLiked(data.liked);
+      setLikeCount(data.likeCount);
+    } catch {}
+  };
+
+  const fmt = (v: number | null) => v != null ? v.toFixed(2) : "—";
+
+  return (
+    <Dialog open={open} onOpenChange={(v) => { if (!v) onClose(); }}>
+      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto p-0"
+        style={{ background: "rgba(15,20,35,0.95)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "28px" }}>
+        {loading ? (
+          <div className="p-10 text-center">
+            <div className="w-8 h-8 border-2 border-white/20 border-t-violet-400 rounded-full animate-spin mx-auto" />
+            <p className="text-xs text-muted-foreground mt-3">Loading analysis...</p>
+          </div>
+        ) : detail ? (
+          <div>
+            <div className="relative p-6 pb-4">
+              <div className="flex items-start gap-4">
+                <div className="w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 ring-2 ring-white/10">
+                  {detail.faculty.photoUrl ? (
+                    <img src={detail.faculty.photoUrl} alt={detail.faculty.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-violet-600/30 to-indigo-600/30 flex items-center justify-center">
+                      <span className="text-2xl font-bold text-white/60">{detail.faculty.name.charAt(0)}</span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-extrabold text-white leading-tight" style={{ fontFamily: "var(--app-font-heading)" }}>{detail.faculty.name}</h3>
+                  <p className="text-xs text-white/50 mt-0.5">{detail.faculty.designation}</p>
+                  <div className="flex items-center gap-1.5 mt-1.5">
+                    <Building className="w-3 h-3 text-white/30" />
+                    <span className="text-[11px] text-white/50">{detail.faculty.departmentName}</span>
+                    <span className="text-[10px] font-mono text-white/30 ml-1">{detail.faculty.departmentCode}</span>
+                  </div>
+                </div>
+                <button onClick={toggleLike} className="flex flex-col items-center gap-0.5 group">
+                  <Heart className={`w-7 h-7 transition-all duration-300 ${liked ? "fill-red-500 text-red-500" : "text-white/30 hover:text-red-400"} ${likeAnimating ? "scale-125" : "scale-100"}`} />
+                  <span className="text-[10px] font-bold text-white/40">{likeCount}</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="px-6 pb-4">
+              <div className="grid grid-cols-5 gap-2">
+                {[
+                  { label: "Overall", val: detail.ratings.avgOverall },
+                  { label: "Content", val: detail.ratings.avgContent },
+                  { label: "Teaching", val: detail.ratings.avgTeaching },
+                  { label: "Lab", val: detail.ratings.avgLab },
+                  { label: "Material", val: detail.ratings.avgMaterial },
+                ].map(r => (
+                  <div key={r.label} className="text-center p-2 rounded-xl" style={{ background: "rgba(255,255,255,0.04)" }}>
+                    <div className="text-lg font-black text-white/80" style={{ fontFamily: "var(--app-font-display)" }}>{fmt(r.val)}</div>
+                    <div className="text-[9px] text-white/40 mt-0.5">{r.label}</div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-center text-[10px] text-white/30 mt-1.5">{detail.ratings.totalFeedback} total reviews</p>
+            </div>
+
+            {detail.aiAnalysis && (
+              <div className="mx-6 mb-4 p-4 rounded-2xl" style={{ background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.15)" }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <Brain className="w-4 h-4 text-violet-400" />
+                  <span className="text-xs font-bold text-violet-300">AI Analysis</span>
+                </div>
+                <p className="text-xs text-white/70 leading-relaxed">{detail.aiAnalysis}</p>
+              </div>
+            )}
+
+            {detail.comments.length > 0 && (
+              <div className="px-6 pb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <MessageCircle className="w-4 h-4 text-white/40" />
+                  <span className="text-xs font-bold text-white/60">Student Comments ({detail.comments.length})</span>
+                </div>
+                <div className="space-y-2.5 max-h-48 overflow-y-auto pr-1">
+                  {detail.comments.map((c, i) => (
+                    <div key={i} className="p-3 rounded-xl" style={{ background: "rgba(255,255,255,0.03)" }}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] font-mono text-white/30">{c.courseCode}</span>
+                        <div className="flex items-center gap-1">
+                          <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
+                          <span className="text-[10px] font-bold text-white/50">{c.ratingOverall?.toFixed(1)}</span>
+                        </div>
+                      </div>
+                      <p className="text-xs text-white/60 leading-relaxed">{c.comment}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ) : null}
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 /* ─────────────────────────────────
    Real-time Teacher Rankings
@@ -232,6 +375,8 @@ function TopTeachersSection() {
   const qc = useQueryClient();
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   const [spinning, setSpinning] = useState(false);
+  const [selectedFacultyId, setSelectedFacultyId] = useState<number | null>(null);
+  const [localLikes, setLocalLikes] = useState<Record<number, { liked: boolean; count: number }>>({});
 
   const { data, isLoading, error } = useQuery<{ faculty: TopFaculty[] }>({
     queryKey: ["top-rated"],
@@ -256,6 +401,19 @@ function TopTeachersSection() {
     setTimeout(() => setSpinning(false), 1200);
   };
 
+  const handleLike = async (e: React.MouseEvent, facultyId: number) => {
+    e.stopPropagation();
+    try {
+      const res = await fetch(`${getApiUrl()}/api/faculty/${facultyId}/like`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId: getSessionId() }),
+      });
+      const d = await res.json();
+      setLocalLikes(prev => ({ ...prev, [facultyId]: { liked: d.liked, count: d.likeCount } }));
+    } catch {}
+  };
+
   const timeAgo = updatedAt
     ? (() => {
         const s = Math.floor((Date.now() - updatedAt.getTime()) / 1000);
@@ -267,7 +425,8 @@ function TopTeachersSection() {
 
   return (
     <section className="space-y-5">
-      {/* Header row */}
+      <FacultyDetailModal facultyId={selectedFacultyId} open={selectedFacultyId !== null} onClose={() => setSelectedFacultyId(null)} />
+
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
@@ -282,7 +441,6 @@ function TopTeachersSection() {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Live badge */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full"
             style={{ background: "rgba(255,255,255,0.07)", backdropFilter: "blur(6px)" }}>
             <span className="relative w-2.5 h-2.5 flex-shrink-0">
@@ -300,7 +458,6 @@ function TopTeachersSection() {
         </div>
       </div>
 
-      {/* Last updated */}
       {timeAgo && (
         <p className="text-[11px] text-muted-foreground flex items-center gap-1.5 px-1">
           <Wifi className="w-3 h-3 text-emerald-500 flex-shrink-0" />
@@ -308,10 +465,9 @@ function TopTeachersSection() {
         </p>
       )}
 
-      {/* Cards */}
       {isLoading ? (
         <div className="grid md:grid-cols-3 gap-4">
-          {[0,1,2].map(i => <Skeleton key={i} className="h-56 rounded-2xl" />)}
+          {[0,1,2].map(i => <Skeleton key={i} className="h-64 rounded-2xl" />)}
         </div>
       ) : error ? (
         <div className="glass-card rounded-2xl p-10 text-center">
@@ -330,65 +486,76 @@ function TopTeachersSection() {
           {top3.map((f, idx) => {
             const cfg = RANK_CFG[idx];
             const RIcon = cfg.icon;
+            const ll = localLikes[f.id];
+            const lCount = ll ? ll.count : f.likeCount;
             return (
-              <div key={f.id}
-                className="glass-card rounded-2xl overflow-hidden flex flex-col relative transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                style={{
-                  boxShadow: `0 4px 30px rgba(0,0,0,0.1)`,
-                  animation: cfg.pulse ? "rankingGlow 3s ease-in-out infinite" : "none",
-                }}>
-                {/* Top bar */}
+              <div key={f.id} onClick={() => setSelectedFacultyId(f.id)}
+                className="glass-card rounded-2xl overflow-hidden flex flex-col relative transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer group"
+                style={{ boxShadow: "0 4px 30px rgba(0,0,0,0.1)" }}>
                 <div style={{ height: "4px", background: cfg.barGrad }} />
 
-                {/* Rank watermark */}
                 <div className="absolute top-2 right-3 font-black opacity-[0.04] leading-none select-none pointer-events-none"
                   style={{ fontSize: "72px", fontFamily: "var(--app-font-display)" }}>
                   {cfg.rank}
                 </div>
 
-                <div className="p-5 flex-1 flex flex-col gap-3.5">
-                  {/* Rank + badge */}
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-white/80 font-black text-base"
-                      style={{ background: "rgba(255,255,255,0.10)", backdropFilter: "blur(6px)", fontFamily: "var(--app-font-display)" }}>
-                      #{cfg.rank}
+                <div className="p-5 flex-1 flex flex-col gap-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0 ring-2 ring-white/10 group-hover:ring-violet-500/30 transition-all">
+                      {f.photoUrl ? (
+                        <img src={f.photoUrl} alt={f.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-violet-600/30 to-indigo-600/30 flex items-center justify-center">
+                          <span className="text-xl font-bold text-white/60">{f.name.charAt(0)}</span>
+                        </div>
+                      )}
                     </div>
-                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${cfg.badge}`}>
-                      <RIcon className="w-2.5 h-2.5" /> {cfg.label}
-                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-white/80 font-black text-xs"
+                          style={{ background: "rgba(255,255,255,0.10)", fontFamily: "var(--app-font-display)" }}>
+                          #{cfg.rank}
+                        </div>
+                        <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${cfg.badge}`}>
+                          <RIcon className="w-2.5 h-2.5" /> {cfg.label}
+                        </span>
+                      </div>
+                      <div className="font-extrabold text-sm text-foreground leading-tight line-clamp-1"
+                        style={{ fontFamily: "var(--app-font-heading)" }}>{f.name}</div>
+                      <div className="text-[10px] text-muted-foreground mt-0.5">{f.designation}</div>
+                    </div>
                   </div>
 
-                  {/* Name + designation */}
-                  <div>
-                    <div className="font-extrabold text-base text-foreground leading-tight line-clamp-1"
-                      style={{ fontFamily: "var(--app-font-heading)" }}>{f.name}</div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5">{f.designation}</div>
-                  </div>
-
-                  {/* Department */}
                   <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl"
-                    style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(6px)" }}>
-                    <Building className="w-3.5 h-3.5 text-white/40 flex-shrink-0" />
-                    <span className="text-[11px] font-semibold text-white/60 flex-1 truncate">{f.departmentName}</span>
-                    <span className="text-[10px] font-mono text-white/40 flex-shrink-0">{f.departmentCode}</span>
+                    style={{ background: "rgba(255,255,255,0.06)" }}>
+                    <Building className="w-3 h-3 text-white/40 flex-shrink-0" />
+                    <span className="text-[10px] font-semibold text-white/60 flex-1 truncate">{f.departmentName}</span>
+                    <span className="text-[9px] font-mono text-white/40">{f.departmentCode}</span>
                   </div>
 
-                  {/* Rating */}
                   <div className="flex items-end justify-between mt-auto">
                     <div className="space-y-1">
                       <div className="flex items-baseline gap-1.5">
-                        <span className="text-3xl font-black leading-none text-white/85"
+                        <span className="text-2xl font-black leading-none text-white/85"
                           style={{ fontFamily: "var(--app-font-display)" }}>
                           {f.avgRating?.toFixed(1) ?? "—"}
                         </span>
-                        <span className="text-xs text-muted-foreground">/ 5.0</span>
+                        <span className="text-[10px] text-muted-foreground">/ 5.0</span>
                       </div>
                       <StarDisplay rating={f.avgRating ?? 0} />
                     </div>
-                    <div className="text-right">
-                      <div className="text-xl font-extrabold text-white/60"
-                        style={{ fontFamily: "var(--app-font-display)" }}>{f.totalFeedbackCount}</div>
-                      <div className="text-[10px] text-muted-foreground">reviews</div>
+
+                    <div className="flex items-center gap-3">
+                      <button onClick={(e) => handleLike(e, f.id)}
+                        className="flex items-center gap-1 group/like transition-all hover:scale-110 active:scale-90">
+                        <Heart className={`w-4.5 h-4.5 transition-all duration-300 ${ll?.liked ? "fill-red-500 text-red-500 scale-110" : "text-white/25 hover:text-red-400"}`} />
+                        <span className="text-[10px] font-bold text-white/30">{lCount}</span>
+                      </button>
+                      <div className="text-right">
+                        <div className="text-lg font-extrabold text-white/60"
+                          style={{ fontFamily: "var(--app-font-display)" }}>{f.totalFeedbackCount}</div>
+                        <div className="text-[9px] text-muted-foreground">reviews</div>
+                      </div>
                     </div>
                   </div>
                 </div>

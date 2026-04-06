@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { useRole } from "@/contexts/RoleContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { Star, BookOpen, MessageSquare, TrendingUp, Award, ChevronDown, ChevronUp } from "lucide-react";
+import { Star, BookOpen, MessageSquare, TrendingUp, Award, ChevronDown, ChevronUp, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getApiUrl } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
 interface CourseStats {
   id: number;
@@ -142,12 +143,17 @@ export default function FacultyPortal() {
   const [courseData, setCourseData] = useState<CourseStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (role !== "faculty" || !faculty) {
       navigate("/");
       return;
     }
+    setPhotoUrl((faculty as any).photoUrl || null);
     const fetchData = async () => {
       try {
         const res = await fetch(`${getApiUrl()}/api/faculty/${faculty.id}/my-feedback`);
@@ -163,6 +169,37 @@ export default function FacultyPortal() {
     fetchData();
   }, [faculty, role]);
 
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !faculty) return;
+    if (!file.type.startsWith("image/")) { toast({ title: "Please select an image file", variant: "destructive" }); return; }
+    if (file.size > 5 * 1024 * 1024) { toast({ title: "Image must be under 5MB", variant: "destructive" }); return; }
+
+    setUploadingPhoto(true);
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const dataUrl = reader.result as string;
+        const res = await fetch(`${getApiUrl()}/api/faculty/${faculty.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ photoUrl: dataUrl }),
+        });
+        if (res.ok) {
+          setPhotoUrl(dataUrl);
+          toast({ title: "Photo updated successfully!" });
+        } else {
+          toast({ title: "Failed to update photo", variant: "destructive" });
+        }
+        setUploadingPhoto(false);
+      };
+      reader.readAsDataURL(file);
+    } catch {
+      toast({ title: "Failed to upload photo", variant: "destructive" });
+      setUploadingPhoto(false);
+    }
+  };
+
   if (role !== "faculty" || !faculty) return null;
 
   const totalFeedback = courseData.reduce((s, c) => s + c.feedbackCount, 0);
@@ -173,11 +210,31 @@ export default function FacultyPortal() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
-      {/* Header */}
       <div className="space-y-2">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-teal-600 flex items-center justify-center text-white text-xl font-bold shrink-0">
-            {faculty.name.charAt(0)}
+        <div className="flex items-center gap-4">
+          <div className="relative group">
+            <div className="w-16 h-16 rounded-2xl overflow-hidden ring-2 ring-white/10">
+              {photoUrl ? (
+                <img src={photoUrl} alt={faculty.name} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full bg-teal-600 flex items-center justify-center text-white text-2xl font-bold">
+                  {faculty.name.charAt(0)}
+                </div>
+              )}
+            </div>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploadingPhoto}
+              className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center transition-all hover:scale-110"
+              style={{ background: "rgba(139,92,246,0.8)", backdropFilter: "blur(6px)" }}
+            >
+              {uploadingPhoto ? (
+                <div className="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+              ) : (
+                <Camera className="w-3.5 h-3.5 text-white" />
+              )}
+            </button>
+            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
           </div>
           <div>
             <h1 className="text-2xl font-bold">{faculty.name}</h1>

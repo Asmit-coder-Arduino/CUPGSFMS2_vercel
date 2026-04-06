@@ -5,8 +5,9 @@ import {
   coursesTable,
   facultyTable,
   departmentsTable,
+  facultyLikesTable,
 } from "@workspace/db";
-import { eq, avg, count, desc, and } from "drizzle-orm";
+import { eq, avg, count, desc, and, sql } from "drizzle-orm";
 import {
   GetDepartmentAnalyticsParams,
   GetDepartmentAnalyticsQueryParams,
@@ -387,6 +388,7 @@ router.get("/analytics/top-rated", async (req, res): Promise<void> => {
       departmentId: facultyTable.departmentId,
       departmentName: departmentsTable.name,
       departmentCode: departmentsTable.code,
+      photoUrl: facultyTable.photoUrl,
     })
     .from(facultyTable)
     .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id));
@@ -397,10 +399,15 @@ router.get("/analytics/top-rated", async (req, res): Promise<void> => {
         .select({ avg: avg(feedbackTable.ratingOverall), cnt: count() })
         .from(feedbackTable)
         .where(eq(feedbackTable.facultyId, f.id));
+      const [likesRow] = await db
+        .select({ cnt: count() })
+        .from(facultyLikesTable)
+        .where(eq(facultyLikesTable.facultyId, f.id));
       return {
         ...f,
         avgRating: r?.avg ? parseFloat(r.avg) : null,
         totalFeedbackCount: Number(r?.cnt ?? 0),
+        likeCount: Number(likesRow?.cnt ?? 0),
       };
     })
   );
@@ -447,6 +454,120 @@ router.get("/analytics/top-rated", async (req, res): Promise<void> => {
     .slice(0, 5);
 
   res.json({ faculty: topFaculty, topCourses });
+});
+
+router.post("/faculty/:id/like", async (req, res): Promise<void> => {
+  const facultyId = parseInt(req.params.id);
+  const { sessionId } = req.body;
+  if (!sessionId) { res.status(400).json({ error: "sessionId required" }); return; }
+
+  const existing = await db
+    .select()
+    .from(facultyLikesTable)
+    .where(and(eq(facultyLikesTable.facultyId, facultyId), eq(facultyLikesTable.sessionId, sessionId)));
+
+  if (existing.length > 0) {
+    await db.delete(facultyLikesTable)
+      .where(and(eq(facultyLikesTable.facultyId, facultyId), eq(facultyLikesTable.sessionId, sessionId)));
+    const [cnt] = await db.select({ cnt: count() }).from(facultyLikesTable).where(eq(facultyLikesTable.facultyId, facultyId));
+    res.json({ liked: false, likeCount: Number(cnt?.cnt ?? 0) });
+  } else {
+    await db.insert(facultyLikesTable).values({ facultyId, sessionId });
+    const [cnt] = await db.select({ cnt: count() }).from(facultyLikesTable).where(eq(facultyLikesTable.facultyId, facultyId));
+    res.json({ liked: true, likeCount: Number(cnt?.cnt ?? 0) });
+  }
+});
+
+router.get("/faculty/:id/top-detail", async (req, res): Promise<void> => {
+  const facultyId = parseInt(req.params.id);
+  const sessionId = (req.query.sessionId as string) || "";
+
+  const [faculty] = await db
+    .select({
+      id: facultyTable.id,
+      name: facultyTable.name,
+      designation: facultyTable.designation,
+      departmentName: departmentsTable.name,
+      departmentCode: departmentsTable.code,
+      photoUrl: facultyTable.photoUrl,
+    })
+    .from(facultyTable)
+    .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id))
+    .where(eq(facultyTable.id, facultyId));
+
+  if (!faculty) { res.status(404).json({ error: "Faculty not found" }); return; }
+
+  const [ratings] = await db
+    .select({
+      avgOverall: avg(feedbackTable.ratingOverall),
+      avgContent: avg(feedbackTable.ratingCourseContent),
+      avgTeaching: avg(feedbackTable.ratingTeachingQuality),
+      avgLab: avg(feedbackTable.ratingLabFacilities),
+      avgMaterial: avg(feedbackTable.ratingStudyMaterial),
+      cnt: count(),
+    })
+    .from(feedbackTable)
+    .where(eq(feedbackTable.facultyId, facultyId));
+
+  const comments = await db
+    .select({
+      comment: feedbackTable.comments,
+      courseCode: coursesTable.code,
+      courseName: coursesTable.name,
+      createdAt: feedbackTable.createdAt,
+      ratingOverall: feedbackTable.ratingOverall,
+    })
+    .from(feedbackTable)
+    .leftJoin(coursesTable, eq(feedbackTable.courseId, coursesTable.id))
+    .where(and(eq(feedbackTable.facultyId, facultyId), sql`${feedbackTable.comments} IS NOT NULL AND ${feedbackTable.comments} != ''`))
+    .orderBy(desc(feedbackTable.createdAt))
+    .limit(20);
+
+  const [likesRow] = await db.select({ cnt: count() }).from(facultyLikesTable).where(eq(facultyLikesTable.facultyId, facultyId));
+  const likedByMe = sessionId ? (await db.select().from(facultyLikesTable).where(and(eq(facultyLikesTable.facultyId, facultyId), eq(facultyLikesTable.sessionId, sessionId)))).length > 0 : false;
+
+  let aiAnalysis = "";
+  try {
+    const commentTexts = comments.map(c => c.comment).filter(Boolean);
+    if (commentTexts.length > 0) {
+      const baseUrl = process.env.AI_INTEGRATIONS_OPENAI_BASE_URL;
+      const apiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY;
+      if (baseUrl && apiKey) {
+        const resp = await fetch(`${baseUrl}/chat/completions`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [
+              { role: "system", content: "You are an academic feedback analyst. Analyze student comments about a professor and explain in 3-4 concise sentences why this teacher is highly rated. Be specific, referencing themes from the comments. Write in a professional yet warm tone. Keep it brief." },
+              { role: "user", content: `Professor: ${faculty.name} (${faculty.designation}, ${faculty.departmentName})\n\nStudent Comments:\n${commentTexts.map((c, i) => `${i + 1}. "${c}"`).join("\n")}\n\nAverage Rating: ${ratings.avgOverall ? parseFloat(String(ratings.avgOverall)).toFixed(1) : "N/A"}/5.0 from ${ratings.cnt} reviews.\n\nAnalyze why this teacher is top-rated based on the feedback.` }
+            ],
+            max_completion_tokens: 300,
+          }),
+        });
+        const data = await resp.json();
+        aiAnalysis = data.choices?.[0]?.message?.content || "";
+      }
+    }
+  } catch (e) {
+    console.error("AI analysis error:", e);
+  }
+
+  res.json({
+    faculty,
+    ratings: {
+      avgOverall: ratings.avgOverall ? parseFloat(String(ratings.avgOverall)) : null,
+      avgContent: ratings.avgContent ? parseFloat(String(ratings.avgContent)) : null,
+      avgTeaching: ratings.avgTeaching ? parseFloat(String(ratings.avgTeaching)) : null,
+      avgLab: ratings.avgLab ? parseFloat(String(ratings.avgLab)) : null,
+      avgMaterial: ratings.avgMaterial ? parseFloat(String(ratings.avgMaterial)) : null,
+      totalFeedback: Number(ratings.cnt ?? 0),
+    },
+    comments,
+    likeCount: Number(likesRow?.cnt ?? 0),
+    likedByMe,
+    aiAnalysis,
+  });
 });
 
 export default router;

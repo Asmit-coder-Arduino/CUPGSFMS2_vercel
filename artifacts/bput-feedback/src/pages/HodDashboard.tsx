@@ -10,7 +10,7 @@ import {
   Award, ChevronDown, ChevronUp, Plus, X, Calendar, Clock, CheckCircle2,
   XCircle, AlertCircle, BarChart3, BookMarked, CalendarRange,
   GraduationCap, Layers, ToggleLeft, ToggleRight, RefreshCw,
-  Pencil, Trash2, UserPlus, Mail, Building2, Lock, Sparkles,
+  Pencil, Trash2, UserPlus, Mail, Building2, Lock, Sparkles, Camera,
 } from "lucide-react";
 import FormBuilder from "@/components/FormBuilder";
 import { getApiUrl } from "@/lib/api";
@@ -51,6 +51,7 @@ interface FacultyItem {
   departmentId: number; departmentName: string | null;
   employeeId: string | null; qualification: string | null; specialization: string | null;
   avgRating: number | null; totalFeedbackCount: number;
+  photoUrl: string | null;
   assignedCourses: AssignedCourse[];
 }
 interface CourseItem {
@@ -1184,9 +1185,30 @@ export default function HodDashboard() {
                     className="flex items-center gap-3 p-4 cursor-pointer hover:bg-muted/10 transition-colors"
                     onClick={() => setExpandedFacultyId(expandedFacultyId === f.id ? null : f.id)}
                   >
-                    {/* Avatar */}
-                    <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shrink-0">
-                      {f.name.split(" ").map(w => w[0]).slice(0, 2).join("")}
+                    <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 relative group/photo">
+                      {f.photoUrl ? (
+                        <img src={f.photoUrl} alt={f.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">
+                          {f.name.split(" ").map((w: string) => w[0]).slice(0, 2).join("")}
+                        </div>
+                      )}
+                      <label className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover/photo:opacity-100 transition-opacity cursor-pointer" onClick={e => e.stopPropagation()}>
+                        <Camera className="w-4 h-4 text-white" />
+                        <input type="file" accept="image/*" className="hidden" onChange={async (ev) => {
+                          const file = ev.target.files?.[0];
+                          if (!file) return;
+                          const reader = new FileReader();
+                          reader.onload = async () => {
+                            const dataUrl = reader.result as string;
+                            try {
+                              const res = await fetch(`${getApiUrl()}/api/faculty/${f.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ photoUrl: dataUrl }) });
+                              if (res.ok) loadFaculty();
+                            } catch {}
+                          };
+                          reader.readAsDataURL(file);
+                        }} />
+                      </label>
                     </div>
 
                     {/* Info */}

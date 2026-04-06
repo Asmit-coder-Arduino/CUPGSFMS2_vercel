@@ -18,6 +18,7 @@ const UpdateFacultyBody = z.object({
   loginPin: z.string().min(4).max(20).optional().nullable(),
   qualification: z.string().optional().nullable(),
   specialization: z.string().optional().nullable(),
+  photoUrl: z.string().optional().nullable(),
 });
 
 router.get("/faculty", async (req, res): Promise<void> => {
@@ -30,6 +31,7 @@ router.get("/faculty", async (req, res): Promise<void> => {
       designation: facultyTable.designation, departmentId: facultyTable.departmentId,
       departmentName: departmentsTable.name, employeeId: facultyTable.employeeId,
       qualification: facultyTable.qualification, specialization: facultyTable.specialization,
+      photoUrl: facultyTable.photoUrl,
     })
     .from(facultyTable)
     .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id))
@@ -98,6 +100,7 @@ router.get("/faculty/:id", async (req, res): Promise<void> => {
       designation: facultyTable.designation, departmentId: facultyTable.departmentId,
       departmentName: departmentsTable.name, employeeId: facultyTable.employeeId,
       qualification: facultyTable.qualification, specialization: facultyTable.specialization,
+      photoUrl: facultyTable.photoUrl,
     })
     .from(facultyTable)
     .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id))
@@ -132,6 +135,7 @@ router.patch("/faculty/:id", async (req, res): Promise<void> => {
   if (parsed.data.loginPin !== undefined) updates.loginPin = parsed.data.loginPin;
   if (parsed.data.qualification !== undefined) updates.qualification = parsed.data.qualification;
   if (parsed.data.specialization !== undefined) updates.specialization = parsed.data.specialization;
+  if (parsed.data.photoUrl !== undefined) updates.photoUrl = parsed.data.photoUrl;
 
   if (Object.keys(updates).length === 0) { res.status(400).json({ error: "No fields to update" }); return; }
 
