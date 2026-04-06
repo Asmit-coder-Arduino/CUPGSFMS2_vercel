@@ -104,10 +104,18 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <div className="bg-blob-light bg-blob-light-2" />
 
       {/* ── Desktop Sidebar ── */}
-      <div className="w-full md:w-64 flex flex-col z-10 hidden md:flex glass-sidebar relative">
+      <div className="w-full md:w-64 flex flex-col z-10 hidden md:flex relative"
+        style={{
+          background: "rgba(255,255,255,0)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          borderRight: "1px solid rgba(255,255,255,0.06)",
+          borderRadius: "0 28px 28px 0",
+          boxShadow: "4px 0 30px rgba(0,0,0,0.25)",
+        }}>
 
         {/* Sidebar inner glow */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-none">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ borderRadius: "0 28px 28px 0" }}>
           <div style={{
             position: "absolute", top: -60, left: -40,
             width: 220, height: 220,
