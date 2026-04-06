@@ -456,68 +456,6 @@ router.get("/analytics/top-rated", async (req, res): Promise<void> => {
   res.json({ topFaculty, topCourses });
 });
 
-router.get("/faculty/:id/my-feedback", async (req, res): Promise<void> => {
-  const facultyId = parseInt(req.params.id);
-  if (isNaN(facultyId)) { res.status(400).json({ error: "Invalid faculty ID" }); return; }
-
-  const facultyCourses = await db
-    .select({
-      id: coursesTable.id,
-      code: coursesTable.code,
-      name: coursesTable.name,
-      semester: coursesTable.semester,
-      academicYear: coursesTable.academicYear,
-      credits: coursesTable.credits,
-    })
-    .from(coursesTable)
-    .where(eq(coursesTable.facultyId, facultyId));
-
-  const courses = await Promise.all(
-    facultyCourses.map(async (c) => {
-      const [r] = await db
-        .select({
-          avgOverall: avg(feedbackTable.ratingOverall),
-          avgCourseContent: avg(feedbackTable.ratingCourseContent),
-          avgTeachingQuality: avg(feedbackTable.ratingTeachingQuality),
-          avgLabFacilities: avg(feedbackTable.ratingLabFacilities),
-          avgStudyMaterial: avg(feedbackTable.ratingStudyMaterial),
-          cnt: count(),
-        })
-        .from(feedbackTable)
-        .where(and(eq(feedbackTable.courseId, c.id), eq(feedbackTable.facultyId, facultyId)));
-
-      const recentCommentsRaw = await db
-        .select({ comments: feedbackTable.comments })
-        .from(feedbackTable)
-        .where(and(eq(feedbackTable.courseId, c.id), eq(feedbackTable.facultyId, facultyId)))
-        .orderBy(desc(feedbackTable.createdAt))
-        .limit(5);
-
-      const recentComments = recentCommentsRaw
-        .map((row) => row.comments)
-        .filter((c): c is string => c !== null && c.trim() !== "");
-
-      return {
-        id: c.id,
-        code: c.code,
-        name: c.name,
-        semester: c.semester,
-        academicYear: c.academicYear,
-        credits: c.credits,
-        feedbackCount: Number(r?.cnt ?? 0),
-        avgOverall: r?.avgOverall ? parseFloat(r.avgOverall) : null,
-        avgCourseContent: r?.avgCourseContent ? parseFloat(r.avgCourseContent) : null,
-        avgTeachingQuality: r?.avgTeachingQuality ? parseFloat(r.avgTeachingQuality) : null,
-        avgLabFacilities: r?.avgLabFacilities ? parseFloat(r.avgLabFacilities) : null,
-        avgStudyMaterial: r?.avgStudyMaterial ? parseFloat(r.avgStudyMaterial) : null,
-        recentComments,
-      };
-    })
-  );
-
-  res.json({ courses });
-});
-
 router.post("/faculty/:id/like", async (req, res): Promise<void> => {
   const facultyId = parseInt(req.params.id);
   const { sessionId } = req.body;
