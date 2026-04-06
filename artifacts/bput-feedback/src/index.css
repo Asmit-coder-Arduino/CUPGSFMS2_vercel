@@ -406,27 +406,15 @@ body {
 }
 
 /* ══════════════════════════════════════
-   ROLE CARDS — Colored glow variants
+   ROLE CARDS — Colorless glass hover
 ══════════════════════════════════════ */
-.role-card-blue:hover {
-  border-color: rgba(59,130,246,0.45) !important;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(59,130,246,0.25),
-              0 0 40px rgba(59,130,246,0.15), inset 0 1px 0 rgba(255,255,255,0.08) !important;
-}
-.role-card-emerald:hover {
-  border-color: rgba(16,185,129,0.45) !important;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(16,185,129,0.25),
-              0 0 40px rgba(16,185,129,0.15), inset 0 1px 0 rgba(255,255,255,0.08) !important;
-}
-.role-card-violet:hover {
-  border-color: rgba(139,92,246,0.55) !important;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(139,92,246,0.3),
-              0 0 40px rgba(139,92,246,0.18), inset 0 1px 0 rgba(255,255,255,0.08) !important;
-}
+.role-card-blue:hover,
+.role-card-emerald:hover,
+.role-card-violet:hover,
 .role-card-rose:hover {
-  border-color: rgba(244,63,94,0.45) !important;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(244,63,94,0.25),
-              0 0 40px rgba(244,63,94,0.12), inset 0 1px 0 rgba(255,255,255,0.08) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5),
+              inset 0 1px 0 rgba(255,255,255,0.1) !important;
 }
 
 /* ══════════════════════════════════════
@@ -475,84 +463,57 @@ body {
 }
 
 /* ══════════════════════════════════════
-   GRADIENT BUTTONS — Premium
+   GLASS BUTTONS — Colorless (all variants)
 ══════════════════════════════════════ */
-.btn-gradient-blue {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
-  box-shadow: 0 4px 20px rgba(59,130,246,0.40), 0 1px 0 rgba(255,255,255,0.15) inset;
-  transition: all 0.25s cubic-bezier(.22,1,.36,1);
-}
-.btn-gradient-blue:hover:not(:disabled) {
-  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
-  box-shadow: 0 8px 28px rgba(59,130,246,0.55), 0 1px 0 rgba(255,255,255,0.2) inset;
-  transform: translateY(-2px) scale(1.01);
-}
-
-.btn-gradient-teal {
-  background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
-  box-shadow: 0 4px 20px rgba(16,185,129,0.38), 0 1px 0 rgba(255,255,255,0.15) inset;
-  transition: all 0.25s cubic-bezier(.22,1,.36,1);
-}
-.btn-gradient-teal:hover:not(:disabled) {
-  background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
-  box-shadow: 0 8px 28px rgba(16,185,129,0.52), 0 1px 0 rgba(255,255,255,0.2) inset;
-  transform: translateY(-2px) scale(1.01);
-}
-
-.btn-gradient-indigo {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
-  box-shadow: 0 4px 20px rgba(139,92,246,0.42), 0 1px 0 rgba(255,255,255,0.15) inset;
-  transition: all 0.25s cubic-bezier(.22,1,.36,1);
-}
-.btn-gradient-indigo:hover:not(:disabled) {
-  background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #7c3aed 100%);
-  box-shadow: 0 8px 28px rgba(139,92,246,0.58), 0 1px 0 rgba(255,255,255,0.2) inset;
-  transform: translateY(-2px) scale(1.01);
-}
-
+.btn-gradient-blue,
+.btn-gradient-teal,
+.btn-gradient-indigo,
 .btn-gradient-slate {
-  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 50%, #be123c 100%);
-  box-shadow: 0 4px 20px rgba(244,63,94,0.36), 0 1px 0 rgba(255,255,255,0.15) inset;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.22) !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   transition: all 0.25s cubic-bezier(.22,1,.36,1);
 }
+.btn-gradient-blue:hover:not(:disabled),
+.btn-gradient-teal:hover:not(:disabled),
+.btn-gradient-indigo:hover:not(:disabled),
 .btn-gradient-slate:hover:not(:disabled) {
-  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 50%, #e11d48 100%);
-  box-shadow: 0 8px 28px rgba(244,63,94,0.50), 0 1px 0 rgba(255,255,255,0.2) inset;
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.35) !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.12);
   transform: translateY(-2px) scale(1.01);
 }
 
 /* ══════════════════════════════════════
-   ACCENT LINES — Vibrant gradients
+   ACCENT LINES — Colorless glass
 ══════════════════════════════════════ */
-.accent-line-blue   { background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd); }
-.accent-line-teal   { background: linear-gradient(90deg, #059669, #10b981, #34d399); }
-.accent-line-indigo { background: linear-gradient(90deg, #7c3aed, #8b5cf6, #a78bfa); }
-.accent-line-slate  { background: linear-gradient(90deg, #e11d48, #f43f5e, #fb7185); }
+.accent-line-blue,
+.accent-line-teal,
+.accent-line-indigo,
+.accent-line-slate {
+  background: rgba(255,255,255,0.18);
+}
 
 /* ══════════════════════════════════════
-   ICON CIRCLES — Vibrant
+   ICON CIRCLES — Colorless glass
 ══════════════════════════════════════ */
-.icon-circle-blue {
-  background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(37,99,235,0.08));
-  border: 1px solid rgba(59,130,246,0.3);
-}
-.icon-circle-teal {
-  background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.08));
-  border: 1px solid rgba(16,185,129,0.3);
-}
-.icon-circle-indigo {
-  background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(109,40,217,0.10));
-  border: 1px solid rgba(139,92,246,0.32);
-}
+.icon-circle-blue,
+.icon-circle-teal,
+.icon-circle-indigo,
 .icon-circle-slate {
-  background: linear-gradient(135deg, rgba(244,63,94,0.15), rgba(225,29,72,0.08));
-  border: 1px solid rgba(244,63,94,0.28);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
 }
 
-.dark .icon-circle-blue   { background: rgba(59,130,246,0.18); border-color: rgba(59,130,246,0.35); }
-.dark .icon-circle-teal   { background: rgba(16,185,129,0.18); border-color: rgba(16,185,129,0.35); }
-.dark .icon-circle-indigo { background: rgba(139,92,246,0.22); border-color: rgba(139,92,246,0.38); }
-.dark .icon-circle-slate  { background: rgba(244,63,94,0.18); border-color: rgba(244,63,94,0.32); }
+.dark .icon-circle-blue,
+.dark .icon-circle-teal,
+.dark .icon-circle-indigo,
+.dark .icon-circle-slate {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+}
 
 /* ══════════════════════════════════════
    GRADIENT TEXT

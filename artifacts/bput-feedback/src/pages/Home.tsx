@@ -31,7 +31,7 @@ const SLIDES = [
 ];
 
 /* ─────────────────────────────────
-   Hero Slideshow — fully redesigned
+   Hero — Full-width photo only
 ───────────────────────────────── */
 function HeroSection({ role, faculty, hod, student, logout }: {
   role: string;
@@ -41,25 +41,24 @@ function HeroSection({ role, faculty, hod, student, logout }: {
   logout: () => void;
 }) {
   const [curr, setCurr] = useState(0);
-  const [fading, setFading] = useState(false);
-  const [imgFailed, setImgFailed] = useState<Record<number, boolean>>({});
+  const [transitioning, setTransitioning] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const n = SLIDES.length;
 
   const advance = useCallback((dir: number) => {
-    if (fading) return;
-    setFading(true);
+    if (transitioning) return;
+    setTransitioning(true);
     setTimeout(() => {
       setCurr(c => (c + dir + n) % n);
-      setFading(false);
-    }, 450);
-  }, [fading, n]);
+      setTransitioning(false);
+    }, 600);
+  }, [transitioning, n]);
 
   const goTo = useCallback((i: number) => {
-    if (fading || i === curr) return;
-    setFading(true);
-    setTimeout(() => { setCurr(i); setFading(false); }, 450);
-  }, [fading, curr]);
+    if (transitioning || i === curr) return;
+    setTransitioning(true);
+    setTimeout(() => { setCurr(i); setTransitioning(false); }, 600);
+  }, [transitioning, curr]);
 
   const resetTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -71,216 +70,93 @@ function HeroSection({ role, faculty, hod, student, logout }: {
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [resetTimer]);
 
-  const showImg = !imgFailed[curr];
-
   return (
-    <div
-      className="relative w-full rounded-3xl overflow-hidden"
-      style={{ height: "420px", minHeight: "320px" }}
-    >
-      {/* ── Base: always-beautiful gradient background ── */}
+    <div className="relative w-full rounded-3xl overflow-hidden" style={{ height: "500px" }}>
+
+      {/* ── Gradient fallback (shows when images load) ── */}
       <div className="absolute inset-0"
-        style={{
-          background: "radial-gradient(ellipse at 30% 20%, rgba(109,40,217,0.7) 0%, transparent 55%), radial-gradient(ellipse at 80% 80%, rgba(59,130,246,0.5) 0%, transparent 50%), radial-gradient(ellipse at 60% 50%, rgba(139,92,246,0.4) 0%, transparent 60%), linear-gradient(135deg, #06030f 0%, #0d0520 40%, #080c1a 100%)",
-        }}
-      />
+        style={{ background: "linear-gradient(135deg, #06030f 0%, #0d0520 50%, #080c1a 100%)" }} />
 
-      {/* Animated glowing orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[8%] left-[12%] w-48 h-48 rounded-full opacity-25"
-          style={{ background: "radial-gradient(circle, rgba(139,92,246,1) 0%, transparent 70%)", animation: "float 8s ease-in-out infinite" }} />
-        <div className="absolute bottom-[10%] right-[10%] w-64 h-64 rounded-full opacity-20"
-          style={{ background: "radial-gradient(circle, rgba(59,130,246,1) 0%, transparent 70%)", animation: "float 11s ease-in-out infinite reverse" }} />
-        <div className="absolute top-[40%] right-[30%] w-32 h-32 rounded-full opacity-15"
-          style={{ background: "radial-gradient(circle, rgba(196,181,253,1) 0%, transparent 70%)", animation: "float 6s ease-in-out infinite 2s" }} />
-      </div>
-
-      {/* Subtle mesh grid overlay */}
-      <div className="absolute inset-0 pointer-events-none opacity-5"
-        style={{
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }} />
-
-      {/* ── BPUT Slideshow image layer ── */}
+      {/* ── Photo slides ── */}
       {SLIDES.map((slide, i) => (
         <div key={i} className="absolute inset-0 transition-opacity duration-700"
-          style={{ opacity: i === curr && showImg && !fading ? 1 : 0, zIndex: 1 }}>
+          style={{ opacity: i === curr && !transitioning ? 1 : 0 }}>
           <img
-            src={slide.url}
-            alt={slide.caption}
+            src={slide.url} alt={slide.caption}
             className="w-full h-full object-cover"
-            style={{ animation: i === curr ? "slideKenBurns 12s ease-in-out infinite" : "none" }}
-            onError={() => setImgFailed(prev => ({ ...prev, [i]: true }))}
+            style={{ animation: i === curr ? "slideKenBurns 14s ease-in-out infinite" : "none" }}
           />
-          {/* Photo overlay — keep gradient visible */}
-          <div className="absolute inset-0"
-            style={{
-              background: "linear-gradient(180deg, rgba(6,3,15,0.55) 0%, rgba(6,3,15,0.2) 35%, rgba(6,3,15,0.55) 70%, rgba(6,3,15,0.88) 100%)",
-            }} />
         </div>
       ))}
 
-      {/* Decorative large ring */}
-      <div className="absolute pointer-events-none"
-        style={{
-          width: "600px", height: "600px",
-          top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)",
-          border: "1px solid rgba(139,92,246,0.12)",
-          borderRadius: "50%",
-          zIndex: 2,
-        }} />
-      <div className="absolute pointer-events-none"
-        style={{
-          width: "420px", height: "420px",
-          top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)",
-          border: "1px solid rgba(139,92,246,0.08)",
-          borderRadius: "50%",
-          zIndex: 2,
-        }} />
+      {/* ── Bottom gradient for controls ── */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 40%, transparent 70%)" }} />
 
-      {/* ── MAIN CONTENT ── */}
-      <div className="absolute inset-0 z-10 flex">
-        {/* Left: CUPGS Logo + text */}
-        <div className="flex-1 flex flex-col justify-center px-8 md:px-12 gap-5">
+      {/* ── Top vignette ── */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 30%)" }} />
 
-          {/* Live badge */}
-          <div className="flex items-center gap-2">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-semibold"
-              style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.8)" }}>
-              <span className="relative flex items-center justify-center w-2 h-2">
-                <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-70"
-                  style={{ animation: "liveRing 2s ease-out infinite" }} />
-                <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              </span>
-              Academic Year 2024–25 · Even Semester
-              <Sparkles className="w-3.5 h-3.5 text-violet-300" />
-            </div>
-          </div>
-
-          {/* Main heading */}
-          <div className="space-y-1">
-            <div className="text-white/60 text-sm font-semibold uppercase tracking-[0.2em]"
-              style={{ fontFamily: "var(--app-font-heading)" }}>
-              Biju Patnaik University of Technology
-            </div>
-            <h1 className="leading-tight tracking-tight drop-shadow-lg"
-              style={{
-                fontFamily: "var(--app-font-display)",
-                fontSize: "clamp(1.75rem, 4vw, 2.75rem)",
-                fontWeight: 900,
-                color: "white",
-              }}>
-              CUPGS Academic
-            </h1>
-            <h1 className="leading-tight tracking-tight drop-shadow-lg"
-              style={{
-                fontFamily: "var(--app-font-display)",
-                fontSize: "clamp(1.75rem, 4vw, 2.75rem)",
-                fontWeight: 900,
-                background: "linear-gradient(90deg, #c4b5fd 0%, #818cf8 40%, #60a5fa 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>
-              Feedback System
-            </h1>
-            <p className="text-sm text-white/50 pt-1" style={{ fontFamily: "var(--app-font-sans)" }}>
-              Secure · Anonymous · Real-time · BPUT Rourkela
-            </p>
-          </div>
-
-          {/* Logged-in pill */}
-          {role !== "guest" && (
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl self-start"
-              style={{ background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.3)", backdropFilter: "blur(8px)" }}>
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span className="text-emerald-200 text-sm font-semibold">
-                {role === "faculty" && faculty && `Faculty: ${faculty.name}`}
-                {role === "hod" && hod && `HOD: ${hod.hodName}`}
-                {role === "student" && student && `Student: ${student.rollNumber}`}
-                {role === "admin" && "Administrator"}
-              </span>
-              <button onClick={logout}
-                className="text-[11px] text-emerald-400/60 hover:text-emerald-200 transition-colors underline leading-none ml-1">
-                Sign out
-              </button>
-            </div>
-          )}
-
-          {/* Stats pills */}
-          <div className="flex flex-wrap gap-2">
-            {[
-              { val: "2002", label: "Est." },
-              { val: "200+", label: "Colleges" },
-              { val: "2L+", label: "Students" },
-              { val: "5", label: "Depts." },
-            ].map(({ val, label }) => (
-              <div key={label} className="px-3 py-1 rounded-lg text-xs font-semibold text-white/70"
-                style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(6px)" }}>
-                <span className="text-white font-bold">{val}</span> {label}
-              </div>
-            ))}
-          </div>
+      {/* ── Session pill (top-left, shown only when logged in) ── */}
+      {role !== "guest" && (
+        <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full"
+          style={{ background: "rgba(0,0,0,0.45)", border: "1px solid rgba(255,255,255,0.15)", backdropFilter: "blur(12px)" }}>
+          <CheckCircle2 className="w-3.5 h-3.5 text-white/70 flex-shrink-0" />
+          <span className="text-white/80 text-xs font-medium">
+            {role === "faculty" && faculty && faculty.name}
+            {role === "hod" && hod && hod.hodName}
+            {role === "student" && student && student.rollNumber}
+            {role === "admin" && "Administrator"}
+          </span>
+          <button onClick={logout}
+            className="text-[10px] text-white/40 hover:text-white/80 transition-colors ml-1">
+            ✕
+          </button>
         </div>
+      )}
 
-        {/* Right: CUPGS Logo (desktop only) */}
-        <div className="hidden md:flex flex-col items-center justify-center px-10 gap-4">
-          <div className="relative">
-            {/* Glow behind logo */}
-            <div className="absolute inset-0 rounded-full blur-2xl opacity-60"
-              style={{ background: "radial-gradient(circle, rgba(139,92,246,0.8) 0%, transparent 70%)", transform: "scale(1.4)" }} />
-            <CupgsLogo size={150} className="relative drop-shadow-2xl" style={{ animation: "float 6s ease-in-out infinite" } as React.CSSProperties} />
-          </div>
-          <div className="text-center">
-            <div className="text-xs font-bold uppercase tracking-[0.25em] text-white/50">CUPGS</div>
-            <div className="text-[10px] text-white/30 tracking-wider">Centre for UG &amp; PG Studies</div>
-          </div>
-        </div>
+      {/* ── Slide counter (top-right) ── */}
+      <div className="absolute top-4 right-4 z-20 text-[11px] font-mono"
+        style={{ color: "rgba(255,255,255,0.5)", background: "rgba(0,0,0,0.35)", backdropFilter: "blur(8px)", padding: "3px 10px", borderRadius: "99px", border: "1px solid rgba(255,255,255,0.1)" }}>
+        {curr + 1} / {n}
       </div>
 
-      {/* ── Slide controls bottom ── */}
-      <div className="absolute bottom-4 left-8 md:left-12 z-20 flex items-center gap-3">
+      {/* ── Bottom controls ── */}
+      <div className="absolute bottom-5 left-0 right-0 z-20 flex items-center justify-center gap-4 px-6">
         {/* Prev */}
         <button onClick={() => { advance(-1); resetTimer(); }}
-          className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
-          style={{ background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(6px)" }}>
-          <ChevronLeft className="w-3.5 h-3.5 text-white/80" />
+          className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+          style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", backdropFilter: "blur(12px)" }}>
+          <ChevronLeft className="w-4 h-4 text-white" />
         </button>
 
-        {/* Dot indicators */}
-        <div className="flex items-center gap-1.5">
+        {/* Dots */}
+        <div className="flex items-center gap-2">
           {SLIDES.map((_, i) => (
             <button key={i} onClick={() => { goTo(i); resetTimer(); }}
-              className="rounded-full transition-all duration-300"
+              className="rounded-full transition-all duration-400"
               style={{
-                width: i === curr ? "20px" : "6px",
-                height: "6px",
-                background: i === curr
-                  ? "linear-gradient(90deg, #8b5cf6, #6366f1)"
-                  : "rgba(255,255,255,0.25)",
+                width: i === curr ? "28px" : "7px",
+                height: "7px",
+                background: i === curr ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.3)",
               }} />
           ))}
         </div>
 
         {/* Next */}
         <button onClick={() => { advance(1); resetTimer(); }}
-          className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
-          style={{ background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(6px)" }}>
-          <ChevronRight className="w-3.5 h-3.5 text-white/80" />
+          className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+          style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", backdropFilter: "blur(12px)" }}>
+          <ChevronRight className="w-4 h-4 text-white" />
         </button>
-
-        {/* Caption */}
-        <span className="hidden sm:block text-[11px] text-white/40 ml-1" key={curr}>
-          {SLIDES[curr].caption}
-        </span>
       </div>
 
-      {/* Slide counter */}
-      <div className="absolute top-4 right-4 z-20 text-[11px] font-mono"
-        style={{ color: "rgba(255,255,255,0.4)", background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)", padding: "2px 8px", borderRadius: "99px" }}>
-        {curr + 1}/{n}
+      {/* ── Caption (bottom-center above controls) ── */}
+      <div className="absolute bottom-16 left-0 right-0 z-20 flex justify-center">
+        <span className="text-xs text-white/55 font-medium tracking-wide px-3 py-1 rounded-full"
+          style={{ background: "rgba(0,0,0,0.25)", backdropFilter: "blur(6px)" }}>
+          {SLIDES[curr].caption}
+        </span>
       </div>
     </div>
   );
@@ -325,26 +201,26 @@ interface TopFaculty {
 const RANK_CFG = [
   {
     rank: 1, label: "Top Rated", icon: Trophy,
-    barGrad: "linear-gradient(90deg, #f59e0b, #d97706)",
-    numGrad: "linear-gradient(135deg, #fde68a, #f59e0b)",
-    border: "rgba(245,158,11,0.45)", glow: "rgba(245,158,11,0.18)",
-    badge: "text-amber-300 bg-amber-500/10 border-amber-400/30",
-    pulse: true,
+    barGrad: "rgba(255,255,255,0.18)",
+    numGrad: "rgba(255,255,255,0.10)",
+    border: "rgba(255,255,255,0.18)", glow: "rgba(255,255,255,0.04)",
+    badge: "text-white/70 bg-white/5 border-white/15",
+    pulse: false,
   },
   {
     rank: 2, label: "2nd Place", icon: Medal,
-    barGrad: "linear-gradient(90deg, #94a3b8, #64748b)",
-    numGrad: "linear-gradient(135deg, #e2e8f0, #94a3b8)",
-    border: "rgba(148,163,184,0.38)", glow: "rgba(148,163,184,0.10)",
-    badge: "text-slate-300 bg-slate-400/10 border-slate-400/30",
+    barGrad: "rgba(255,255,255,0.12)",
+    numGrad: "rgba(255,255,255,0.07)",
+    border: "rgba(255,255,255,0.12)", glow: "rgba(255,255,255,0.03)",
+    badge: "text-white/60 bg-white/5 border-white/10",
     pulse: false,
   },
   {
     rank: 3, label: "3rd Place", icon: Award,
-    barGrad: "linear-gradient(90deg, #cd7c3a, #b45309)",
-    numGrad: "linear-gradient(135deg, #fed7aa, #f97316)",
-    border: "rgba(205,124,58,0.38)", glow: "rgba(205,124,58,0.10)",
-    badge: "text-orange-300 bg-orange-700/10 border-orange-600/30",
+    barGrad: "rgba(255,255,255,0.10)",
+    numGrad: "rgba(255,255,255,0.06)",
+    border: "rgba(255,255,255,0.10)", glow: "rgba(255,255,255,0.02)",
+    badge: "text-white/55 bg-white/5 border-white/10",
     pulse: false,
   },
 ];
@@ -395,8 +271,8 @@ function TopTeachersSection() {
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
-            style={{ background: "linear-gradient(135deg, rgba(245,158,11,0.25), rgba(245,158,11,0.06))", border: "1px solid rgba(245,158,11,0.3)" }}>
-            <Trophy className="w-5 h-5 text-amber-400" />
+            style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}>
+            <Trophy className="w-5 h-5 text-white/60" />
           </div>
           <div>
             <h2 className="text-xl font-extrabold text-foreground leading-tight"
@@ -408,18 +284,18 @@ function TopTeachersSection() {
         <div className="flex items-center gap-2">
           {/* Live badge */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full"
-            style={{ background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.22)" }}>
+            style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.14)" }}>
             <span className="relative w-2.5 h-2.5 flex-shrink-0">
-              <span className="absolute inset-0 rounded-full bg-amber-400"
+              <span className="absolute inset-0 rounded-full bg-white/40"
                 style={{ animation: "liveRing 1.8s ease-out infinite" }} />
-              <span className="absolute inset-[3px] rounded-full bg-amber-400" />
+              <span className="absolute inset-[3px] rounded-full bg-white/60" />
             </span>
-            <span className="text-[11px] font-bold text-amber-400">LIVE · auto 15s</span>
+            <span className="text-[11px] font-bold text-white/50">LIVE · auto 15s</span>
           </div>
           <button onClick={refresh} title="Refresh now"
             className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-            style={{ background: "rgba(139,92,246,0.12)", border: "1px solid rgba(139,92,246,0.22)" }}>
-            <RefreshCw className={`w-3.5 h-3.5 text-violet-400 transition-transform ${spinning ? "animate-spin" : ""}`} />
+            style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.14)" }}>
+            <RefreshCw className={`w-3.5 h-3.5 text-white/50 transition-transform ${spinning ? "animate-spin" : ""}`} />
           </button>
         </div>
       </div>
@@ -474,8 +350,8 @@ function TopTeachersSection() {
                 <div className="p-5 flex-1 flex flex-col gap-3.5">
                   {/* Rank + badge */}
                   <div className="flex items-center gap-2.5">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-white font-black text-base"
-                      style={{ background: cfg.barGrad, boxShadow: `0 4px 12px ${cfg.glow}`, fontFamily: "var(--app-font-display)" }}>
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-white/80 font-black text-base"
+                      style={{ background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.18)", backdropFilter: "blur(8px)", fontFamily: "var(--app-font-display)" }}>
                       #{cfg.rank}
                     </div>
                     <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${cfg.badge}`}>
@@ -492,18 +368,18 @@ function TopTeachersSection() {
 
                   {/* Department */}
                   <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl"
-                    style={{ background: "rgba(139,92,246,0.07)", border: "1px solid rgba(139,92,246,0.14)" }}>
-                    <Building className="w-3.5 h-3.5 text-violet-400 flex-shrink-0" />
-                    <span className="text-[11px] font-semibold text-violet-300 flex-1 truncate">{f.departmentName}</span>
-                    <span className="text-[10px] font-mono text-violet-500 flex-shrink-0">{f.departmentCode}</span>
+                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)" }}>
+                    <Building className="w-3.5 h-3.5 text-white/40 flex-shrink-0" />
+                    <span className="text-[11px] font-semibold text-white/60 flex-1 truncate">{f.departmentName}</span>
+                    <span className="text-[10px] font-mono text-white/40 flex-shrink-0">{f.departmentCode}</span>
                   </div>
 
                   {/* Rating */}
                   <div className="flex items-end justify-between mt-auto">
                     <div className="space-y-1">
                       <div className="flex items-baseline gap-1.5">
-                        <span className="text-3xl font-black leading-none"
-                          style={{ fontFamily: "var(--app-font-display)", background: cfg.numGrad, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                        <span className="text-3xl font-black leading-none text-white/85"
+                          style={{ fontFamily: "var(--app-font-display)" }}>
                           {f.avgRating?.toFixed(1) ?? "—"}
                         </span>
                         <span className="text-xs text-muted-foreground">/ 5.0</span>
@@ -511,7 +387,7 @@ function TopTeachersSection() {
                       <StarDisplay rating={f.avgRating ?? 0} />
                     </div>
                     <div className="text-right">
-                      <div className="text-xl font-extrabold text-violet-400"
+                      <div className="text-xl font-extrabold text-white/60"
                         style={{ fontFamily: "var(--app-font-display)" }}>{f.totalFeedbackCount}</div>
                       <div className="text-[10px] text-muted-foreground">reviews</div>
                     </div>
@@ -534,8 +410,8 @@ function BputInfoSection() {
     <section className="space-y-5">
       <div className="flex items-center gap-3">
         <div className="w-11 h-11 rounded-2xl flex items-center justify-center"
-          style={{ background: "rgba(59,130,246,0.12)", border: "1px solid rgba(59,130,246,0.25)" }}>
-          <Building2 className="w-5 h-5 text-blue-400" />
+          style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}>
+          <Building2 className="w-5 h-5 text-white/60" />
         </div>
         <div>
           <h2 className="text-xl font-extrabold text-foreground leading-tight"
