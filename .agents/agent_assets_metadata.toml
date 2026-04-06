@@ -209,3 +209,9 @@ id = "QnihQfJW0CrkUl0b8gGzt"
 uri = "file://exports/CUPGS-SE-Project-Report.pdf"
 type = "pdf"
 title = "CUPGS SE Project Report — Akshaya Gardia (16 Pages)"
+
+[[outputs]]
+id = "dF_YUzwGOLqs5LwwWybdB"
+uri = "file://exports/CUPGS_Credentials.xlsx"
+type = "table"
+title = "CUPGS Credentials - All Logins"
