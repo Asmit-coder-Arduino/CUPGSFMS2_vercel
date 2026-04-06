@@ -24,6 +24,66 @@ uri = "file://artifacts/bput-feedback/public/bg-ocean.png"
 type = "image"
 title = "deep ocean glow wallpaper"
 
+[[generated]]
+id = "yaESwqVueupAP6BqH0byE"
+uri = "file://artifacts/bput-feedback/public/bg-galaxy.png"
+type = "image"
+title = "galaxy swirl bg"
+
+[[generated]]
+id = "tvgzWGtqxxJBUuKZmvvvh"
+uri = "file://artifacts/bput-feedback/public/bg-holographic.png"
+type = "image"
+title = "holographic waves bg"
+
+[[generated]]
+id = "VsaflybGJ4eRIoHRH2iMB"
+uri = "file://artifacts/bput-feedback/public/bg-forest.png"
+type = "image"
+title = "glowing forest bg"
+
+[[generated]]
+id = "ZlhjDDJImBi6_M1k86C64"
+uri = "file://artifacts/bput-feedback/public/bg-crystal.png"
+type = "image"
+title = "crystal prism bg"
+
+[[generated]]
+id = "kryk_zWnrfq-YjzDlTvSW"
+uri = "file://artifacts/bput-feedback/public/bg-jellyfish.png"
+type = "image"
+title = "jellyfish deep sea bg"
+
+[[generated]]
+id = "7gYpyhxTDN7lYOdSGe9rS"
+uri = "file://artifacts/bput-feedback/public/bg-smoke.png"
+type = "image"
+title = "flowing smoke bg"
+
+[[generated]]
+id = "AxNLtIkYKP9HbVZVErzzu"
+uri = "file://artifacts/bput-feedback/public/bg-mountains.png"
+type = "image"
+title = "mountain milky way bg"
+
+[[generated]]
+id = "hBCyyOk3LiouWsA1Sec-K"
+uri = "file://artifacts/bput-feedback/public/bg-silk.png"
+type = "image"
+title = "silk fabric bg"
+
+[[generated]]
+id = "IRLcTeXX67pbH6rpEzMP3"
+uri = "file://artifacts/bput-feedback/public/bg-cyber.png"
+type = "image"
+title = "cyberpunk city bg"
+
+[[generated]]
+id = "Pmzrh5r7oXrhhb6TTOi7G"
+uri = "file://artifacts/bput-feedback/public/bg-marble.png"
+type = "image"
+title = "dark marble bg"
+
 [[outputs]]
 id = "DNYPbFPAJjS-si0mrrbw9"
 uri = "file://CUPGS_All_Credentials.xlsx"
