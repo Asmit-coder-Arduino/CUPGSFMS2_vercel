@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import { useListWindows } from "@workspace/api-client-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,20 +15,173 @@ import {
   GraduationCap, Users, ShieldCheck, BookOpen, Clock,
   CheckCircle2, Building2, ArrowRight, Sparkles, Star,
   Lock, BarChart3, FileText, Shield, Trophy, Medal,
-  Award, ChevronRight, TrendingUp, Building, Zap
+  Award, ChevronRight, TrendingUp, Building, Zap,
+  ChevronLeft, Wifi, RefreshCw,
 } from "lucide-react";
 import { CupgsLogo } from "@/components/CupgsLogo";
 
-interface TopFaculty {
-  id: number;
-  name: string;
-  designation: string;
-  departmentName: string;
-  departmentCode: string;
-  avgRating: number;
-  totalFeedbackCount: number;
+/* ──────────────────────────────────────────────
+   BPUT Banner images for the hero slideshow
+────────────────────────────────────────────── */
+const BPUT_SLIDES = [
+  {
+    url: "https://www.bput.ac.in/images/banner/Untitled-1_29.jpg",
+    caption: "BPUT Campus — Rourkela, Odisha",
+  },
+  {
+    url: "https://www.bput.ac.in/images/banner/Untitled-1_28.jpg",
+    caption: "Centre for UG & PG Studies",
+  },
+  {
+    url: "https://www.bput.ac.in/images/banner/Untitled-1_26.jpg",
+    caption: "World-Class Infrastructure",
+  },
+  {
+    url: "https://www.bput.ac.in/images/banner/Untitled-1_27.jpg",
+    caption: "Excellence in Technical Education",
+  },
+  {
+    url: "https://www.bput.ac.in/images/banner/2_4.jpg",
+    caption: "BPUT — Shaping Future Engineers",
+  },
+  {
+    url: "https://www.bput.ac.in/images/banner/1_4.jpg",
+    caption: "Research & Innovation Hub",
+  },
+];
+
+/* ──────────────────────────────────────────────
+   Hero Slideshow Component
+────────────────────────────────────────────── */
+function HeroSlideshow({ children }: { children: React.ReactNode }) {
+  const [current, setCurrent] = useState(0);
+  const [animating, setAnimating] = useState(false);
+  const [loadedSlides, setLoadedSlides] = useState<Set<number>>(new Set([0]));
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const total = BPUT_SLIDES.length;
+
+  const go = useCallback((idx: number) => {
+    if (animating) return;
+    setAnimating(true);
+    setTimeout(() => {
+      setCurrent((idx + total) % total);
+      setLoadedSlides(s => new Set([...s, (idx + total) % total]));
+      setAnimating(false);
+    }, 380);
+  }, [animating, total]);
+
+  const next = useCallback(() => go(current + 1), [go, current]);
+  const prev = useCallback(() => go(current - 1), [go, current]);
+
+  useEffect(() => {
+    timerRef.current = setInterval(next, 5000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [next]);
+
+  const resetTimer = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(next, 5000);
+  };
+
+  return (
+    <div className="relative w-full h-64 md:h-80 rounded-3xl overflow-hidden select-none">
+      {/* Slide images */}
+      {BPUT_SLIDES.map((slide, i) => (
+        <div
+          key={i}
+          className="absolute inset-0 transition-opacity duration-700"
+          style={{
+            opacity: i === current ? (animating ? 0 : 1) : 0,
+            pointerEvents: i === current ? "auto" : "none",
+            zIndex: i === current ? 1 : 0,
+          }}
+        >
+          <img
+            src={slide.url}
+            alt={slide.caption}
+            className="w-full h-full object-cover"
+            style={{
+              animation: i === current && !animating ? "slideKenBurns 10s ease-in-out infinite" : "none",
+            }}
+            onError={e => {
+              const el = e.target as HTMLImageElement;
+              el.style.display = "none";
+            }}
+          />
+        </div>
+      ))}
+
+      {/* Dark gradient overlay */}
+      <div className="absolute inset-0 z-10"
+        style={{
+          background: "linear-gradient(180deg, rgba(6,3,15,0.45) 0%, rgba(6,3,15,0.25) 30%, rgba(6,3,15,0.6) 70%, rgba(6,3,15,0.85) 100%)",
+        }} />
+      {/* Side vignentte */}
+      <div className="absolute inset-0 z-10"
+        style={{ background: "linear-gradient(90deg, rgba(6,3,15,0.5) 0%, transparent 20%, transparent 80%, rgba(6,3,15,0.5) 100%)" }} />
+
+      {/* Content overlay */}
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-6 gap-4">
+        {children}
+      </div>
+
+      {/* Caption */}
+      <div className="absolute bottom-14 left-0 right-0 z-20 flex justify-center">
+        <span
+          className="px-3 py-1 text-[11px] font-medium text-white/70 rounded-full"
+          style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)" }}
+          key={current}
+        >
+          {BPUT_SLIDES[current].caption}
+        </span>
+      </div>
+
+      {/* Slide indicators */}
+      <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center items-center gap-2">
+        {BPUT_SLIDES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { go(i); resetTimer(); }}
+            className="transition-all duration-300 rounded-full"
+            style={{
+              width: i === current ? "24px" : "6px",
+              height: "6px",
+              background: i === current
+                ? "linear-gradient(90deg, #8b5cf6, #6366f1)"
+                : "rgba(255,255,255,0.3)",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Prev / Next arrows */}
+      <button
+        onClick={() => { prev(); resetTimer(); }}
+        className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110"
+        style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.15)" }}
+      >
+        <ChevronLeft className="w-4 h-4 text-white" />
+      </button>
+      <button
+        onClick={() => { next(); resetTimer(); }}
+        className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110"
+        style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.15)" }}
+      >
+        <ChevronRight className="w-4 h-4 text-white" />
+      </button>
+
+      {/* Slide counter */}
+      <div className="absolute top-4 right-4 z-20 text-[11px] font-mono text-white/50"
+        style={{ background: "rgba(0,0,0,0.35)", backdropFilter: "blur(6px)", padding: "2px 8px", borderRadius: "99px" }}>
+        {current + 1}/{total}
+      </div>
+    </div>
+  );
 }
 
+/* ──────────────────────────────────────────────
+   Star Rating Display
+────────────────────────────────────────────── */
 function StarRatingDisplay({ rating }: { rating: number }) {
   const fullStars = Math.floor(rating);
   const hasHalf = (rating % 1) >= 0.5;
@@ -36,16 +189,10 @@ function StarRatingDisplay({ rating }: { rating: number }) {
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map(i => (
         <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="none">
-          <defs>
-            <linearGradient id={`star-g-${i}`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#fbbf24" />
-              <stop offset="100%" stopColor="#f59e0b" />
-            </linearGradient>
-          </defs>
           <polygon
             points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"
-            fill={i <= fullStars ? `url(#star-g-${i})` : (i === fullStars + 1 && hasHalf ? `url(#star-g-${i})` : "transparent")}
-            opacity={i <= fullStars ? 1 : (i === fullStars + 1 && hasHalf ? 0.55 : 0.2)}
+            fill={i <= fullStars ? "#fbbf24" : (i === fullStars + 1 && hasHalf ? "#fbbf24" : "transparent")}
+            opacity={i <= fullStars ? 1 : (i === fullStars + 1 && hasHalf ? 0.5 : 0.2)}
             stroke="#f59e0b"
             strokeWidth="1.2"
             strokeLinejoin="round"
@@ -56,141 +203,221 @@ function StarRatingDisplay({ rating }: { rating: number }) {
   );
 }
 
+/* ──────────────────────────────────────────────
+   Types
+────────────────────────────────────────────── */
+interface TopFaculty {
+  id: number;
+  name: string;
+  designation: string;
+  departmentName: string;
+  departmentCode: string;
+  avgRating: number;
+  totalFeedbackCount: number;
+}
+
 const RANK_CONFIG = [
   {
-    rank: 1,
-    icon: Trophy,
-    label: "Top Rated",
+    rank: 1, icon: Trophy, label: "Top Rated",
     gradient: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
-    border: "rgba(245,158,11,0.5)",
-    glow: "rgba(245,158,11,0.25)",
+    gradientText: "linear-gradient(135deg, #fde68a, #f59e0b)",
+    border: "rgba(245,158,11,0.5)", glow: "rgba(245,158,11,0.2)",
     badge: "bg-amber-500/15 border-amber-400/30 text-amber-300",
-    ring: "ring-amber-400/40",
+    size: "md:col-span-1 md:row-start-1",
   },
   {
-    rank: 2,
-    icon: Medal,
-    label: "2nd Place",
+    rank: 2, icon: Medal, label: "2nd Place",
     gradient: "linear-gradient(135deg, #94a3b8 0%, #64748b 100%)",
-    border: "rgba(148,163,184,0.45)",
-    glow: "rgba(148,163,184,0.18)",
+    gradientText: "linear-gradient(135deg, #e2e8f0, #94a3b8)",
+    border: "rgba(148,163,184,0.4)", glow: "rgba(148,163,184,0.12)",
     badge: "bg-slate-400/15 border-slate-400/30 text-slate-300",
-    ring: "ring-slate-400/35",
+    size: "md:col-span-1",
   },
   {
-    rank: 3,
-    icon: Award,
-    label: "3rd Place",
+    rank: 3, icon: Award, label: "3rd Place",
     gradient: "linear-gradient(135deg, #cd7c3a 0%, #b45309 100%)",
-    border: "rgba(205,124,58,0.45)",
-    glow: "rgba(205,124,58,0.18)",
+    gradientText: "linear-gradient(135deg, #fde68a, #f97316)",
+    border: "rgba(205,124,58,0.4)", glow: "rgba(205,124,58,0.12)",
     badge: "bg-orange-700/15 border-orange-600/30 text-orange-300",
-    ring: "ring-orange-600/35",
+    size: "md:col-span-1",
   },
 ];
 
+/* ──────────────────────────────────────────────
+   Top Teachers — Real-time Section
+────────────────────────────────────────────── */
 function TopTeachersSection() {
-  const { data, isLoading, error } = useQuery({
+  const queryClient = useQueryClient();
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [justRefreshed, setJustRefreshed] = useState(false);
+
+  const { data, isLoading, error, dataUpdatedAt } = useQuery({
     queryKey: ["top-rated"],
     queryFn: async () => {
       const res = await fetch(`${getApiUrl()}/api/analytics/top-rated`);
       if (!res.ok) throw new Error("Failed to load");
-      return res.json();
+      const json = await res.json();
+      setLastUpdated(new Date());
+      return json;
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: 0,
+    refetchInterval: 15000,   // Poll every 15 seconds — real-time rankings
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
   });
 
   const topFaculty: TopFaculty[] = data?.faculty?.slice(0, 3) || [];
 
+  const manualRefresh = async () => {
+    setJustRefreshed(true);
+    await queryClient.invalidateQueries({ queryKey: ["top-rated"] });
+    setTimeout(() => setJustRefreshed(false), 1500);
+  };
+
+  const timeAgo = lastUpdated
+    ? (() => {
+        const secs = Math.floor((Date.now() - lastUpdated.getTime()) / 1000);
+        if (secs < 10) return "just now";
+        if (secs < 60) return `${secs}s ago`;
+        return `${Math.floor(secs / 60)}m ago`;
+      })()
+    : null;
+
   return (
     <section className="space-y-5">
       {/* Section header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-start sm:items-center justify-between gap-3 flex-col sm:flex-row">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.08))", border: "1px solid rgba(245,158,11,0.3)" }}>
-            <Trophy className="w-5 h-5 text-amber-400" />
+          <div className="w-11 h-11 rounded-2xl flex items-center justify-center"
+            style={{ background: "linear-gradient(135deg, rgba(245,158,11,0.25), rgba(245,158,11,0.08))", border: "1px solid rgba(245,158,11,0.35)" }}>
+            <Trophy className="w-5.5 h-5.5 text-amber-400" style={{ width: "1.375rem", height: "1.375rem" }} />
           </div>
           <div>
-            <h2 className="text-lg font-extrabold text-foreground leading-tight">Top Teachers This Semester</h2>
-            <p className="text-xs text-muted-foreground">Based on anonymous student ratings</p>
+            <h2 className="text-xl font-extrabold text-foreground leading-tight tracking-tight"
+              style={{ fontFamily: "var(--app-font-heading)" }}>
+              Top Teachers
+            </h2>
+            <p className="text-xs text-muted-foreground">Live ranking from anonymous student ratings</p>
           </div>
         </div>
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold"
-          style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.25)", color: "#fbbf24" }}>
-          <TrendingUp className="w-3 h-3" /> Live Rankings
-        </span>
+
+        <div className="flex items-center gap-2">
+          {/* Live badge with pulsing ring */}
+          <div className="relative flex items-center gap-2 px-3 py-1.5 rounded-full"
+            style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.25)" }}>
+            <span className="relative flex items-center justify-center w-3 h-3">
+              <span className="absolute inline-flex w-full h-full rounded-full bg-amber-400 opacity-75"
+                style={{ animation: "liveRing 1.5s ease-out infinite" }} />
+              <span className="relative inline-flex w-2 h-2 rounded-full bg-amber-400" />
+            </span>
+            <span className="text-[11px] font-bold text-amber-400">LIVE · 15s refresh</span>
+          </div>
+
+          {/* Manual refresh */}
+          <button
+            onClick={manualRefresh}
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-105"
+            style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.25)" }}
+            title="Refresh rankings"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-violet-400 ${justRefreshed ? "animate-spin" : ""}`} />
+          </button>
+        </div>
       </div>
 
-      {/* Teacher cards */}
+      {/* Last updated bar */}
+      {timeAgo && (
+        <div className="flex items-center gap-2 text-[11px] text-muted-foreground px-1">
+          <Wifi className="w-3 h-3 text-emerald-500" />
+          Rankings updated {timeAgo} · Auto-updates when new feedback is submitted
+        </div>
+      )}
+
+      {/* Teacher ranking cards */}
       {isLoading ? (
         <div className="grid md:grid-cols-3 gap-4">
-          {[1, 2, 3].map(i => <Skeleton key={i} className="h-40 rounded-2xl" />)}
+          {[1, 2, 3].map(i => <Skeleton key={i} className="h-52 rounded-2xl" />)}
         </div>
       ) : error || topFaculty.length === 0 ? (
-        <div className="glass-card rounded-2xl p-8 text-center">
-          <Trophy className="w-8 h-8 text-muted-foreground/40 mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">No ratings yet — rankings will appear once feedback is submitted.</p>
+        <div className="glass-card rounded-2xl p-10 text-center">
+          <Trophy className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
+          <p className="text-sm font-semibold text-foreground">No ratings yet</p>
+          <p className="text-xs text-muted-foreground mt-1">Rankings will appear once students submit feedback.</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-3 gap-4">
           {topFaculty.map((faculty, idx) => {
             const cfg = RANK_CONFIG[idx];
             const RankIcon = cfg.icon;
+            const isFirst = idx === 0;
             return (
               <div
                 key={faculty.id}
-                className={`glass-card rounded-2xl overflow-hidden flex flex-col animate-card-enter delay-${(idx + 1) * 100} relative`}
+                className="glass-card rounded-2xl overflow-hidden flex flex-col relative group transition-all duration-300 hover:-translate-y-1"
                 style={{
                   borderColor: cfg.border,
-                  boxShadow: `0 8px 32px ${cfg.glow}, 0 0 0 1px ${cfg.border}`,
+                  boxShadow: `0 6px 28px ${cfg.glow}, 0 0 0 1px ${cfg.border}`,
+                  animation: isFirst ? "rankingGlow 3s ease-in-out infinite" : "none",
                 }}
               >
-                {/* Rank background glow */}
-                <div className="absolute top-0 right-0 w-24 h-24 rounded-bl-full opacity-20 pointer-events-none"
-                  style={{ background: cfg.gradient }} />
+                {/* Top gradient bar (thicker for #1) */}
+                <div className="w-full" style={{ height: isFirst ? "4px" : "3px", background: cfg.gradient }} />
 
-                {/* Top rank bar */}
-                <div className="h-1 w-full" style={{ background: cfg.gradient }} />
+                {/* Rank number watermark */}
+                <div className="absolute top-3 right-4 text-6xl font-black opacity-5 pointer-events-none leading-none select-none"
+                  style={{ fontFamily: "var(--app-font-display)" }}>
+                  #{cfg.rank}
+                </div>
 
-                <div className="p-5 flex-1 flex flex-col gap-3">
-                  {/* Rank badge + name */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 relative"
+                <div className="p-5 flex-1 flex flex-col gap-4">
+                  {/* Rank badge */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
                         style={{ background: cfg.gradient, boxShadow: `0 4px 16px ${cfg.glow}` }}>
-                        <span className="text-white font-black text-lg leading-none">#{cfg.rank}</span>
+                        <span className="text-white font-black text-base leading-none" style={{ fontFamily: "var(--app-font-display)" }}>
+                          #{cfg.rank}
+                        </span>
                       </div>
-                      <div className="min-w-0">
-                        <div className="text-sm font-extrabold text-foreground leading-tight truncate">{faculty.name}</div>
-                        <div className="text-[11px] text-muted-foreground truncate">{faculty.designation}</div>
-                      </div>
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${cfg.badge}`}>
+                        <RankIcon className="w-2.5 h-2.5" /> {cfg.label}
+                      </span>
                     </div>
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border ${cfg.badge} flex-shrink-0`}>
-                      <RankIcon className="w-2.5 h-2.5" />
-                      {cfg.label}
-                    </span>
+                  </div>
+
+                  {/* Teacher info */}
+                  <div className="space-y-1">
+                    <div className="text-base font-bold text-foreground leading-tight line-clamp-1"
+                      style={{ fontFamily: "var(--app-font-heading)" }}>
+                      {faculty.name}
+                    </div>
+                    <div className="text-[11px] text-muted-foreground">{faculty.designation}</div>
                   </div>
 
                   {/* Department */}
-                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg"
+                  <div className="flex items-center gap-2 px-2.5 py-2 rounded-xl"
                     style={{ background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.15)" }}>
-                    <Building className="w-3 h-3 text-violet-400 flex-shrink-0" />
-                    <span className="text-[11px] font-semibold text-violet-400 truncate">{faculty.departmentName}</span>
-                    <span className="ml-auto text-[10px] text-muted-foreground font-mono">{faculty.departmentCode}</span>
+                    <Building className="w-3.5 h-3.5 text-violet-400 flex-shrink-0" />
+                    <span className="text-[11px] font-semibold text-violet-300 truncate flex-1">{faculty.departmentName}</span>
+                    <span className="text-[10px] font-mono text-violet-500 flex-shrink-0">{faculty.departmentCode}</span>
                   </div>
 
-                  {/* Rating */}
-                  <div className="flex items-center justify-between mt-auto">
-                    <div className="flex flex-col gap-0.5">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl font-black text-foreground">{faculty.avgRating?.toFixed(1) || "—"}</span>
-                        <span className="text-xs text-muted-foreground">/ 5.0</span>
+                  {/* Rating + count */}
+                  <div className="flex items-end justify-between mt-auto">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-3xl font-black leading-none"
+                          style={{ fontFamily: "var(--app-font-display)", background: cfg.gradientText, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                          {faculty.avgRating?.toFixed(1) || "—"}
+                        </span>
+                        <span className="text-xs text-muted-foreground font-medium">/ 5.0</span>
                       </div>
                       <StarRatingDisplay rating={faculty.avgRating || 0} />
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-violet-400">{faculty.totalFeedbackCount}</div>
+                      <div className="text-xl font-extrabold text-violet-400" style={{ fontFamily: "var(--app-font-display)" }}>
+                        {faculty.totalFeedbackCount}
+                      </div>
                       <div className="text-[10px] text-muted-foreground">reviews</div>
                     </div>
                   </div>
@@ -204,6 +431,9 @@ function TopTeachersSection() {
   );
 }
 
+/* ──────────────────────────────────────────────
+   BPUT Info Section
+────────────────────────────────────────────── */
 function BputInfoSection() {
   const stats = [
     { val: "2002", label: "Established", sub: "Govt. of Odisha", color: "text-violet-400" },
@@ -214,14 +444,16 @@ function BputInfoSection() {
 
   return (
     <section className="space-y-5">
-      {/* Section header */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+        <div className="w-11 h-11 rounded-2xl flex items-center justify-center"
           style={{ background: "rgba(59,130,246,0.15)", border: "1px solid rgba(59,130,246,0.3)" }}>
           <Building2 className="w-5 h-5 text-blue-400" />
         </div>
         <div>
-          <h2 className="text-lg font-extrabold text-foreground leading-tight">About BPUT & CUPGS</h2>
+          <h2 className="text-xl font-extrabold text-foreground leading-tight tracking-tight"
+            style={{ fontFamily: "var(--app-font-heading)" }}>
+            About BPUT &amp; CUPGS
+          </h2>
           <p className="text-xs text-muted-foreground">Biju Patnaik University of Technology, Rourkela</p>
         </div>
       </div>
@@ -230,26 +462,26 @@ function BputInfoSection() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {stats.map(({ val, label, sub, color }) => (
           <div key={label} className="stat-card p-4 text-center">
-            <div className={`text-2xl font-black ${color}`}>{val}</div>
+            <div className={`text-2xl font-extrabold ${color}`} style={{ fontFamily: "var(--app-font-display)" }}>{val}</div>
             <div className="text-xs font-semibold text-foreground mt-0.5">{label}</div>
             <div className="text-[10px] text-muted-foreground">{sub}</div>
           </div>
         ))}
       </div>
 
-      {/* Info card with BPUT image */}
+      {/* Info card */}
       <div className="glass-card rounded-2xl overflow-hidden">
         <div className="grid md:grid-cols-2 gap-0">
-          {/* Text side */}
           <div className="p-6 space-y-4">
             <div>
-              <h3 className="font-bold text-base text-foreground">Centre for UG &amp; PG Studies</h3>
+              <h3 className="font-bold text-base text-foreground" style={{ fontFamily: "var(--app-font-heading)" }}>
+                Centre for UG &amp; PG Studies
+              </h3>
               <p className="text-xs text-muted-foreground mt-0.5">In-Campus College of BPUT</p>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               CUPGS is the premier in-campus college of BPUT, offering world-class technical education in
-              Engineering, Management, Computer Applications, and Sciences.
-              Located in Rourkela, Odisha, it is directly administered by the university.
+              Engineering, Management, Computer Applications, and Sciences. Located in Rourkela, Odisha.
             </p>
             <ul className="space-y-2">
               {[
@@ -269,7 +501,6 @@ function BputInfoSection() {
               Learn more about CUPGS <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
-          {/* Image side */}
           <div className="relative overflow-hidden min-h-[220px]">
             <img
               src="https://www.bput.ac.in/images/banner/Untitled-1_29.jpg"
@@ -281,11 +512,10 @@ function BputInfoSection() {
               }}
             />
             <div className="absolute inset-0" style={{ background: "linear-gradient(to right, transparent 50%, rgba(0,0,0,0.3))" }} />
-            <div className="absolute bottom-3 left-3 right-3">
+            <div className="absolute bottom-3 left-3">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-semibold text-white"
                 style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)" }}>
-                <Building2 className="w-3 h-3 text-violet-300" />
-                BPUT Campus, Rourkela
+                <Building2 className="w-3 h-3 text-violet-300" /> BPUT Campus, Rourkela
               </div>
             </div>
           </div>
@@ -295,34 +525,16 @@ function BputInfoSection() {
       {/* Achievement cards */}
       <div className="grid sm:grid-cols-3 gap-3">
         {[
-          {
-            icon: Trophy,
-            title: "NIRF Rankings",
-            desc: "Consistently ranked among top technical universities in Odisha in National Rankings",
-            color: "icon-circle-indigo",
-            iconColor: "text-violet-500",
-          },
-          {
-            icon: Award,
-            title: "NBA Accreditation",
-            desc: "Multiple B.Tech programs hold National Board of Accreditation approval",
-            color: "icon-circle-blue",
-            iconColor: "text-blue-500",
-          },
-          {
-            icon: TrendingUp,
-            title: "BPUT Tech Carnival",
-            desc: "Annual tech festival bringing together 200+ colleges and thousands of students",
-            color: "icon-circle-teal",
-            iconColor: "text-emerald-500",
-          },
+          { icon: Trophy, title: "NIRF Rankings", desc: "Consistently ranked among top technical universities in Odisha", color: "icon-circle-indigo", iconColor: "text-violet-500" },
+          { icon: Award, title: "NBA Accreditation", desc: "Multiple B.Tech programs hold National Board of Accreditation approval", color: "icon-circle-blue", iconColor: "text-blue-500" },
+          { icon: TrendingUp, title: "BPUT Tech Carnival", desc: "Annual tech festival with 200+ colleges and thousands of students", color: "icon-circle-teal", iconColor: "text-emerald-500" },
         ].map(({ icon: Icon, title, desc, color, iconColor }) => (
           <div key={title} className="glass-card rounded-2xl p-4 space-y-3">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
-              <Icon className={`w-4.5 h-4.5 ${iconColor}`} style={{ width: "1.125rem", height: "1.125rem" }} />
+              <Icon className={`${iconColor}`} style={{ width: "1.125rem", height: "1.125rem" }} />
             </div>
             <div>
-              <div className="text-sm font-bold text-foreground">{title}</div>
+              <div className="text-sm font-bold text-foreground" style={{ fontFamily: "var(--app-font-heading)" }}>{title}</div>
               <div className="text-xs text-muted-foreground mt-1 leading-relaxed">{desc}</div>
             </div>
           </div>
@@ -332,9 +544,14 @@ function BputInfoSection() {
   );
 }
 
+/* ──────────────────────────────────────────────
+   Main Home Page
+────────────────────────────────────────────── */
 export default function Home() {
   const { data: windows, isLoading } = useListWindows();
-  const activeWindows = windows?.filter(w => w.isActive) || [];
+  const activeWindows = windows?.filter(
+    (w: { isActive?: boolean }) => w.isActive
+  ) || [];
   const { role, faculty, hod, student, setFaculty, setHod, setStudent, setAdmin, logout } = useRole();
   const [, navigate] = useLocation();
   const { toast } = useToast();
@@ -586,55 +803,44 @@ export default function Home() {
   const modalLabelClass = "text-foreground/80 text-sm font-medium";
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-14">
 
-      {/* ── Hero Banner ── */}
-      <div className="relative rounded-3xl overflow-hidden animate-fade-up">
-        {/* Background image */}
-        <img
-          src="https://www.bput.ac.in/images/banner/Untitled-1_26.jpg"
-          alt="BPUT Campus"
-          className="w-full h-56 md:h-64 object-cover"
-          onError={e => {
-            const el = e.target as HTMLImageElement;
-            el.src = "https://www.bput.ac.in/images/banner/2_4.jpg";
-          }}
-        />
-        {/* Overlay */}
-        <div className="absolute inset-0"
-          style={{ background: "linear-gradient(135deg, rgba(6,3,15,0.85) 0%, rgba(109,40,217,0.55) 50%, rgba(0,0,0,0.6) 100%)" }} />
-
-        {/* Content */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 gap-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full hero-badge text-sm font-medium">
-            <div className="glow-dot" />
-            <span>Academic Year 2024–25 · Even Semester · Feedback Open</span>
-            <Sparkles className="w-3.5 h-3.5" />
-          </div>
-
-          <div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight drop-shadow-lg">
-              CUPGS Academic
-              <br />
-              <span className="text-gradient">Feedback System</span>
-            </h1>
-            <p className="text-sm text-white/70 mt-2 max-w-md mx-auto">
-              Secure · Anonymous · Real-time Analytics · BPUT Rourkela
-            </p>
-          </div>
-
-          {role !== "guest" && (
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-sm font-medium">
-              <CheckCircle2 className="w-4 h-4" />
-              {role === "faculty" && faculty && `Faculty: ${faculty.name}`}
-              {role === "hod" && hod && `HOD: ${hod.hodName}`}
-              {role === "student" && student && `Student: ${student.rollNumber}`}
-              {role === "admin" && "Administrator"}
-              <button onClick={logout} className="text-xs text-emerald-300/70 hover:text-white transition-colors underline ml-1">Sign out</button>
-            </div>
-          )}
+      {/* ── Hero Slideshow ── */}
+      <HeroSlideshow>
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full hero-badge text-sm font-medium"
+          style={{ fontFamily: "var(--app-font-sans)" }}>
+          <div className="glow-dot" />
+          <span>Academic Year 2024–25 · Even Semester · Feedback Open</span>
+          <Sparkles className="w-3.5 h-3.5" />
         </div>
-      </div>
+
+        {/* Main heading */}
+        <div className="space-y-2">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-none tracking-tight drop-shadow-lg"
+            style={{ fontFamily: "var(--app-font-display)" }}>
+            CUPGS Academic
+          </h1>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black leading-none tracking-tight drop-shadow-lg text-gradient"
+            style={{ fontFamily: "var(--app-font-display)" }}>
+            Feedback System
+          </h1>
+          <p className="text-sm text-white/65 mt-1" style={{ fontFamily: "var(--app-font-sans)" }}>
+            Secure · Anonymous · Real-time Analytics · BPUT Rourkela
+          </p>
+        </div>
+
+        {role !== "guest" && (
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-sm font-medium">
+            <CheckCircle2 className="w-4 h-4" />
+            {role === "faculty" && faculty && `Faculty: ${faculty.name}`}
+            {role === "hod" && hod && `HOD: ${hod.hodName}`}
+            {role === "student" && student && `Student: ${student.rollNumber}`}
+            {role === "admin" && "Administrator"}
+            <button onClick={logout} className="text-xs text-emerald-300/70 hover:text-white transition-colors underline ml-1">Sign out</button>
+          </div>
+        )}
+      </HeroSlideshow>
 
       {/* ── Feature Strip ── */}
       <div className="grid grid-cols-3 gap-3 animate-fade-up delay-100">
@@ -645,7 +851,7 @@ export default function Home() {
         ].map(({ icon: Icon, label, sub, color }) => (
           <div key={label} className="glass-card rounded-2xl p-3 text-center flex flex-col items-center gap-1.5">
             <Icon className={`w-5 h-5 ${color}`} />
-            <div className="text-xs font-semibold text-foreground">{label}</div>
+            <div className="text-xs font-semibold text-foreground" style={{ fontFamily: "var(--app-font-heading)" }}>{label}</div>
             <div className="text-[10px] text-muted-foreground hidden sm:block">{sub}</div>
           </div>
         ))}
@@ -653,7 +859,8 @@ export default function Home() {
 
       {/* ── Role Cards ── */}
       <section className="space-y-4">
-        <h2 className="text-lg font-extrabold text-foreground flex items-center gap-2.5 animate-fade-up delay-150">
+        <h2 className="text-xl font-extrabold text-foreground flex items-center gap-2.5 tracking-tight animate-fade-up delay-150"
+          style={{ fontFamily: "var(--app-font-heading)" }}>
           <span className="w-1 h-5 rounded-full bg-gradient-to-b from-violet-400 to-blue-500" />
           Portal Access
         </h2>
@@ -671,10 +878,12 @@ export default function Home() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3.5">
                       <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${card.iconClass} transition-transform duration-300 group-hover:scale-110`}>
-                        <Icon className={`w-5.5 h-5.5 ${card.iconColor}`} style={{ width: "1.375rem", height: "1.375rem" }} />
+                        <Icon className={`${card.iconColor}`} style={{ width: "1.375rem", height: "1.375rem" }} />
                       </div>
                       <div>
-                        <h3 className="text-base font-bold text-foreground leading-tight">{card.title}</h3>
+                        <h3 className="text-base font-bold text-foreground leading-tight" style={{ fontFamily: "var(--app-font-heading)" }}>
+                          {card.title}
+                        </h3>
                         <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">{card.desc}</p>
                       </div>
                     </div>
@@ -689,6 +898,7 @@ export default function Home() {
                     onClick={(e) => { e.stopPropagation(); card.onClick(); }}
                     disabled={card.btnDisabled}
                     className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white transition-all duration-250 disabled:opacity-35 disabled:cursor-not-allowed ${card.btnClass}`}
+                    style={{ fontFamily: "var(--app-font-heading)" }}
                   >
                     {card.btnLabel}
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -700,13 +910,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Top 3 Teachers ── */}
+      {/* ── Live Top Teachers ── */}
       <TopTeachersSection />
 
       {/* ── BPUT Info ── */}
       <BputInfoSection />
 
-      {/* ── Footer stats ── */}
+      {/* ── Footer stats row ── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 animate-fade-in delay-400">
         {[
           { val: "268+", label: "Courses", sub: "5 departments" },
@@ -715,14 +925,14 @@ export default function Home() {
           { val: "100%", label: "Anonymous", sub: "Ref ID system" },
         ].map(({ val, label, sub }) => (
           <div key={label} className="stat-card p-4 text-center">
-            <div className="text-2xl font-extrabold text-gradient">{val}</div>
-            <div className="text-xs font-semibold text-foreground mt-0.5">{label}</div>
+            <div className="text-2xl font-extrabold text-gradient" style={{ fontFamily: "var(--app-font-display)" }}>{val}</div>
+            <div className="text-xs font-semibold text-foreground mt-0.5" style={{ fontFamily: "var(--app-font-heading)" }}>{label}</div>
             <div className="text-[10px] text-muted-foreground">{sub}</div>
           </div>
         ))}
       </div>
 
-      {/* ══ MODALS ══ */}
+      {/* ══════ MODALS ══════ */}
       <Dialog open={showStudentModal} onOpenChange={setShowStudentModal}>
         <DialogContent className="rounded-2xl max-w-sm">
           <DialogHeader>
@@ -731,7 +941,7 @@ export default function Home() {
                 <GraduationCap className="w-5 h-5 text-blue-500" />
               </div>
               <div>
-                <DialogTitle className="text-base">Student Feedback</DialogTitle>
+                <DialogTitle className="text-base" style={{ fontFamily: "var(--app-font-heading)" }}>Student Feedback</DialogTitle>
                 <DialogDescription className="text-xs mt-0.5">Your identity remains completely anonymous.</DialogDescription>
               </div>
             </div>
@@ -761,7 +971,7 @@ export default function Home() {
                 <Users className="w-5 h-5 text-emerald-500" />
               </div>
               <div>
-                <DialogTitle className="text-base">Faculty Login</DialogTitle>
+                <DialogTitle className="text-base" style={{ fontFamily: "var(--app-font-heading)" }}>Faculty Login</DialogTitle>
                 <DialogDescription className="text-xs mt-0.5">Use your CUPGS Employee ID and 4-digit PIN.</DialogDescription>
               </div>
             </div>
@@ -797,7 +1007,7 @@ export default function Home() {
                 <Building2 className="w-5 h-5 text-violet-500" />
               </div>
               <div>
-                <DialogTitle className="text-base">HOD Login</DialogTitle>
+                <DialogTitle className="text-base" style={{ fontFamily: "var(--app-font-heading)" }}>HOD Login</DialogTitle>
                 <DialogDescription className="text-xs mt-0.5">Access your department analytics dashboard.</DialogDescription>
               </div>
             </div>
@@ -833,7 +1043,7 @@ export default function Home() {
                 <ShieldCheck className="w-5 h-5 text-rose-500" />
               </div>
               <div>
-                <DialogTitle className="text-base">Administrator Login</DialogTitle>
+                <DialogTitle className="text-base" style={{ fontFamily: "var(--app-font-heading)" }}>Administrator Login</DialogTitle>
                 <DialogDescription className="text-xs mt-0.5">Full system access — all departments &amp; controls.</DialogDescription>
               </div>
             </div>
