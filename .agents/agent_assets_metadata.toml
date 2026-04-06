@@ -282,6 +282,114 @@ uri = "file://artifacts/bput-feedback/public/faculty-photos/faculty-49.png"
 type = "image"
 title = "Faculty 49 portrait"
 
+[[generated]]
+id = "woSyJgC_h6LdGeyoYLaka"
+uri = "file://attached_assets/generated_images/faculty_cse_001.png"
+type = "image"
+title = "Dr Debashreet Das portrait"
+
+[[generated]]
+id = "AZPEuh9ircj4OTPDGTbYS"
+uri = "file://attached_assets/generated_images/faculty_cse_002.png"
+type = "image"
+title = "Dr Pradip Kumar Sahu portrait"
+
+[[generated]]
+id = "sW2Q1oPfjd8u3vQrVyizo"
+uri = "file://attached_assets/generated_images/faculty_cse_003.png"
+type = "image"
+title = "Dr Sumitra Kisan portrait"
+
+[[generated]]
+id = "Fg1TBHsOV53Of1_NHgukT"
+uri = "file://attached_assets/generated_images/faculty_cse_004.png"
+type = "image"
+title = "Shiba Prasad Dash portrait"
+
+[[generated]]
+id = "dzWpPfzyAJzvi-Zod7M68"
+uri = "file://attached_assets/generated_images/faculty_cse_005.png"
+type = "image"
+title = "Dr D Chandrasekhar Rao portrait"
+
+[[generated]]
+id = "o4ExLhnfsjB_quJYt7Slv"
+uri = "file://attached_assets/generated_images/faculty_ece_001.png"
+type = "image"
+title = "Dr Prakash Kumar Panda portrait"
+
+[[generated]]
+id = "t9QXtK2wCz5JKdXUyo_VY"
+uri = "file://attached_assets/generated_images/faculty_ece_002.png"
+type = "image"
+title = "Dr Bikramaditya Das portrait"
+
+[[generated]]
+id = "Eqx7IwvHPOnUYfmyOsDjC"
+uri = "file://attached_assets/generated_images/faculty_ece_003.png"
+type = "image"
+title = "Dr Ashish Kumar Padhan portrait"
+
+[[generated]]
+id = "Y_Nd1lUzQ5dYj-PAMHa8z"
+uri = "file://attached_assets/generated_images/faculty_ee_001.png"
+type = "image"
+title = "Dr Manas Ranjan Nayak portrait"
+
+[[generated]]
+id = "oaz_-adL_zwy8MrEhfK-g"
+uri = "file://attached_assets/generated_images/faculty_ee_002.png"
+type = "image"
+title = "Dr Sivkumar Mishra portrait"
+
+[[generated]]
+id = "pYe_4v8z4pK5aWRvyzC4L"
+uri = "file://attached_assets/generated_images/faculty_ee_003.png"
+type = "image"
+title = "Dr Manoj Kumar Sahu portrait"
+
+[[generated]]
+id = "ZvgFyTS8hOZjIlvGWJyJn"
+uri = "file://attached_assets/generated_images/faculty_ee_004.png"
+type = "image"
+title = "Dr Saswata Satpathi portrait"
+
+[[generated]]
+id = "1Xpuu_Bfn7AKIN7XZqiri"
+uri = "file://attached_assets/generated_images/faculty_me_001.png"
+type = "image"
+title = "Dr Atal Bihari Harichandan portrait"
+
+[[generated]]
+id = "jZY-IQzLoLyHg7I_8k408"
+uri = "file://attached_assets/generated_images/faculty_me_002.png"
+type = "image"
+title = "Dr Nirmal Kumar Kund portrait"
+
+[[generated]]
+id = "I2m5vJoslhH0DIYxnkQbf"
+uri = "file://attached_assets/generated_images/faculty_me_003.png"
+type = "image"
+title = "Dr Pradeep Kumar Mishra portrait"
+
+[[generated]]
+id = "JACt5cGhdZTo8KBuwkhq4"
+uri = "file://attached_assets/generated_images/faculty_ce_001.png"
+type = "image"
+title = "Dr Bibhuti Bhusan Mukharjee portrait"
+
+[[generated]]
+id = "PJjDjK-QK13q_mzbF7smT"
+uri = "file://attached_assets/generated_images/faculty_ce_002.png"
+type = "image"
+title = "Dr Madhusmita Biswal portrait"
+
+[[generated]]
+id = "P8O50RkfgVvuGWaqiLKfr"
+uri = "file://attached_assets/generated_images/faculty_ce_003.png"
+type = "image"
+title = "Dr Bharadwaj Nanda portrait"
+
 [[outputs]]
 id = "DNYPbFPAJjS-si0mrrbw9"
 uri = "file://CUPGS_All_Credentials.xlsx"

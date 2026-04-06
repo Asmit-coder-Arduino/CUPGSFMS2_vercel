@@ -1,5 +1,9 @@
-import { useGetDashboardSummary, useGetTopRated } from "@workspace/api-client-react";
+import { useGetDashboardSummary, useGetTopRated, useListDepartments } from "@workspace/api-client-react";
 import { Link } from "wouter";
+import { useState } from "react";
+import { getApiUrl } from "@/lib/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRole } from "@/contexts/RoleContext";
 
 function RatingBar({ label, value }: { label: string; value: number }) {
   const pct = (value / 5) * 100;
@@ -32,6 +36,144 @@ function StarRating({ value }: { value: number }) {
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       ))}
+    </div>
+  );
+}
+
+function HodManagementSection() {
+  const { data: departments, isLoading } = useListDepartments();
+  const queryClient = useQueryClient();
+  const { adminPassword } = useRole();
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editForm, setEditForm] = useState({ hodName: "", hodEmployeeId: "", hodPin: "" });
+  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  const startEdit = (dept: { id: number; hodName?: string | null; hodEmployeeId?: string | null }) => {
+    setEditingId(dept.id);
+    setEditForm({
+      hodName: dept.hodName || "",
+      hodEmployeeId: dept.hodEmployeeId || "",
+      hodPin: "",
+    });
+    setMsg("");
+  };
+
+  const saveEdit = async () => {
+    if (!editingId) return;
+    setSaving(true);
+    setMsg("");
+    try {
+      const body: Record<string, string> = {};
+      if (editForm.hodName.trim()) body.hodName = editForm.hodName.trim();
+      if (editForm.hodEmployeeId.trim()) body.hodEmployeeId = editForm.hodEmployeeId.trim();
+      if (editForm.hodPin.trim()) body.hodPin = editForm.hodPin.trim();
+
+      const res = await fetch(`${getApiUrl()}/api/departments/${editingId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": adminPassword || "",
+        },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error((await res.json()).error || "Update failed");
+      setMsg("Updated successfully!");
+      setEditingId(null);
+      queryClient.invalidateQueries({ queryKey: ["listDepartments"] });
+    } catch (err) {
+      setMsg((err as Error).message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (isLoading) return <div className="bg-card border rounded-lg p-5"><div className="h-6 bg-muted rounded w-48 animate-pulse" /></div>;
+  if (!departments || departments.length === 0) return null;
+
+  return (
+    <div className="bg-card border rounded-lg p-5">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h2 className="font-semibold">HOD Management</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">Manage department heads and their login credentials</p>
+        </div>
+      </div>
+      <div className="space-y-3">
+        {departments.map((dept: { id: number; name: string; code: string; hodName?: string | null; hodEmployeeId?: string | null }) => (
+          <div key={dept.id} className="border rounded-lg p-4">
+            {editingId === dept.id ? (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded">{dept.code}</span>
+                  <span className="text-sm font-semibold">{dept.name}</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="text-xs text-muted-foreground mb-1 block">HOD Name</label>
+                    <input
+                      className="w-full border rounded-md px-3 py-2 text-sm bg-background"
+                      value={editForm.hodName}
+                      onChange={e => setEditForm(f => ({ ...f, hodName: e.target.value }))}
+                      placeholder="Dr. John Doe"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-muted-foreground mb-1 block">Employee ID</label>
+                    <input
+                      className="w-full border rounded-md px-3 py-2 text-sm bg-background font-mono"
+                      value={editForm.hodEmployeeId}
+                      onChange={e => setEditForm(f => ({ ...f, hodEmployeeId: e.target.value }))}
+                      placeholder="HOD/CSE/001"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-muted-foreground mb-1 block">New PIN (leave blank to keep)</label>
+                    <input
+                      type="password"
+                      className="w-full border rounded-md px-3 py-2 text-sm bg-background"
+                      value={editForm.hodPin}
+                      onChange={e => setEditForm(f => ({ ...f, hodPin: e.target.value }))}
+                      placeholder="••••••"
+                    />
+                  </div>
+                </div>
+                {msg && <p className={`text-xs ${msg.includes("success") ? "text-green-600" : "text-destructive"}`}>{msg}</p>}
+                <div className="flex gap-2">
+                  <button onClick={saveEdit} disabled={saving}
+                    className="px-4 py-1.5 text-xs font-semibold bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50">
+                    {saving ? "Saving..." : "Save Changes"}
+                  </button>
+                  <button onClick={() => { setEditingId(null); setMsg(""); }}
+                    className="px-4 py-1.5 text-xs font-semibold border rounded-md hover:bg-muted">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded">{dept.code}</span>
+                  <div>
+                    <p className="text-sm font-medium">{dept.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {dept.hodName ? (
+                        <>HOD: <span className="font-semibold text-foreground">{dept.hodName}</span> · <span className="font-mono">{dept.hodEmployeeId}</span></>
+                      ) : (
+                        <span className="text-amber-500">No HOD assigned</span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+                <button onClick={() => startEdit(dept)}
+                  className="text-xs font-semibold text-primary hover:underline">
+                  Edit
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -97,6 +239,8 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      <HodManagementSection />
 
       {topRated && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

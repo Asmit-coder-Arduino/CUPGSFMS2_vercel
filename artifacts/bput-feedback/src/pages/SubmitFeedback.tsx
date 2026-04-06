@@ -303,7 +303,22 @@ export default function SubmitFeedback() {
   const [section, setSection] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(true);
   const [comments, setComments] = useState("");
-  const [submitted, setSubmitted] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState<{
+    referenceId: string;
+    serialNumber: string;
+    ipAddress: string;
+    createdAt: string;
+    courseName: string;
+    courseCode: string;
+    facultyName: string;
+    departmentName: string;
+    ratingCourseContent: number;
+    ratingTeachingQuality: number;
+    ratingLabFacilities: number;
+    ratingStudyMaterial: number;
+    ratingOverall: number;
+    comments?: string;
+  } | null>(null);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -433,7 +448,22 @@ export default function SubmitFeedback() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to submit feedback");
 
-      setSubmitted(data.referenceId);
+      setSubmitted({
+        referenceId: data.referenceId,
+        serialNumber: data.serialNumber,
+        ipAddress: data.ipAddress,
+        createdAt: data.createdAt,
+        courseName: data.courseName,
+        courseCode: data.courseCode,
+        facultyName: data.facultyName,
+        departmentName: data.departmentName,
+        ratingCourseContent: data.ratingCourseContent,
+        ratingTeachingQuality: data.ratingTeachingQuality,
+        ratingLabFacilities: data.ratingLabFacilities,
+        ratingStudyMaterial: data.ratingStudyMaterial,
+        ratingOverall: data.ratingOverall,
+        comments: data.comments,
+      });
       queryClient.invalidateQueries({ queryKey: getListFeedbackQueryKey() });
     } catch (err: unknown) {
       setError((err as Error).message || "Failed to submit feedback. Please try again.");
@@ -470,32 +500,141 @@ export default function SubmitFeedback() {
     );
   }
 
+  const downloadReceipt = () => {
+    if (!submitted) return;
+    const d = submitted;
+    const date = new Date(d.createdAt);
+    const dateStr = date.toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
+    const timeStr = date.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    const stars = (n: number) => "\u2605".repeat(Math.round(n)) + "\u2606".repeat(5 - Math.round(n));
+
+    const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>CUPGS Feedback Receipt - ${d.referenceId}</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8f9fa;padding:20px}
+.receipt{max-width:600px;margin:0 auto;background:#fff;border:2px solid #4f46e5;border-radius:12px;overflow:hidden}
+.header{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:24px;text-align:center}
+.header h1{font-size:20px;margin-bottom:4px}
+.header p{font-size:12px;opacity:.85}
+.body{padding:24px}
+.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e5e7eb;font-size:14px}
+.row:last-child{border-bottom:none}
+.label{color:#6b7280;font-weight:500}
+.value{font-weight:600;color:#1f2937;text-align:right;max-width:60%}
+.ref-box{background:#f0f0ff;border:1px dashed #4f46e5;border-radius:8px;padding:16px;text-align:center;margin:16px 0}
+.ref-box .id{font-size:18px;font-weight:800;color:#4f46e5;font-family:monospace;letter-spacing:1px}
+.section-title{font-weight:700;font-size:13px;color:#4f46e5;text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px;padding-top:8px;border-top:2px solid #e5e7eb}
+.stars{color:#f59e0b;font-size:16px;letter-spacing:2px}
+.footer{background:#f9fafb;border-top:1px solid #e5e7eb;padding:16px 24px;text-align:center;font-size:11px;color:#9ca3af}
+.comments{background:#f9fafb;border-radius:6px;padding:10px;font-size:13px;color:#374151;margin-top:8px;font-style:italic}
+@media print{body{padding:0;background:#fff}.receipt{border:1px solid #ccc}}
+</style></head><body>
+<div class="receipt">
+<div class="header">
+<h1>CUPGS - BPUT, Rourkela</h1>
+<p>Centre for UG & PG Studies | Academic Feedback Receipt</p>
+</div>
+<div class="body">
+<div class="ref-box">
+<div style="font-size:11px;color:#6b7280;margin-bottom:4px">REFERENCE NUMBER</div>
+<div class="id">${d.referenceId}</div>
+</div>
+<div class="row"><span class="label">Form Serial No.</span><span class="value">${d.serialNumber}</span></div>
+<div class="row"><span class="label">Date</span><span class="value">${dateStr}</span></div>
+<div class="row"><span class="label">Time</span><span class="value">${timeStr}</span></div>
+<div class="row"><span class="label">IP Address</span><span class="value">${d.ipAddress}</span></div>
+<div class="section-title">Course & Faculty</div>
+<div class="row"><span class="label">Department</span><span class="value">${d.departmentName}</span></div>
+<div class="row"><span class="label">Course</span><span class="value">[${d.courseCode}] ${d.courseName}</span></div>
+<div class="row"><span class="label">Faculty</span><span class="value">${d.facultyName || "Not Assigned"}</span></div>
+<div class="section-title">Ratings Given</div>
+<div class="row"><span class="label">Course Content</span><span class="value"><span class="stars">${stars(d.ratingCourseContent)}</span> ${d.ratingCourseContent}/5</span></div>
+<div class="row"><span class="label">Teaching Quality</span><span class="value"><span class="stars">${stars(d.ratingTeachingQuality)}</span> ${d.ratingTeachingQuality}/5</span></div>
+<div class="row"><span class="label">Lab Facilities</span><span class="value"><span class="stars">${stars(d.ratingLabFacilities)}</span> ${d.ratingLabFacilities}/5</span></div>
+<div class="row"><span class="label">Study Material</span><span class="value"><span class="stars">${stars(d.ratingStudyMaterial)}</span> ${d.ratingStudyMaterial}/5</span></div>
+<div class="row"><span class="label">Overall Rating</span><span class="value" style="color:#4f46e5;font-size:16px"><span class="stars">${stars(d.ratingOverall)}</span> ${d.ratingOverall}/5</span></div>
+${d.comments ? `<div class="section-title">Your Comments</div><div class="comments">"${d.comments}"</div>` : ""}
+</div>
+<div class="footer">
+<p>This is a computer-generated receipt. Please save your Reference Number to track your feedback status.</p>
+<p style="margin-top:4px">Track at: CUPGS Feedback Portal → Track Feedback → Enter Reference ID</p>
+</div>
+</div></body></html>`;
+
+    const blob = new Blob([html], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `CUPGS_Feedback_Receipt_${d.referenceId}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   if (submitted) {
-    const deptName = departments?.find(d => String(d.id) === selectedDeptId)?.name;
+    const date = new Date(submitted.createdAt);
     return (
       <div className="p-6 max-w-2xl">
-        <div className="bg-card border rounded-lg p-8 text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
-            <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
+        <div className="bg-card border rounded-xl p-8 space-y-5">
+          <div className="text-center space-y-3">
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
+              <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-bold text-green-700">Thank You! Feedback Submitted</h2>
+            <p className="text-muted-foreground text-sm">Your feedback has been recorded and will help improve academic quality at CUPGS, BPUT.</p>
           </div>
-          <h2 className="text-xl font-bold">Feedback Submitted Successfully</h2>
-          <p className="text-muted-foreground">Thank you! Your feedback has been recorded and will help improve academic quality at CUPGS.</p>
-          {deptName && <p className="text-sm text-muted-foreground">Department: <strong>{deptName}</strong></p>}
-          <div className="bg-muted rounded-md px-4 py-3 inline-block">
-            <p className="text-xs text-muted-foreground mb-1">Reference ID (save this)</p>
-            <p className="font-mono font-bold text-primary">{submitted}</p>
+
+          <div className="bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 rounded-xl p-5 text-center">
+            <p className="text-xs text-muted-foreground mb-1">REFERENCE NUMBER</p>
+            <p className="font-mono font-black text-xl text-indigo-600 tracking-wider">{submitted.referenceId}</p>
+            <p className="text-xs text-muted-foreground mt-2">Save this to track your feedback status</p>
           </div>
-          <div>
+
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="bg-muted/50 rounded-lg p-3">
+              <p className="text-xs text-muted-foreground">Serial No.</p>
+              <p className="font-semibold font-mono">{submitted.serialNumber}</p>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-3">
+              <p className="text-xs text-muted-foreground">Date & Time</p>
+              <p className="font-semibold">{date.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}, {date.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</p>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-3">
+              <p className="text-xs text-muted-foreground">Course</p>
+              <p className="font-semibold">[{submitted.courseCode}] {submitted.courseName}</p>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-3">
+              <p className="text-xs text-muted-foreground">Faculty</p>
+              <p className="font-semibold">{submitted.facultyName || "—"}</p>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-3">
+              <p className="text-xs text-muted-foreground">Overall Rating</p>
+              <p className="font-semibold text-amber-600">{"★".repeat(Math.round(submitted.ratingOverall))}{"☆".repeat(5 - Math.round(submitted.ratingOverall))} {submitted.ratingOverall}/5</p>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-3">
+              <p className="text-xs text-muted-foreground">IP Address</p>
+              <p className="font-semibold font-mono text-xs">{submitted.ipAddress}</p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <button
+              onClick={downloadReceipt}
+              className="flex-1 bg-indigo-600 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+              Download Receipt
+            </button>
             <button
               onClick={() => {
                 setSubmitted(null); setCourseId(""); setFacultyId(""); setComments("");
                 setRatings(INITIAL_RATINGS); setCustomAnswers({});
               }}
-              className="text-sm text-primary underline underline-offset-2"
+              className="flex-1 border border-primary text-primary font-semibold px-5 py-2.5 rounded-lg hover:bg-primary/5 transition-colors"
             >
-              Submit feedback for another course
+              Submit Another Feedback
             </button>
           </div>
         </div>

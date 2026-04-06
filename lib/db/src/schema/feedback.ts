@@ -28,6 +28,7 @@ export const feedbackTable = pgTable("feedback", {
   comments: text("comments"),
   customAnswers: jsonb("custom_answers"),
   isAnonymous: boolean("is_anonymous").notNull().default(true),
+  ipAddress: text("ip_address"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

@@ -123,11 +123,20 @@ code, name, semester, academicYear, credits, facultyId (null to unassign)
 - **Feedback Windows**: Create/toggle active/inactive windows; progress bar for running windows; status badges
 - **Form Builder**: Customize feedback forms per department
 
+## Recent Features Added
+- **IP Address Tracking**: Feedback submissions capture client IP address, stored in `ipAddress` field
+- **Serial Number**: Each feedback gets a serial number in format `CUPGS/FB/00001`
+- **Thank You Receipt**: After submission, students see a detailed receipt with download button (downloads as styled HTML file with all submission details)
+- **Feedback Tracking**: Students can track their feedback status using Reference ID on the home page. Backend: `GET /api/feedback/track/:referenceId`
+- **Admin HOD Management**: Dashboard includes HOD management section where admin can edit HOD name, employee ID, and PIN for each department. Backend: `PATCH /api/departments/:id`
+- **Faculty Photos**: All 18 faculty have AI-generated portrait photos at `/faculty-photos/faculty_{dept}_{num}.png`
+- **Instagram-style Top Teachers**: Home page shows top 3 teachers with photos, like/heart button, star ratings, and detailed modal with AI analysis
+
 ## Key Conventions
 - API base URL: relative (`""`) — Replit proxy routes `/api/*` to the API server
 - Faculty employee ID format: `CUPGS/DEPT/NUM` (e.g. `CUPGS/CSE/001`)
 - Faculty PIN format: `CUPGS_{DEPT}_{NNN}#` (e.g. `CUPGS_CSE_001#`)
 - HOD PIN format: `HOD_{DEPT}_@2025#` (e.g. `HOD_CSE_@2025#`)
-- Admin password: via env var `ADMIN_PASSWORD`
+- Admin password: via env var `ADMIN_PASSWORD` (stored in session after login for API auth headers)
 - Security: API responses strip `loginPin` from faculty and `hodPin` from departments
 - All feedback is anonymous by default

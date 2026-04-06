@@ -17,7 +17,7 @@ import {
   Lock, BarChart3, FileText, Trophy, Medal,
   Award, ChevronRight, TrendingUp, Building, Zap,
   ChevronLeft, Wifi, RefreshCw, Star, Heart,
-  MessageCircle, Brain, X,
+  MessageCircle, Brain, X, Search, Loader2,
 } from "lucide-react";
 import { CupgsLogo } from "@/components/CupgsLogo";
 
@@ -668,6 +668,134 @@ function BputInfoSection() {
 }
 
 /* ─────────────────────────────────
+   Track Feedback Section
+───────────────────────────────── */
+function TrackFeedbackSection() {
+  const [refId, setRefId] = useState("");
+  const [tracking, setTracking] = useState(false);
+  const [result, setResult] = useState<{
+    found: boolean;
+    referenceId: string;
+    status: string;
+    message: string;
+    serialNumber?: string;
+    submittedAt?: string;
+    courseName?: string;
+    courseCode?: string;
+    facultyName?: string;
+    departmentName?: string;
+    ratingOverall?: number;
+  } | null>(null);
+
+  const handleTrack = async () => {
+    const id = refId.trim();
+    if (!id) return;
+    setTracking(true);
+    setResult(null);
+    try {
+      const res = await fetch(`${getApiUrl()}/api/feedback/track/${encodeURIComponent(id)}`);
+      const data = await res.json();
+      setResult(data);
+    } catch {
+      setResult({ found: false, referenceId: id, status: "ERROR", message: "Unable to connect to server. Please try again." });
+    } finally {
+      setTracking(false);
+    }
+  };
+
+  return (
+    <section className="glass-card rounded-2xl p-5 space-y-4">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+          style={{ background: "rgba(139,92,246,0.15)" }}>
+          <Search className="w-5 h-5 text-violet-400" />
+        </div>
+        <div>
+          <h2 className="text-base font-bold text-foreground" style={{ fontFamily: "var(--app-font-heading)" }}>Track Your Feedback</h2>
+          <p className="text-[11px] text-muted-foreground">Enter your Reference ID to check feedback status</p>
+        </div>
+      </div>
+
+      <div className="flex gap-2">
+        <Input
+          placeholder="e.g. FB-A1B2C3D4"
+          value={refId}
+          onChange={e => { setRefId(e.target.value); setResult(null); }}
+          onKeyDown={e => e.key === "Enter" && handleTrack()}
+          className="input-glass rounded-xl h-11 text-sm flex-1 font-mono"
+        />
+        <button
+          onClick={handleTrack}
+          disabled={tracking || !refId.trim()}
+          className="px-5 h-11 rounded-xl text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 disabled:opacity-40 transition-colors flex items-center gap-2"
+        >
+          {tracking ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+          Track
+        </button>
+      </div>
+
+      {result && (
+        <div className={`rounded-xl p-4 border ${
+          result.found && result.status === "ACTIVE"
+            ? "bg-emerald-500/10 border-emerald-500/20"
+            : result.status === "DELETED"
+              ? "bg-red-500/10 border-red-500/20"
+              : "bg-amber-500/10 border-amber-500/20"
+        }`}>
+          <div className="flex items-start gap-3">
+            {result.found && result.status === "ACTIVE" ? (
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+            ) : (
+              <X className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+            )}
+            <div className="flex-1 min-w-0 space-y-2">
+              <div>
+                <p className="text-sm font-semibold text-foreground">{result.message}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Reference: <span className="font-mono font-bold">{result.referenceId}</span></p>
+              </div>
+              {result.found && result.status === "ACTIVE" && (
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  {result.serialNumber && (
+                    <div className="p-2 rounded-lg bg-white/5">
+                      <span className="text-muted-foreground">Serial: </span>
+                      <span className="font-mono font-semibold">{result.serialNumber}</span>
+                    </div>
+                  )}
+                  {result.departmentName && (
+                    <div className="p-2 rounded-lg bg-white/5">
+                      <span className="text-muted-foreground">Dept: </span>
+                      <span className="font-semibold">{result.departmentName}</span>
+                    </div>
+                  )}
+                  {result.courseName && (
+                    <div className="p-2 rounded-lg bg-white/5">
+                      <span className="text-muted-foreground">Course: </span>
+                      <span className="font-semibold">{result.courseName}</span>
+                    </div>
+                  )}
+                  {result.ratingOverall != null && (
+                    <div className="p-2 rounded-lg bg-white/5">
+                      <span className="text-muted-foreground">Rating: </span>
+                      <span className="font-semibold text-amber-400">{"★".repeat(Math.round(result.ratingOverall))}{"☆".repeat(5 - Math.round(result.ratingOverall))} {result.ratingOverall}/5</span>
+                    </div>
+                  )}
+                  {result.submittedAt && (
+                    <div className="p-2 rounded-lg bg-white/5 col-span-2">
+                      <span className="text-muted-foreground">Submitted: </span>
+                      <span className="font-semibold">{new Date(result.submittedAt).toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* ─────────────────────────────────
    Main Page
 ───────────────────────────────── */
 export default function Home() {
@@ -756,7 +884,7 @@ export default function Home() {
         body: JSON.stringify({ password: adminPass }),
       });
       if (!res.ok) { setError((await res.json()).error || "Invalid password."); return; }
-      setAdmin();
+      setAdmin(adminPass);
       setShowAdminModal(false);
       toast({ title: "Admin access granted" });
       navigate("/dashboard");
@@ -880,6 +1008,9 @@ export default function Home() {
           </div>
         ))}
       </div>
+
+      {/* ── Track Feedback ── */}
+      <TrackFeedbackSection />
 
       {/* ── Portal Cards ── */}
       <section className="space-y-4">

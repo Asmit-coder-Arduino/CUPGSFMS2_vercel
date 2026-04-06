@@ -122,6 +122,10 @@ router.post("/feedback", async (req, res): Promise<void> => {
 
   const referenceId = `BPUT-${Date.now().toString(36).toUpperCase()}-${randomUUID().slice(0, 4).toUpperCase()}`;
 
+  const clientIp = (req.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim()
+    || req.socket.remoteAddress
+    || "unknown";
+
   const [feedback] = await db
     .insert(feedbackTable)
     .values({
@@ -142,11 +146,13 @@ router.post("/feedback", async (req, res): Promise<void> => {
       comments: parsed.data.comments ?? null,
       customAnswers: parsed.data.customAnswers ?? null,
       isAnonymous: parsed.data.isAnonymous ?? true,
+      ipAddress: clientIp,
     })
     .returning();
 
+  const serialNumber = `CUPGS/FB/${String(feedback.id).padStart(5, "0")}`;
   const enriched = await enrichFeedback(feedback);
-  res.status(201).json(enriched);
+  res.status(201).json({ ...enriched, serialNumber, ipAddress: clientIp });
 });
 
 router.get("/feedback/:id", async (req, res): Promise<void> => {
@@ -169,6 +175,45 @@ router.get("/feedback/:id", async (req, res): Promise<void> => {
 
   const enriched = await enrichFeedback(feedback);
   res.json(enriched);
+});
+
+router.get("/feedback/track/:referenceId", async (req, res): Promise<void> => {
+  const refId = req.params.referenceId;
+  if (!refId) {
+    res.status(400).json({ error: "Reference ID is required" });
+    return;
+  }
+
+  const [feedback] = await db
+    .select()
+    .from(feedbackTable)
+    .where(eq(feedbackTable.referenceId, refId));
+
+  if (!feedback) {
+    res.json({
+      found: false,
+      referenceId: refId,
+      status: "DELETED",
+      message: "This feedback has been deleted or does not exist. It may have been removed by the HOD.",
+    });
+    return;
+  }
+
+  const enriched = await enrichFeedback(feedback);
+  const serialNumber = `CUPGS/FB/${String(feedback.id).padStart(5, "0")}`;
+  res.json({
+    found: true,
+    referenceId: refId,
+    status: "ACTIVE",
+    message: "Your feedback is active and recorded in the system.",
+    serialNumber,
+    submittedAt: feedback.createdAt,
+    courseName: enriched.courseName,
+    courseCode: enriched.courseCode,
+    facultyName: enriched.facultyName,
+    departmentName: enriched.departmentName,
+    ratingOverall: feedback.ratingOverall,
+  });
 });
 
 router.delete("/feedback/:id/hod-delete", async (req, res): Promise<void> => {

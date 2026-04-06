@@ -31,7 +31,7 @@ app.use(
       else cb(new Error("Not allowed by CORS"));
     },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-admin-password"],
     credentials: !allowedOrigins.includes("*"),
   })
 );

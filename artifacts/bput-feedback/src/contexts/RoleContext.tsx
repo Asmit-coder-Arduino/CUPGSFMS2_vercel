@@ -41,7 +41,8 @@ interface RoleContextType {
   setFaculty: (user: FacultyUser) => void;
   setHod: (user: HodUser) => void;
   setStudent: (user: StudentUser) => void;
-  setAdmin: () => void;
+  adminPassword: string | null;
+  setAdmin: (password?: string) => void;
   logout: () => void;
 }
 
@@ -53,12 +54,11 @@ const RoleContext = createContext<RoleContextType>({
   setFaculty: () => {},
   setHod: () => {},
   setStudent: () => {},
+  adminPassword: null,
   setAdmin: () => {},
   logout: () => {},
 });
 
-// ─── sessionStorage: per-tab, not shared between browser tabs ───
-// This ensures User A's session in Tab 1 doesn't bleed into Tab 2.
 const SESSION_KEY = "bput_tab_session";
 
 export function RoleProvider({ children }: { children: ReactNode }) {
@@ -66,10 +66,9 @@ export function RoleProvider({ children }: { children: ReactNode }) {
   const [faculty, setFacultyState] = useState<FacultyUser | null>(null);
   const [hod, setHodState] = useState<HodUser | null>(null);
   const [student, setStudentState] = useState<StudentUser | null>(null);
+  const [adminPasswordState, setAdminPasswordState] = useState<string | null>(null);
 
-  // On mount: restore from sessionStorage (this tab only)
   useEffect(() => {
-    // Also clear any old localStorage sessions to avoid confusion
     try { localStorage.removeItem("bput_session"); } catch {}
     try {
       const stored = sessionStorage.getItem(SESSION_KEY);
@@ -79,34 +78,37 @@ export function RoleProvider({ children }: { children: ReactNode }) {
         setFacultyState(session.faculty ?? null);
         setHodState(session.hod ?? null);
         setStudentState(session.student ?? null);
+        setAdminPasswordState(session.adminPassword ?? null);
       }
     } catch {}
   }, []);
 
-  const save = (r: Role, f: FacultyUser | null, h: HodUser | null, s: StudentUser | null) => {
+  const save = (r: Role, f: FacultyUser | null, h: HodUser | null, s: StudentUser | null, ap?: string | null) => {
     try {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ role: r, faculty: f, hod: h, student: s }));
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ role: r, faculty: f, hod: h, student: s, adminPassword: ap ?? null }));
     } catch {}
     setRole(r);
     setFacultyState(f);
     setHodState(h);
     setStudentState(s);
+    setAdminPasswordState(ap ?? null);
   };
 
   const setFaculty = (user: FacultyUser) => save("faculty", user, null, null);
   const setHod = (user: HodUser) => save("hod", null, user, null);
   const setStudent = (user: StudentUser) => save("student", null, null, user);
-  const setAdmin = () => save("admin", null, null, null);
+  const setAdmin = (password?: string) => save("admin", null, null, null, password);
   const logout = () => {
     try { sessionStorage.removeItem(SESSION_KEY); } catch {}
     setRole("guest");
     setFacultyState(null);
     setHodState(null);
     setStudentState(null);
+    setAdminPasswordState(null);
   };
 
   return (
-    <RoleContext.Provider value={{ role, faculty, hod, student, setFaculty, setHod, setStudent, setAdmin, logout }}>
+    <RoleContext.Provider value={{ role, faculty, hod, student, setFaculty, setHod, setStudent, adminPassword: adminPasswordState, setAdmin, logout }}>
       {children}
     </RoleContext.Provider>
   );
