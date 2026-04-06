@@ -453,7 +453,7 @@ router.get("/analytics/top-rated", async (req, res): Promise<void> => {
     .sort((a, b) => (b.avgRating ?? 0) - (a.avgRating ?? 0))
     .slice(0, 5);
 
-  res.json({ faculty: topFaculty, topCourses });
+  res.json({ topFaculty, topCourses });
 });
 
 router.post("/faculty/:id/like", async (req, res): Promise<void> => {
