@@ -100,7 +100,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
       {/* ── Session pill (top-left, shown only when logged in) ── */}
       {role !== "guest" && (
         <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full"
-          style={{ background: "rgba(0,0,0,0.45)", border: "1px solid rgba(255,255,255,0.15)", backdropFilter: "blur(12px)" }}>
+          style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(6.1px)" }}>
           <CheckCircle2 className="w-3.5 h-3.5 text-white/70 flex-shrink-0" />
           <span className="text-white/80 text-xs font-medium">
             {role === "faculty" && faculty && faculty.name}
@@ -117,7 +117,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
 
       {/* ── Slide counter (top-right) ── */}
       <div className="absolute top-4 right-4 z-20 text-[11px] font-mono"
-        style={{ color: "rgba(255,255,255,0.5)", background: "rgba(0,0,0,0.35)", backdropFilter: "blur(8px)", padding: "3px 10px", borderRadius: "99px", border: "1px solid rgba(255,255,255,0.1)" }}>
+        style={{ color: "rgba(255,255,255,0.5)", background: "rgba(0,0,0,0.35)", backdropFilter: "blur(6.1px)", padding: "3px 10px", borderRadius: "99px" }}>
         {curr + 1} / {n}
       </div>
 
@@ -126,7 +126,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
         {/* Prev */}
         <button onClick={() => { advance(-1); resetTimer(); }}
           className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-          style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", backdropFilter: "blur(12px)" }}>
+          style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(6.1px)" }}>
           <ChevronLeft className="w-4 h-4 text-white" />
         </button>
 
@@ -146,7 +146,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
         {/* Next */}
         <button onClick={() => { advance(1); resetTimer(); }}
           className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-          style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", backdropFilter: "blur(12px)" }}>
+          style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(6.1px)" }}>
           <ChevronRight className="w-4 h-4 text-white" />
         </button>
       </div>
@@ -271,7 +271,7 @@ function TopTeachersSection() {
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
-            style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}>
+            style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(6.1px)" }}>
             <Trophy className="w-5 h-5 text-white/60" />
           </div>
           <div>
@@ -284,7 +284,7 @@ function TopTeachersSection() {
         <div className="flex items-center gap-2">
           {/* Live badge */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full"
-            style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.14)" }}>
+            style={{ background: "rgba(255,255,255,0.07)", backdropFilter: "blur(6.1px)" }}>
             <span className="relative w-2.5 h-2.5 flex-shrink-0">
               <span className="absolute inset-0 rounded-full bg-white/40"
                 style={{ animation: "liveRing 1.8s ease-out infinite" }} />
@@ -294,7 +294,7 @@ function TopTeachersSection() {
           </div>
           <button onClick={refresh} title="Refresh now"
             className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-            style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.14)" }}>
+            style={{ background: "rgba(255,255,255,0.07)", backdropFilter: "blur(6.1px)" }}>
             <RefreshCw className={`w-3.5 h-3.5 text-white/50 transition-transform ${spinning ? "animate-spin" : ""}`} />
           </button>
         </div>
@@ -334,8 +334,7 @@ function TopTeachersSection() {
               <div key={f.id}
                 className="glass-card rounded-2xl overflow-hidden flex flex-col relative transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 style={{
-                  borderColor: cfg.border,
-                  boxShadow: `0 4px 24px ${cfg.glow}, 0 0 0 1px ${cfg.border}`,
+                  boxShadow: `0 4px 30px rgba(0,0,0,0.1)`,
                   animation: cfg.pulse ? "rankingGlow 3s ease-in-out infinite" : "none",
                 }}>
                 {/* Top bar */}
@@ -351,7 +350,7 @@ function TopTeachersSection() {
                   {/* Rank + badge */}
                   <div className="flex items-center gap-2.5">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-white/80 font-black text-base"
-                      style={{ background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.18)", backdropFilter: "blur(8px)", fontFamily: "var(--app-font-display)" }}>
+                      style={{ background: "rgba(255,255,255,0.10)", backdropFilter: "blur(6.1px)", fontFamily: "var(--app-font-display)" }}>
                       #{cfg.rank}
                     </div>
                     <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${cfg.badge}`}>
@@ -368,7 +367,7 @@ function TopTeachersSection() {
 
                   {/* Department */}
                   <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl"
-                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)" }}>
+                    style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(6.1px)" }}>
                     <Building className="w-3.5 h-3.5 text-white/40 flex-shrink-0" />
                     <span className="text-[11px] font-semibold text-white/60 flex-1 truncate">{f.departmentName}</span>
                     <span className="text-[10px] font-mono text-white/40 flex-shrink-0">{f.departmentCode}</span>
@@ -410,7 +409,7 @@ function BputInfoSection() {
     <section className="space-y-5">
       <div className="flex items-center gap-3">
         <div className="w-11 h-11 rounded-2xl flex items-center justify-center"
-          style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}>
+          style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(6.1px)" }}>
           <Building2 className="w-5 h-5 text-white/60" />
         </div>
         <div>

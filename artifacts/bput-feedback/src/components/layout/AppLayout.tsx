@@ -132,8 +132,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
         {avatar && (
           <div className="mx-3 mt-3 mb-1 p-3 rounded-xl animate-fade-in relative overflow-hidden"
             style={{
-              background: `rgba(255,255,255,0.04)`,
-              border: `1px solid rgba(255,255,255,0.07)`,
+              background: `rgba(3, 255, 234, 0)`,
+              backdropFilter: "blur(6.1px)",
               boxShadow: `0 0 20px ${avatar.accent}`
             }}>
             <div className="flex items-center gap-2.5">

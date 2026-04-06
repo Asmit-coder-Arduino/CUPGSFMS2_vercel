@@ -50,14 +50,12 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
       <header className="relative z-30">
         {/* Top utility bar */}
         <div
-          className="border-b text-xs"
+          className="text-xs"
           style={{
-            background: isDark
-              ? "rgba(5,2,12,0.35)"
-              : "rgba(10,16,36,0.55)",
-            borderColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.12)",
-            backdropFilter: "blur(32px) saturate(180%)",
-            WebkitBackdropFilter: "blur(32px) saturate(180%)",
+            background: "rgba(3, 255, 234, 0)",
+            backdropFilter: "blur(6.1px)",
+            WebkitBackdropFilter: "blur(6.1px)",
+            boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
           }}
         >
           <div className="w-full px-4 md:px-10 xl:px-16 py-1.5 flex items-center justify-between">
@@ -83,13 +81,10 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
         {/* Main header — BPUT branding */}
         <div
           style={{
-            background: isDark
-              ? "rgba(8,4,22,0.45)"
-              : "rgba(12,18,48,0.55)",
-            borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.15)"}`,
-            backdropFilter: "blur(36px) saturate(200%)",
-            WebkitBackdropFilter: "blur(36px) saturate(200%)",
-            boxShadow: "0 4px 32px rgba(0,0,0,0.25)",
+            background: "rgba(3, 255, 234, 0)",
+            backdropFilter: "blur(6.1px)",
+            WebkitBackdropFilter: "blur(6.1px)",
+            boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
           }}
         >
           <div className="w-full px-4 md:px-10 xl:px-16 py-3 flex items-center gap-4">
@@ -113,11 +108,11 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
               </p>
               <div className="flex items-center gap-2 mt-1">
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
-                  style={{ background: "rgba(139,92,246,0.2)", border: "1px solid rgba(139,92,246,0.35)", color: "#c4b5fd" }}>
+                  style={{ background: "rgba(139,92,246,0.2)", color: "#c4b5fd" }}>
                   <GraduationCap className="w-2.5 h-2.5" /> Academic Feedback System
                 </span>
                 <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
-                  style={{ background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.3)", color: "#6ee7b7" }}>
+                  style={{ background: "rgba(16,185,129,0.15)", color: "#6ee7b7" }}>
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   Live · 2024–25
                 </span>
@@ -133,7 +128,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
               <div className="flex items-center gap-2">
                 {userLabel && (
                   <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium"
-                    style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.25)", color: "#c4b5fd" }}>
+                    style={{ background: "rgba(139,92,246,0.15)", color: "#c4b5fd" }}>
                     <span className="truncate max-w-[140px]">{userLabel}</span>
                     <button onClick={logout} className="hover:text-white transition-colors" title="Sign out">
                       <LogOut className="w-3.5 h-3.5" />
@@ -152,9 +147,9 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
             background: isDark
               ? "rgba(139,92,246,0.08)"
               : "rgba(109,40,217,0.55)",
-            borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.18)"}`,
-            backdropFilter: "blur(24px) saturate(180%)",
-            WebkitBackdropFilter: "blur(24px) saturate(180%)",
+            backdropFilter: "blur(6.1px)",
+            WebkitBackdropFilter: "blur(6.1px)",
+            boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
           }}
         >
           <div className="w-full px-4 md:px-10 xl:px-16">
@@ -207,7 +202,6 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
           background: isDark
             ? "linear-gradient(135deg, rgba(6,3,15,0.98) 0%, rgba(10,5,28,0.98) 100%)"
             : "linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)",
-          borderTop: `1px solid ${isDark ? "rgba(139,92,246,0.15)" : "rgba(139,92,246,0.25)"}`,
         }}>
         <div className="w-full px-4 md:px-10 xl:px-16 py-10">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -285,7 +279,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
                 ))}
               </ul>
 
-              <div className="mt-6 p-3 rounded-xl" style={{ background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.2)" }}>
+              <div className="mt-6 p-3 rounded-xl" style={{ background: "rgba(139,92,246,0.1)" }}>
                 <div className="text-[10px] font-semibold text-violet-300 mb-1">CUPGS Feedback Manager</div>
                 <div className="text-[10px]" style={{ color: "rgba(255,255,255,0.35)" }}>
                   Secure · Anonymous · Real-time Analytics
@@ -296,7 +290,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
 
           {/* Bottom bar */}
           <div className="mt-8 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3"
-            style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+            style={{ borderColor: "transparent" }}>
             <div className="text-[11px]" style={{ color: "rgba(255,255,255,0.3)" }}>
               © 2025 Biju Patnaik University of Technology, Rourkela. All Rights Reserved.
             </div>
