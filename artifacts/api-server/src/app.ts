@@ -55,22 +55,22 @@ app.use(
   })
 );
 
-// ── Global rate limiter — 100 req / 15 min per IP ────────────────────────────
+// ── Global rate limiter — 200 req / 2 min per IP ────────────────────────────
 const globalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+  windowMs: 2 * 60 * 1000,
+  max: 200,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: "Too many requests. Please try again after 15 minutes." },
+  message: { error: "Too many requests. Please try again after 2 minutes." },
 });
 
-// ── Strict limiter for auth endpoints — 10 req / 15 min ──────────────────────
+// ── Strict limiter for auth endpoints — 15 req / 2 min ──────────────────────
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
+  windowMs: 2 * 60 * 1000,
+  max: 15,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: "Too many login attempts. Please try again after 15 minutes." },
+  message: { error: "Too many login attempts. Please try again after 2 minutes." },
 });
 
 // ── Feedback submission limiter — 20 submissions / 10 min ────────────────────
