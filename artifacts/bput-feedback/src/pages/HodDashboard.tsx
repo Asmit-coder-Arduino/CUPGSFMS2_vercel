@@ -679,7 +679,19 @@ async function generatePDF(data: HodReportData) {
 
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
-type Tab = "analytics" | "faculty" | "courses" | "windows" | "formbuilder";
+type Tab = "analytics" | "feedback" | "faculty" | "courses" | "windows" | "formbuilder";
+
+interface FeedbackEntry {
+  id: number; referenceId: string; courseId: number; facultyId: number | null;
+  departmentId: number; semester: number; academicYear: string;
+  studentYear: number | null; section: string | null;
+  feedbackType: string; ratingOverall: number;
+  ratingCourseContent: number; ratingTeachingQuality: number;
+  ratingLabFacilities: number; ratingStudyMaterial: number;
+  comments: string | null; isAnonymous: boolean; createdAt: string;
+  courseName: string | null; courseCode: string | null;
+  facultyName: string | null; departmentName: string | null;
+}
 
 export default function HodDashboard() {
   const { role, hod } = useRole();
@@ -710,6 +722,14 @@ export default function HodDashboard() {
   const [editCourse, setEditCourse] = useState<CourseItem | undefined>();
   const [deleteCourse, setDeleteCourse] = useState<CourseItem | undefined>();
   const [deletingCourse, setDeletingCourse] = useState(false);
+
+  // Feedback tab
+  const [feedbackList, setFeedbackList] = useState<FeedbackEntry[]>([]);
+  const [feedbackLoading, setFeedbackLoading] = useState(false);
+  const [deleteFeedbackItem, setDeleteFeedbackItem] = useState<FeedbackEntry | undefined>();
+  const [deletingFeedback, setDeletingFeedback] = useState(false);
+  const [deletePinInput, setDeletePinInput] = useState("");
+  const [deletePinError, setDeletePinError] = useState("");
 
   // Windows tab
   const [windows, setWindows] = useState<WindowItem[]>([]);
@@ -745,6 +765,16 @@ export default function HodDashboard() {
     finally { setCoursesLoading(false); }
   }, [hod]);
 
+  const loadFeedback = useCallback(async () => {
+    if (!hod) return;
+    setFeedbackLoading(true);
+    try {
+      const res = await fetch(`${getApiUrl()}/api/feedback?departmentId=${hod.id}`);
+      setFeedbackList(await res.json());
+    } catch { }
+    finally { setFeedbackLoading(false); }
+  }, [hod]);
+
   const loadWindows = useCallback(async () => {
     setWindowsLoading(true);
     try {
@@ -754,6 +784,7 @@ export default function HodDashboard() {
     finally { setWindowsLoading(false); }
   }, []);
 
+  useEffect(() => { if (tab === "feedback") loadFeedback(); }, [tab, loadFeedback]);
   useEffect(() => { if (tab === "faculty") loadFaculty(); }, [tab, loadFaculty]);
   useEffect(() => { if (tab === "courses") { loadCourses(); loadFaculty(); } }, [tab, loadCourses, loadFaculty]);
   useEffect(() => { if (tab === "windows") loadWindows(); }, [tab, loadWindows]);
@@ -788,6 +819,26 @@ export default function HodDashboard() {
     } finally { setDeletingCourse(false); }
   };
 
+  const handleDeleteFeedback = async () => {
+    if (!deleteFeedbackItem || !hod) return;
+    if (!deletePinInput.trim()) { setDeletePinError("Enter your HOD PIN to confirm deletion."); return; }
+    setDeletingFeedback(true); setDeletePinError("");
+    try {
+      const res = await fetch(`${getApiUrl()}/api/feedback/${deleteFeedbackItem.id}/hod-delete`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hodEmployeeId: hod.hodEmployeeId, hodPin: deletePinInput.trim() }),
+      });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.error || "Failed to delete feedback");
+      setDeleteFeedbackItem(undefined);
+      setDeletePinInput("");
+      loadFeedback();
+    } catch (err: unknown) {
+      setDeletePinError((err as Error).message);
+    } finally { setDeletingFeedback(false); }
+  };
+
   const toggleWindow = async (w: WindowItem) => {
     setTogglingWindow(w.id);
     try {
@@ -807,6 +858,7 @@ export default function HodDashboard() {
 
   const TABS = [
     { id: "analytics" as Tab, label: "Analytics", icon: BarChart3 },
+    { id: "feedback" as Tab, label: "Feedback", icon: MessageSquare },
     { id: "faculty" as Tab, label: "Faculty", icon: Users },
     { id: "courses" as Tab, label: "Courses", icon: BookMarked },
     { id: "windows" as Tab, label: "Feedback Windows", icon: CalendarRange },
@@ -993,6 +1045,106 @@ export default function HodDashboard() {
             )}
           </div>
         )
+      )}
+
+      {/* ═══════════════════════════════════════════════
+          FEEDBACK LIST TAB
+      ═══════════════════════════════════════════════ */}
+      {tab === "feedback" && (
+        <div className="space-y-5">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <h2 className="text-lg font-bold flex items-center gap-2"><MessageSquare className="w-5 h-5 text-blue-500" /> Student Feedback</h2>
+              <p className="text-sm text-muted-foreground mt-0.5">{feedbackList.length} response{feedbackList.length !== 1 ? "s" : ""} in your department</p>
+            </div>
+            <Button variant="outline" size="sm" onClick={loadFeedback} className="gap-1.5"><RefreshCw className="w-3.5 h-3.5" /> Refresh</Button>
+          </div>
+
+          {feedbackLoading ? (
+            <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-20 rounded-xl" />)}</div>
+          ) : feedbackList.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 bg-muted/20 rounded-2xl border border-dashed">
+              <MessageSquare className="w-12 h-12 text-muted-foreground/30 mb-3" />
+              <p className="font-medium text-muted-foreground">No feedback submitted yet</p>
+              <p className="text-sm text-muted-foreground/70">Student responses will appear here</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {feedbackList.map(fb => (
+                <Card key={fb.id} className="shadow-sm overflow-hidden group">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-700 dark:text-blue-300 text-xs font-bold shrink-0">
+                        {fb.ratingOverall.toFixed(1)}
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap mb-1">
+                          <span className="font-semibold text-sm">{fb.courseCode ?? "Unknown"}</span>
+                          <span className="text-sm text-muted-foreground truncate max-w-[200px]">{fb.courseName}</span>
+                          <Badge variant="secondary" className="text-xs">{fb.feedbackType.replace(/_/g, " ")}</Badge>
+                          {fb.isAnonymous && <Badge variant="outline" className="text-xs">Anonymous</Badge>}
+                        </div>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
+                          {fb.facultyName && <span>Faculty: <strong>{fb.facultyName}</strong></span>}
+                          <span>Sem {fb.semester}</span>
+                          <span>{fb.academicYear}</span>
+                          {fb.section && <span>Sec: {fb.section}</span>}
+                          <span>{new Date(fb.createdAt).toLocaleDateString("en-IN")}</span>
+                        </div>
+                        {fb.comments && (
+                          <p className="text-sm text-muted-foreground italic mt-2 bg-muted/30 rounded-lg px-3 py-2 border-l-3 border-primary/40">"{fb.comments}"</p>
+                        )}
+                        <div className="flex items-center gap-3 mt-2 text-xs">
+                          <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" /> Content: <RatingChip value={fb.ratingCourseContent} /></span>
+                          <span className="flex items-center gap-1"><Star className="w-3 h-3" /> Teaching: <RatingChip value={fb.ratingTeachingQuality} /></span>
+                          <span className="flex items-center gap-1"><Award className="w-3 h-3" /> Lab: <RatingChip value={fb.ratingLabFacilities} /></span>
+                          <span className="flex items-center gap-1"><FileText className="w-3 h-3" /> Material: <RatingChip value={fb.ratingStudyMaterial} /></span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        <RatingChip value={fb.ratingOverall} />
+                        <button
+                          className="w-8 h-8 rounded-lg bg-muted hover:bg-red-100 dark:hover:bg-red-900/40 hover:text-red-600 dark:hover:text-red-400 flex items-center justify-center transition-colors opacity-0 group-hover:opacity-100"
+                          onClick={() => { setDeleteFeedbackItem(fb); setDeletePinInput(""); setDeletePinError(""); }}
+                          title="Delete feedback"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 mt-2 pt-2 border-t border-dashed text-xs text-muted-foreground/60">
+                      <span className="font-mono">{fb.referenceId}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+
+          {feedbackList.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                { label: "Total Responses", value: feedbackList.length, icon: MessageSquare, color: "text-blue-600" },
+                { label: "With Comments", value: feedbackList.filter(f => f.comments).length, icon: FileText, color: "text-violet-600" },
+                { label: "Avg Rating", value: (feedbackList.reduce((s, f) => s + f.ratingOverall, 0) / feedbackList.length).toFixed(2), icon: Star, color: "text-amber-600" },
+                { label: "Anonymous", value: feedbackList.filter(f => f.isAnonymous).length, icon: Users, color: "text-emerald-600" },
+              ].map(({ label, value, icon: Icon, color }) => (
+                <Card key={label} className="shadow-sm">
+                  <CardContent className="p-4 flex items-center gap-3">
+                    <Icon className={`w-7 h-7 ${color} shrink-0`} />
+                    <div>
+                      <p className="text-xs text-muted-foreground">{label}</p>
+                      <p className="text-xl font-bold">{value}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
       )}
 
       {/* ═══════════════════════════════════════════════
@@ -1418,6 +1570,57 @@ export default function HodDashboard() {
           onCancel={() => setDeleteCourse(undefined)}
           loading={deletingCourse}
         />
+      )}
+
+      {deleteFeedbackItem && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" onClick={() => { setDeleteFeedbackItem(undefined); setDeletePinInput(""); setDeletePinError(""); }}>
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+          <div
+            role="dialog"
+            className="relative w-full max-w-sm bg-card border rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/40 flex items-center justify-center mx-auto mb-4">
+              <Lock className="w-6 h-6 text-red-600 dark:text-red-400" />
+            </div>
+            <h3 className="text-center font-bold text-lg mb-1">Delete Feedback?</h3>
+            <p className="text-center text-sm text-muted-foreground mb-1">
+              <strong>{deleteFeedbackItem.courseCode}</strong> — {deleteFeedbackItem.courseName}
+            </p>
+            <p className="text-center text-xs text-muted-foreground mb-4">
+              Ref: <span className="font-mono">{deleteFeedbackItem.referenceId}</span> &bull; Rating: {deleteFeedbackItem.ratingOverall}/5
+            </p>
+            <div className="space-y-3">
+              <div>
+                <label className="text-sm font-medium mb-1.5 block">Enter your HOD PIN to confirm</label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
+                  <input
+                    type="password"
+                    className="w-full border rounded-lg px-3 py-2 pl-9 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow"
+                    placeholder="Your HOD PIN"
+                    value={deletePinInput}
+                    onChange={e => setDeletePinInput(e.target.value)}
+                    onKeyDown={e => { if (e.key === "Enter") handleDeleteFeedback(); }}
+                    autoFocus
+                  />
+                </div>
+              </div>
+              {deletePinError && (
+                <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-3 py-2 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  {deletePinError}
+                </div>
+              )}
+              <div className="flex gap-3 pt-1">
+                <Button variant="outline" className="flex-1" onClick={() => { setDeleteFeedbackItem(undefined); setDeletePinInput(""); setDeletePinError(""); }} disabled={deletingFeedback}>Cancel</Button>
+                <Button className="flex-1 bg-red-600 hover:bg-red-700 text-white" onClick={handleDeleteFeedback} disabled={deletingFeedback}>
+                  {deletingFeedback ? "Deleting…" : "Confirm Delete"}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

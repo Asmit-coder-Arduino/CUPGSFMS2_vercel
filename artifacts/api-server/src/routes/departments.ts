@@ -24,8 +24,9 @@ router.get("/departments", async (req, res): Promise<void> => {
         .from(feedbackTable)
         .where(eq(feedbackTable.departmentId, dept.id));
 
+      const { hodPin: _hp, ...safeDept } = dept;
       return {
-        ...dept,
+        ...safeDept,
         totalFaculty: facultyCount?.count ?? 0,
         totalCourses: courseCount?.count ?? 0,
         avgRating: avgResult?.avg ? parseFloat(avgResult.avg) : null,

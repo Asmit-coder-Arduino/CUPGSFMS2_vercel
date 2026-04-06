@@ -36,8 +36,8 @@ Tables: `departments`, `faculty`, `courses`, `feedback`, `feedback_windows`, `fo
 ### Current Seed Data (Real CUPGS data)
 - **7 departments**: CSE (id=7), ECE (id=8), EE (id=9), ME (id=10), CE (id=11), IT (id=12), ChE (id=13)
   - CUPGS actively uses 5 departments: CSE, ECE, EE, ME, CE
-- **18 faculty**: Real CUPGS faculty scraped from bput.ac.in, employee IDs (`CUPGS/DEPT/NUM`), PIN `1234` for all
-  - HOD logins: PIN format `DEPT@2025` (e.g. `CSE@2025`), Employee ID `HOD/DEPT/001`
+- **18 faculty**: Real CUPGS faculty scraped from bput.ac.in, employee IDs (`CUPGS/DEPT/NUM`), PIN format `CUPGS_{DEPT}_{NNN}#` (e.g. `CUPGS_CSE_001#`)
+  - HOD logins: PIN format `HOD_{DEPT}_@2025#` (e.g. `HOD_CSE_@2025#`), Employee ID `HOD/DEPT/001`
 - Real HODs: CSE=Dr. Debashreet Das, ECE=Dr. Prakash Kumar Panda, EE=Dr. Manas Ranjan Nayak, ME=Dr. Atal Bihari Harichandan, CE=Dr. Bibhuti Bhusan Mukharjee
 - **40 courses**: Realistic BPUT curriculum, Semesters 5 & 6, academic year 2024-25
 - **2 feedback windows**: 1 active (Even Sem End 2024-25), 1 closed
@@ -57,13 +57,13 @@ Tables: `departments`, `faculty`, `courses`, `feedback`, `feedback_windows`, `fo
 
 | Department | HOD Name | Employee ID | PIN |
 |---|---|---|---|
-| CSE | Dr. Srikanta Patnaik | `HOD/CSE/001` | `CSE@2025` |
-| ECE | Dr. Pradipta Kumar Sahu | `HOD/ECE/001` | `ECE@2025` |
-| EE | Dr. Rabi Narayan Mahapatra | `HOD/EE/001` | `EEE@2025` |
-| ME | Prof. Srihari Rath | `HOD/ME/001` | `MECH@2025` |
-| CE | Prof. Subhendu Sekhar Dey | `HOD/CE/001` | `CIVIL@2025` |
-| IT | Prof. Binod Kumar Pattanayak | `HOD/IT/001` | `IT@2025` |
-| ChE | Prof. Sarat Kumar Patel | `HOD/CHE/001` | `CHEM@2025` |
+| CSE | Dr. Srikanta Patnaik | `HOD/CSE/001` | `HOD_CSE_@2025#` |
+| ECE | Dr. Pradipta Kumar Sahu | `HOD/ECE/001` | `HOD_ECE_@2025#` |
+| EE | Dr. Rabi Narayan Mahapatra | `HOD/EE/001` | `HOD_EE_@2025#` |
+| ME | Prof. Srihari Rath | `HOD/ME/001` | `HOD_ME_@2025#` |
+| CE | Prof. Subhendu Sekhar Dey | `HOD/CE/001` | `HOD_CE_@2025#` |
+| IT | Prof. Binod Kumar Pattanayak | `HOD/IT/001` | `HOD_IT_@2025#` |
+| ChE | Prof. Sarat Kumar Patel | `HOD/CHE/001` | `HOD_CHE_@2025#` |
 
 ## Role-Based Access Control
 
@@ -74,7 +74,8 @@ Three distinct roles managed via `RoleContext` (localStorage-persisted session):
 | **Guest** | Home + Submit Feedback | No login |
 | **Student** | Home + Submit Feedback (with roll number) | Enter roll number on home screen |
 | **Faculty** | Home + My Dashboard (own courses' feedback only) | Employee ID + 6-digit PIN |
-| **Admin** | Full access to all pages | Admin password (`bput@admin2025`) |
+| **HOD** | Department dashboard, feedback mgmt, PDF reports | Employee ID + HOD PIN |
+| **Admin** | Full access to all pages | Admin password (env var `ADMIN_PASSWORD`) |
 
 ### Auth API Endpoints
 - `POST /api/auth/faculty-login` — `{ employeeId, pin }` → faculty object with courses + stats
@@ -114,15 +115,19 @@ name, email, designation, employeeId, loginPin, qualification, specialization
 ### Course API Fields (PATCH-able)
 code, name, semester, academicYear, credits, facultyId (null to unassign)
 
-## HOD Dashboard (4 Tabs)
+## HOD Dashboard (6 Tabs)
 - **Analytics**: Summary cards, rating bars (5 params), faculty accordion, course-wise table, recent comments, PDF download
+- **Feedback**: View all student feedback for department; delete individual feedback entries with HOD PIN verification (DELETE /api/feedback/:id/hod-delete)
 - **Faculty Management**: Add/Edit/Delete faculty (full form: name, designation, employeeId, loginPin, email, qualification, specialization); view assigned courses; delete protection with 409 if feedback exists
 - **Course Management**: Add/Edit/Delete courses grouped by semester; assign faculty dropdown; unassigned warning; delete protection
 - **Feedback Windows**: Create/toggle active/inactive windows; progress bar for running windows; status badges
+- **Form Builder**: Customize feedback forms per department
 
 ## Key Conventions
 - API base URL: relative (`""`) — Replit proxy routes `/api/*` to the API server
-- Faculty employee ID format: `BPUT/DEPT/YEAR/NUM` (e.g. `BPUT/CSE/2005/001`)
-- Faculty PIN format: 6-digit numeric string (e.g. `112233`)
-- Admin password: `bput@admin2025` (env var `ADMIN_PASSWORD` overrides)
+- Faculty employee ID format: `CUPGS/DEPT/NUM` (e.g. `CUPGS/CSE/001`)
+- Faculty PIN format: `CUPGS_{DEPT}_{NNN}#` (e.g. `CUPGS_CSE_001#`)
+- HOD PIN format: `HOD_{DEPT}_@2025#` (e.g. `HOD_CSE_@2025#`)
+- Admin password: via env var `ADMIN_PASSWORD`
+- Security: API responses strip `loginPin` from faculty and `hodPin` from departments
 - All feedback is anonymous by default

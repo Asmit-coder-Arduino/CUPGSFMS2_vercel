@@ -77,8 +77,9 @@ router.post("/faculty", async (req, res): Promise<void> => {
 
   const [dept] = await db.select().from(departmentsTable).where(eq(departmentsTable.id, faculty.departmentId));
 
+  const { loginPin: _lp, ...safeFaculty } = faculty;
   res.status(201).json({
-    ...faculty,
+    ...safeFaculty,
     departmentName: dept?.name,
     avgRating: null,
     totalFeedbackCount: 0,
@@ -138,7 +139,8 @@ router.patch("/faculty/:id", async (req, res): Promise<void> => {
 
   if (!updated) { res.status(404).json({ error: "Faculty not found" }); return; }
 
-  res.json(updated);
+  const { loginPin: _lp2, ...safeUpdated } = updated;
+  res.json(safeUpdated);
 });
 
 // ── DELETE /faculty/:id — Remove faculty member ──────────────────────────────
@@ -162,7 +164,8 @@ router.delete("/faculty/:id", async (req, res): Promise<void> => {
   const [deleted] = await db.delete(facultyTable).where(eq(facultyTable.id, id)).returning();
   if (!deleted) { res.status(404).json({ error: "Faculty not found" }); return; }
 
-  res.json({ success: true, deleted });
+  const { loginPin: _lp3, ...safeDeleted } = deleted;
+  res.json({ success: true, deleted: safeDeleted });
 });
 
 export default router;

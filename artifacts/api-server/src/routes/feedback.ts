@@ -171,4 +171,56 @@ router.get("/feedback/:id", async (req, res): Promise<void> => {
   res.json(enriched);
 });
 
+router.delete("/feedback/:id/hod-delete", async (req, res): Promise<void> => {
+  const feedbackId = parseInt(req.params.id, 10);
+  if (isNaN(feedbackId)) {
+    res.status(400).json({ error: "Invalid feedback ID" });
+    return;
+  }
+
+  const { hodEmployeeId, hodPin } = req.body;
+  if (!hodEmployeeId || !hodPin) {
+    res.status(400).json({ error: "HOD Employee ID and PIN are required for deletion" });
+    return;
+  }
+
+  const [feedback] = await db
+    .select()
+    .from(feedbackTable)
+    .where(eq(feedbackTable.id, feedbackId));
+
+  if (!feedback) {
+    res.status(404).json({ error: "Feedback not found" });
+    return;
+  }
+
+  const [dept] = await db
+    .select({
+      id: departmentsTable.id,
+      hodEmployeeId: departmentsTable.hodEmployeeId,
+      hodPin: departmentsTable.hodPin,
+    })
+    .from(departmentsTable)
+    .where(eq(departmentsTable.id, feedback.departmentId));
+
+  if (!dept) {
+    res.status(404).json({ error: "Department not found" });
+    return;
+  }
+
+  if (dept.hodEmployeeId !== hodEmployeeId) {
+    res.status(403).json({ error: "You are not authorized to delete feedback from this department" });
+    return;
+  }
+
+  if (dept.hodPin !== hodPin) {
+    res.status(401).json({ error: "Incorrect HOD PIN. Deletion requires valid credentials." });
+    return;
+  }
+
+  await db.delete(feedbackTable).where(eq(feedbackTable.id, feedbackId));
+
+  res.json({ success: true, message: "Feedback deleted successfully", deletedId: feedbackId });
+});
+
 export default router;
