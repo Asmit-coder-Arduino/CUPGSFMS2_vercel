@@ -386,6 +386,7 @@ router.get("/analytics/top-rated", async (req, res): Promise<void> => {
       designation: facultyTable.designation,
       departmentId: facultyTable.departmentId,
       departmentName: departmentsTable.name,
+      departmentCode: departmentsTable.code,
     })
     .from(facultyTable)
     .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id));
@@ -445,7 +446,7 @@ router.get("/analytics/top-rated", async (req, res): Promise<void> => {
     .sort((a, b) => (b.avgRating ?? 0) - (a.avgRating ?? 0))
     .slice(0, 5);
 
-  res.json({ topFaculty, topCourses });
+  res.json({ faculty: topFaculty, topCourses });
 });
 
 export default router;
