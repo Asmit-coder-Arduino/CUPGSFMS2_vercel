@@ -52,10 +52,10 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
         <div
           className="text-xs"
           style={{
-            background: "rgba(3, 255, 234, 0)",
-            backdropFilter: "blur(6.1px)",
-            WebkitBackdropFilter: "blur(6.1px)",
-            boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
+            background: "rgba(255, 255, 255, 0)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            boxShadow: "0 0 30px 0px rgba(0,0,0,0.3)",
           }}
         >
           <div className="w-full px-4 md:px-10 xl:px-16 py-1.5 flex items-center justify-between">
@@ -81,10 +81,10 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
         {/* Main header — BPUT branding */}
         <div
           style={{
-            background: "rgba(3, 255, 234, 0)",
-            backdropFilter: "blur(6.1px)",
-            WebkitBackdropFilter: "blur(6.1px)",
-            boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
+            background: "rgba(255, 255, 255, 0)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            boxShadow: "0 0 30px 0px rgba(0,0,0,0.3)",
           }}
         >
           <div className="w-full px-4 md:px-10 xl:px-16 py-3 flex items-center gap-4">
@@ -147,9 +147,9 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
             background: isDark
               ? "rgba(139,92,246,0.08)"
               : "rgba(109,40,217,0.55)",
-            backdropFilter: "blur(6.1px)",
-            WebkitBackdropFilter: "blur(6.1px)",
-            boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            boxShadow: "0 0 30px 0px rgba(0,0,0,0.3)",
           }}
         >
           <div className="w-full px-4 md:px-10 xl:px-16">
