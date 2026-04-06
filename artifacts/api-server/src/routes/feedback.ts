@@ -216,6 +216,93 @@ router.get("/feedback/track/:referenceId", async (req, res): Promise<void> => {
   });
 });
 
+router.get("/feedback/receipt/:referenceId", async (req, res): Promise<void> => {
+  const refId = req.params.referenceId;
+  if (!refId) {
+    res.status(400).json({ error: "Reference ID is required" });
+    return;
+  }
+
+  const [feedback] = await db
+    .select()
+    .from(feedbackTable)
+    .where(eq(feedbackTable.referenceId, refId));
+
+  if (!feedback) {
+    res.status(404).json({ error: "Feedback not found" });
+    return;
+  }
+
+  const enriched = await enrichFeedback(feedback);
+  const serialNumber = `CUPGS/FB/${String(feedback.id).padStart(5, "0")}`;
+  const date = feedback.createdAt ? new Date(feedback.createdAt) : new Date();
+  const dateStr = date.toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
+  const timeStr = date.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  const stars = (n: number) => "\u2605".repeat(Math.round(n)) + "\u2606".repeat(5 - Math.round(n));
+
+  const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CUPGS Feedback Receipt - ${refId}</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8f9fa;padding:16px}
+.receipt{max-width:600px;margin:0 auto;background:#fff;border:2px solid #4f46e5;border-radius:12px;overflow:hidden}
+.header{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:20px;text-align:center}
+.header h1{font-size:18px;margin-bottom:4px}
+.header p{font-size:11px;opacity:.85}
+.body{padding:20px}
+.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e5e7eb;font-size:13px}
+.row:last-child{border-bottom:none}
+.label{color:#6b7280;font-weight:500}
+.value{font-weight:600;color:#1f2937;text-align:right;max-width:60%}
+.ref-box{background:#f0f0ff;border:1px dashed #4f46e5;border-radius:8px;padding:14px;text-align:center;margin:14px 0}
+.ref-box .id{font-size:16px;font-weight:800;color:#4f46e5;font-family:monospace;letter-spacing:1px}
+.section-title{font-weight:700;font-size:12px;color:#4f46e5;text-transform:uppercase;letter-spacing:1px;margin:14px 0 6px;padding-top:6px;border-top:2px solid #e5e7eb}
+.stars{color:#f59e0b;font-size:14px;letter-spacing:2px}
+.footer{background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 20px;text-align:center;font-size:10px;color:#9ca3af}
+.comments{background:#f9fafb;border-radius:6px;padding:10px;font-size:12px;color:#374151;margin-top:8px;font-style:italic}
+.save-btn{display:block;margin:16px auto;background:#4f46e5;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.save-btn:active{background:#4338ca}
+@media print{.save-btn{display:none}body{padding:0;background:#fff}.receipt{border:1px solid #ccc}}
+</style></head><body>
+<div class="receipt">
+<div class="header">
+<h1>CUPGS - BPUT, Rourkela</h1>
+<p>Centre for UG & PG Studies | Academic Feedback Receipt</p>
+</div>
+<div class="body">
+<div class="ref-box">
+<div style="font-size:11px;color:#6b7280;margin-bottom:4px">REFERENCE NUMBER</div>
+<div class="id">${refId}</div>
+</div>
+<div class="row"><span class="label">Form Serial No.</span><span class="value">${serialNumber}</span></div>
+<div class="row"><span class="label">Date</span><span class="value">${dateStr}</span></div>
+<div class="row"><span class="label">Time</span><span class="value">${timeStr}</span></div>
+<div class="row"><span class="label">IP Address</span><span class="value">${feedback.ipAddress || "N/A"}</span></div>
+<div class="section-title">Course & Faculty</div>
+<div class="row"><span class="label">Department</span><span class="value">${enriched.departmentName || "N/A"}</span></div>
+<div class="row"><span class="label">Course</span><span class="value">[${enriched.courseCode}] ${enriched.courseName}</span></div>
+<div class="row"><span class="label">Faculty</span><span class="value">${enriched.facultyName || "Not Assigned"}</span></div>
+<div class="section-title">Ratings Given</div>
+<div class="row"><span class="label">Course Content</span><span class="value"><span class="stars">${stars(feedback.ratingCourseContent)}</span> ${feedback.ratingCourseContent}/5</span></div>
+<div class="row"><span class="label">Teaching Quality</span><span class="value"><span class="stars">${stars(feedback.ratingTeachingQuality)}</span> ${feedback.ratingTeachingQuality}/5</span></div>
+<div class="row"><span class="label">Lab Facilities</span><span class="value"><span class="stars">${stars(feedback.ratingLabFacilities)}</span> ${feedback.ratingLabFacilities}/5</span></div>
+<div class="row"><span class="label">Study Material</span><span class="value"><span class="stars">${stars(feedback.ratingStudyMaterial)}</span> ${feedback.ratingStudyMaterial}/5</span></div>
+<div class="row"><span class="label">Overall Rating</span><span class="value" style="color:#4f46e5;font-size:15px"><span class="stars">${stars(feedback.ratingOverall)}</span> ${feedback.ratingOverall}/5</span></div>
+${feedback.comments ? `<div class="section-title">Your Comments</div><div class="comments">"${feedback.comments}"</div>` : ""}
+</div>
+<div class="footer">
+<p>This is a computer-generated receipt. Save your Reference Number to track your feedback.</p>
+<p style="margin-top:4px">Track at: CUPGS Feedback Portal &rarr; Track Feedback &rarr; Enter Reference ID</p>
+</div>
+</div>
+<button class="save-btn" onclick="window.print()">Save as PDF / Print</button>
+</body></html>`;
+
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(html);
+});
+
 router.delete("/feedback/:id/hod-delete", async (req, res): Promise<void> => {
   const feedbackId = parseInt(req.params.id, 10);
   if (isNaN(feedbackId)) {

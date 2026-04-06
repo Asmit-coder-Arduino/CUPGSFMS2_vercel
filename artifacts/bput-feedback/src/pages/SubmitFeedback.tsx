@@ -334,72 +334,8 @@ export default function SubmitFeedback() {
   const autoDownloadTriggered = useRef(false);
 
   const triggerReceiptDownload = useCallback((d: NonNullable<typeof submitted>) => {
-    const date = new Date(d.createdAt);
-    const dateStr = date.toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
-    const timeStr = date.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-    const stars = (n: number) => "\u2605".repeat(Math.round(n)) + "\u2606".repeat(5 - Math.round(n));
-
-    const html = `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>CUPGS Feedback Receipt - ${d.referenceId}</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8f9fa;padding:20px}
-.receipt{max-width:600px;margin:0 auto;background:#fff;border:2px solid #4f46e5;border-radius:12px;overflow:hidden}
-.header{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:24px;text-align:center}
-.header h1{font-size:20px;margin-bottom:4px}
-.header p{font-size:12px;opacity:.85}
-.body{padding:24px}
-.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e5e7eb;font-size:14px}
-.row:last-child{border-bottom:none}
-.label{color:#6b7280;font-weight:500}
-.value{font-weight:600;color:#1f2937;text-align:right;max-width:60%}
-.ref-box{background:#f0f0ff;border:1px dashed #4f46e5;border-radius:8px;padding:16px;text-align:center;margin:16px 0}
-.ref-box .id{font-size:18px;font-weight:800;color:#4f46e5;font-family:monospace;letter-spacing:1px}
-.section-title{font-weight:700;font-size:13px;color:#4f46e5;text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px;padding-top:8px;border-top:2px solid #e5e7eb}
-.stars{color:#f59e0b;font-size:16px;letter-spacing:2px}
-.footer{background:#f9fafb;border-top:1px solid #e5e7eb;padding:16px 24px;text-align:center;font-size:11px;color:#9ca3af}
-.comments{background:#f9fafb;border-radius:6px;padding:10px;font-size:13px;color:#374151;margin-top:8px;font-style:italic}
-@media print{body{padding:0;background:#fff}.receipt{border:1px solid #ccc}}
-</style></head><body>
-<div class="receipt">
-<div class="header">
-<h1>CUPGS - BPUT, Rourkela</h1>
-<p>Centre for UG & PG Studies | Academic Feedback Receipt</p>
-</div>
-<div class="body">
-<div class="ref-box">
-<div style="font-size:11px;color:#6b7280;margin-bottom:4px">REFERENCE NUMBER</div>
-<div class="id">${d.referenceId}</div>
-</div>
-<div class="row"><span class="label">Form Serial No.</span><span class="value">${d.serialNumber}</span></div>
-<div class="row"><span class="label">Date</span><span class="value">${dateStr}</span></div>
-<div class="row"><span class="label">Time</span><span class="value">${timeStr}</span></div>
-<div class="row"><span class="label">IP Address</span><span class="value">${d.ipAddress}</span></div>
-<div class="section-title">Course & Faculty</div>
-<div class="row"><span class="label">Department</span><span class="value">${d.departmentName}</span></div>
-<div class="row"><span class="label">Course</span><span class="value">[${d.courseCode}] ${d.courseName}</span></div>
-<div class="row"><span class="label">Faculty</span><span class="value">${d.facultyName || "Not Assigned"}</span></div>
-<div class="section-title">Ratings Given</div>
-<div class="row"><span class="label">Course Content</span><span class="value"><span class="stars">${stars(d.ratingCourseContent)}</span> ${d.ratingCourseContent}/5</span></div>
-<div class="row"><span class="label">Teaching Quality</span><span class="value"><span class="stars">${stars(d.ratingTeachingQuality)}</span> ${d.ratingTeachingQuality}/5</span></div>
-<div class="row"><span class="label">Lab Facilities</span><span class="value"><span class="stars">${stars(d.ratingLabFacilities)}</span> ${d.ratingLabFacilities}/5</span></div>
-<div class="row"><span class="label">Study Material</span><span class="value"><span class="stars">${stars(d.ratingStudyMaterial)}</span> ${d.ratingStudyMaterial}/5</span></div>
-<div class="row"><span class="label">Overall Rating</span><span class="value" style="color:#4f46e5;font-size:16px"><span class="stars">${stars(d.ratingOverall)}</span> ${d.ratingOverall}/5</span></div>
-${d.comments ? `<div class="section-title">Your Comments</div><div class="comments">"${d.comments}"</div>` : ""}
-</div>
-<div class="footer">
-<p>This is a computer-generated receipt. Please save your Reference Number to track your feedback status.</p>
-<p style="margin-top:4px">Track at: CUPGS Feedback Portal → Track Feedback → Enter Reference ID</p>
-</div>
-</div></body></html>`;
-
-    const blob = new Blob([html], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `CUPGS_Feedback_Receipt_${d.referenceId}.html`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const receiptUrl = `${getApiUrl()}/api/feedback/receipt/${encodeURIComponent(d.referenceId)}`;
+    window.open(receiptUrl, "_blank");
   }, []);
 
   useEffect(() => {
