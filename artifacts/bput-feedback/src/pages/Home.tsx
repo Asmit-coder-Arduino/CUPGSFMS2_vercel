@@ -738,7 +738,7 @@ function TrackFeedbackSection() {
         <div className={`rounded-xl p-4 border ${
           result.found && result.status === "ACTIVE"
             ? "bg-emerald-500/10 border-emerald-500/20"
-            : result.status === "DELETED"
+            : result.status === "ERROR"
               ? "bg-red-500/10 border-red-500/20"
               : "bg-amber-500/10 border-amber-500/20"
         }`}>
@@ -746,7 +746,7 @@ function TrackFeedbackSection() {
             {result.found && result.status === "ACTIVE" ? (
               <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
             ) : (
-              <X className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+              <X className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
             )}
             <div className="flex-1 min-w-0 space-y-2">
               <div>
