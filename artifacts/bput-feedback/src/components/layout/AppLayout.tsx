@@ -4,7 +4,7 @@ import {
   BookOpen, LayoutDashboard, LineChart, Users, Building,
   Calendar, List, MessageSquare, GraduationCap, LogOut,
   ShieldCheck, Briefcase, Building2, FileDown, Home,
-  Sun, Moon
+  Sun, Moon, Zap
 } from "lucide-react";
 import { useRole } from "@/contexts/RoleContext";
 import { usePlatform } from "@/hooks/usePlatform";
@@ -64,13 +64,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   const getRoleAvatar = () => {
     if (role === "hod" && hod)
-      return { initials: hod.code, color: "from-indigo-500 to-violet-600", name: hod.hodName, sub: `HOD — ${hod.name}`, id: hod.hodEmployeeId };
+      return { initials: hod.code, color: "from-violet-500 to-purple-700", name: hod.hodName, sub: `HOD — ${hod.name}`, id: hod.hodEmployeeId, accent: "rgba(139,92,246,0.25)" };
     if (role === "faculty" && faculty)
-      return { initials: faculty.name.charAt(0), color: "from-teal-500 to-cyan-600", name: faculty.name, sub: faculty.designation, id: `${faculty.departmentCode} | ${faculty.employeeId}` };
+      return { initials: faculty.name.charAt(0), color: "from-emerald-500 to-teal-700", name: faculty.name, sub: faculty.designation, id: `${faculty.departmentCode} | ${faculty.employeeId}`, accent: "rgba(16,185,129,0.22)" };
     if (role === "student" && student)
-      return { initials: "S", color: "from-blue-500 to-sky-600", name: "Student", sub: student.rollNumber, id: student.departmentCode || "" };
+      return { initials: "S", color: "from-blue-500 to-blue-700", name: "Student", sub: student.rollNumber, id: student.departmentCode || "", accent: "rgba(59,130,246,0.22)" };
     if (role === "admin")
-      return { initials: "A", color: "from-slate-500 to-gray-600", name: "Administrator", sub: "Full Access", id: "" };
+      return { initials: "A", color: "from-rose-500 to-rose-700", name: "Administrator", sub: "Full Access", id: "", accent: "rgba(244,63,94,0.22)" };
     return null;
   };
 
@@ -103,32 +103,55 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
       {/* ── Desktop Sidebar ── */}
       <div className="w-full md:w-64 flex flex-col z-10 hidden md:flex glass-sidebar relative">
-        {/* Logo + theme toggle */}
-        <div className="p-5 border-b border-white/[0.07] flex items-center gap-3">
-          <CupgsLogo size={40} className="flex-shrink-0 drop-shadow-lg" />
+
+        {/* Sidebar inner glow */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-none">
+          <div style={{
+            position: "absolute", top: -60, left: -40,
+            width: 220, height: 220,
+            background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 65%)",
+            filter: "blur(30px)",
+          }} />
+        </div>
+
+        {/* Logo row */}
+        <div className="p-5 border-b border-white/[0.06] flex items-center gap-3 relative">
+          <div className="relative">
+            <div className="absolute inset-0 rounded-2xl blur-lg opacity-60"
+              style={{ background: "rgba(139,92,246,0.5)" }} />
+            <CupgsLogo size={38} className="flex-shrink-0 relative z-10" />
+          </div>
           <div className="flex-1 min-w-0">
-            <h1 className="text-sm font-bold tracking-tight text-white leading-tight">CUPGS Feedback</h1>
-            <p className="text-[11px] text-white/45 mt-0.5">Academic Feedback System</p>
+            <h1 className="text-sm font-extrabold tracking-tight text-white leading-tight">CUPGS Feedback</h1>
+            <p className="text-[10px] mt-0.5" style={{ color: "rgba(196,181,253,0.5)" }}>Academic Feedback System</p>
           </div>
           <ThemeToggle />
         </div>
 
         {/* Session badge */}
         {avatar && (
-          <div className="mx-3 mt-3 mb-1 p-3 rounded-xl glass border-white/[0.07] animate-fade-in">
+          <div className="mx-3 mt-3 mb-1 p-3 rounded-xl animate-fade-in relative overflow-hidden"
+            style={{
+              background: `rgba(255,255,255,0.04)`,
+              border: `1px solid rgba(255,255,255,0.07)`,
+              boxShadow: `0 0 20px ${avatar.accent}`
+            }}>
             <div className="flex items-center gap-2.5">
-              <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${avatar.color} flex items-center justify-center text-white text-xs font-bold shadow-lg flex-shrink-0`}>
+              <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${avatar.color} flex items-center justify-center text-white text-xs font-bold shadow-lg flex-shrink-0`}>
                 {avatar.initials}
               </div>
               <div className="min-w-0 flex-1">
                 <div className="text-xs font-semibold text-white truncate">{avatar.name}</div>
-                <div className="text-[11px] text-white/50 truncate">{avatar.sub}</div>
+                <div className="text-[11px] truncate" style={{ color: "rgba(255,255,255,0.45)" }}>{avatar.sub}</div>
               </div>
             </div>
-            {avatar.id && <div className="text-[10px] text-white/35 mt-1.5 font-mono">{avatar.id}</div>}
+            {avatar.id && <div className="text-[10px] mt-1.5 font-mono" style={{ color: "rgba(255,255,255,0.3)" }}>{avatar.id}</div>}
             <button
               onClick={logout}
-              className="mt-2.5 w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[11px] text-white/50 hover:text-white hover:bg-white/10 transition-all duration-200"
+              className="mt-2.5 w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[11px] transition-all duration-200"
+              style={{ color: "rgba(255,255,255,0.4)" }}
+              onMouseEnter={e => { (e.target as HTMLElement).style.color = "rgba(255,255,255,0.85)"; (e.target as HTMLElement).style.background = "rgba(255,255,255,0.08)"; }}
+              onMouseLeave={e => { (e.target as HTMLElement).style.color = "rgba(255,255,255,0.4)"; (e.target as HTMLElement).style.background = "transparent"; }}
             >
               <LogOut className="w-3 h-3" /> Sign Out
             </button>
@@ -144,22 +167,31 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 key={item.name}
                 href={item.href}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 animate-nav-in glass-nav-item ${
-                  isActive ? "active text-white" : "text-white/55 hover:text-white"
+                  isActive ? "active text-white" : "text-white/50 hover:text-white"
                 }`}
                 style={{ animationDelay: `${i * 40}ms` }}
               >
                 <item.icon
-                  className={`flex-shrink-0 ${isActive ? "text-sky-300" : ""}`}
+                  className={`flex-shrink-0 ${isActive ? "text-violet-300" : ""}`}
                   style={{ width: "1.05rem", height: "1.05rem" }}
                 />
                 <span>{item.name}</span>
+                {isActive && (
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-violet-400" style={{ boxShadow: "0 0 6px rgba(139,92,246,0.8)" }} />
+                )}
               </Link>
             );
           })}
         </nav>
 
-        <div className="px-4 pb-4 pt-2 border-t border-white/[0.06] text-[10px] text-white/25 text-center leading-relaxed">
-          Centre for UG &amp; PG Studies (CUPGS)<br />BPUT Rourkela
+        {/* Footer */}
+        <div className="px-4 pb-5 pt-3 border-t border-white/[0.05]">
+          <div className="flex items-center gap-2 justify-center">
+            <Zap className="w-2.5 h-2.5" style={{ color: "rgba(139,92,246,0.5)" }} />
+            <span className="text-[10px] text-center leading-relaxed" style={{ color: "rgba(255,255,255,0.2)" }}>
+              CUPGS · BPUT Rourkela
+            </span>
+          </div>
         </div>
       </div>
 
@@ -167,14 +199,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <div className="md:hidden sticky top-0 z-30 glass-strong border-b">
         <div className="flex items-center justify-between px-4 py-2.5">
           <div className="flex items-center gap-2.5">
-            <CupgsLogo size={30} className="flex-shrink-0" />
-            <span className="font-bold text-sm text-foreground">CUPGS Feedback</span>
+            <CupgsLogo size={28} className="flex-shrink-0" />
+            <span className="font-extrabold text-sm text-foreground tracking-tight">CUPGS Feedback</span>
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle size="sm" />
             {avatar && (
               <>
-                <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${avatar.color} flex items-center justify-center text-white text-[11px] font-bold shadow`}>
+                <div className={`w-7 h-7 rounded-xl bg-gradient-to-br ${avatar.color} flex items-center justify-center text-white text-[10px] font-bold shadow`}>
                   {avatar.initials}
                 </div>
                 <button
@@ -209,14 +241,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 key={item.href}
                 href={item.href}
                 className={`flex-1 flex flex-col items-center justify-center py-2.5 gap-1 min-h-[56px] transition-all duration-200 ${
-                  isActive ? "text-sky-500" : "text-foreground/40 hover:text-foreground/70"
+                  isActive ? "text-violet-500" : "text-foreground/40 hover:text-foreground/70"
                 }`}
               >
                 <div className={`relative ${isActive ? "animate-pulse-ring rounded-full" : ""}`}>
                   <item.icon className="w-5 h-5" />
-                  {isActive && <div className="absolute inset-0 rounded-full bg-sky-400/20 scale-150 blur-sm" />}
+                  {isActive && <div className="absolute inset-0 rounded-full scale-150 blur-sm" style={{ background: "rgba(139,92,246,0.25)" }} />}
                 </div>
-                <span className={`text-[10px] font-medium leading-tight ${isActive ? "text-sky-500" : ""}`}>
+                <span className={`text-[10px] font-medium leading-tight ${isActive ? "text-violet-500" : ""}`}>
                   {item.name}
                 </span>
               </Link>
