@@ -84,6 +84,36 @@ uri = "file://artifacts/bput-feedback/public/bg-marble.png"
 type = "image"
 title = "dark marble bg"
 
+[[generated]]
+id = "rSnmXquSvvF1-SDBxxTPh"
+uri = "file://artifacts/bput-feedback/public/bg-led-purple.png"
+type = "image"
+title = "purple LED glow bg"
+
+[[generated]]
+id = "IwGhf-_pI3pLUgf0S2BbN"
+uri = "file://artifacts/bput-feedback/public/bg-led-blue.png"
+type = "image"
+title = "blue LED glow bg"
+
+[[generated]]
+id = "vRvGb2zb-Duokyx7yGcqM"
+uri = "file://artifacts/bput-feedback/public/bg-led-gold.png"
+type = "image"
+title = "gold LED glow bg"
+
+[[generated]]
+id = "kjNNwaAVbS1oOqzcjz0sm"
+uri = "file://artifacts/bput-feedback/public/bg-led-pink.png"
+type = "image"
+title = "pink LED glow bg"
+
+[[generated]]
+id = "rzt0oodpckzHxTI4ha6jJ"
+uri = "file://artifacts/bput-feedback/public/bg-led-green.png"
+type = "image"
+title = "green LED glow bg"
+
 [[outputs]]
 id = "DNYPbFPAJjS-si0mrrbw9"
 uri = "file://CUPGS_All_Credentials.xlsx"

@@ -17,6 +17,11 @@ const BG_IMAGES = [
   { src: "/bg-silk.png", label: "Silk" },
   { src: "/bg-cyber.png", label: "Cyber" },
   { src: "/bg-marble.png", label: "Marble" },
+  { src: "/bg-led-purple.png", label: "LED Purple" },
+  { src: "/bg-led-blue.png", label: "LED Blue" },
+  { src: "/bg-led-gold.png", label: "LED Gold" },
+  { src: "/bg-led-pink.png", label: "LED Pink" },
+  { src: "/bg-led-green.png", label: "LED Green" },
 ];
 
 const INTERVAL = 10000;
