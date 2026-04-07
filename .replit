@@ -32,6 +32,8 @@ channel = "stable-25_05"
 
 [userenv.shared]
 ADMIN_PASSWORD = "BPUT_Admin@2025#Secure"
+NEXT_PUBLIC_SUPABASE_URL = "https://iunbsqbpsdxrnmdbjjjs.supabase.co"
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY = "sb_publishable_BJGEbRGOrA6ikWmX7RYuzA_qqYmuWp0"
 
 [[ports]]
 localPort = 8080
