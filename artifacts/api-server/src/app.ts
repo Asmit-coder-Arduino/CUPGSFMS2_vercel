@@ -86,6 +86,20 @@ app.use("/api", globalLimiter);
 app.use("/api/auth", authLimiter);
 app.use("/api/feedback", feedbackLimiter);
 
+// ── Health check ─────────────────────────────────────────────────────────────
+app.get("/api/healthz", (_req, res) => {
+  const hasSupabase = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY);
+  const hasAdminPwd = !!process.env.ADMIN_PASSWORD;
+  res.json({
+    status: "ok",
+    env: {
+      supabaseUrl: hasSupabase,
+      supabaseKey: hasSupabase,
+      adminPassword: hasAdminPwd,
+    },
+  });
+});
+
 // ── Routes ───────────────────────────────────────────────────────────────────
 app.use("/api", router);
 
