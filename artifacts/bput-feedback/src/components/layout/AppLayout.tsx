@@ -4,7 +4,8 @@ import {
   BookOpen, LayoutDashboard, LineChart, Users, Building,
   Calendar, List, MessageSquare, GraduationCap, LogOut,
   ShieldCheck, Briefcase, Building2, FileDown, Home,
-  Sun, Moon, Zap, FileText, Droplets, Glasses, UserCog
+  Sun, Moon, Zap, FileText, Droplets, Glasses, UserCog,
+  PanelLeftClose, PanelLeftOpen
 } from "lucide-react";
 import { useRole } from "@/contexts/RoleContext";
 import { usePlatform } from "@/hooks/usePlatform";
@@ -24,6 +25,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const { theme, toggleTheme, isDark } = useTheme();
   const { isLiquid, toggleGlassMode } = useGlassMode();
   const [iconKey, setIconKey] = useState(0);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const handleToggle = () => {
     setIconKey(k => k + 1);
@@ -113,7 +115,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <div className="bg-blob-light bg-blob-light-2" />
 
       {/* ── Desktop Sidebar ── */}
-      <div className="w-full md:w-64 flex flex-col z-10 hidden md:flex relative lg-sidebar"
+      <div className={`flex flex-col z-10 hidden md:flex relative lg-sidebar transition-all duration-300 ${sidebarCollapsed ? "w-[68px]" : "w-64"}`}
         style={{
           background: "rgba(255,255,255,0)",
           backdropFilter: isLiquid ? "none" : "blur(12px)",
@@ -134,46 +136,50 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </div>
 
         {/* Logo row */}
-        <div className="p-5 border-b border-white/[0.06] flex items-center gap-3 relative">
+        <div className={`border-b border-white/[0.06] flex items-center relative ${sidebarCollapsed ? "p-3 justify-center" : "p-5 gap-3"}`}>
           <div className="relative">
             <div className="absolute inset-0 rounded-2xl blur-lg opacity-60"
               style={{ background: "rgba(245,158,11,0.5)" }} />
-            <CupgsLogo size={38} className="flex-shrink-0 relative z-10" />
+            <CupgsLogo size={sidebarCollapsed ? 30 : 38} className="flex-shrink-0 relative z-10" />
           </div>
-          <div className="flex-1 min-w-0">
-            <h1 className="text-sm font-extrabold tracking-tight text-white leading-tight">CUPGS Feedback</h1>
-            <p className="text-[10px] mt-0.5" style={{ color: "rgba(252,211,77,0.5)" }}>Academic Feedback System</p>
-          </div>
-          <ComplaintNotifications />
-          <button
-            onClick={toggleGlassMode}
-            className="lg-toggle-btn"
-            style={{
-              width: 38, height: 38,
-              borderRadius: 9999,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer",
-              transition: "background 0.2s ease, transform 0.2s ease",
-              background: isLiquid ? "rgba(245,158,11,0.2)" : "rgba(255,255,255,0)",
-              backdropFilter: isLiquid ? "none" : "blur(6px)",
-              WebkitBackdropFilter: isLiquid ? "none" : "blur(6px)",
-              border: "1px solid rgba(255,255,255,0)",
-              boxShadow: isLiquid ? "none" : "0 0 30px 0px rgba(0,0,0,0.3)",
-              flexShrink: 0,
-            }}
-            title={isLiquid ? "Switch to Classic Mode" : "Switch to Liquid Glass Mode"}
-          >
-            {isLiquid
-              ? <Droplets className="w-4 h-4 text-amber-300" />
-              : <Glasses className="w-4 h-4 text-amber-400/60" />
-            }
-          </button>
-          <GlassSettingsPanel />
-          <ThemeToggle />
+          {!sidebarCollapsed && (
+            <>
+              <div className="flex-1 min-w-0">
+                <h1 className="text-sm font-extrabold tracking-tight text-white leading-tight">CUPGS Feedback</h1>
+                <p className="text-[10px] mt-0.5" style={{ color: "rgba(252,211,77,0.5)" }}>Academic Feedback System</p>
+              </div>
+              <ComplaintNotifications />
+              <button
+                onClick={toggleGlassMode}
+                className="lg-toggle-btn"
+                style={{
+                  width: 38, height: 38,
+                  borderRadius: 9999,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  cursor: "pointer",
+                  transition: "background 0.2s ease, transform 0.2s ease",
+                  background: isLiquid ? "rgba(245,158,11,0.2)" : "rgba(255,255,255,0)",
+                  backdropFilter: isLiquid ? "none" : "blur(6px)",
+                  WebkitBackdropFilter: isLiquid ? "none" : "blur(6px)",
+                  border: "1px solid rgba(255,255,255,0)",
+                  boxShadow: isLiquid ? "none" : "0 0 30px 0px rgba(0,0,0,0.3)",
+                  flexShrink: 0,
+                }}
+                title={isLiquid ? "Switch to Classic Mode" : "Switch to Liquid Glass Mode"}
+              >
+                {isLiquid
+                  ? <Droplets className="w-4 h-4 text-amber-300" />
+                  : <Glasses className="w-4 h-4 text-amber-400/60" />
+                }
+              </button>
+              <GlassSettingsPanel />
+              <ThemeToggle />
+            </>
+          )}
         </div>
 
         {/* Session badge */}
-        {avatar && (
+        {avatar && !sidebarCollapsed && (
           <div className="mx-3 mt-3 mb-1 p-3 rounded-xl animate-fade-in relative overflow-hidden"
             style={{
               background: `rgba(255, 255, 255, 0)`,
@@ -201,26 +207,34 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </button>
           </div>
         )}
+        {avatar && sidebarCollapsed && (
+          <div className="mx-auto mt-3 mb-1">
+            <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${avatar.color} flex items-center justify-center text-white text-xs font-bold shadow-lg`}>
+              {avatar.initials}
+            </div>
+          </div>
+        )}
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
+        <nav className={`flex-1 py-3 space-y-0.5 overflow-y-auto ${sidebarCollapsed ? "px-1.5" : "px-3"}`}>
           {navigation.map((item, i) => {
             const isActive = location === item.href;
             return (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 animate-nav-in glass-nav-item ${
+                className={`flex items-center rounded-xl text-sm font-medium transition-all duration-200 animate-nav-in glass-nav-item ${
                   isActive ? "active text-white" : "text-white/50 hover:text-white"
-                }`}
+                } ${sidebarCollapsed ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2.5"}`}
                 style={{ animationDelay: `${i * 40}ms` }}
+                title={sidebarCollapsed ? item.name : undefined}
               >
                 <item.icon
                   className={`flex-shrink-0 ${isActive ? "text-amber-300" : ""}`}
                   style={{ width: "1.05rem", height: "1.05rem" }}
                 />
-                <span>{item.name}</span>
-                {isActive && (
+                {!sidebarCollapsed && <span>{item.name}</span>}
+                {isActive && !sidebarCollapsed && (
                   <div className="ml-auto w-1.5 h-1.5 rounded-full bg-amber-400" style={{ boxShadow: "0 0 6px rgba(245,158,11,0.8)" }} />
                 )}
               </Link>
@@ -228,13 +242,28 @@ export function AppLayout({ children }: { children: ReactNode }) {
           })}
         </nav>
 
-        {/* Footer */}
-        <div className="px-4 pb-5 pt-3 border-t border-white/[0.05]" style={{ background: "#000000" }}>
-          <div className="flex items-center gap-2 justify-center">
+        {/* Sidebar toggle + Footer */}
+        <div className="border-t border-white/[0.05]" style={{ background: "#000000" }}>
+          <button
+            onClick={() => setSidebarCollapsed(c => !c)}
+            className="w-full flex items-center justify-center gap-2 py-2.5 transition-all duration-200 hover:bg-white/[0.05]"
+            title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {sidebarCollapsed
+              ? <PanelLeftOpen className="w-4 h-4" style={{ color: "rgba(255,255,255,0.4)" }} />
+              : <>
+                  <PanelLeftClose className="w-4 h-4" style={{ color: "rgba(255,255,255,0.4)" }} />
+                  <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>Collapse</span>
+                </>
+            }
+          </button>
+          <div className={`flex items-center gap-2 justify-center pb-4 ${sidebarCollapsed ? "px-1" : "px-4"}`}>
             <Zap className="w-2.5 h-2.5" style={{ color: "rgba(245,158,11,0.5)" }} />
-            <span className="text-[10px] text-center leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
-              CUPGS · BPUT Rourkela
-            </span>
+            {!sidebarCollapsed && (
+              <span className="text-[10px] text-center leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
+                CUPGS · BPUT Rourkela
+              </span>
+            )}
           </div>
         </div>
       </div>

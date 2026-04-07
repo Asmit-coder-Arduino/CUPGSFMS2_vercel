@@ -107,6 +107,28 @@ router.post("/feedback", async (req, res): Promise<void> => {
 
   if (!course) { res.status(404).json({ error: "Course not found" }); return; }
 
+  const { data: activeWindows } = await supabase
+    .from("feedback_windows")
+    .select("*")
+    .eq("is_active", true);
+
+  const now = new Date();
+  const hasEligibleWindow = (activeWindows || []).some((w: any) => {
+    const start = new Date(w.start_date);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(w.end_date);
+    end.setHours(23, 59, 59, 999);
+    if (now < start || now > end) return false;
+    const deptIds: number[] = (w.department_ids ?? []).map(Number);
+    if (deptIds.length === 0) return true;
+    return deptIds.includes(course.department_id);
+  });
+
+  if (!hasEligibleWindow) {
+    res.status(403).json({ error: "No active feedback window is open for this department. Submission not allowed." });
+    return;
+  }
+
   const referenceId = `BPUT-${Date.now().toString(36).toUpperCase()}-${randomUUID().slice(0, 4).toUpperCase()}`;
   const clientIp = (req.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim()
     || req.socket.remoteAddress || "unknown";

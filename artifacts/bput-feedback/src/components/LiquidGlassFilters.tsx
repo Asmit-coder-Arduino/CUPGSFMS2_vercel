@@ -7,7 +7,7 @@ export function LiquidGlassFilters() {
   const lvl = settings.level;
 
   return (
-    <svg style={{ display: "none", position: "absolute", width: 0, height: 0 }} aria-hidden="true">
+    <svg style={{ position: "absolute", width: 0, height: 0, overflow: "hidden", pointerEvents: "none" }} aria-hidden="true">
       <defs>
         <filter id="liquid-glass-card" x="0%" y="0%" width="100%" height="100%">
           <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="42" result="noise" />

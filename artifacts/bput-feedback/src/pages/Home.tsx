@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "wouter";
-import { useListWindows } from "@workspace/api-client-react";
+import { useListWindows, useListDepartments } from "@workspace/api-client-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import { useRole } from "@/contexts/RoleContext";
 import { getApiUrl } from "@/lib/api";
 import { getAcademicYear } from "@/lib/utils";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { detectDeptCodeFromRegNo, isValidBputRegNo } from "@/lib/bputRegNo";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
@@ -19,7 +20,7 @@ import {
   Lock, BarChart3, FileText, Trophy, Medal,
   Award, ChevronRight, TrendingUp, Building, Zap,
   ChevronLeft, Wifi, RefreshCw, Star, Heart,
-  MessageCircle, Brain, X, Search, Loader2,
+  MessageCircle, Brain, X, Search, Loader2, AlertCircle,
 } from "lucide-react";
 import { CupgsLogo } from "@/components/CupgsLogo";
 import { FacultyAIAnalysis } from "@/components/FacultyAIAnalysis";
@@ -871,7 +872,22 @@ function TrackFeedbackSection() {
 ───────────────────────────────── */
 export default function Home() {
   const { data: windows, isLoading } = useListWindows();
-  const activeWindows = (windows ?? []).filter((w: { isActive?: boolean }) => w.isActive);
+  const { data: departments } = useListDepartments();
+  const now = new Date();
+  const activeWindows = (windows ?? []).filter((w: { isActive?: boolean; startDate?: string; endDate?: string }) => {
+    if (!w.isActive) return false;
+    if (w.startDate) {
+      const start = new Date(w.startDate);
+      start.setHours(0, 0, 0, 0);
+      if (now < start) return false;
+    }
+    if (w.endDate) {
+      const end = new Date(w.endDate);
+      end.setHours(23, 59, 59, 999);
+      if (now > end) return false;
+    }
+    return true;
+  });
 
   const { role, faculty, hod, student, setFaculty, setHod, setStudent, setAdmin, logout } = useRole();
   const [, navigate] = useLocation();
@@ -883,6 +899,8 @@ export default function Home() {
   const [showAdminModal,    setShowAdminModal]    = useState(false);
 
   const [rollNumber, setRollNumber] = useState("");
+  const [studentDeptId, setStudentDeptId] = useState("");
+  const [detectedDeptCode, setDetectedDeptCode] = useState<string | null>(null);
   const [empId, setEmpId] = useState("");
   const [pin, setPin] = useState("");
   const [hodEmpId, setHodEmpId] = useState("");
@@ -892,7 +910,8 @@ export default function Home() {
   const [error, setError] = useState("");
 
   const clear = () => {
-    setError(""); setRollNumber(""); setEmpId(""); setPin("");
+    setError(""); setRollNumber(""); setStudentDeptId(""); setDetectedDeptCode(null);
+    setEmpId(""); setPin("");
     setHodEmpId(""); setHodPin(""); setAdminPass("");
   };
   const openModal = (t: "student"|"faculty"|"hod"|"admin") => {
@@ -903,9 +922,33 @@ export default function Home() {
     else setShowAdminModal(true);
   };
 
+  const handleRollNumberChange = (val: string) => {
+    setRollNumber(val);
+    setError("");
+    const code = detectDeptCodeFromRegNo(val);
+    setDetectedDeptCode(code);
+    if (code && departments) {
+      const matchDept = departments.find((d: any) => d.code === code);
+      if (matchDept) setStudentDeptId(String(matchDept.id));
+      else setStudentDeptId("");
+    }
+  };
+
   const handleStudent = () => {
     if (!rollNumber.trim()) { setError("Please enter your roll number."); return; }
-    setStudent({ rollNumber: rollNumber.trim() });
+    if (!isValidBputRegNo(rollNumber)) { setError("Invalid registration number. Must be 10 digits."); return; }
+    if (!studentDeptId) { setError("Please select your branch/department."); return; }
+    const dept = departments?.find((d: any) => String(d.id) === studentDeptId);
+    if (detectedDeptCode && dept && (dept as any).code !== detectedDeptCode) {
+      setError(`Your registration number belongs to ${detectedDeptCode}, but you selected ${(dept as any).code}. Please select the correct branch.`);
+      return;
+    }
+    setStudent({
+      rollNumber: rollNumber.trim(),
+      departmentId: Number(studentDeptId),
+      departmentName: dept ? (dept as any).name : undefined,
+      departmentCode: dept ? (dept as any).code : undefined,
+    });
     setShowStudentModal(false);
     navigate("/submit-feedback");
   };
@@ -986,16 +1029,31 @@ export default function Home() {
         ? <Skeleton className="h-14 rounded-xl" />
         : activeWindows.length > 0
           ? <div className="space-y-2">
-              {activeWindows.map((w: { id: number; title: string; semester: number; academicYear: string; endDate?: string | null }) => (
-                <div key={w.id} className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-400/20">
-                  <div className="flex items-center gap-2"><Clock className="w-3.5 h-3.5 text-blue-400" /><span className="text-xs font-semibold text-blue-300">{w.title}</span></div>
-                  <div className="text-[11px] text-blue-400/70 ml-5 mt-0.5">Sem {w.semester} · {w.academicYear}</div>
-                </div>
-              ))}
+              {activeWindows.map((w: { id: number; title: string; semester: number; academicYear: string; endDate?: string | null; departmentIds?: number[] }) => {
+                const isGlobal = !w.departmentIds || w.departmentIds.length === 0;
+                return (
+                  <div key={w.id} className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-400/20">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-xs font-semibold text-blue-300">{w.title}</span>
+                      {isGlobal && <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold">Open for All</span>}
+                    </div>
+                    <div className="text-[11px] text-blue-400/70 ml-5 mt-0.5">Sem {w.semester} · {w.academicYear}</div>
+                  </div>
+                );
+              })}
             </div>
           : <div className="p-3 rounded-xl bg-muted/60 text-xs text-muted-foreground text-center">No active feedback windows</div>,
       btnLabel: role === "student" ? "Submit Feedback" : "Submit as Student",
-      disabled: activeWindows.length === 0,
+      disabled: (() => {
+        if (activeWindows.length === 0) return true;
+        if (role === "student" && student?.departmentId) {
+          return !activeWindows.some((w: any) =>
+            w.departmentIds?.length === 0 || (w.departmentIds ?? []).includes(student.departmentId)
+          );
+        }
+        return false;
+      })(),
       action: () => role === "student" ? navigate("/submit-feedback") : openModal("student"),
     },
     {
@@ -1173,10 +1231,33 @@ export default function Home() {
           </DialogHeader>
           <div className="space-y-4 pt-1">
             <div className="space-y-1.5">
-              <Label htmlFor="roll" className={lbl}>Roll Number</Label>
-              <Input id="roll" placeholder="e.g. 2201288006" value={rollNumber} className={inp}
-                onChange={e => { setRollNumber(e.target.value); setError(""); }}
+              <Label htmlFor="roll" className={lbl}>Registration Number</Label>
+              <Input id="roll" placeholder="e.g. 2421114010" value={rollNumber} className={inp}
+                onChange={e => handleRollNumberChange(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && handleStudent()} />
+              {detectedDeptCode && (
+                <div className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  Department detected: <span className="font-semibold">{detectedDeptCode}</span>
+                </div>
+              )}
+              {rollNumber.length >= 4 && !detectedDeptCode && rollNumber.replace(/\s/g, "").length >= 4 && (
+                <div className="flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  Could not auto-detect branch. Please select manually.
+                </div>
+              )}
+            </div>
+            <div className="space-y-1.5">
+              <Label className={lbl}>Branch / Department</Label>
+              <select
+                className="w-full border rounded-xl px-3 py-2.5 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium"
+                value={studentDeptId}
+                onChange={e => { setStudentDeptId(e.target.value); setError(""); }}
+              >
+                <option value="">— Select your branch —</option>
+                {departments?.map((d: any) => <option key={d.id} value={d.id}>{d.code} — {d.name}</option>)}
+              </select>
             </div>
             {error && <p className="text-sm text-destructive bg-destructive/10 rounded-lg px-3 py-2">{error}</p>}
             <button onClick={handleStudent} className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white btn-gradient-blue">

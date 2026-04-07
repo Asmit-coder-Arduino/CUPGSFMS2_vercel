@@ -410,11 +410,15 @@ function CourseModal({ deptId, faculty, initial, onClose, onSaved }: {
 // ─── Window Status ────────────────────────────────────────────────────────────
 
 function WindowStatus({ w }: { w: WindowItem }) {
-  const now = new Date(), start = new Date(w.startDate), end = new Date(w.endDate);
+  const now = new Date();
+  const start = new Date(w.startDate);
+  const end = new Date(w.endDate);
+  start.setHours(0, 0, 0, 0);
+  end.setHours(23, 59, 59, 999);
   if (!w.isActive) return <Badge variant="secondary" className="text-xs gap-1"><XCircle className="w-3 h-3" /> Inactive</Badge>;
   if (now < start) return <Badge className="text-xs gap-1 bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border-0"><Clock className="w-3 h-3" /> Upcoming</Badge>;
   if (now > end) return <Badge className="text-xs gap-1 bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300 border-0"><AlertCircle className="w-3 h-3" /> Expired</Badge>;
-  return <Badge className="text-xs gap-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 border-0"><CheckCircle2 className="w-3 h-3" /> Active</Badge>;
+  return <Badge className="text-xs gap-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 border-0 animate-pulse"><CheckCircle2 className="w-3 h-3" /> Active Window</Badge>;
 }
 
 // ─── Window Card ─────────────────────────────────────────────────────────────
@@ -424,7 +428,11 @@ function WindowCard({ w, togglingWindow, toggleWindow }: {
   togglingWindow: number | null;
   toggleWindow: (w: WindowItem) => void;
 }) {
-  const now = new Date(), start = new Date(w.startDate), end = new Date(w.endDate);
+  const now = new Date();
+  const start = new Date(w.startDate);
+  const end = new Date(w.endDate);
+  start.setHours(0, 0, 0, 0);
+  end.setHours(23, 59, 59, 999);
   const daysLeft = Math.ceil((end.getTime() - now.getTime()) / 86400000);
   const elapsed = Math.min(100, Math.max(0, Math.round(((now.getTime() - start.getTime()) / (end.getTime() - start.getTime())) * 100)));
   const isRunning = w.isActive && now >= start && now <= end;
