@@ -135,6 +135,8 @@ code, name, semester, academicYear, credits, facultyId (null to unassign)
 - **Multilingual Profanity Filter**: Filters profanity in English, Hindi, Odia, Bengali, Tamil, Telugu with leetspeak bypass detection; applied to both feedback comments and complaint submissions
 - **AI Faculty Analytics**: Click "AI Performance Analysis" button on top-3 teacher detail modal to get OpenAI-powered sentiment analysis, strengths/weaknesses, and recommendations based on anonymous feedback data. Endpoint: `GET /api/faculty/:id/ai-analysis` (rate-limited, cached 10 min)
 - **100% Anonymity**: No student name, roll number, or IP address is ever exposed in API responses, admin views, or receipts. Anonymous complaints store "Anonymous" for name/roll. SSE notifications also mask anonymous student identity.
+- **Liquid Glass Mode**: Toggle between classic and liquid glass visual modes via Droplets/Glasses icon button in sidebar + home header. Persisted in localStorage key `cupgs-glass-mode`. Context: `GlassModeContext.tsx` (`useGlassMode()` hook). SVG filters: `LiquidGlassFilters.tsx`. CSS uses `.liquid-glass` class on `<html>` with CSS custom properties `--lg-blur`, `--lg-opacity`, `--lg-border`.
+- **Glass Settings Panel**: When liquid glass mode is active, a sliders icon appears next to the glass toggle. Click to open a dropdown with 3 adjustable sliders: Blur (0–40px, default 18px), Opacity (0–40%, default 8%), Border (0–100%, default 0% = borderless). Settings persisted in localStorage key `cupgs-glass-settings`. Component: `GlassSettingsPanel.tsx`. Reset button restores defaults.
 
 ## Key Conventions
 - API base URL: relative (`""`) — Replit proxy routes `/api/*` to the API server

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { CupgsLogo } from "@/components/CupgsLogo";
 import { BackgroundSlideshow } from "@/components/BackgroundSlideshow";
+import { GlassSettingsPanel } from "@/components/GlassSettingsPanel";
 
 function ThemeToggleBtn() {
   const { isDark, toggleTheme } = useTheme();
@@ -168,6 +169,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
                   </div>
                 )}
                 <GlassModeToggle />
+                <GlassSettingsPanel />
                 <ThemeToggleBtn />
               </div>
             </div>

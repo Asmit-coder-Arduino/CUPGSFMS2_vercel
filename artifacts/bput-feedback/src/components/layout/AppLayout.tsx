@@ -13,6 +13,7 @@ import { useGlassMode } from "@/contexts/GlassModeContext";
 import { CupgsLogo } from "@/components/CupgsLogo";
 import { BackgroundSlideshow } from "@/components/BackgroundSlideshow";
 import { ComplaintNotifications } from "@/components/ComplaintNotifications";
+import { GlassSettingsPanel } from "@/components/GlassSettingsPanel";
 
 type NavItem = { name: string; href: string; icon: React.ElementType };
 
@@ -166,6 +167,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
               : <Glasses className="w-4 h-4 text-violet-400/60" />
             }
           </button>
+          <GlassSettingsPanel />
           <ThemeToggle />
         </div>
 
@@ -263,6 +265,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 : <Glasses className="w-3.5 h-3.5 text-foreground/50" />
               }
             </button>
+            <GlassSettingsPanel />
             <ThemeToggle size="sm" />
             {avatar && (
               <>
