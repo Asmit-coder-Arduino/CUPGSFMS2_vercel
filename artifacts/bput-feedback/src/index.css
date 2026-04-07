@@ -680,7 +680,7 @@ body {
 
 .liquid-glass {
   --lg-blur: 8px;
-  --lg-opacity: 0.06;
+  --lg-opacity: 0.08;
   --lg-level: 1;
   --lg-border: 0;
 }
@@ -723,8 +723,8 @@ body {
   z-index: -1;
   inset: 0;
   border-radius: inherit;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--lg-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--lg-blur, 8px));
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -762,8 +762,8 @@ body {
   z-index: -1;
   inset: 0;
   border-radius: 0 28px 28px 0;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--lg-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--lg-blur, 8px));
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -797,8 +797,8 @@ body {
   z-index: -1;
   inset: 0;
   border-radius: 16px;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--lg-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--lg-blur, 8px));
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -847,8 +847,8 @@ body {
   z-index: -1;
   inset: 0;
   border-radius: inherit;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--lg-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--lg-blur, 8px));
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -885,8 +885,8 @@ body {
   z-index: -1;
   inset: 0;
   border-radius: 9999px;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--lg-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--lg-blur, 8px));
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -989,8 +989,8 @@ body {
   z-index: -1;
   inset: 0;
   border-radius: 9999px;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--lg-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--lg-blur, 8px));
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -1033,8 +1033,8 @@ body {
   z-index: -1;
   inset: 0;
   border-radius: 9999px;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--lg-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--lg-blur, 8px));
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -1066,8 +1066,8 @@ body {
   position: absolute;
   z-index: -1;
   inset: 0;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--lg-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--lg-blur, 8px));
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -1093,8 +1093,8 @@ body {
   z-index: -1;
   inset: 0;
   border-radius: inherit;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--lg-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--lg-blur, 8px));
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -1124,8 +1124,8 @@ body {
   z-index: -1;
   inset: 0;
   border-radius: inherit;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--lg-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--lg-blur, 8px));
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;

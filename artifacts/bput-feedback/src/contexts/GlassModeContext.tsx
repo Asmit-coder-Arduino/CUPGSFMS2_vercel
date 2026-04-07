@@ -11,7 +11,7 @@ interface GlassSettings {
 
 const DEFAULT_SETTINGS: GlassSettings = {
   blur: 8,
-  opacity: 0.06,
+  opacity: 0.08,
   level: 1,
   border: 0,
 };
