@@ -140,11 +140,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
         </div>
 
         <h1 className="text-center font-bold text-2xl md:text-3xl leading-snug mb-2"
-          style={{
-            background: "linear-gradient(90deg, #60a5fa, #3b82f6, #1d4ed8)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}>
+          style={{ color: "#1d4ed8", textShadow: "0 2px 10px rgba(29,78,216,0.4), 0 1px 4px rgba(0,0,0,0.5)" }}>
           Academic Feedback System
         </h1>
 
