@@ -23,11 +23,13 @@ import { CupgsLogo } from "@/components/CupgsLogo";
 import { FacultyAIAnalysis } from "@/components/FacultyAIAnalysis";
 
 /* ─────────────────────────────────
-   Hero — Animated showcase
+   Hero — Purpose, Benefits & Top Faculty Congratulations
 ───────────────────────────────── */
-const HERO_KEYWORDS = [
-  "Academic Excellence", "Quality Feedback", "Smart Analytics",
-  "Faculty Insights", "Student Voice", "Transparent Education",
+const HERO_LINES = [
+  "Empowering transparent academic feedback across all departments",
+  "Building bridges between students and educators through honest evaluation",
+  "AI-powered analytics transforming raw feedback into actionable insights",
+  "100% anonymous — your voice matters, your identity stays protected",
 ];
 
 function HeroSection({ role, faculty, hod, student, logout }: {
@@ -37,17 +39,29 @@ function HeroSection({ role, faculty, hod, student, logout }: {
   student: { rollNumber: string } | null;
   logout: () => void;
 }) {
-  const [kwIdx, setKwIdx] = useState(0);
-  const [kwFade, setKwFade] = useState(true);
+  const [lineIdx, setLineIdx] = useState(0);
+  const [lineFade, setLineFade] = useState(true);
+
+  const { data: topData } = useQuery<{ topFaculty: { id: number; name: string; avgRating: number | null; departmentName: string | null; departmentCode: string | null; photoUrl?: string | null }[] }>({
+    queryKey: ["hero-top"],
+    queryFn: async () => {
+      const r = await fetch(`${getApiUrl()}/api/analytics/top-rated`);
+      if (!r.ok) throw new Error("failed");
+      return r.json();
+    },
+    staleTime: 60_000,
+  });
+
+  const topTeachers = (topData?.topFaculty ?? []).filter(f => f.avgRating !== null && f.avgRating > 0).slice(0, 3);
 
   useEffect(() => {
     const t = setInterval(() => {
-      setKwFade(false);
+      setLineFade(false);
       setTimeout(() => {
-        setKwIdx(i => (i + 1) % HERO_KEYWORDS.length);
-        setKwFade(true);
+        setLineIdx(i => (i + 1) % HERO_LINES.length);
+        setLineFade(true);
       }, 400);
-    }, 2800);
+    }, 3500);
     return () => clearInterval(t);
   }, []);
 
@@ -57,21 +71,21 @@ function HeroSection({ role, faculty, hod, student, logout }: {
     role === "student" && student ? student.rollNumber :
     role === "admin"              ? "Administrator" : null;
 
-  return (
-    <div className="relative w-full rounded-3xl overflow-hidden select-none" style={{ height: "500px" }}>
+  const medals = ["🥇", "🥈", "🥉"];
 
-      {/* ── Animated mesh gradient base ── */}
+  return (
+    <div className="relative w-full rounded-3xl overflow-hidden select-none" style={{ minHeight: "520px" }}>
+
       <div className="absolute inset-0"
         style={{ background: "linear-gradient(135deg, #0a0118 0%, #0d0a2e 35%, #06101f 65%, #0c0715 100%)" }} />
 
-      {/* ── Animated floating orbs ── */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[
           { cx: "18%", cy: "30%", r: 200, color: "#7c3aed", delay: "0s",  dur: "8s"  },
           { cx: "72%", cy: "20%", r: 160, color: "#1d4ed8", delay: "2s",  dur: "10s" },
           { cx: "55%", cy: "75%", r: 220, color: "#0f766e", delay: "1s",  dur: "9s"  },
           { cx: "85%", cy: "60%", r: 130, color: "#9333ea", delay: "3s",  dur: "7s"  },
-          { cx: "30%", cy: "80%", r: 100, color: "#2563eb", delay: "0.5s","dur": "11s"},
+          { cx: "30%", cy: "80%", r: 100, color: "#2563eb", delay: "0.5s",dur: "11s"},
         ].map((orb, i) => (
           <div key={i} className="absolute rounded-full"
             style={{
@@ -84,7 +98,6 @@ function HeroSection({ role, faculty, hod, student, logout }: {
         ))}
       </div>
 
-      {/* ── Star particles ── */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {Array.from({ length: 38 }).map((_, i) => {
           const x = ((i * 127 + 43) % 97);
@@ -103,18 +116,15 @@ function HeroSection({ role, faculty, hod, student, logout }: {
         })}
       </div>
 
-      {/* ── Grid lines overlay ── */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.04]"
         style={{
           backgroundImage: "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }} />
 
-      {/* ── Top vignette ── */}
       <div className="absolute inset-0 pointer-events-none"
         style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 25%, transparent 70%, rgba(0,0,0,0.4) 100%)" }} />
 
-      {/* ── Session pill ── */}
       {displayName && (
         <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full"
           style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.12)" }}>
@@ -125,56 +135,93 @@ function HeroSection({ role, faculty, hod, student, logout }: {
         </div>
       )}
 
-      {/* ── Live badge (top-right) ── */}
       <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full"
         style={{ background: "rgba(255,255,255,0.07)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)" }}>
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="text-[10px] font-medium text-white/60 tracking-widest uppercase">Live · 2024-25</span>
+        <span className="text-[10px] font-medium text-white/60 tracking-widest uppercase">Live · 2025-26</span>
       </div>
 
-      {/* ── Central content ── */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-6">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 py-10">
 
-        {/* University wordmark */}
-        <div className="flex flex-col items-center gap-1">
-          <div className="flex items-center gap-2.5">
-            <CupgsLogo size={44} />
-            <div className="text-left">
-              <div className="text-white font-bold text-xl leading-tight tracking-tight">BPUT · CUPGS</div>
-              <div className="text-white/50 text-[11px] tracking-widest uppercase font-medium">Rourkela, Odisha</div>
-            </div>
+        <div className="flex items-center gap-2.5 mb-3">
+          <CupgsLogo size={40} />
+          <div className="text-left">
+            <div className="text-white font-bold text-lg leading-tight tracking-tight">BPUT · CUPGS</div>
+            <div className="text-white/50 text-[10px] tracking-widest uppercase font-medium">Rourkela, Odisha</div>
           </div>
         </div>
 
-        {/* Rotating keywords */}
-        <div className="text-center" style={{ minHeight: 32 }}>
+        <h1 className="text-center font-bold text-2xl md:text-3xl leading-snug mb-2"
+          style={{
+            background: "linear-gradient(90deg, #c084fc, #60a5fa, #34d399)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}>
+          Academic Feedback System
+        </h1>
+
+        <p className="text-white/50 text-sm text-center max-w-lg leading-relaxed mb-4">
+          A next-generation platform where students share honest feedback,
+          faculty gain actionable insights, and HODs track academic performance
+          — all powered by real-time analytics and AI.
+        </p>
+
+        <div className="text-center mb-5" style={{ minHeight: 24 }}>
           <span
-            className="font-semibold text-lg tracking-wide"
+            className="text-xs italic tracking-wide"
             style={{
-              opacity: kwFade ? 1 : 0,
+              opacity: lineFade ? 1 : 0,
               transition: "opacity 0.4s ease",
-              background: "linear-gradient(90deg, #c084fc, #60a5fa, #34d399)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              color: "rgba(167, 139, 250, 0.7)",
             }}>
-            {HERO_KEYWORDS[kwIdx]}
+            "{HERO_LINES[lineIdx]}"
           </span>
         </div>
 
-        {/* Tagline */}
-        <p className="text-white/35 text-xs text-center tracking-wide max-w-xs">
-          Centre for UG &amp; PG Studies · Academic Feedback System
-        </p>
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 mb-5">
+          {[
+            { icon: "✦", text: "100% Anonymous Feedback" },
+            { icon: "✦", text: "AI-Powered Analytics" },
+            { icon: "✦", text: "Real-Time Insights" },
+            { icon: "✦", text: "Multi-Role Access" },
+          ].map((f, i) => (
+            <span key={i} className="text-white/40 text-[11px] tracking-wide">
+              <span style={{ color: "#a78bfa" }}>{f.icon}</span> {f.text}
+            </span>
+          ))}
+        </div>
+
+        {topTeachers.length > 0 && (
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-1.5 mb-2">
+              <Trophy className="w-3.5 h-3.5" style={{ color: "#fbbf24" }} />
+              <span className="text-[11px] font-semibold tracking-widest uppercase"
+                style={{ color: "rgba(251,191,36,0.8)" }}>
+                Congratulations — Top Rated Faculty
+              </span>
+              <Trophy className="w-3.5 h-3.5" style={{ color: "#fbbf24" }} />
+            </div>
+            <div className="flex items-center justify-center gap-4 flex-wrap">
+              {topTeachers.map((t, i) => (
+                <span key={t.id} className="text-white/70 text-xs font-medium">
+                  <span className="text-base mr-0.5">{medals[i]}</span>
+                  {t.name}
+                  <span className="text-white/30 ml-1">
+                    ({t.departmentCode ?? "DEPT"}) · {(t.avgRating ?? 0).toFixed(1)}★
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* ── Decorative arc lines ── */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.07]" preserveAspectRatio="none">
         <ellipse cx="50%" cy="120%" rx="60%" ry="80%" fill="none" stroke="white" strokeWidth="1" />
         <ellipse cx="50%" cy="110%" rx="45%" ry="65%" fill="none" stroke="white" strokeWidth="0.5" />
         <ellipse cx="10%"  cy="10%"  rx="30%" ry="30%" fill="none" stroke="white" strokeWidth="0.5" />
       </svg>
 
-      {/* ── CSS keyframes injected inline ── */}
       <style>{`
         @keyframes heroPulse {
           from { transform: translate(-50%,-50%) scale(1);   opacity: 0.7; }
