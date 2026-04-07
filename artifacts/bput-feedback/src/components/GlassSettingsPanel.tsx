@@ -31,8 +31,6 @@ export function GlassSettingsPanel() {
           cursor: "pointer",
           transition: "background 0.2s ease",
           background: open ? "rgba(139,92,246,0.25)" : "rgba(255,255,255,0.08)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
           border: "none",
           flexShrink: 0,
         }}
@@ -49,9 +47,7 @@ export function GlassSettingsPanel() {
             right: 0,
             width: 260,
             borderRadius: 16,
-            background: "rgba(15, 10, 30, 0.85)",
-            backdropFilter: "blur(24px)",
-            WebkitBackdropFilter: "blur(24px)",
+            background: "rgba(15, 10, 30, 0.92)",
             border: "1px solid rgba(139,92,246,0.2)",
             padding: "16px",
             zIndex: 9999,
@@ -105,13 +101,15 @@ export function GlassSettingsPanel() {
             onChange={v => updateSettings({ blur: v })}
           />
           <SliderRow
-            label="Saturation"
-            value={settings.saturation}
-            min={1}
-            max={3}
-            step={0.1}
-            unit="x"
-            onChange={v => updateSettings({ saturation: v })}
+            label="Opacity"
+            value={settings.opacity}
+            min={0}
+            max={0.4}
+            step={0.01}
+            unit=""
+            displayMultiplier={100}
+            displayUnit="%"
+            onChange={v => updateSettings({ opacity: v })}
           />
           <SliderRow
             label="Border"
@@ -144,7 +142,7 @@ function SliderRow({
   displayMultiplier?: number;
   displayUnit?: string;
 }) {
-  const displayVal = displayMultiplier ? Math.round(value * displayMultiplier) : (step < 1 ? value.toFixed(1) : Math.round(value));
+  const displayVal = displayMultiplier ? Math.round(value * displayMultiplier) : Math.round(value);
   const suffix = displayUnit ?? unit;
 
   return (

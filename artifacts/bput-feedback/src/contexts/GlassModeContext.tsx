@@ -4,13 +4,13 @@ type GlassMode = "classic" | "liquid";
 
 interface GlassSettings {
   blur: number;
-  saturation: number;
+  opacity: number;
   border: number;
 }
 
 const DEFAULT_SETTINGS: GlassSettings = {
-  blur: 12,
-  saturation: 1.4,
+  blur: 8,
+  opacity: 0.06,
   border: 0,
 };
 
@@ -48,7 +48,7 @@ export function GlassModeProvider({ children }: { children: ReactNode }) {
         const parsed = JSON.parse(saved);
         return {
           blur: typeof parsed.blur === "number" ? parsed.blur : DEFAULT_SETTINGS.blur,
-          saturation: typeof parsed.saturation === "number" ? parsed.saturation : DEFAULT_SETTINGS.saturation,
+          opacity: typeof parsed.opacity === "number" ? parsed.opacity : DEFAULT_SETTINGS.opacity,
           border: typeof parsed.border === "number" ? parsed.border : DEFAULT_SETTINGS.border,
         };
       }
@@ -69,7 +69,7 @@ export function GlassModeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const html = document.documentElement;
     html.style.setProperty("--lg-blur", `${settings.blur}px`);
-    html.style.setProperty("--lg-saturation", `${settings.saturation}`);
+    html.style.setProperty("--lg-opacity", `${settings.opacity}`);
     html.style.setProperty("--lg-border", `${settings.border}`);
     try { localStorage.setItem("cupgs-glass-settings", JSON.stringify(settings)); } catch {}
   }, [settings]);
@@ -80,7 +80,7 @@ export function GlassModeProvider({ children }: { children: ReactNode }) {
     setSettings(prev => {
       const next = { ...prev, ...partial };
       next.blur = Math.max(0, Math.min(40, next.blur));
-      next.saturation = Math.max(1, Math.min(3, next.saturation));
+      next.opacity = Math.max(0, Math.min(0.4, next.opacity));
       next.border = Math.max(0, Math.min(1, next.border));
       return next;
     });
