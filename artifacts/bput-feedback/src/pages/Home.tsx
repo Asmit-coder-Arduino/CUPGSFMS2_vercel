@@ -23,18 +23,20 @@ import { CupgsLogo } from "@/components/CupgsLogo";
 import { FacultyAIAnalysis } from "@/components/FacultyAIAnalysis";
 
 /* ─────────────────────────────────
-   BPUT Campus slide data
+   Hero — Animated stats showcase
 ───────────────────────────────── */
-const SLIDES = [
-  { url: "/campus1.jpg", caption: "BPUT Campus — Rourkela, Odisha" },
-  { url: "/campus2.jpg", caption: "Centre for UG & PG Studies" },
-  { url: "/campus3.jpg", caption: "Excellence in Technical Education" },
-  { url: "/campus4.jpg", caption: "Shaping Future Engineers" },
+const HERO_STATS = [
+  { icon: Building2,  label: "Departments",   key: "depts",    color: "#a78bfa" },
+  { icon: Users,      label: "Faculty",        key: "faculty",  color: "#60a5fa" },
+  { icon: GraduationCap, label: "Courses",     key: "courses",  color: "#34d399" },
+  { icon: BarChart3,  label: "Feedbacks",      key: "feedbacks",color: "#fb923c" },
 ];
 
-/* ─────────────────────────────────
-   Hero — Full-width photo only
-───────────────────────────────── */
+const HERO_KEYWORDS = [
+  "Academic Excellence", "Quality Feedback", "Smart Analytics",
+  "Faculty Insights", "Student Voice", "Transparent Education",
+];
+
 function HeroSection({ role, faculty, hod, student, logout }: {
   role: string;
   faculty: { name: string } | null;
@@ -42,124 +44,193 @@ function HeroSection({ role, faculty, hod, student, logout }: {
   student: { rollNumber: string } | null;
   logout: () => void;
 }) {
-  const [curr, setCurr] = useState(0);
-  const [transitioning, setTransitioning] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const n = SLIDES.length;
+  const [kwIdx, setKwIdx] = useState(0);
+  const [kwFade, setKwFade] = useState(true);
 
-  const advance = useCallback((dir: number) => {
-    if (transitioning) return;
-    setTransitioning(true);
-    setTimeout(() => {
-      setCurr(c => (c + dir + n) % n);
-      setTransitioning(false);
-    }, 600);
-  }, [transitioning, n]);
-
-  const goTo = useCallback((i: number) => {
-    if (transitioning || i === curr) return;
-    setTransitioning(true);
-    setTimeout(() => { setCurr(i); setTransitioning(false); }, 600);
-  }, [transitioning, curr]);
-
-  const resetTimer = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => advance(1), 5500);
-  }, [advance]);
+  const { data: summary } = useQuery<{
+    totalFeedback: number; totalFaculty: number; totalCourses: number; totalDepartments: number;
+  }>({
+    queryKey: ["hero-summary"],
+    queryFn: async () => {
+      const r = await fetch(getApiUrl("api/analytics/dashboard"));
+      if (!r.ok) throw new Error("failed");
+      return r.json();
+    },
+    staleTime: 60_000,
+  });
 
   useEffect(() => {
-    resetTimer();
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [resetTimer]);
+    const t = setInterval(() => {
+      setKwFade(false);
+      setTimeout(() => {
+        setKwIdx(i => (i + 1) % HERO_KEYWORDS.length);
+        setKwFade(true);
+      }, 400);
+    }, 2800);
+    return () => clearInterval(t);
+  }, []);
+
+  const statValues: Record<string, number> = {
+    depts:     summary?.totalDepartments ?? 5,
+    faculty:   summary?.totalFaculty     ?? 18,
+    courses:   summary?.totalCourses     ?? 49,
+    feedbacks: summary?.totalFeedback    ?? 0,
+  };
+
+  const displayName =
+    role === "faculty" && faculty ? faculty.name :
+    role === "hod"     && hod     ? hod.hodName  :
+    role === "student" && student ? student.rollNumber :
+    role === "admin"              ? "Administrator" : null;
 
   return (
-    <div className="relative w-full rounded-3xl overflow-hidden" style={{ height: "500px" }}>
+    <div className="relative w-full rounded-3xl overflow-hidden select-none" style={{ height: "500px" }}>
 
-      {/* ── Gradient fallback (shows when images load) ── */}
+      {/* ── Animated mesh gradient base ── */}
       <div className="absolute inset-0"
-        style={{ background: "linear-gradient(135deg, #06030f 0%, #0d0520 50%, #080c1a 100%)" }} />
+        style={{ background: "linear-gradient(135deg, #0a0118 0%, #0d0a2e 35%, #06101f 65%, #0c0715 100%)" }} />
 
-      {/* ── Photo slides ── */}
-      {SLIDES.map((slide, i) => (
-        <div key={i} className="absolute inset-0 transition-opacity duration-700"
-          style={{ opacity: i === curr && !transitioning ? 1 : 0 }}>
-          <img
-            src={slide.url} alt={slide.caption}
-            className="w-full h-full object-cover"
-            style={{ animation: i === curr ? "slideKenBurns 14s ease-in-out infinite" : "none" }}
-          />
-        </div>
-      ))}
+      {/* ── Animated floating orbs ── */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[
+          { cx: "18%", cy: "30%", r: 200, color: "#7c3aed", delay: "0s",  dur: "8s"  },
+          { cx: "72%", cy: "20%", r: 160, color: "#1d4ed8", delay: "2s",  dur: "10s" },
+          { cx: "55%", cy: "75%", r: 220, color: "#0f766e", delay: "1s",  dur: "9s"  },
+          { cx: "85%", cy: "60%", r: 130, color: "#9333ea", delay: "3s",  dur: "7s"  },
+          { cx: "30%", cy: "80%", r: 100, color: "#2563eb", delay: "0.5s","dur": "11s"},
+        ].map((orb, i) => (
+          <div key={i} className="absolute rounded-full"
+            style={{
+              left: orb.cx, top: orb.cy,
+              width: orb.r * 2, height: orb.r * 2,
+              transform: "translate(-50%,-50%)",
+              background: `radial-gradient(circle, ${orb.color}55 0%, transparent 70%)`,
+              animation: `heroPulse ${orb.dur} ease-in-out ${orb.delay} infinite alternate`,
+            }} />
+        ))}
+      </div>
 
-      {/* ── Bottom gradient for controls ── */}
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 40%, transparent 70%)" }} />
+      {/* ── Star particles ── */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 38 }).map((_, i) => {
+          const x = ((i * 127 + 43) % 97);
+          const y = ((i * 83  + 17) % 91);
+          const s = 1 + (i % 3) * 0.7;
+          const delay = (i * 0.17) % 3;
+          return (
+            <div key={i} className="absolute rounded-full bg-white"
+              style={{
+                left: `${x}%`, top: `${y}%`,
+                width: s, height: s,
+                opacity: 0.15 + (i % 5) * 0.1,
+                animation: `heroTwinkle ${2 + delay}s ease-in-out ${delay}s infinite alternate`,
+              }} />
+          );
+        })}
+      </div>
+
+      {/* ── Grid lines overlay ── */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.04]"
+        style={{
+          backgroundImage: "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }} />
 
       {/* ── Top vignette ── */}
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 30%)" }} />
+        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 25%, transparent 70%, rgba(0,0,0,0.4) 100%)" }} />
 
-      {/* ── Session pill (top-left, shown only when logged in) ── */}
-      {role !== "guest" && (
+      {/* ── Session pill ── */}
+      {displayName && (
         <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full"
-          style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(6px)" }}>
-          <CheckCircle2 className="w-3.5 h-3.5 text-white/70 flex-shrink-0" />
-          <span className="text-white/80 text-xs font-medium">
-            {role === "faculty" && faculty && faculty.name}
-            {role === "hod" && hod && hod.hodName}
-            {role === "student" && student && student.rollNumber}
-            {role === "admin" && "Administrator"}
-          </span>
+          style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.12)" }}>
+          <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#a78bfa" }} />
+          <span className="text-white/85 text-xs font-medium">{displayName}</span>
           <button onClick={logout}
-            className="text-[10px] text-white/40 hover:text-white/80 transition-colors ml-1">
-            ✕
-          </button>
+            className="text-[10px] text-white/35 hover:text-white/80 transition-colors ml-1">✕</button>
         </div>
       )}
 
-      {/* ── Slide counter (top-right) ── */}
-      <div className="absolute top-4 right-4 z-20 text-[11px] font-mono"
-        style={{ color: "rgba(255,255,255,0.5)", background: "rgba(0,0,0,0.35)", backdropFilter: "blur(6px)", padding: "3px 10px", borderRadius: "99px" }}>
-        {curr + 1} / {n}
+      {/* ── Live badge (top-right) ── */}
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full"
+        style={{ background: "rgba(255,255,255,0.07)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)" }}>
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="text-[10px] font-medium text-white/60 tracking-widest uppercase">Live · 2024-25</span>
       </div>
 
-      {/* ── Bottom controls ── */}
-      <div className="absolute bottom-5 left-0 right-0 z-20 flex items-center justify-center gap-4 px-6">
-        {/* Prev */}
-        <button onClick={() => { advance(-1); resetTimer(); }}
-          className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-          style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(6px)" }}>
-          <ChevronLeft className="w-4 h-4 text-white" />
-        </button>
+      {/* ── Central content ── */}
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-6">
 
-        {/* Dots */}
-        <div className="flex items-center gap-2">
-          {SLIDES.map((_, i) => (
-            <button key={i} onClick={() => { goTo(i); resetTimer(); }}
-              className="rounded-full transition-all duration-400"
+        {/* University wordmark */}
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center gap-2.5">
+            <CupgsLogo size={44} />
+            <div className="text-left">
+              <div className="text-white font-bold text-xl leading-tight tracking-tight">BPUT · CUPGS</div>
+              <div className="text-white/50 text-[11px] tracking-widest uppercase font-medium">Rourkela, Odisha</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Rotating keywords */}
+        <div className="text-center" style={{ minHeight: 32 }}>
+          <span
+            className="font-semibold text-lg tracking-wide"
+            style={{
+              opacity: kwFade ? 1 : 0,
+              transition: "opacity 0.4s ease",
+              background: "linear-gradient(90deg, #c084fc, #60a5fa, #34d399)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>
+            {HERO_KEYWORDS[kwIdx]}
+          </span>
+        </div>
+
+        {/* ── Stats row ── */}
+        <div className="flex items-center gap-3 flex-wrap justify-center">
+          {HERO_STATS.map(({ icon: Icon, label, key, color }) => (
+            <div key={key}
+              className="flex flex-col items-center gap-1 px-5 py-3 rounded-2xl"
               style={{
-                width: i === curr ? "28px" : "7px",
-                height: "7px",
-                background: i === curr ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.3)",
-              }} />
+                background: "rgba(255,255,255,0.06)",
+                backdropFilter: "blur(16px)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                minWidth: 90,
+              }}>
+              <Icon className="w-4 h-4" style={{ color }} />
+              <span className="text-white font-bold text-2xl leading-none" style={{ color }}>
+                {statValues[key]}
+              </span>
+              <span className="text-white/45 text-[10px] font-medium tracking-wide uppercase">{label}</span>
+            </div>
           ))}
         </div>
 
-        {/* Next */}
-        <button onClick={() => { advance(1); resetTimer(); }}
-          className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-          style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(6px)" }}>
-          <ChevronRight className="w-4 h-4 text-white" />
-        </button>
+        {/* Tagline */}
+        <p className="text-white/35 text-xs text-center tracking-wide max-w-xs">
+          Centre for UG &amp; PG Studies · Academic Feedback System
+        </p>
       </div>
 
-      {/* ── Caption (bottom-center above controls) ── */}
-      <div className="absolute bottom-16 left-0 right-0 z-20 flex justify-center">
-        <span className="text-xs text-white/55 font-medium tracking-wide px-3 py-1 rounded-full"
-          style={{ background: "rgba(0,0,0,0.25)", backdropFilter: "blur(6px)" }}>
-          {SLIDES[curr].caption}
-        </span>
-      </div>
+      {/* ── Decorative arc lines ── */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.07]" preserveAspectRatio="none">
+        <ellipse cx="50%" cy="120%" rx="60%" ry="80%" fill="none" stroke="white" strokeWidth="1" />
+        <ellipse cx="50%" cy="110%" rx="45%" ry="65%" fill="none" stroke="white" strokeWidth="0.5" />
+        <ellipse cx="10%"  cy="10%"  rx="30%" ry="30%" fill="none" stroke="white" strokeWidth="0.5" />
+      </svg>
+
+      {/* ── CSS keyframes injected inline ── */}
+      <style>{`
+        @keyframes heroPulse {
+          from { transform: translate(-50%,-50%) scale(1);   opacity: 0.7; }
+          to   { transform: translate(-50%,-50%) scale(1.18); opacity: 1;   }
+        }
+        @keyframes heroTwinkle {
+          from { opacity: 0.08; transform: scale(0.8); }
+          to   { opacity: 0.55; transform: scale(1.3); }
+        }
+      `}</style>
     </div>
   );
 }
