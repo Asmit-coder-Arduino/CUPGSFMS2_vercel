@@ -54,7 +54,7 @@ const FIELD_TYPE_COLORS: Record<FieldConfig["type"], string> = {
   star_5:     "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
   yes_no:     "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
   mcq:        "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
-  text_short: "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300",
+  text_short: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
 };
 
 const inputCls = "w-full border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary transition-shadow";
@@ -201,7 +201,7 @@ function AddFieldModal({ onAdd, onClose, existingCount }: AddFieldModalProps) {
 
         <div className="flex gap-2 mt-5">
           <Button variant="outline" className="flex-1" onClick={onClose}>Cancel</Button>
-          <Button className="flex-1 bg-violet-600 hover:bg-violet-700" onClick={handleAdd}>
+          <Button className="flex-1 bg-amber-600 hover:bg-amber-700" onClick={handleAdd}>
             <Plus className="w-4 h-4 mr-1" /> Add Question
           </Button>
         </div>
@@ -577,7 +577,7 @@ export default function FormBuilder({ departmentId, departmentName }: FormBuilde
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
           <h2 className="text-lg font-bold flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-violet-500" /> Form Builder
+            <Sparkles className="w-5 h-5 text-amber-500" /> Form Builder
           </h2>
           <p className="text-sm text-muted-foreground mt-0.5">
             Customize what questions students see when submitting feedback for <strong>{departmentName}</strong>
@@ -592,7 +592,7 @@ export default function FormBuilder({ departmentId, departmentName }: FormBuilde
               <RotateCcw className="w-3.5 h-3.5" /> {resetting ? "Resetting…" : "Reset to Default"}
             </Button>
           )}
-          <Button size="sm" className="gap-1.5 bg-violet-600 hover:bg-violet-700" onClick={handleSave} disabled={saving}>
+          <Button size="sm" className="gap-1.5 bg-amber-600 hover:bg-amber-700" onClick={handleSave} disabled={saving}>
             {saved ? <><CheckCircle2 className="w-4 h-4" /> Saved!</> : saving ? "Saving…" : <><Save className="w-4 h-4" /> Save Form</>}
           </Button>
         </div>
@@ -605,7 +605,7 @@ export default function FormBuilder({ departmentId, departmentName }: FormBuilde
           Using the <strong>system default form</strong>. Customize and save to create your own department-specific form.
         </div>
       ) : (
-        <div className="flex items-center gap-2 p-3 bg-violet-50 dark:bg-violet-900/20 border border-violet-100 dark:border-violet-800 rounded-xl text-sm text-violet-700 dark:text-violet-300">
+        <div className="flex items-center gap-2 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800 rounded-xl text-sm text-amber-700 dark:text-amber-300">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
           Custom form is <strong>active</strong> for {departmentName}. Students see your customized version.
         </div>
@@ -676,7 +676,7 @@ export default function FormBuilder({ departmentId, departmentName }: FormBuilde
             </h3>
             <p className="text-xs text-muted-foreground mt-0.5">Reorder, enable/disable, or edit labels. Standard fields (5-star) map to your department's analytics.</p>
           </div>
-          <Button size="sm" className="bg-violet-600 hover:bg-violet-700 gap-1.5" onClick={() => setShowAddField(true)}>
+          <Button size="sm" className="bg-amber-600 hover:bg-amber-700 gap-1.5" onClick={() => setShowAddField(true)}>
             <Plus className="w-3.5 h-3.5" /> Add Question
           </Button>
         </div>
@@ -713,7 +713,7 @@ export default function FormBuilder({ departmentId, departmentName }: FormBuilde
 
       {/* Save CTA */}
       <div className="flex gap-2 pt-2 border-t">
-        <Button className="flex-1 bg-violet-600 hover:bg-violet-700 gap-2 py-5 text-base" onClick={handleSave} disabled={saving || enabledCount === 0}>
+        <Button className="flex-1 bg-amber-600 hover:bg-amber-700 gap-2 py-5 text-base" onClick={handleSave} disabled={saving || enabledCount === 0}>
           {saved ? <><CheckCircle2 className="w-5 h-5" /> Saved Successfully!</> : saving ? "Saving Form…" : <><Save className="w-5 h-5" /> Save & Publish Form</>}
         </Button>
       </div>

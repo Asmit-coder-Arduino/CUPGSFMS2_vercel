@@ -640,7 +640,7 @@ export default function SubmitFeedback() {
             {departments?.map(d => <option key={d.id} value={d.id}>{d.code} — {d.name}</option>)}
           </select>
           {formTemplate && !formTemplate.isDefault && (
-            <div className="flex items-center gap-1.5 text-xs text-violet-700 dark:text-violet-300 mt-1">
+            <div className="flex items-center gap-1.5 text-xs text-amber-700 dark:text-amber-300 mt-1">
               <Info className="w-3.5 h-3.5" /> This department has a customized feedback form.
             </div>
           )}

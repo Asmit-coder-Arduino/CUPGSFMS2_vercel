@@ -105,7 +105,7 @@ export default function HodManagement() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center">
           <UserCog className="w-5 h-5 text-white" />
         </div>
         <div>
@@ -130,15 +130,15 @@ export default function HodManagement() {
                 className="rounded-2xl overflow-hidden transition-all duration-300"
                 style={{
                   background: "rgba(255,255,255,0.04)",
-                  border: isEditing ? "1px solid rgba(139,92,246,0.4)" : "1px solid rgba(255,255,255,0.06)",
-                  boxShadow: isEditing ? "0 0 30px rgba(139,92,246,0.15)" : "none",
+                  border: isEditing ? "1px solid rgba(245,158,11,0.4)" : "1px solid rgba(255,255,255,0.06)",
+                  boxShadow: isEditing ? "0 0 30px rgba(245,158,11,0.15)" : "none",
                 }}
               >
                 <div className="p-5">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500/20 to-violet-500/20 flex items-center justify-center border border-white/10">
-                        <Building className="w-4 h-4 text-violet-300" />
+                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-500/20 flex items-center justify-center border border-white/10">
+                        <Building className="w-4 h-4 text-amber-300" />
                       </div>
                       <div>
                         <h3 className="text-base font-semibold text-white">{hod.departmentName}</h3>
@@ -150,9 +150,9 @@ export default function HodManagement() {
                         onClick={() => startEdit(hod)}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200"
                         style={{
-                          background: "rgba(139,92,246,0.15)",
-                          color: "rgba(196,181,253,0.9)",
-                          border: "1px solid rgba(139,92,246,0.2)",
+                          background: "rgba(245,158,11,0.15)",
+                          color: "rgba(252,211,77,0.9)",
+                          border: "1px solid rgba(245,158,11,0.2)",
                         }}
                       >
                         <Edit2 className="w-3 h-3" /> Edit
@@ -236,7 +236,7 @@ export default function HodManagement() {
                       </div>
                       <div>
                         <div className="text-[11px] font-medium text-white/40 uppercase tracking-wider mb-1">Employee ID</div>
-                        <div className="text-sm font-mono text-violet-300">{hod.hodEmployeeId || "—"}</div>
+                        <div className="text-sm font-mono text-amber-300">{hod.hodEmployeeId || "—"}</div>
                       </div>
                       <div>
                         <div className="text-[11px] font-medium text-white/40 uppercase tracking-wider mb-1">Login PIN</div>

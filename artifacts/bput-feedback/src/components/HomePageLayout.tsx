@@ -41,7 +41,7 @@ function GlassModeToggle() {
         display: "flex", alignItems: "center", justifyContent: "center",
         cursor: "pointer",
         transition: "background 0.2s ease, transform 0.2s ease",
-        background: isLiquid ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0)",
+        background: isLiquid ? "rgba(245,158,11,0.2)" : "rgba(255,255,255,0)",
         backdropFilter: isLiquid ? "none" : "blur(6px)",
         WebkitBackdropFilter: isLiquid ? "none" : "blur(6px)",
         border: "1px solid rgba(255,255,255,0)",
@@ -51,8 +51,8 @@ function GlassModeToggle() {
       title={isLiquid ? "Switch to Classic Mode" : "Switch to Liquid Glass Mode"}
     >
       {isLiquid
-        ? <Droplets className="w-4 h-4 text-violet-300" />
-        : <Glasses className="w-4 h-4 text-violet-400/60" />
+        ? <Droplets className="w-4 h-4 text-amber-300" />
+        : <Glasses className="w-4 h-4 text-amber-400/60" />
       }
     </button>
   );
@@ -138,12 +138,12 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
               <h1 className="font-extrabold text-white leading-tight tracking-tight text-base md:text-lg">
                 Biju Patnaik University of Technology
               </h1>
-              <p className="text-[11px] mt-0.5 font-medium" style={{ color: "rgba(196,181,253,0.7)" }}>
+              <p className="text-[11px] mt-0.5 font-medium" style={{ color: "rgba(252,211,77,0.7)" }}>
                 CUPGS — Centre for UG &amp; PG Studies, Rourkela, Odisha
               </p>
               <div className="flex items-center gap-2 mt-1">
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
-                  style={{ background: "rgba(139,92,246,0.2)", color: "#c4b5fd" }}>
+                  style={{ background: "rgba(245,158,11,0.2)", color: "#fcd34d" }}>
                   <GraduationCap className="w-2.5 h-2.5" /> Academic Feedback System
                 </span>
                 <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
@@ -158,12 +158,12 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
             <div className="flex items-center gap-3 flex-shrink-0">
               <div className="hidden md:flex flex-col items-center gap-1">
                 <CupgsLogo size={44} className="drop-shadow-xl" />
-                <span className="text-[9px] font-bold tracking-wider" style={{ color: "rgba(196,181,253,0.5)" }}>CUPGS</span>
+                <span className="text-[9px] font-bold tracking-wider" style={{ color: "rgba(252,211,77,0.5)" }}>CUPGS</span>
               </div>
               <div className="flex items-center gap-2">
                 {userLabel && (
                   <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium"
-                    style={{ background: "rgba(139,92,246,0.15)", color: "#c4b5fd" }}>
+                    style={{ background: "rgba(245,158,11,0.15)", color: "#fcd34d" }}>
                     <span className="truncate max-w-[140px]">{userLabel}</span>
                     <button onClick={logout} className="hover:text-white transition-colors" title="Sign out">
                       <LogOut className="w-3.5 h-3.5" />
@@ -182,8 +182,8 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
         <nav
           style={{
             background: isLiquid ? "transparent" : (isDark
-              ? "rgba(139,92,246,0.08)"
-              : "rgba(109,40,217,0.55)"),
+              ? "rgba(245,158,11,0.08)"
+              : "rgba(180,83,9,0.55)"),
             backdropFilter: isLiquid ? "none" : "blur(6px)",
             WebkitBackdropFilter: isLiquid ? "none" : "blur(6px)",
             boxShadow: isLiquid ? "none" : "0 0 30px 0px rgba(0,0,0,0.3)",
@@ -251,7 +251,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
                 />
                 <div>
                   <div className="text-white font-bold text-sm">Biju Patnaik University of Technology</div>
-                  <div className="text-[11px]" style={{ color: "rgba(196,181,253,0.55)" }}>State University, Odisha • Est. 2002</div>
+                  <div className="text-[11px]" style={{ color: "rgba(252,211,77,0.55)" }}>State University, Odisha • Est. 2002</div>
                 </div>
               </div>
               <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
@@ -260,18 +260,18 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
                 M.Tech &amp; MBA programs at Rourkela.
               </p>
               <div className="flex items-start gap-2 text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
-                <MapPin className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-violet-400" />
+                <MapPin className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-amber-400" />
                 <span>Chhend Colony, Rourkela, Odisha – 769015</span>
               </div>
               <div className="flex items-center gap-2 text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
-                <Phone className="w-3.5 h-3.5 flex-shrink-0 text-violet-400" />
+                <Phone className="w-3.5 h-3.5 flex-shrink-0 text-amber-400" />
                 <span>(0661) 2482556</span>
               </div>
             </div>
 
             {/* Col 2: Quick Links */}
             <div>
-              <h3 className="text-white text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(196,181,253,0.7)" }}>Quick Links</h3>
+              <h3 className="text-white text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(252,211,77,0.7)" }}>Quick Links</h3>
               <ul className="space-y-2">
                 {[
                   ["BPUT Official", "https://www.bput.ac.in"],
@@ -283,9 +283,9 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
                 ].map(([label, href]) => (
                   <li key={label}>
                     <a href={href} target="_blank" rel="noreferrer"
-                      className="text-xs flex items-center gap-1.5 transition-colors hover:text-violet-300"
+                      className="text-xs flex items-center gap-1.5 transition-colors hover:text-amber-300"
                       style={{ color: "rgba(255,255,255,0.4)" }}>
-                      <ChevronRight className="w-3 h-3 text-violet-500 flex-shrink-0" />
+                      <ChevronRight className="w-3 h-3 text-amber-500 flex-shrink-0" />
                       {label}
                     </a>
                   </li>
@@ -295,7 +295,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
 
             {/* Col 3: Feedback System */}
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(196,181,253,0.7)" }}>Feedback System</h3>
+              <h3 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(252,211,77,0.7)" }}>Feedback System</h3>
               <ul className="space-y-2">
                 {[
                   ["Submit Feedback", "/submit-feedback"],
@@ -305,8 +305,8 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
                 ].map(([label, href]) => (
                   <li key={label}>
                     <Link href={href}>
-                      <span className="text-xs flex items-center gap-1.5 cursor-pointer transition-colors hover:text-violet-300" style={{ color: "rgba(255,255,255,0.4)" }}>
-                        <ChevronRight className="w-3 h-3 text-violet-500 flex-shrink-0" />
+                      <span className="text-xs flex items-center gap-1.5 cursor-pointer transition-colors hover:text-amber-300" style={{ color: "rgba(255,255,255,0.4)" }}>
+                        <ChevronRight className="w-3 h-3 text-amber-500 flex-shrink-0" />
                         {label}
                       </span>
                     </Link>
@@ -314,8 +314,8 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
                 ))}
               </ul>
 
-              <div className="mt-6 p-3 rounded-xl" style={{ background: "rgba(139,92,246,0.1)" }}>
-                <div className="text-[10px] font-semibold text-violet-300 mb-1">CUPGS Feedback Manager</div>
+              <div className="mt-6 p-3 rounded-xl" style={{ background: "rgba(245,158,11,0.1)" }}>
+                <div className="text-[10px] font-semibold text-amber-300 mb-1">CUPGS Feedback Manager</div>
                 <div className="text-[10px]" style={{ color: "rgba(255,255,255,0.35)" }}>
                   Secure · Anonymous · Real-time Analytics
                 </div>
@@ -329,7 +329,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
             <div className="text-[11px]" style={{ color: "rgba(255,255,255,0.3)" }}>
               © 2025 Biju Patnaik University of Technology, Rourkela. All Rights Reserved.
             </div>
-            <div className="text-[11px]" style={{ color: "rgba(139,92,246,0.6)" }}>
+            <div className="text-[11px]" style={{ color: "rgba(245,158,11,0.6)" }}>
               CUPGS Feedback Management System · Academic Year {getAcademicYear()}
             </div>
           </div>

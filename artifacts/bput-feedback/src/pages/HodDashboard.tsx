@@ -290,7 +290,7 @@ function FacultyModal({ deptId, initial, onClose, onSaved }: {
 
         <div className="flex gap-2 pt-1">
           <Button type="button" variant="outline" className="flex-1" onClick={onClose}>Cancel</Button>
-          <Button type="submit" className="flex-1 bg-violet-600 hover:bg-violet-700" disabled={saving}>
+          <Button type="submit" className="flex-1 bg-amber-600 hover:bg-amber-700" disabled={saving}>
             {saving ? (isEdit ? "Saving…" : "Adding…") : (isEdit ? "Save Changes" : "Add Faculty")}
           </Button>
         </div>
@@ -936,7 +936,7 @@ export default function HodDashboard() {
               {[
                 { label: "Responses", value: s!.totalFeedback, icon: MessageSquare, color: "from-blue-500 to-blue-700" },
                 { label: "Courses", value: s!.totalCourses, icon: BookOpen, color: "from-indigo-500 to-indigo-700" },
-                { label: "Faculty", value: s!.totalFaculty, icon: Users, color: "from-violet-500 to-violet-700" },
+                { label: "Faculty", value: s!.totalFaculty, icon: Users, color: "from-amber-500 to-amber-700" },
                 { label: "Avg Rating", value: s!.avgOverall ? s!.avgOverall.toFixed(2) : "—", icon: Star, color: "from-amber-500 to-amber-700" },
               ].map(({ label, value, icon: Icon, color }) => (
                 <Card key={label} className="shadow-sm border overflow-hidden">
@@ -1135,7 +1135,7 @@ export default function HodDashboard() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
                 { label: "Total Responses", value: feedbackList.length, icon: MessageSquare, color: "text-blue-600" },
-                { label: "With Comments", value: feedbackList.filter(f => f.comments).length, icon: FileText, color: "text-violet-600" },
+                { label: "With Comments", value: feedbackList.filter(f => f.comments).length, icon: FileText, color: "text-amber-600" },
                 { label: "Avg Rating", value: (feedbackList.reduce((s, f) => s + f.ratingOverall, 0) / feedbackList.length).toFixed(2), icon: Star, color: "text-amber-600" },
                 { label: "Anonymous", value: feedbackList.filter(f => f.isAnonymous).length, icon: Users, color: "text-emerald-600" },
               ].map(({ label, value, icon: Icon, color }) => (
@@ -1161,12 +1161,12 @@ export default function HodDashboard() {
         <div className="space-y-5">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
-              <h2 className="text-lg font-bold flex items-center gap-2"><Users className="w-5 h-5 text-violet-500" /> Faculty Management</h2>
+              <h2 className="text-lg font-bold flex items-center gap-2"><Users className="w-5 h-5 text-amber-500" /> Faculty Management</h2>
               <p className="text-sm text-muted-foreground mt-0.5">{hod.name} — {facultyList.length} teacher{facultyList.length !== 1 ? "s" : ""}</p>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={loadFaculty} className="gap-1.5"><RefreshCw className="w-3.5 h-3.5" /> Refresh</Button>
-              <Button size="sm" className="bg-violet-600 hover:bg-violet-700 gap-1.5" onClick={() => { setEditFaculty(undefined); setShowFacultyModal(true); }}>
+              <Button size="sm" className="bg-amber-600 hover:bg-amber-700 gap-1.5" onClick={() => { setEditFaculty(undefined); setShowFacultyModal(true); }}>
                 <UserPlus className="w-4 h-4" /> Add Teacher
               </Button>
             </div>
@@ -1179,7 +1179,7 @@ export default function HodDashboard() {
               <Users className="w-12 h-12 text-muted-foreground/30 mb-3" />
               <p className="font-medium text-muted-foreground">No faculty members yet</p>
               <p className="text-sm text-muted-foreground/70 mb-4">Add your first teacher to get started</p>
-              <Button size="sm" className="bg-violet-600 hover:bg-violet-700 gap-1.5" onClick={() => { setEditFaculty(undefined); setShowFacultyModal(true); }}>
+              <Button size="sm" className="bg-amber-600 hover:bg-amber-700 gap-1.5" onClick={() => { setEditFaculty(undefined); setShowFacultyModal(true); }}>
                 <UserPlus className="w-4 h-4" /> Add Teacher
               </Button>
             </div>
@@ -1195,7 +1195,7 @@ export default function HodDashboard() {
                       {f.photoUrl ? (
                         <img src={f.photoUrl} alt={f.name} className="w-full h-full object-cover" />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">
+                        <div className="w-full h-full bg-gradient-to-br from-amber-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">
                           {f.name.split(" ").map((w: string) => w[0]).slice(0, 2).join("")}
                         </div>
                       )}
@@ -1315,7 +1315,7 @@ export default function HodDashboard() {
           {facultyList.length > 0 && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
-                { label: "Total Faculty", value: facultyList.length, icon: Users, color: "text-violet-600" },
+                { label: "Total Faculty", value: facultyList.length, icon: Users, color: "text-amber-600" },
                 { label: "With Courses", value: facultyList.filter(f => f.assignedCourses.length > 0).length, icon: BookOpen, color: "text-indigo-600" },
                 { label: "With Feedback", value: facultyList.filter(f => f.totalFeedbackCount > 0).length, icon: MessageSquare, color: "text-emerald-600" },
                 { label: "Dept Avg Rating", value: (() => { const r = facultyList.filter(f => f.avgRating); return r.length ? (r.reduce((s, f) => s + f.avgRating!, 0) / r.length).toFixed(2) : "—"; })(), icon: Star, color: "text-amber-600" },
@@ -1441,7 +1441,7 @@ export default function HodDashboard() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
                 { label: "Total Courses", value: courses.length, icon: BookOpen, color: "text-indigo-600" },
-                { label: "Faculty Assigned", value: courses.filter(c => c.facultyId).length, icon: Users, color: "text-violet-600" },
+                { label: "Faculty Assigned", value: courses.filter(c => c.facultyId).length, icon: Users, color: "text-amber-600" },
                 { label: "With Feedback", value: courses.filter(c => c.feedbackCount > 0).length, icon: MessageSquare, color: "text-emerald-600" },
                 { label: "Avg Rating", value: (() => { const r = courses.filter(c => c.avgRating); return r.length ? (r.reduce((s, c) => s + c.avgRating!, 0) / r.length).toFixed(2) : "—"; })(), icon: TrendingUp, color: "text-amber-600" },
               ].map(({ label, value, icon: Icon, color }) => (

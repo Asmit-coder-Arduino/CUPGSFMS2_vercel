@@ -74,7 +74,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   const getRoleAvatar = () => {
     if (role === "hod" && hod)
-      return { initials: hod.code, color: "from-violet-500 to-purple-700", name: hod.hodName, sub: `HOD — ${hod.name}`, id: hod.hodEmployeeId, accent: "rgba(139,92,246,0.25)" };
+      return { initials: hod.code, color: "from-amber-500 to-amber-700", name: hod.hodName, sub: `HOD — ${hod.name}`, id: hod.hodEmployeeId, accent: "rgba(245,158,11,0.25)" };
     if (role === "faculty" && faculty)
       return { initials: faculty.name.charAt(0), color: "from-emerald-500 to-teal-700", name: faculty.name, sub: faculty.designation, id: `${faculty.departmentCode} | ${faculty.employeeId}`, accent: "rgba(16,185,129,0.22)" };
     if (role === "student" && student)
@@ -128,7 +128,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <div style={{
             position: "absolute", top: -60, left: -40,
             width: 220, height: 220,
-            background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 65%)",
+            background: "radial-gradient(circle, rgba(245,158,11,0.18) 0%, transparent 65%)",
             filter: "blur(30px)",
           }} />
         </div>
@@ -137,12 +137,12 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <div className="p-5 border-b border-white/[0.06] flex items-center gap-3 relative">
           <div className="relative">
             <div className="absolute inset-0 rounded-2xl blur-lg opacity-60"
-              style={{ background: "rgba(139,92,246,0.5)" }} />
+              style={{ background: "rgba(245,158,11,0.5)" }} />
             <CupgsLogo size={38} className="flex-shrink-0 relative z-10" />
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-sm font-extrabold tracking-tight text-white leading-tight">CUPGS Feedback</h1>
-            <p className="text-[10px] mt-0.5" style={{ color: "rgba(196,181,253,0.5)" }}>Academic Feedback System</p>
+            <p className="text-[10px] mt-0.5" style={{ color: "rgba(252,211,77,0.5)" }}>Academic Feedback System</p>
           </div>
           <ComplaintNotifications />
           <button
@@ -154,7 +154,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
               display: "flex", alignItems: "center", justifyContent: "center",
               cursor: "pointer",
               transition: "background 0.2s ease, transform 0.2s ease",
-              background: isLiquid ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0)",
+              background: isLiquid ? "rgba(245,158,11,0.2)" : "rgba(255,255,255,0)",
               backdropFilter: isLiquid ? "none" : "blur(6px)",
               WebkitBackdropFilter: isLiquid ? "none" : "blur(6px)",
               border: "1px solid rgba(255,255,255,0)",
@@ -164,8 +164,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
             title={isLiquid ? "Switch to Classic Mode" : "Switch to Liquid Glass Mode"}
           >
             {isLiquid
-              ? <Droplets className="w-4 h-4 text-violet-300" />
-              : <Glasses className="w-4 h-4 text-violet-400/60" />
+              ? <Droplets className="w-4 h-4 text-amber-300" />
+              : <Glasses className="w-4 h-4 text-amber-400/60" />
             }
           </button>
           <GlassSettingsPanel />
@@ -216,12 +216,12 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 style={{ animationDelay: `${i * 40}ms` }}
               >
                 <item.icon
-                  className={`flex-shrink-0 ${isActive ? "text-violet-300" : ""}`}
+                  className={`flex-shrink-0 ${isActive ? "text-amber-300" : ""}`}
                   style={{ width: "1.05rem", height: "1.05rem" }}
                 />
                 <span>{item.name}</span>
                 {isActive && (
-                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-violet-400" style={{ boxShadow: "0 0 6px rgba(139,92,246,0.8)" }} />
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-amber-400" style={{ boxShadow: "0 0 6px rgba(245,158,11,0.8)" }} />
                 )}
               </Link>
             );
@@ -231,7 +231,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         {/* Footer */}
         <div className="px-4 pb-5 pt-3 border-t border-white/[0.05]" style={{ background: "#000000" }}>
           <div className="flex items-center gap-2 justify-center">
-            <Zap className="w-2.5 h-2.5" style={{ color: "rgba(139,92,246,0.5)" }} />
+            <Zap className="w-2.5 h-2.5" style={{ color: "rgba(245,158,11,0.5)" }} />
             <span className="text-[10px] text-center leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
               CUPGS · BPUT Rourkela
             </span>
@@ -254,7 +254,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center",
                 cursor: "pointer",
-                background: isLiquid ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0)",
+                background: isLiquid ? "rgba(245,158,11,0.2)" : "rgba(255,255,255,0)",
                 backdropFilter: isLiquid ? "none" : "blur(6px)",
                 border: "1px solid rgba(255,255,255,0)",
                 flexShrink: 0,
@@ -262,7 +262,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
               title={isLiquid ? "Classic Mode" : "Liquid Glass"}
             >
               {isLiquid
-                ? <Droplets className="w-3.5 h-3.5 text-violet-300" />
+                ? <Droplets className="w-3.5 h-3.5 text-amber-300" />
                 : <Glasses className="w-3.5 h-3.5 text-foreground/50" />
               }
             </button>
@@ -305,14 +305,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 key={item.href}
                 href={item.href}
                 className={`flex-1 flex flex-col items-center justify-center py-2.5 gap-1 min-h-[56px] transition-all duration-200 ${
-                  isActive ? "text-violet-500" : "text-foreground/40 hover:text-foreground/70"
+                  isActive ? "text-amber-500" : "text-foreground/40 hover:text-foreground/70"
                 }`}
               >
                 <div className={`relative ${isActive ? "animate-pulse-ring rounded-full" : ""}`}>
                   <item.icon className="w-5 h-5" />
-                  {isActive && <div className="absolute inset-0 rounded-full scale-150 blur-sm" style={{ background: "rgba(139,92,246,0.25)" }} />}
+                  {isActive && <div className="absolute inset-0 rounded-full scale-150 blur-sm" style={{ background: "rgba(245,158,11,0.25)" }} />}
                 </div>
-                <span className={`text-[10px] font-medium leading-tight ${isActive ? "text-violet-500" : ""}`}>
+                <span className={`text-[10px] font-medium leading-tight ${isActive ? "text-amber-500" : ""}`}>
                   {item.name}
                 </span>
               </Link>

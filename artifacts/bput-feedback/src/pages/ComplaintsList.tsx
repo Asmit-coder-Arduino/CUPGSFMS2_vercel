@@ -226,7 +226,7 @@ export default function ComplaintsList() {
                 </div>
                 {(c.hodRemarks || c.adminRemarks) && (
                   <div className="mt-2 pt-2 border-t border-border/50 flex gap-3 text-[11px]">
-                    {c.hodRemarks && <span className="text-violet-400"><strong>HOD:</strong> {c.hodRemarks}</span>}
+                    {c.hodRemarks && <span className="text-amber-400"><strong>HOD:</strong> {c.hodRemarks}</span>}
                     {c.adminRemarks && <span className="text-blue-400"><strong>Admin:</strong> {c.adminRemarks}</span>}
                   </div>
                 )}
@@ -268,8 +268,8 @@ export default function ComplaintsList() {
             </div>
 
             {selectedComplaint.hodRemarks && (
-              <div className="bg-violet-500/10 rounded-lg p-3 text-sm">
-                <p className="font-semibold text-violet-400 text-xs mb-1">HOD Remarks</p>
+              <div className="bg-amber-500/10 rounded-lg p-3 text-sm">
+                <p className="font-semibold text-amber-400 text-xs mb-1">HOD Remarks</p>
                 <p>{selectedComplaint.hodRemarks}</p>
               </div>
             )}

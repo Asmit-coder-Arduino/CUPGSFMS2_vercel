@@ -30,13 +30,13 @@ export function GlassSettingsPanel() {
           display: "flex", alignItems: "center", justifyContent: "center",
           cursor: "pointer",
           transition: "background 0.2s ease",
-          background: open ? "rgba(139,92,246,0.25)" : "rgba(255,255,255,0.08)",
+          background: open ? "rgba(245,158,11,0.25)" : "rgba(255,255,255,0.08)",
           border: "none",
           flexShrink: 0,
         }}
         title="Glass Settings"
       >
-        <SlidersHorizontal className="w-3.5 h-3.5 text-violet-300" />
+        <SlidersHorizontal className="w-3.5 h-3.5 text-amber-300" />
       </button>
 
       {open && (
@@ -48,7 +48,7 @@ export function GlassSettingsPanel() {
             width: 260,
             borderRadius: 16,
             background: "rgba(15, 10, 30, 0.92)",
-            border: "1px solid rgba(139,92,246,0.2)",
+            border: "1px solid rgba(245,158,11,0.2)",
             padding: "16px",
             zIndex: 9999,
             boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
@@ -56,8 +56,8 @@ export function GlassSettingsPanel() {
         >
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <Droplets className="w-3.5 h-3.5 text-violet-400" />
-              <span style={{ fontSize: 12, fontWeight: 600, color: "#c4b5fd", letterSpacing: 0.5 }}>
+              <Droplets className="w-3.5 h-3.5 text-amber-400" />
+              <span style={{ fontSize: 12, fontWeight: 600, color: "#fcd34d", letterSpacing: 0.5 }}>
                 Glass Settings
               </span>
             </div>
@@ -66,7 +66,7 @@ export function GlassSettingsPanel() {
                 onClick={resetSettings}
                 title="Reset to defaults"
                 style={{
-                  background: "rgba(139,92,246,0.15)",
+                  background: "rgba(245,158,11,0.15)",
                   border: "none",
                   borderRadius: 6,
                   padding: "4px 6px",
@@ -74,8 +74,8 @@ export function GlassSettingsPanel() {
                   display: "flex", alignItems: "center", gap: 3,
                 }}
               >
-                <RotateCcw className="w-3 h-3 text-violet-400" />
-                <span style={{ fontSize: 10, color: "#a78bfa" }}>Reset</span>
+                <RotateCcw className="w-3 h-3 text-amber-400" />
+                <span style={{ fontSize: 10, color: "#f59e0b" }}>Reset</span>
               </button>
               <button
                 onClick={() => setOpen(false)}
@@ -164,8 +164,8 @@ function SliderRow({
       }}>
         <span style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", fontWeight: 500 }}>{label}</span>
         <span style={{
-          fontSize: 11, color: "#a78bfa", fontWeight: 600,
-          background: "rgba(139,92,246,0.12)", padding: "1px 6px", borderRadius: 4,
+          fontSize: 11, color: "#f59e0b", fontWeight: 600,
+          background: "rgba(245,158,11,0.12)", padding: "1px 6px", borderRadius: 4,
           fontVariantNumeric: "tabular-nums",
           minWidth: 36, textAlign: "center",
         }}>

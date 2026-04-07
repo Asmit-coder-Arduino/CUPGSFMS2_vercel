@@ -78,14 +78,14 @@ function HeroSection({ role, faculty, hod, student, logout }: {
     <div className="relative w-full rounded-3xl overflow-hidden select-none" style={{ minHeight: "520px" }}>
 
       <div className="absolute inset-0"
-        style={{ background: "linear-gradient(135deg, #0a0118 0%, #0d0a2e 35%, #06101f 65%, #0c0715 100%)" }} />
+        style={{ background: "linear-gradient(135deg, #0f0a00 0%, #1a1000 35%, #0d0800 65%, #130c00 100%)" }} />
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[
-          { cx: "18%", cy: "30%", r: 200, color: "#7c3aed", delay: "0s",  dur: "8s"  },
+          { cx: "18%", cy: "30%", r: 200, color: "#b45309", delay: "0s",  dur: "8s"  },
           { cx: "72%", cy: "20%", r: 160, color: "#1d4ed8", delay: "2s",  dur: "10s" },
           { cx: "55%", cy: "75%", r: 220, color: "#0f766e", delay: "1s",  dur: "9s"  },
-          { cx: "85%", cy: "60%", r: 130, color: "#9333ea", delay: "3s",  dur: "7s"  },
+          { cx: "85%", cy: "60%", r: 130, color: "#b45309", delay: "3s",  dur: "7s"  },
           { cx: "30%", cy: "80%", r: 100, color: "#2563eb", delay: "0.5s",dur: "11s"},
         ].map((orb, i) => (
           <div key={i} className="absolute rounded-full"
@@ -128,7 +128,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
 
       {displayName && (
         <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-          <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#a78bfa" }} />
+          <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#f59e0b" }} />
           <span className="text-white/70 text-xs font-medium">{displayName}</span>
           <button onClick={logout}
             className="text-[10px] text-white/35 hover:text-white/80 transition-colors ml-1">✕</button>
@@ -152,7 +152,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
 
         <h1 className="text-center font-bold text-2xl md:text-3xl leading-snug mb-2"
           style={{
-            background: "linear-gradient(90deg, #c084fc, #60a5fa, #34d399)",
+            background: "linear-gradient(90deg, #fbbf24, #f59e0b, #eab308)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
@@ -185,7 +185,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
             { icon: "✦", text: "Multi-Role Access" },
           ].map((f, i) => (
             <span key={i} className="text-white/40 text-[11px] tracking-wide">
-              <span style={{ color: "#a78bfa" }}>{f.icon}</span> {f.text}
+              <span style={{ color: "#f59e0b" }}>{f.icon}</span> {f.text}
             </span>
           ))}
         </div>
@@ -352,7 +352,7 @@ function FacultyDetailModal({ facultyId, open, onClose }: { facultyId: number | 
         style={{ background: "rgba(15,20,35,0.95)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "28px" }}>
         {loading ? (
           <div className="p-10 text-center">
-            <div className="w-8 h-8 border-2 border-white/20 border-t-violet-400 rounded-full animate-spin mx-auto" />
+            <div className="w-8 h-8 border-2 border-white/20 border-t-amber-400 rounded-full animate-spin mx-auto" />
             <p className="text-xs text-muted-foreground mt-3">Loading analysis...</p>
           </div>
         ) : detail ? (
@@ -363,7 +363,7 @@ function FacultyDetailModal({ facultyId, open, onClose }: { facultyId: number | 
                   {detail.faculty.photoUrl ? (
                     <img src={detail.faculty.photoUrl} alt={detail.faculty.name} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-violet-600/30 to-indigo-600/30 flex items-center justify-center">
+                    <div className="w-full h-full bg-gradient-to-br from-amber-600/30 to-amber-700/30 flex items-center justify-center">
                       <span className="text-2xl font-bold text-white/60">{detail.faculty.name.charAt(0)}</span>
                     </div>
                   )}
@@ -406,18 +406,18 @@ function FacultyDetailModal({ facultyId, open, onClose }: { facultyId: number | 
               <button
                 onClick={() => setShowAIAnalysis(true)}
                 className="w-full p-4 rounded-2xl flex items-center justify-between group transition-all hover:scale-[1.01]"
-                style={{ background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.15)" }}
+                style={{ background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.15)" }}
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-violet-500/20">
-                    <Brain className="w-5 h-5 text-violet-400" />
+                  <div className="p-2 rounded-xl bg-amber-500/20">
+                    <Brain className="w-5 h-5 text-amber-400" />
                   </div>
                   <div className="text-left">
-                    <span className="text-sm font-bold text-violet-300 block">AI Performance Analysis</span>
+                    <span className="text-sm font-bold text-amber-300 block">AI Performance Analysis</span>
                     <span className="text-[10px] text-white/40">Powered by AI · Click to view detailed insights</span>
                   </div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-violet-400/60 group-hover:text-violet-400 transition-colors" />
+                <ChevronRight className="w-5 h-5 text-amber-400/60 group-hover:text-amber-400 transition-colors" />
               </button>
             </div>
 
@@ -559,7 +559,7 @@ function TopTeachersSection() {
         <div className="glass-card rounded-2xl p-10 text-center">
           <Trophy className="w-8 h-8 text-muted-foreground/30 mx-auto mb-3" />
           <p className="text-sm font-semibold text-foreground">Could not load rankings</p>
-          <button onClick={refresh} className="mt-3 text-xs text-violet-400 underline">Try again</button>
+          <button onClick={refresh} className="mt-3 text-xs text-amber-400 underline">Try again</button>
         </div>
       ) : top3.length === 0 ? (
         <div className="glass-card rounded-2xl p-10 text-center">
@@ -587,11 +587,11 @@ function TopTeachersSection() {
 
                 <div className="p-5 flex-1 flex flex-col gap-3">
                   <div className="flex items-start gap-3">
-                    <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0 ring-2 ring-white/10 group-hover:ring-violet-500/30 transition-all">
+                    <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0 ring-2 ring-white/10 group-hover:ring-amber-500/30 transition-all">
                       {f.photoUrl ? (
                         <img src={f.photoUrl} alt={f.name} className="w-full h-full object-cover" />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-violet-600/30 to-indigo-600/30 flex items-center justify-center">
+                        <div className="w-full h-full bg-gradient-to-br from-amber-600/30 to-amber-700/30 flex items-center justify-center">
                           <span className="text-xl font-bold text-white/60">{f.name.charAt(0)}</span>
                         </div>
                       )}
@@ -674,7 +674,7 @@ function BputInfoSection() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { v: "2002", l: "Established", s: "Govt. of Odisha", c: "text-violet-400" },
+          { v: "2002", l: "Established", s: "Govt. of Odisha", c: "text-amber-400" },
           { v: "200+", l: "Colleges",    s: "Across Odisha",  c: "text-blue-400" },
           { v: "2L+",  l: "Students",    s: "Enrolled/yr",    c: "text-emerald-400" },
           { v: "40+",  l: "Programs",    s: "UG · PG · PhD",  c: "text-amber-400" },
@@ -702,7 +702,7 @@ function BputInfoSection() {
             </p>
             <ul className="space-y-2">
               {[
-                [GraduationCap, "B.Tech, MBA, MCA, M.Tech, M.Sc programs", "text-violet-400"],
+                [GraduationCap, "B.Tech, MBA, MCA, M.Tech, M.Sc programs", "text-amber-400"],
                 [Building2, "CSE · ECE · EE · ME · CE departments", "text-blue-400"],
                 [Trophy, "NAAC &amp; NBA Accredited programs", "text-amber-400"],
                 [Zap, "State-of-the-art labs &amp; infrastructure", "text-emerald-400"],
@@ -714,7 +714,7 @@ function BputInfoSection() {
               ))}
             </ul>
             <a href="https://www.bput.ac.in/page.php?purl=cupgs" target="_blank" rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-violet-400 hover:text-violet-300 transition-colors">
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors">
               Learn more about CUPGS <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -725,7 +725,7 @@ function BputInfoSection() {
             <div className="absolute bottom-3 left-3">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-semibold text-white"
                 style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}>
-                <Building2 className="w-3 h-3 text-violet-300" /> BPUT Campus, Rourkela
+                <Building2 className="w-3 h-3 text-amber-300" /> BPUT Campus, Rourkela
               </div>
             </div>
           </div>
@@ -734,7 +734,7 @@ function BputInfoSection() {
 
       <div className="grid sm:grid-cols-3 gap-3">
         {[
-          { icon: Trophy, title: "NIRF Rankings", desc: "Consistently ranked among top technical universities in Odisha", cl: "icon-circle-indigo", ic: "text-violet-500" },
+          { icon: Trophy, title: "NIRF Rankings", desc: "Consistently ranked among top technical universities in Odisha", cl: "icon-circle-indigo", ic: "text-amber-500" },
           { icon: Award, title: "NBA Accreditation", desc: "Multiple B.Tech programs hold National Board of Accreditation approval", cl: "icon-circle-blue", ic: "text-blue-500" },
           { icon: TrendingUp, title: "BPUT Tech Carnival", desc: "Annual tech festival with 200+ colleges & thousands of participants", cl: "icon-circle-teal", ic: "text-emerald-500" },
         ].map(({ icon: Icon, title, desc, cl, ic }) => (
@@ -793,8 +793,8 @@ function TrackFeedbackSection() {
     <section className="glass-card rounded-2xl p-5 space-y-4">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-          style={{ background: "rgba(139,92,246,0.15)" }}>
-          <Search className="w-5 h-5 text-violet-400" />
+          style={{ background: "rgba(245,158,11,0.15)" }}>
+          <Search className="w-5 h-5 text-amber-400" />
         </div>
         <div>
           <h2 className="text-base font-bold text-foreground" style={{ fontFamily: "var(--app-font-heading)" }}>Track Your Feedback</h2>
@@ -813,7 +813,7 @@ function TrackFeedbackSection() {
         <button
           onClick={handleTrack}
           disabled={tracking || !refId.trim()}
-          className="px-5 h-11 rounded-xl text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 disabled:opacity-40 transition-colors flex items-center gap-2"
+          className="px-5 h-11 rounded-xl text-sm font-semibold text-white bg-amber-600 hover:bg-amber-700 disabled:opacity-40 transition-colors flex items-center gap-2"
         >
           {tracking ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
           Track
@@ -1036,18 +1036,18 @@ export default function Home() {
     {
       key: "hod", Icon: Building2, title: "HOD Analytics",
       desc: "Department heads — real-time analytics, reports & form builder.",
-      accent: "accent-line-indigo", iconCl: "icon-circle-indigo", iconColor: "text-violet-500 dark:text-violet-400",
-      btn: "btn-gradient-indigo", card: "role-card-violet", delay: "delay-250",
-      badge: { l: "Analytics", c: "bg-violet-500/10 text-violet-500 dark:text-violet-400 border border-violet-500/20" },
+      accent: "accent-line-indigo", iconCl: "icon-circle-indigo", iconColor: "text-amber-500 dark:text-amber-400",
+      btn: "btn-gradient-indigo", card: "role-card-amber", delay: "delay-250",
+      badge: { l: "Analytics", c: "bg-amber-500/10 text-amber-500 dark:text-amber-400 border border-amber-500/20" },
       loggedIn: role === "hod",
       loggedInEl: role === "hod" && hod ? (
-        <div className="p-3 rounded-xl bg-violet-500/10 border border-violet-400/20 space-y-0.5">
-          <div className="font-semibold text-violet-200 text-sm">{hod.hodName}</div>
+        <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-400/20 space-y-0.5">
+          <div className="font-semibold text-amber-200 text-sm">{hod.hodName}</div>
           <div className="text-xs text-muted-foreground">HOD — {hod.name}</div>
           <div className="text-xs font-mono text-muted-foreground">{hod.hodEmployeeId}</div>
         </div>
       ) : null,
-      defaultEl: <ul className="space-y-2 text-xs text-muted-foreground">{["Full department feedback analytics","Rating breakdowns by parameter","One-click PDF report download","Custom form builder"].map(t=><li key={t} className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-violet-400 flex-shrink-0"/>{t}</li>)}</ul>,
+      defaultEl: <ul className="space-y-2 text-xs text-muted-foreground">{["Full department feedback analytics","Rating breakdowns by parameter","One-click PDF report download","Custom form builder"].map(t=><li key={t} className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"/>{t}</li>)}</ul>,
       btnLabel: role === "hod" ? "HOD Dashboard" : "HOD Login",
       disabled: false,
       action: () => role === "hod" ? navigate("/hod-dashboard") : openModal("hod"),
@@ -1084,7 +1084,7 @@ export default function Home() {
       <div className="grid grid-cols-3 gap-3">
         {[
           { icon: Lock, label: "100% Anonymous", sub: "No identity stored", color: "text-blue-500" },
-          { icon: BarChart3, label: "Real-time Analytics", sub: "HOD dashboard live", color: "text-violet-500" },
+          { icon: BarChart3, label: "Real-time Analytics", sub: "HOD dashboard live", color: "text-amber-500" },
           { icon: FileText, label: "PDF Reports", sub: "One-click download", color: "text-emerald-500" },
         ].map(({ icon: Icon, label, sub, color }) => (
           <div key={label} className="glass-card rounded-2xl p-3 text-center flex flex-col items-center gap-1.5">
@@ -1102,7 +1102,7 @@ export default function Home() {
       <section className="space-y-4">
         <h2 className="text-xl font-extrabold text-foreground flex items-center gap-2.5 tracking-tight"
           style={{ fontFamily: "var(--app-font-heading)" }}>
-          <span className="w-1 h-5 rounded-full bg-gradient-to-b from-violet-400 to-blue-500 flex-shrink-0" />
+          <span className="w-1 h-5 rounded-full bg-gradient-to-b from-amber-400 to-blue-500 flex-shrink-0" />
           Portal Access
         </h2>
         <div className="grid md:grid-cols-2 gap-4">
@@ -1225,7 +1225,7 @@ export default function Home() {
           <DialogHeader>
             <div className="flex items-center gap-3 mb-1">
               <div className="w-10 h-10 rounded-xl icon-circle-indigo flex items-center justify-center">
-                <Building2 className="w-5 h-5 text-violet-500" />
+                <Building2 className="w-5 h-5 text-amber-500" />
               </div>
               <div>
                 <DialogTitle className="text-base" style={{ fontFamily: "var(--app-font-heading)" }}>HOD Login</DialogTitle>

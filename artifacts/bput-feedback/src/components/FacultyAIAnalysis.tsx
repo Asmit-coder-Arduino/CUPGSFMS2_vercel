@@ -67,8 +67,8 @@ export function FacultyAIAnalysis({ facultyId, onClose }: { facultyId: number; o
         {/* Header */}
         <div className="sticky top-0 bg-card border-b px-6 py-4 flex items-center justify-between rounded-t-2xl z-10">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-violet-500/20">
-              <Brain className="w-5 h-5 text-violet-400" />
+            <div className="p-2 rounded-xl bg-amber-500/20">
+              <Brain className="w-5 h-5 text-amber-400" />
             </div>
             <div>
               <h2 className="font-bold text-lg">AI Performance Analysis</h2>
@@ -81,7 +81,7 @@ export function FacultyAIAnalysis({ facultyId, onClose }: { facultyId: number; o
         <div className="p-6 space-y-5">
           {loading ? (
             <div className="py-16 text-center space-y-3">
-              <Loader2 className="w-8 h-8 text-violet-400 mx-auto animate-spin" />
+              <Loader2 className="w-8 h-8 text-amber-400 mx-auto animate-spin" />
               <p className="text-sm text-muted-foreground">AI is analyzing feedback data...</p>
               <p className="text-xs text-muted-foreground/60">This may take a few seconds</p>
             </div>
@@ -120,10 +120,10 @@ export function FacultyAIAnalysis({ facultyId, onClose }: { facultyId: number; o
               </div>
 
               {/* Summary */}
-              <div className="bg-violet-500/10 border border-violet-500/20 rounded-xl p-4">
+              <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <Sparkles className="w-4 h-4 text-violet-400" />
-                  <span className="text-xs font-semibold text-violet-400 uppercase tracking-wide">AI Summary</span>
+                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <span className="text-xs font-semibold text-amber-400 uppercase tracking-wide">AI Summary</span>
                 </div>
                 <p className="text-sm leading-relaxed">{analysis.summary}</p>
               </div>

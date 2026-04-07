@@ -236,8 +236,8 @@ export default function ComplaintForm() {
               {trackResult.resolvedAt && <span>Resolved: {new Date(trackResult.resolvedAt).toLocaleDateString("en-IN")}</span>}
             </div>
             {trackResult.hodRemarks && (
-              <div className="bg-violet-500/10 rounded-lg p-2 text-xs">
-                <span className="font-semibold text-violet-400">HOD Remarks:</span> {trackResult.hodRemarks}
+              <div className="bg-amber-500/10 rounded-lg p-2 text-xs">
+                <span className="font-semibold text-amber-400">HOD Remarks:</span> {trackResult.hodRemarks}
               </div>
             )}
             {trackResult.adminRemarks && (

@@ -221,17 +221,17 @@ export function BackgroundSlideshow() {
           className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 flex-shrink-0"
           style={{
             background: pinned
-              ? "rgba(139,92,246,0.5)"
+              ? "rgba(245,158,11,0.5)"
               : "rgba(0,0,0,0.45)",
             backdropFilter: isLiquid ? "none" : "blur(10px)",
             boxShadow: pinned
-              ? "0 0 12px rgba(139,92,246,0.3)"
+              ? "0 0 12px rgba(245,158,11,0.3)"
               : "0 0 8px rgba(0,0,0,0.3)",
           }}
           title={pinned ? "Unpin background (resume slideshow)" : "Pin this wallpaper"}
         >
           {pinned ? (
-            <Pin className="w-4 h-4 text-violet-200" />
+            <Pin className="w-4 h-4 text-amber-200" />
           ) : (
             <PinOff className="w-4 h-4 text-white/50" />
           )}

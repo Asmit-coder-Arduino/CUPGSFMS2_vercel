@@ -63,7 +63,7 @@
   --foreground: 240 20% 8%;
   --border: 240 20% 90%;
   --input: 240 20% 93%;
-  --ring: 252 87% 62%;
+  --ring: 38 92% 50%;
   --radius: 0.875rem;
 
   --card: 0 0% 100%;
@@ -74,7 +74,7 @@
   --popover-foreground: 240 20% 8%;
   --popover-border: 240 20% 88%;
 
-  --primary: 252 87% 62%;
+  --primary: 38 92% 50%;
   --primary-foreground: 0 0% 100%;
 
   --secondary: 240 15% 93%;
@@ -83,13 +83,13 @@
   --muted: 240 15% 94%;
   --muted-foreground: 240 10% 50%;
 
-  --accent: 252 60% 94%;
-  --accent-foreground: 252 80% 40%;
+  --accent: 45 93% 94%;
+  --accent-foreground: 38 92% 30%;
 
   --destructive: 348 83% 58%;
   --destructive-foreground: 0 0% 100%;
 
-  --chart-1: 252 87% 62%;
+  --chart-1: 38 92% 50%;
   --chart-2: 160 60% 42%;
   --chart-3: 217 90% 60%;
   --chart-4: 40 90% 52%;
@@ -98,11 +98,11 @@
   --sidebar: 240 35% 10%;
   --sidebar-foreground: 240 15% 95%;
   --sidebar-border: 240 25% 18%;
-  --sidebar-primary: 252 87% 65%;
+  --sidebar-primary: 38 92% 50%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 240 25% 18%;
   --sidebar-accent-foreground: 240 15% 95%;
-  --sidebar-ring: 252 87% 65%;
+  --sidebar-ring: 38 92% 50%;
 
   --app-font-sans: 'Inter', sans-serif;
   --app-font-heading: 'Space Grotesk', 'Outfit', 'Inter', sans-serif;
@@ -119,7 +119,7 @@
   --foreground: 240 15% 95%;
   --border: 240 20% 13%;
   --input: 240 20% 10%;
-  --ring: 252 87% 65%;
+  --ring: 38 92% 50%;
 
   --card: 240 20% 6%;
   --card-foreground: 240 15% 95%;
@@ -129,7 +129,7 @@
   --popover-foreground: 240 15% 95%;
   --popover-border: 240 20% 13%;
 
-  --primary: 252 87% 65%;
+  --primary: 38 92% 50%;
   --primary-foreground: 0 0% 100%;
 
   --secondary: 240 20% 12%;
@@ -139,12 +139,12 @@
   --muted-foreground: 240 10% 52%;
 
   --accent: 240 20% 12%;
-  --accent-foreground: 252 87% 75%;
+  --accent-foreground: 45 93% 58%;
 
   --destructive: 348 83% 58%;
   --destructive-foreground: 0 0% 100%;
 
-  --chart-1: 252 87% 65%;
+  --chart-1: 38 92% 50%;
   --chart-2: 160 65% 48%;
   --chart-3: 217 90% 62%;
   --chart-4: 40 90% 55%;
@@ -153,11 +153,11 @@
   --sidebar: 240 25% 3%;
   --sidebar-foreground: 240 15% 92%;
   --sidebar-border: 240 20% 10%;
-  --sidebar-primary: 252 87% 65%;
+  --sidebar-primary: 38 92% 50%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 240 20% 9%;
   --sidebar-accent-foreground: 240 15% 92%;
-  --sidebar-ring: 252 87% 65%;
+  --sidebar-ring: 38 92% 50%;
 }
 
 /* ══════════════════════════════════════
@@ -424,7 +424,7 @@ body {
 /* Role card hover */
 .role-card-blue:hover,
 .role-card-emerald:hover,
-.role-card-violet:hover,
+.role-card-amber:hover,
 .role-card-rose:hover {
   box-shadow: 0 0 40px 0px rgba(0, 0, 0, 0.4) !important;
 }
@@ -515,13 +515,13 @@ body {
    GRADIENT TEXT
 ══════════════════════════════════════ */
 .text-gradient {
-  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 40%, #3b82f6 100%);
+  background: linear-gradient(135deg, #d97706 0%, #ca8a04 40%, #eab308 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 .dark .text-gradient {
-  background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 35%, #818cf8 65%, #93c5fd 100%);
+  background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 35%, #eab308 65%, #fbbf24 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -530,7 +530,7 @@ body {
 .text-glow-blue { color: #1e1b4b; }
 .dark .text-glow-blue {
   color: white;
-  text-shadow: 0 0 40px rgba(139,92,246,0.5), 0 0 80px rgba(139,92,246,0.2);
+  text-shadow: 0 0 40px rgba(245,158,11,0.5), 0 0 80px rgba(245,158,11,0.2);
 }
 
 /* ══════════════════════════════════════
@@ -543,11 +543,11 @@ body {
   border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0);
   box-shadow: 0 0 30px 0px rgba(0, 0, 0, 0.3);
-  color: #7c3aed;
+  color: #b45309;
 }
 .dark .hero-badge {
   background: rgba(255, 255, 255, 0);
-  color: #c4b5fd;
+  color: #fcd34d;
 }
 
 /* ══════════════════════════════════════
@@ -610,7 +610,7 @@ body {
   -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgba(255, 255, 255, 0);
   box-shadow: 0 0 30px 0px rgba(0, 0, 0, 0.3);
-  color: #7c3aed;
+  color: #b45309;
   flex-shrink: 0;
 }
 .theme-toggle:hover {
@@ -618,7 +618,7 @@ body {
   box-shadow: 0 0 40px 0px rgba(0, 0, 0, 0.4);
 }
 .dark .theme-toggle {
-  color: #c4b5fd;
+  color: #fcd34d;
 }
 
 /* ══════════════════════════════════════
@@ -1173,28 +1173,28 @@ body {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #a78bfa;
+  background: #f59e0b;
   border: 2px solid rgba(15, 10, 30, 0.8);
   cursor: pointer;
-  box-shadow: 0 0 6px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
   transition: box-shadow 0.15s ease;
 }
 .lg-settings-slider::-webkit-slider-thumb:hover {
-  box-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
 }
 .lg-settings-slider::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #a78bfa;
+  background: #f59e0b;
   border: 2px solid rgba(15, 10, 30, 0.8);
   cursor: pointer;
 }
 
 /* --- Liquid Glass mode toggle indicator --- */
 .liquid-glass .lg-mode-indicator {
-  background: rgba(139, 92, 246, 0.15);
-  color: #c4b5fd;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
 }
 
 /* Ensure pseudo-elements don't break z-stacking of content */
