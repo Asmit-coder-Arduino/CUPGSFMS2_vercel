@@ -4,6 +4,7 @@ import { useState } from "react";
 import { getApiUrl } from "@/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRole } from "@/contexts/RoleContext";
+import { ScrollReveal } from "@/components/ScrollReveal";
 
 function RatingBar({ label, value }: { label: string; value: number }) {
   const pct = (value / 5) * 100;
@@ -195,19 +196,24 @@ export default function Dashboard() {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl">
-      <div>
+      <ScrollReveal direction="fade">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground text-sm mt-1">Institution-wide feedback overview</p>
-      </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard label="Total Feedback" value={summary.totalFeedback.toLocaleString()} />
-        <StatCard label="Avg Overall Rating" value={summary.avgOverallRating.toFixed(2)} sub="out of 5.0" />
-        <StatCard label="Active Windows" value={summary.activeWindows} />
-        <StatCard label="Departments" value={summary.totalDepartments} sub={`${summary.totalFaculty} faculty`} />
+        {[
+          <StatCard label="Total Feedback" value={summary.totalFeedback.toLocaleString()} />,
+          <StatCard label="Avg Overall Rating" value={summary.avgOverallRating.toFixed(2)} sub="out of 5.0" />,
+          <StatCard label="Active Windows" value={summary.activeWindows} />,
+          <StatCard label="Departments" value={summary.totalDepartments} sub={`${summary.totalFaculty} faculty`} />,
+        ].map((card, i) => (
+          <ScrollReveal key={i} direction="up" delay={i * 60}>{card}</ScrollReveal>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <ScrollReveal direction="left">
         <div className="bg-card border rounded-lg p-5">
           <h2 className="font-semibold mb-4">Rating Breakdown</h2>
           <div className="space-y-3">
@@ -218,7 +224,9 @@ export default function Dashboard() {
             <RatingBar label="Overall" value={summary.ratingBreakdown.overall} />
           </div>
         </div>
+        </ScrollReveal>
 
+        <ScrollReveal direction="right">
         <div className="bg-card border rounded-lg p-5">
           <h2 className="font-semibold mb-4">Recent Feedback</h2>
           <div className="space-y-3">
@@ -238,12 +246,16 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
+        </ScrollReveal>
       </div>
 
-      <HodManagementSection />
+      <ScrollReveal direction="up">
+        <HodManagementSection />
+      </ScrollReveal>
 
       {topRated && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ScrollReveal direction="left" delay={0}>
           <div className="bg-card border rounded-lg p-5">
             <h2 className="font-semibold mb-4">Top Rated Faculty</h2>
             <div className="space-y-2">
@@ -265,6 +277,8 @@ export default function Dashboard() {
               {topRated.topFaculty.length === 0 && <p className="text-muted-foreground text-sm">No data yet.</p>}
             </div>
           </div>
+          </ScrollReveal>
+          <ScrollReveal direction="right" delay={80}>
           <div className="bg-card border rounded-lg p-5">
             <h2 className="font-semibold mb-4">Top Rated Courses</h2>
             <div className="space-y-2">
@@ -284,6 +298,7 @@ export default function Dashboard() {
               {topRated.topCourses.length === 0 && <p className="text-muted-foreground text-sm">No data yet.</p>}
             </div>
           </div>
+          </ScrollReveal>
         </div>
       )}
     </div>

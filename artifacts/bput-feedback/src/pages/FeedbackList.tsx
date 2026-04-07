@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useListFeedback, useListDepartments } from "@workspace/api-client-react";
+import { ScrollReveal } from "@/components/ScrollReveal";
 
 const feedbackTypeLabels: Record<string, string> = {
   semester_end: "Semester End",
@@ -61,8 +62,9 @@ export default function FeedbackList() {
         <div className="space-y-3 animate-pulse">{[1,2,3,4].map(i => <div key={i} className="h-20 bg-muted rounded-lg" />)}</div>
       ) : (
         <div className="space-y-3">
-          {feedback?.map(fb => (
-            <div key={fb.id} className="bg-card border rounded-lg px-5 py-4">
+          {feedback?.map((fb, idx) => (
+            <ScrollReveal key={fb.id} direction="up" delay={Math.min(idx * 50, 300)}>
+            <div className="bg-card border rounded-lg px-5 py-4">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -94,6 +96,7 @@ export default function FeedbackList() {
                 ))}
               </div>
             </div>
+            </ScrollReveal>
           ))}
           {(feedback?.length ?? 0) === 0 && <div className="text-center py-12 text-muted-foreground">No feedback records found.</div>}
         </div>

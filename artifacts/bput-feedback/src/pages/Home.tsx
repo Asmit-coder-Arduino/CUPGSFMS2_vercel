@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRole } from "@/contexts/RoleContext";
 import { getApiUrl } from "@/lib/api";
 import { getAcademicYear } from "@/lib/utils";
+import { ScrollReveal } from "@/components/ScrollReveal";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
@@ -1086,19 +1087,24 @@ export default function Home() {
           { icon: Lock, label: "100% Anonymous", sub: "No identity stored", color: "text-blue-500" },
           { icon: BarChart3, label: "Real-time Analytics", sub: "HOD dashboard live", color: "text-amber-500" },
           { icon: FileText, label: "PDF Reports", sub: "One-click download", color: "text-emerald-500" },
-        ].map(({ icon: Icon, label, sub, color }) => (
-          <div key={label} className="glass-card rounded-2xl p-3 text-center flex flex-col items-center gap-1.5">
-            <Icon className={`w-5 h-5 ${color}`} />
-            <div className="text-xs font-semibold text-foreground" style={{ fontFamily: "var(--app-font-heading)" }}>{label}</div>
-            <div className="text-[10px] text-muted-foreground hidden sm:block">{sub}</div>
-          </div>
+        ].map(({ icon: Icon, label, sub, color }, i) => (
+          <ScrollReveal key={label} direction="up" delay={i * 70}>
+            <div className="glass-card rounded-2xl p-3 text-center flex flex-col items-center gap-1.5">
+              <Icon className={`w-5 h-5 ${color}`} />
+              <div className="text-xs font-semibold text-foreground" style={{ fontFamily: "var(--app-font-heading)" }}>{label}</div>
+              <div className="text-[10px] text-muted-foreground hidden sm:block">{sub}</div>
+            </div>
+          </ScrollReveal>
         ))}
       </div>
 
       {/* ── Track Feedback ── */}
-      <TrackFeedbackSection />
+      <ScrollReveal direction="up">
+        <TrackFeedbackSection />
+      </ScrollReveal>
 
       {/* ── Portal Cards ── */}
+      <ScrollReveal direction="fade">
       <section className="space-y-4">
         <h2 className="text-xl font-extrabold text-foreground flex items-center gap-2.5 tracking-tight"
           style={{ fontFamily: "var(--app-font-heading)" }}>
@@ -1135,12 +1141,17 @@ export default function Home() {
           ))}
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ── Live Rankings ── */}
-      <TopTeachersSection />
+      <ScrollReveal direction="up">
+        <TopTeachersSection />
+      </ScrollReveal>
 
       {/* ── BPUT Info ── */}
-      <BputInfoSection />
+      <ScrollReveal direction="fade">
+        <BputInfoSection />
+      </ScrollReveal>
 
       {/* ── Bottom Stats ── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -1149,12 +1160,14 @@ export default function Home() {
           { v: "4",    l: "User Roles", s: "Role-based access" },
           { v: "0.5★", l: "Rating Step",s: "Half-star precision" },
           { v: "100%", l: "Anonymous", s: "Ref ID system" },
-        ].map(({ v, l, s }) => (
-          <div key={l} className="stat-card p-4 text-center">
-            <div className="text-2xl font-extrabold text-gradient" style={{ fontFamily: "var(--app-font-display)" }}>{v}</div>
-            <div className="text-xs font-semibold text-foreground mt-0.5" style={{ fontFamily: "var(--app-font-heading)" }}>{l}</div>
-            <div className="text-[10px] text-muted-foreground">{s}</div>
-          </div>
+        ].map(({ v, l, s }, i) => (
+          <ScrollReveal key={l} direction="scale" delay={i * 60}>
+            <div className="stat-card p-4 text-center">
+              <div className="text-2xl font-extrabold text-gradient" style={{ fontFamily: "var(--app-font-display)" }}>{v}</div>
+              <div className="text-xs font-semibold text-foreground mt-0.5" style={{ fontFamily: "var(--app-font-heading)" }}>{l}</div>
+              <div className="text-[10px] text-muted-foreground">{s}</div>
+            </div>
+          </ScrollReveal>
         ))}
       </div>
 

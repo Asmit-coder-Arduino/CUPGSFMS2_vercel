@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getApiUrl } from "@/lib/api";
 import { useRole } from "@/contexts/RoleContext";
 import { AlertTriangle, CheckCircle, Clock, XCircle, Eye, MessageSquare, Filter, Trash2, FileText } from "lucide-react";
+import { ScrollReveal } from "@/components/ScrollReveal";
 
 interface Complaint {
   id: number;
@@ -192,12 +193,12 @@ export default function ComplaintsList() {
         </div>
       ) : (
         <div className="space-y-3">
-          {complaints.map(c => {
+          {complaints.map((c, idx) => {
             const statusOpt = STATUS_OPTIONS.find(s => s.value === c.status);
             const StatusIcon = statusOpt?.icon || Clock;
             return (
+              <ScrollReveal key={c.id} direction="up" delay={Math.min(idx * 50, 250)}>
               <div
-                key={c.id}
                 onClick={() => { setSelectedComplaint(c); setNewStatus(c.status); setRemarks(""); }}
                 className={`bg-card border rounded-xl p-4 cursor-pointer hover:border-primary/40 transition-all ${
                   c.priority === "urgent" && c.status === "pending" ? "border-red-500/40" : ""
@@ -231,6 +232,7 @@ export default function ComplaintsList() {
                   </div>
                 )}
               </div>
+              </ScrollReveal>
             );
           })}
         </div>

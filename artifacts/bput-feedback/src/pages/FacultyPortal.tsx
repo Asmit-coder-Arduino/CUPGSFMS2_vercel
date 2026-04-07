@@ -8,6 +8,7 @@ import { Star, BookOpen, MessageSquare, TrendingUp, Award, ChevronDown, ChevronU
 import { Button } from "@/components/ui/button";
 import { getApiUrl } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
+import { ScrollReveal } from "@/components/ScrollReveal";
 
 interface CourseStats {
   id: number;
@@ -250,6 +251,7 @@ export default function FacultyPortal() {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <ScrollReveal direction="up" delay={0}>
         <Card className="shadow-sm">
           <CardContent className="pt-5 pb-5">
             <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
@@ -258,6 +260,8 @@ export default function FacultyPortal() {
             <div className="text-3xl font-bold">{courseData.length}</div>
           </CardContent>
         </Card>
+        </ScrollReveal>
+        <ScrollReveal direction="up" delay={60}>
         <Card className="shadow-sm">
           <CardContent className="pt-5 pb-5">
             <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
@@ -266,6 +270,8 @@ export default function FacultyPortal() {
             <div className="text-3xl font-bold">{loading ? "—" : totalFeedback}</div>
           </CardContent>
         </Card>
+        </ScrollReveal>
+        <ScrollReveal direction="up" delay={120}>
         <Card className="shadow-sm">
           <CardContent className="pt-5 pb-5">
             <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
@@ -280,6 +286,8 @@ export default function FacultyPortal() {
             </div>
           </CardContent>
         </Card>
+        </ScrollReveal>
+        <ScrollReveal direction="up" delay={180}>
         <Card className="shadow-sm">
           <CardContent className="pt-5 pb-5">
             <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
@@ -288,9 +296,11 @@ export default function FacultyPortal() {
             <div className="text-xl font-bold">{faculty.departmentCode}</div>
           </CardContent>
         </Card>
+        </ScrollReveal>
       </div>
 
       {/* Course Cards */}
+      <ScrollReveal direction="up">
       <div>
         <h2 className="text-lg font-semibold mb-4">My Courses — Feedback Summary</h2>
         {loading ? (
@@ -307,6 +317,7 @@ export default function FacultyPortal() {
           </div>
         )}
       </div>
+      </ScrollReveal>
     </div>
   );
 }
