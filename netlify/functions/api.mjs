@@ -28680,7 +28680,7 @@ var require_transport = __commonJS({
     function flush(stream) {
       stream.flushSync();
     }
-    function transport(fullOptions) {
+    function transport2(fullOptions) {
       const { pipeline, targets, levels, dedupe, worker = {}, caller = getCallers(), sync = false } = fullOptions;
       const options = {
         ...fullOptions.options
@@ -28750,7 +28750,7 @@ var require_transport = __commonJS({
         return fixTarget2;
       }
     }
-    module.exports = transport;
+    module.exports = transport2;
   }
 });
 
@@ -28782,7 +28782,7 @@ var require_tools = __commonJS({
       msgPrefixSym
     } = require_symbols();
     var { isMainThread } = __require("worker_threads");
-    var transport = require_transport();
+    var transport2 = require_transport();
     var asJsonChan;
     if (typeof diagChan.tracingChannel === "function") {
       asJsonChan = diagChan.tracingChannel("pino_asJson");
@@ -29027,7 +29027,7 @@ var require_tools = __commonJS({
           if (opts.customLevels) {
             customLevels = opts.useOnlyCustomLevels ? opts.customLevels : Object.assign({}, opts.levels, opts.customLevels);
           }
-          stream = transport({ caller, ...opts.transport, levels: customLevels });
+          stream = transport2({ caller, ...opts.transport, levels: customLevels });
         }
         opts = Object.assign({}, defaultOptions, opts);
         opts.serializers = Object.assign({}, defaultOptions.serializers, opts.serializers);
@@ -33601,12 +33601,12 @@ var require_phoenix_cjs = __commonJS({
        *
        * @param {Function}
        */
-      transportName(transport) {
-        switch (transport) {
+      transportName(transport2) {
+        switch (transport2) {
           case LongPoll:
             return "LongPoll";
           default:
-            return transport.name;
+            return transport2.name;
         }
       }
       /**
@@ -83348,7 +83348,17 @@ var routes_default = router13;
 
 // src/lib/logger.ts
 var import_pino = __toESM(require_pino(), 1);
-var isProduction = process.env.NODE_ENV === "production";
+var transport;
+try {
+  if (process.env.NODE_ENV !== "production" && !process.env.NETLIFY) {
+    __require.resolve("pino-pretty");
+    transport = {
+      target: "pino-pretty",
+      options: { colorize: true }
+    };
+  }
+} catch {
+}
 var logger = (0, import_pino.default)({
   level: process.env.LOG_LEVEL ?? "info",
   redact: [
@@ -83356,12 +83366,7 @@ var logger = (0, import_pino.default)({
     "req.headers.cookie",
     "res.headers['set-cookie']"
   ],
-  ...isProduction ? {} : {
-    transport: {
-      target: "pino-pretty",
-      options: { colorize: true }
-    }
-  }
+  ...transport ? { transport } : {}
 });
 
 // src/app.ts
