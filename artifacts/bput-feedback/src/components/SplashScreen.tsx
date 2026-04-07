@@ -7,15 +7,15 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState<"in" | "stars" | "out">("in");
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("stars"), 200);
-    const t2 = setTimeout(() => setPhase("out"), 900);
-    const t3 = setTimeout(() => onDone(), 1350);
+    const t1 = setTimeout(() => setPhase("stars"), 120);
+    const t2 = setTimeout(() => setPhase("out"), 550);
+    const t3 = setTimeout(() => onDone(), 850);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [onDone]);
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center transition-opacity duration-300 ${
         phase === "out" ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
       style={{
@@ -29,7 +29,7 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
           top: -120, left: -100,
           background: "radial-gradient(circle, rgba(245,158,11,0.22) 0%, transparent 65%)",
           filter: "blur(60px)",
-          transition: "opacity 0.6s",
+          transition: "opacity 0.3s",
           opacity: phase === "in" ? 0 : 0.8,
         }} />
         <div style={{
@@ -38,7 +38,7 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
           bottom: -80, right: -80,
           background: "radial-gradient(circle, rgba(234,179,8,0.18) 0%, transparent 65%)",
           filter: "blur(60px)",
-          transition: "opacity 0.6s 0.1s",
+          transition: "opacity 0.3s 0.05s",
           opacity: phase === "in" ? 0 : 0.7,
         }} />
       </div>
@@ -50,12 +50,12 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
           background: "radial-gradient(circle, rgba(245,158,11,0.55) 0%, transparent 65%)",
           filter: "blur(30px)",
           borderRadius: "50%",
-          transition: "opacity 0.5s",
+          transition: "opacity 0.25s",
           opacity: phase === "in" ? 0 : 1,
         }} />
         <div
           style={{
-            transition: "transform 0.55s cubic-bezier(.34,1.56,.64,1), opacity 0.4s ease",
+            transition: "transform 0.3s cubic-bezier(.34,1.56,.64,1), opacity 0.2s ease",
             transform: phase === "in" ? "scale(0.4)" : "scale(1)",
             opacity: phase === "in" ? 0 : 1,
           }}
@@ -71,7 +71,7 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
-          transition: "opacity 0.45s ease 0.1s, transform 0.45s ease 0.1s",
+          transition: "opacity 0.2s ease 0.05s, transform 0.2s ease 0.05s",
           opacity: phase === "in" ? 0 : 1,
           transform: phase === "in" ? "translateY(10px)" : "translateY(0)",
         }}
@@ -84,7 +84,7 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
           <div
             key={i}
             style={{
-              transition: `opacity 0.3s ease ${(i - 1) * 90}ms, transform 0.35s cubic-bezier(.34,1.56,.64,1) ${(i - 1) * 90}ms`,
+              transition: `opacity 0.15s ease ${(i - 1) * 40}ms, transform 0.2s cubic-bezier(.34,1.56,.64,1) ${(i - 1) * 40}ms`,
               opacity: phase === "stars" || phase === "out" ? 1 : 0,
               transform: phase === "stars" || phase === "out" ? "scale(1) rotate(0deg)" : "scale(0.3) rotate(-45deg)",
             }}
@@ -112,7 +112,7 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
         className="mt-3 text-sm font-medium tracking-wide"
         style={{
           color: "rgba(252,211,77,0.55)",
-          transition: "opacity 0.4s ease 0.35s",
+          transition: "opacity 0.2s ease 0.15s",
           opacity: phase === "stars" || phase === "out" ? 1 : 0,
         }}
       >
@@ -127,7 +127,7 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
           className="h-full rounded-full"
           style={{
             background: "linear-gradient(90deg, #d97706, #f59e0b, #eab308)",
-            transition: "width 0.8s ease 0.2s",
+            transition: "width 0.4s ease 0.1s",
             width: phase === "in" ? "0%" : phase === "stars" ? "75%" : "100%",
           }}
         />

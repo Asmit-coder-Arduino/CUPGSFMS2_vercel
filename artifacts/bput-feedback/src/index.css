@@ -276,22 +276,22 @@
 /* ══════════════════════════════════════
    ANIMATION UTILITIES
 ══════════════════════════════════════ */
-.animate-fade-up    { animation: fadeUp 0.6s cubic-bezier(.22,1,.36,1) both; }
-.animate-fade-in    { animation: fadeIn 0.45s ease both; }
-.animate-float      { animation: float 8s ease-in-out infinite; }
-.animate-card-enter { animation: cardEnter 0.55s cubic-bezier(.22,1,.36,1) both; }
-.animate-nav-in     { animation: navSlideIn 0.35s cubic-bezier(.22,1,.36,1) both; }
-.animate-pulse-ring { animation: pulse-ring 2.5s ease-out infinite; }
-.animate-theme-pop  { animation: themePop 0.38s cubic-bezier(.22,1,.36,1); }
+.animate-fade-up    { animation: fadeUp 0.28s cubic-bezier(.22,1,.36,1) both; }
+.animate-fade-in    { animation: fadeIn 0.2s ease both; }
+.animate-float      { animation: float 6s ease-in-out infinite; }
+.animate-card-enter { animation: cardEnter 0.25s cubic-bezier(.22,1,.36,1) both; }
+.animate-nav-in     { animation: navSlideIn 0.18s cubic-bezier(.22,1,.36,1) both; }
+.animate-pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+.animate-theme-pop  { animation: themePop 0.22s cubic-bezier(.22,1,.36,1); }
 
-.delay-100 { animation-delay: 0.10s; }
-.delay-150 { animation-delay: 0.15s; }
-.delay-200 { animation-delay: 0.20s; }
-.delay-250 { animation-delay: 0.25s; }
-.delay-300 { animation-delay: 0.30s; }
-.delay-350 { animation-delay: 0.35s; }
-.delay-400 { animation-delay: 0.40s; }
-.delay-500 { animation-delay: 0.50s; }
+.delay-100 { animation-delay: 0.04s; }
+.delay-150 { animation-delay: 0.06s; }
+.delay-200 { animation-delay: 0.08s; }
+.delay-250 { animation-delay: 0.10s; }
+.delay-300 { animation-delay: 0.12s; }
+.delay-350 { animation-delay: 0.14s; }
+.delay-400 { animation-delay: 0.16s; }
+.delay-500 { animation-delay: 0.20s; }
 
 /* ══════════════════════════════════════
    GLOBAL BASE
@@ -300,7 +300,7 @@
   * { @apply border-border; }
   body {
     @apply font-sans antialiased;
-    transition: background-color 0.4s ease, color 0.3s ease;
+    transition: background-color 0.15s ease, color 0.15s ease;
   }
 }
 
@@ -327,7 +327,7 @@ body {
   pointer-events: none;
   z-index: 0;
   opacity: 0;
-  transition: opacity 0.6s;
+  transition: opacity 0.25s;
 }
 .dark .bg-blob { opacity: 1; }
 
@@ -390,12 +390,12 @@ body {
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0) !important;
   box-shadow: 0 0 30px 0px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s ease;
+  transition: transform 0.15s cubic-bezier(.22,1,.36,1), box-shadow 0.15s ease;
 }
 
 .glass-card:hover,
 .stat-card:hover {
-  transform: translateY(-4px) scale(1.005);
+  transform: translateY(-3px) scale(1.005);
   box-shadow: 0 0 40px 0px rgba(0, 0, 0, 0.4);
 }
 
@@ -427,7 +427,7 @@ body {
    NAV ITEMS — Glass
 ══════════════════════════════════════ */
 .glass-nav-item {
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition: background 0.1s ease, color 0.1s ease, transform 0.1s ease;
 }
 .glass-nav-item:hover {
   background: rgba(255, 255, 255, 0);
@@ -459,7 +459,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0) !important;
   box-shadow: 0 0 30px 0px rgba(0, 0, 0, 0.3) !important;
   color: rgba(255, 255, 255, 0.95) !important;
-  transition: all 0.25s cubic-bezier(.22,1,.36,1);
+  transition: all 0.12s cubic-bezier(.22,1,.36,1);
 }
 .btn-gradient-blue:hover:not(:disabled),
 .btn-gradient-teal:hover:not(:disabled),
@@ -467,7 +467,7 @@ body {
 .btn-gradient-slate:hover:not(:disabled) {
   background: rgba(0, 0, 0, 0.45) !important;
   box-shadow: 0 0 40px 0px rgba(0, 0, 0, 0.4) !important;
-  transform: translateY(-2px) scale(1.01);
+  transform: translateY(-1px) scale(1.01);
 }
 
 /* ══════════════════════════════════════
@@ -555,7 +555,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0) !important;
   box-shadow: 0 0 30px 0px rgba(0, 0, 0, 0.3);
   color: #0f172a !important;
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.1s;
 }
 .input-glass:focus {
   box-shadow: 0 0 0 2px rgba(139,92,246,0.3), 0 0 30px 0px rgba(0,0,0,0.3) !important;
@@ -598,7 +598,7 @@ body {
   border-radius: 9999px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background 0.1s ease, transform 0.1s ease, box-shadow 0.1s ease;
   background: rgba(255, 255, 255, 0);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);

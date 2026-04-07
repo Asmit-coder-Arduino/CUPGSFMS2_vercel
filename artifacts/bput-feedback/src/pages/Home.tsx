@@ -61,8 +61,8 @@ function HeroSection({ role, faculty, hod, student, logout }: {
       setTimeout(() => {
         setLineIdx(i => (i + 1) % HERO_LINES.length);
         setLineFade(true);
-      }, 400);
-    }, 3500);
+      }, 200);
+    }, 2500);
     return () => clearInterval(t);
   }, []);
 
@@ -170,7 +170,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
             className="text-xs italic tracking-wide"
             style={{
               opacity: lineFade ? 1 : 0,
-              transition: "opacity 0.4s ease",
+              transition: "opacity 0.18s ease",
               color: "rgba(167, 139, 250, 0.7)",
             }}>
             "{HERO_LINES[lineIdx]}"
@@ -331,7 +331,7 @@ function FacultyDetailModal({ facultyId, open, onClose }: { facultyId: number | 
   const toggleLike = async () => {
     if (!facultyId) return;
     setLikeAnimating(true);
-    setTimeout(() => setLikeAnimating(false), 600);
+    setTimeout(() => setLikeAnimating(false), 300);
     try {
       const res = await fetch(`${getApiUrl()}/api/faculty/${facultyId}/like`, {
         method: "POST",
@@ -484,7 +484,7 @@ function TopTeachersSection() {
   const refresh = async () => {
     setSpinning(true);
     await qc.invalidateQueries({ queryKey: ["top-rated"] });
-    setTimeout(() => setSpinning(false), 1200);
+    setTimeout(() => setSpinning(false), 500);
   };
 
   const handleLike = async (e: React.MouseEvent, facultyId: number) => {
