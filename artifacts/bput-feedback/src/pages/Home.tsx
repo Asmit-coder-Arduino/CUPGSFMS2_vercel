@@ -844,6 +844,7 @@ export default function Home() {
     setHodEmpId(""); setHodPin(""); setAdminPass("");
   };
   const openModal = (t: "student"|"faculty"|"hod"|"admin") => {
+    document.documentElement.classList.add("lg-dialog-open");
     clear();
     if (t === "student") setShowStudentModal(true);
     else if (t === "faculty") setShowFacultyModal(true);
