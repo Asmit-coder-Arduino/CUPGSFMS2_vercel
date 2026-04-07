@@ -63,14 +63,18 @@ function DashboardRoutes() {
   );
 }
 
+function HomeRoute() {
+  return (
+    <HomePageLayout>
+      <Home />
+    </HomePageLayout>
+  );
+}
+
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={() => (
-        <HomePageLayout>
-          <Home />
-        </HomePageLayout>
-      )} />
+      <Route path="/" component={HomeRoute} />
       <Route component={DashboardRoutes} />
     </Switch>
   );
