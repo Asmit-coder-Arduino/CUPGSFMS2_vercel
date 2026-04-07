@@ -466,7 +466,7 @@ title = "CUPGS_Credentials.xlsx — All Login Credentials"
 id = "OA7nVdbZKzkulRJ6IOiT5"
 uri = "file://exports/CUPGS-SE-Diagrams.pdf"
 type = "pdf"
-title = "CUPGS SE Diagrams — Redesigned Professional Layout (4 Pages)"
+title = "DFD & ER Diagrams (4 pages)"
 
 [[outputs]]
 id = "y0EiIzTG1zDvJAXLgHeyg"
@@ -478,13 +478,13 @@ title = "CUPGS PlantUML Diagrams — All 4 Files (.tar.gz archive)"
 id = "xMzK90-EMo1s3xH_66DAt"
 uri = "file://exports/CUPGS-Project-Documentation.pdf"
 type = "pdf"
-title = "CUPGS Project Documentation — 10-Page Report (English)"
+title = "Project Documentation (10 pages)"
 
 [[outputs]]
 id = "QnihQfJW0CrkUl0b8gGzt"
 uri = "file://exports/CUPGS-SE-Project-Report.pdf"
 type = "pdf"
-title = "CUPGS SE Project Report — Akshaya Gardia (16 Pages)"
+title = "Full SE Project Report (16 pages)"
 
 [[outputs]]
 id = "dF_YUzwGOLqs5LwwWybdB"

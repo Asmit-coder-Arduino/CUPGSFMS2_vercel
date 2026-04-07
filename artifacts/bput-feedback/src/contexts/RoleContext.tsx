@@ -78,14 +78,16 @@ export function RoleProvider({ children }: { children: ReactNode }) {
         setFacultyState(session.faculty ?? null);
         setHodState(session.hod ?? null);
         setStudentState(session.student ?? null);
-        setAdminPasswordState(session.adminPassword ?? null);
+        const restoredPw = session.adminToken ? atob(session.adminToken) : (session.adminPassword ?? null);
+        setAdminPasswordState(restoredPw);
       }
     } catch {}
   }, []);
 
   const save = (r: Role, f: FacultyUser | null, h: HodUser | null, s: StudentUser | null, ap?: string | null) => {
     try {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ role: r, faculty: f, hod: h, student: s, adminPassword: ap ?? null }));
+      const adminToken = ap ? btoa(ap) : null;
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ role: r, faculty: f, hod: h, student: s, adminToken }));
     } catch {}
     setRole(r);
     setFacultyState(f);

@@ -23,15 +23,8 @@ import { CupgsLogo } from "@/components/CupgsLogo";
 import { FacultyAIAnalysis } from "@/components/FacultyAIAnalysis";
 
 /* ─────────────────────────────────
-   Hero — Animated stats showcase
+   Hero — Animated showcase
 ───────────────────────────────── */
-const HERO_STATS = [
-  { icon: Building2,  label: "Departments",   key: "depts",    color: "#a78bfa" },
-  { icon: Users,      label: "Faculty",        key: "faculty",  color: "#60a5fa" },
-  { icon: GraduationCap, label: "Courses",     key: "courses",  color: "#34d399" },
-  { icon: BarChart3,  label: "Feedbacks",      key: "feedbacks",color: "#fb923c" },
-];
-
 const HERO_KEYWORDS = [
   "Academic Excellence", "Quality Feedback", "Smart Analytics",
   "Faculty Insights", "Student Voice", "Transparent Education",
@@ -47,18 +40,6 @@ function HeroSection({ role, faculty, hod, student, logout }: {
   const [kwIdx, setKwIdx] = useState(0);
   const [kwFade, setKwFade] = useState(true);
 
-  const { data: summary } = useQuery<{
-    totalFeedback: number; totalFaculty: number; totalCourses: number; totalDepartments: number;
-  }>({
-    queryKey: ["hero-summary"],
-    queryFn: async () => {
-      const r = await fetch(getApiUrl("api/analytics/dashboard"));
-      if (!r.ok) throw new Error("failed");
-      return r.json();
-    },
-    staleTime: 60_000,
-  });
-
   useEffect(() => {
     const t = setInterval(() => {
       setKwFade(false);
@@ -69,13 +50,6 @@ function HeroSection({ role, faculty, hod, student, logout }: {
     }, 2800);
     return () => clearInterval(t);
   }, []);
-
-  const statValues: Record<string, number> = {
-    depts:     summary?.totalDepartments ?? 5,
-    faculty:   summary?.totalFaculty     ?? 18,
-    courses:   summary?.totalCourses     ?? 49,
-    feedbacks: summary?.totalFeedback    ?? 0,
-  };
 
   const displayName =
     role === "faculty" && faculty ? faculty.name :
@@ -185,26 +159,6 @@ function HeroSection({ role, faculty, hod, student, logout }: {
             }}>
             {HERO_KEYWORDS[kwIdx]}
           </span>
-        </div>
-
-        {/* ── Stats row ── */}
-        <div className="flex items-center gap-3 flex-wrap justify-center">
-          {HERO_STATS.map(({ icon: Icon, label, key, color }) => (
-            <div key={key}
-              className="flex flex-col items-center gap-1 px-5 py-3 rounded-2xl"
-              style={{
-                background: "rgba(255,255,255,0.06)",
-                backdropFilter: "blur(16px)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                minWidth: 90,
-              }}>
-              <Icon className="w-4 h-4" style={{ color }} />
-              <span className="text-white font-bold text-2xl leading-none" style={{ color }}>
-                {statValues[key]}
-              </span>
-              <span className="text-white/45 text-[10px] font-medium tracking-wide uppercase">{label}</span>
-            </div>
-          ))}
         </div>
 
         {/* Tagline */}
@@ -324,7 +278,7 @@ function FacultyDetailModal({ facultyId, open, onClose }: { facultyId: number | 
     fetch(`${getApiUrl()}/api/faculty/${facultyId}/top-detail?sessionId=${getSessionId()}`)
       .then(r => r.json())
       .then(d => { setDetail(d); setLiked(d.likedByMe); setLikeCount(d.likeCount); })
-      .catch(() => {})
+      .catch(() => { setDetail(null); })
       .finally(() => setLoading(false));
   }, [open, facultyId]);
 

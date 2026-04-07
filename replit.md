@@ -135,7 +135,7 @@ code, name, semester, academicYear, credits, facultyId (null to unassign)
 - **Glass Settings Panel**: When liquid glass mode is active, a sliders icon appears next to the glass toggle. Click to open a dropdown with 3 adjustable sliders: Blur (0–40px, default 12px), Saturation (1x–3x, default 1.4x), Border (0–100%, default 0% = borderless). Settings persisted in localStorage key `cupgs-glass-settings`. Component: `GlassSettingsPanel.tsx`. Reset button restores defaults.
 
 ## Key Conventions
-- API base URL: relative (`""`) — Replit proxy routes `/api/*` to the API server
+- API base URL: relative (`""`) — proxy routes `/api/*` to the API server
 - Faculty employee ID format: `CUPGS/DEPT/NUM` (e.g. `CUPGS/CSE/001`)
 - Faculty PIN format: Unique 6-char alphanumeric (e.g. `FP7K2M`)
 - HOD PIN format: Unique 6-char alphanumeric (e.g. `HD4X7A`)

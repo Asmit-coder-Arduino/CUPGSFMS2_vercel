@@ -8,7 +8,7 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
-// ── Trust proxy (Replit runs behind a reverse proxy) ─────────────────────────
+// ── Trust proxy (runs behind a reverse proxy) ────────────────────────────────
 app.set("trust proxy", 1);
 
 // ── Security headers (Helmet) ────────────────────────────────────────────────

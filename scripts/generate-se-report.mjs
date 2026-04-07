@@ -553,7 +553,7 @@ function chapter3() {
   ${secHead(60, 930, "3.3  Feasibility Study")}
 
   ${subHead(80, 972, "3.3.1  Technical Feasibility")}
-  ${para(80, 994, "The technologies selected — React 18, Node.js, Express.js, and PostgreSQL — are all mature, open-source, and widely supported. The development environment (Replit with pnpm workspaces) provides immediate deployment capability. The team possesses the necessary skills in JavaScript/TypeScript development. All tools are freely available with extensive documentation.", {max:104, lh:21})}
+  ${para(80, 994, "The technologies selected — React 18, Node.js, Express.js, and PostgreSQL — are all mature, open-source, and widely supported. The development environment (cloud platform with pnpm workspaces) provides immediate deployment capability. The team possesses the necessary skills in JavaScript/TypeScript development. All tools are freely available with extensive documentation.", {max:104, lh:21})}
 
   ${subHead(80, 1090, "3.3.2  Economic Feasibility")}
   ${para(80, 1112, "The entire system is built using open-source technologies with no licensing cost. The hosting platform provides free-tier infrastructure for development and basic production use. The only recurring cost is database hosting, which is included in the platform subscription. The development effort of one developer over one academic semester is the primary cost, estimated in Chapter 7.", {max:104, lh:21})}
@@ -623,7 +623,7 @@ function chapter4a() {
 
   <rect x="60"  y="482" width="1120" height="80" rx="6" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="2"/>
   <text x="200" y="514" font-size="13" font-weight="700" fill="#7c3aed">DATA LAYER</text>
-  <text x="200" y="536" font-size="11" fill="${LGT}">PostgreSQL 15 | 6 tables | JSONB + real type | Replit managed database</text>
+  <text x="200" y="536" font-size="11" fill="${LGT}">PostgreSQL 15 | 6 tables | JSONB + real type | Cloud-managed database</text>
   <text x="930" y="524" font-size="11" fill="${LGT}">DATABASE_URL env</text>
 
   ${secHead(60, 584, "4.2  Data Flow Diagram -- Level 0 (Context Diagram)")}
@@ -1147,7 +1147,7 @@ function chapter7() {
   ${tableRow(60, 1294, 1120, ["Item", "Type", "Cost / Period", "Annual Cost (INR)"], [320,200,260,340], PRI, WHT, true)}
   ${[
     ["Development Laptop",             "Hardware (One-time)",   "Rs. 55,000 (amortized)",   "Rs. 11,000/yr (5yr life)"],
-    ["Cloud Hosting (Replit Core)",    "Software Subscription", "Rs. 2,500/month",          "Rs. 30,000/yr"],
+    ["Cloud Hosting (Akshaya Platform)","Software Subscription", "Rs. 2,500/month",          "Rs. 30,000/yr"],
     ["PostgreSQL Database Hosting",    "Included in platform",  "Rs. 0",                    "Rs. 0"],
     ["Domain Name",                    "Annual subscription",   "Rs. 800/yr",               "Rs. 800/yr"],
     ["SSL Certificate",                "Included in platform",  "Rs. 0",                    "Rs. 0"],
@@ -1438,10 +1438,10 @@ function gantt() {
   <rect x="60" y="1360" width="1120" height="220" rx="6" fill="#f9fafb" stroke="${RULE}" stroke-width="1"/>
   ${[
     ["SDLC Model","Agile Iterative -- 5 sprints of approximately 1 month each"],
-    ["Version Control","Git checkpoint-based versioning (Replit automatic checkpoints)"],
+    ["Version Control","Git checkpoint-based versioning (automatic checkpoints)"],
     ["Testing Approach","Test-Driven for API routes; Component testing for React UI"],
     ["Code Review","Self-review + academic guide review after each feature module"],
-    ["Deployment Strategy","Continuous deployment on Replit (dev server always live)"],
+    ["Deployment Strategy","Continuous deployment on cloud platform (dev server always live)"],
     ["Documentation","Inline JSDoc comments + separate project report (this document)"],
   ].map(([k,v],i)=>{
     const y = 1380+i*34;

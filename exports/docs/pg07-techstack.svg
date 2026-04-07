@@ -84,7 +84,7 @@
     <text x="60" y="1171" font-size="13" font-weight="800" fill="#4c1d95">INFRASTRUCTURE &amp;AMP; TOOLING STACK</text>
     
       <rect x="56" y="1194" width="130" height="24" rx="4" fill="#4c1d95"/>
-      <text x="121" y="1210" text-anchor="middle" font-size="11" font-weight="700" fill="white">Replit</text>
+      <text x="121" y="1210" text-anchor="middle" font-size="11" font-weight="700" fill="white">Cloud Platform</text>
       <text x="200" y="1210" font-size="11" fill="#64748b">Cloud development and hosting platform; manages ports, secrets, and domains</text><line x1="56" y1="1226" x2="1184" y2="1226" stroke="#e5e7eb" stroke-width="0.5"/>
       <rect x="56" y="1230" width="130" height="24" rx="4" fill="#4c1d95"/>
       <text x="121" y="1246" text-anchor="middle" font-size="11" font-weight="700" fill="white">pnpm workspaces</text>
@@ -94,7 +94,7 @@
       <text x="200" y="1282" font-size="11" fill="#64748b">Web App Manifest + Service Worker: installable on any device, no app store needed</text><line x1="56" y1="1298" x2="1184" y2="1298" stroke="#e5e7eb" stroke-width="0.5"/>
       <rect x="56" y="1302" width="130" height="24" rx="4" fill="#4c1d95"/>
       <text x="121" y="1318" text-anchor="middle" font-size="11" font-weight="700" fill="white">Environment Secrets</text>
-      <text x="200" y="1318" font-size="11" fill="#64748b">SESSION_SECRET stored securely as a Replit environment variable, never in code</text>
+      <text x="200" y="1318" font-size="11" fill="#64748b">SESSION_SECRET stored securely as an environment variable, never in code</text>
 
   
   <rect x="40" y="1508" width="1160" height="36" rx="4" fill="#1e3a8a"/>

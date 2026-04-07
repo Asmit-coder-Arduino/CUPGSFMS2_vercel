@@ -422,7 +422,7 @@ function page4() {
   <rect x="40" y="400" width="1160" height="100" rx="8" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="2"/>
   <rect x="40" y="400" width="8" height="100" rx="4" fill="#7c3aed"/>
   <text x="68" y="428" font-size="13" font-weight="800" fill="#7c3aed">TIER 3 -- DATA LAYER (Database)</text>
-  <text x="68" y="448" font-size="11" fill="${MUTED}">PostgreSQL  |  6 Tables  |  Replit-managed database via DATABASE_URL</text>
+  <text x="68" y="448" font-size="11" fill="${MUTED}">PostgreSQL  |  6 Tables  |  Cloud-managed database via DATABASE_URL</text>
   <text x="68" y="466" font-size="11" fill="${MUTED}">Tables: departments  courses  faculty  feedback  form_templates  feedback_windows</text>
   <text x="68" y="484" font-size="11" fill="${MUTED}">Notable: JSONB for custom answers, real type for 0.5-step rating precision</text>
 
@@ -728,10 +728,10 @@ function page7() {
     },
     {
       layer: "Infrastructure &amp; Tooling", color: "#4c1d95", items: [
-        ["Replit",          "Cloud development and hosting platform; manages ports, secrets, and domains"],
+        ["Cloud Platform",  "Cloud development and hosting platform; manages ports, secrets, and domains"],
         ["pnpm workspaces", "Monorepo setup — api-server and bput-feedback as separate workspace packages"],
         ["PWA",             "Web App Manifest + Service Worker: installable on any device, no app store needed"],
-        ["Environment Secrets","SESSION_SECRET stored securely as a Replit environment variable, never in code"],
+        ["Environment Secrets","SESSION_SECRET stored securely as an environment variable, never in code"],
       ]
     },
   ].map(({ layer, color, items }, li) => {

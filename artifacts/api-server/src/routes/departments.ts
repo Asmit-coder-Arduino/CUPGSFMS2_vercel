@@ -38,7 +38,7 @@ router.get("/departments", async (req, res): Promise<void> => {
 });
 
 router.patch("/departments/:id", async (req, res): Promise<void> => {
-  const adminPassword = process.env.ADMIN_PASSWORD || "bput@admin2025";
+  const adminPassword = process.env.ADMIN_PASSWORD || "BPUT_Admin@2025#Secure";
   const authHeader = req.headers["x-admin-password"] as string | undefined;
   if (!authHeader || authHeader !== adminPassword) {
     res.status(403).json({ error: "Admin authentication required" });

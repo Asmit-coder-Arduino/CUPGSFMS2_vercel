@@ -28,9 +28,9 @@
   <text x="80" y="972" font-size="13" font-weight="700" fill="#0f3460">3.3.1  Technical Feasibility</text>
   <line x1="80" y1="976" x2="280" y2="976" stroke="#e94560" stroke-width="2"/>
   <text x="80" y="994" font-size="12" fill="#374151" font-weight="normal">The technologies selected — React 18, Node.js, Express.js, and PostgreSQL — are all mature, open-source,</text>
-<text x="80" y="1015" font-size="12" fill="#374151" font-weight="normal">and widely supported. The development environment (Replit with pnpm workspaces) provides immediate</text>
-<text x="80" y="1036" font-size="12" fill="#374151" font-weight="normal">deployment capability. The team possesses the necessary skills in JavaScript/TypeScript development. All</text>
-<text x="80" y="1057" font-size="12" fill="#374151" font-weight="normal">tools are freely available with extensive documentation.</text>
+<text x="80" y="1015" font-size="12" fill="#374151" font-weight="normal">and widely supported. The development environment (cloud platform with pnpm workspaces) provides</text>
+<text x="80" y="1036" font-size="12" fill="#374151" font-weight="normal">immediate deployment capability. The team possesses the necessary skills in JavaScript/TypeScript</text>
+<text x="80" y="1057" font-size="12" fill="#374151" font-weight="normal">development. All tools are freely available with extensive documentation.</text>
 
   <text x="80" y="1090" font-size="13" font-weight="700" fill="#0f3460">3.3.2  Economic Feasibility</text>
   <line x1="80" y1="1094" x2="280" y2="1094" stroke="#e94560" stroke-width="2"/>

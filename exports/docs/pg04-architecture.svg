@@ -33,7 +33,7 @@
   <rect x="40" y="400" width="1160" height="100" rx="8" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="2"/>
   <rect x="40" y="400" width="8" height="100" rx="4" fill="#7c3aed"/>
   <text x="68" y="428" font-size="13" font-weight="800" fill="#7c3aed">TIER 3 -- DATA LAYER (Database)</text>
-  <text x="68" y="448" font-size="11" fill="#64748b">PostgreSQL  |  6 Tables  |  Replit-managed database via DATABASE_URL</text>
+  <text x="68" y="448" font-size="11" fill="#64748b">PostgreSQL  |  6 Tables  |  Cloud-managed database via DATABASE_URL</text>
   <text x="68" y="466" font-size="11" fill="#64748b">Tables: departments  courses  faculty  feedback  form_templates  feedback_windows</text>
   <text x="68" y="484" font-size="11" fill="#64748b">Notable: JSONB for custom answers, real type for 0.5-step rating precision</text>
 

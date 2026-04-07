@@ -134,13 +134,13 @@
     <text x="100" y="1380" font-size="12" font-weight="700" fill="#374151">SDLC Model:</text>
     <text x="320" y="1380" font-size="12" fill="#6b7280">Agile Iterative -- 5 sprints of approximately 1 month each</text><line x1="80" y1="1410" x2="1160" y2="1410" stroke="#d1d5db" stroke-width="0.5"/>
     <text x="100" y="1414" font-size="12" font-weight="700" fill="#374151">Version Control:</text>
-    <text x="320" y="1414" font-size="12" fill="#6b7280">Git checkpoint-based versioning (Replit automatic checkpoints)</text><line x1="80" y1="1444" x2="1160" y2="1444" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="320" y="1414" font-size="12" fill="#6b7280">Git checkpoint-based versioning (automatic checkpoints)</text><line x1="80" y1="1444" x2="1160" y2="1444" stroke="#d1d5db" stroke-width="0.5"/>
     <text x="100" y="1448" font-size="12" font-weight="700" fill="#374151">Testing Approach:</text>
     <text x="320" y="1448" font-size="12" fill="#6b7280">Test-Driven for API routes; Component testing for React UI</text><line x1="80" y1="1478" x2="1160" y2="1478" stroke="#d1d5db" stroke-width="0.5"/>
     <text x="100" y="1482" font-size="12" font-weight="700" fill="#374151">Code Review:</text>
     <text x="320" y="1482" font-size="12" fill="#6b7280">Self-review + academic guide review after each feature module</text><line x1="80" y1="1512" x2="1160" y2="1512" stroke="#d1d5db" stroke-width="0.5"/>
     <text x="100" y="1516" font-size="12" font-weight="700" fill="#374151">Deployment Strategy:</text>
-    <text x="320" y="1516" font-size="12" fill="#6b7280">Continuous deployment on Replit (dev server always live)</text><line x1="80" y1="1546" x2="1160" y2="1546" stroke="#d1d5db" stroke-width="0.5"/>
+    <text x="320" y="1516" font-size="12" fill="#6b7280">Continuous deployment on cloud platform (dev server always live)</text><line x1="80" y1="1546" x2="1160" y2="1546" stroke="#d1d5db" stroke-width="0.5"/>
     <text x="100" y="1550" font-size="12" font-weight="700" fill="#374151">Documentation:</text>
     <text x="320" y="1550" font-size="12" fill="#6b7280">Inline JSDoc comments + separate project report (this document)</text>
 
