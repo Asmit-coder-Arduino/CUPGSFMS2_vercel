@@ -613,6 +613,12 @@ export default function SubmitFeedback() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold">{formTemplate?.title || "Submit Feedback"}</h1>
         <p className="text-muted-foreground text-sm mt-1">{formTemplate?.description || "Your feedback helps improve academic quality at CUPGS"}</p>
+        <div className="mt-3 bg-amber-50 dark:bg-amber-900/15 border border-amber-200 dark:border-amber-700/40 rounded-xl px-4 py-3 flex items-start gap-2.5">
+          <span className="text-amber-500 mt-0.5 flex-shrink-0">&#9733;</span>
+          <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
+            Your feedback plays a vital role in improving our college. Please complete the form with honesty and responsibility.
+          </p>
+        </div>
         {role === "student" && student && (
           <div className="mt-2 flex items-center gap-2 flex-wrap">
             <Badge variant="secondary" className="text-xs">Roll No: {student.rollNumber}</Badge>
