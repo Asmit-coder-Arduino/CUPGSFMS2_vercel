@@ -83,30 +83,10 @@ function HeroSection({ role, faculty, hod, student, logout }: {
           src={`${import.meta.env.BASE_URL}images/hero-students.png`}
           alt="BPUT Students"
           className="w-full h-full object-cover"
-          style={{ opacity: 0.55 }}
         />
       </div>
       <div className="absolute inset-0"
-        style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.40) 60%, rgba(0,0,0,0.70) 100%)" }} />
-
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[
-          { cx: "18%", cy: "30%", r: 200, color: "#b45309", delay: "0s",  dur: "8s"  },
-          { cx: "72%", cy: "20%", r: 160, color: "#1d4ed8", delay: "2s",  dur: "10s" },
-          { cx: "55%", cy: "75%", r: 220, color: "#0f766e", delay: "1s",  dur: "9s"  },
-          { cx: "85%", cy: "60%", r: 130, color: "#b45309", delay: "3s",  dur: "7s"  },
-          { cx: "30%", cy: "80%", r: 100, color: "#2563eb", delay: "0.5s",dur: "11s"},
-        ].map((orb, i) => (
-          <div key={i} className="absolute rounded-full"
-            style={{
-              left: orb.cx, top: orb.cy,
-              width: orb.r * 2, height: orb.r * 2,
-              transform: "translate(-50%,-50%)",
-              background: `radial-gradient(circle, ${orb.color}55 0%, transparent 70%)`,
-              animation: `heroPulse ${orb.dur} ease-in-out ${orb.delay} infinite alternate`,
-            }} />
-        ))}
-      </div>
+        style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.30) 70%, rgba(0,0,0,0.55) 100%)" }} />
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {Array.from({ length: 38 }).map((_, i) => {
@@ -149,13 +129,13 @@ function HeroSection({ role, faculty, hod, student, logout }: {
         <span className="text-[10px] font-medium text-white/50 tracking-widest uppercase">Live · {getAcademicYear()}</span>
       </div>
 
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 py-10">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 py-10" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.5)" }}>
 
         <div className="flex items-center gap-2.5 mb-3">
           <CupgsLogo size={40} />
           <div className="text-left">
-            <div className="text-white font-bold text-lg leading-tight tracking-tight">BPUT · CUPGS</div>
-            <div className="text-white/50 text-[10px] tracking-widest uppercase font-medium">Rourkela, Odisha</div>
+            <div className="text-white font-bold text-lg leading-tight tracking-tight" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}>BPUT · CUPGS</div>
+            <div className="text-white/60 text-[10px] tracking-widest uppercase font-medium">Rourkela, Odisha</div>
           </div>
         </div>
 
@@ -1112,17 +1092,19 @@ export default function Home() {
       </ScrollReveal>
 
       {/* ── Portal Cards ── */}
-      <ScrollReveal direction="fade">
       <section className="space-y-4">
+        <ScrollReveal direction="up">
         <h2 className="text-xl font-extrabold text-foreground flex items-center gap-2.5 tracking-tight"
           style={{ fontFamily: "var(--app-font-heading)" }}>
           <span className="w-1 h-5 rounded-full bg-gradient-to-b from-amber-400 to-blue-500 flex-shrink-0" />
           Portal Access
         </h2>
+        </ScrollReveal>
         <div className="grid md:grid-cols-2 gap-4">
-          {portalCards.map(({ key, Icon, title, desc, accent, iconCl, iconColor, btn, card, delay, badge, loggedIn, loggedInEl, defaultEl, btnLabel, disabled, action }) => (
-            <div key={key}
-              className={`glass-card ${card} rounded-2xl overflow-hidden flex flex-col animate-card-enter ${delay} cursor-pointer group`}
+          {portalCards.map(({ key, Icon, title, desc, accent, iconCl, iconColor, btn, card, delay, badge, loggedIn, loggedInEl, defaultEl, btnLabel, disabled, action }, i) => (
+            <ScrollReveal key={key} direction={i % 2 === 0 ? "left" : "right"} delay={i * 100}>
+            <div
+              className={`glass-card ${card} rounded-2xl overflow-hidden flex flex-col cursor-pointer group h-full`}
               onClick={action}>
               <div className={`h-[3px] w-full ${accent}`} />
               <div className="p-5 flex-1 flex flex-col gap-4">
@@ -1146,10 +1128,10 @@ export default function Home() {
                 </button>
               </div>
             </div>
+            </ScrollReveal>
           ))}
         </div>
       </section>
-      </ScrollReveal>
 
       {/* ── Live Rankings ── */}
       <ScrollReveal direction="up">
