@@ -333,16 +333,20 @@ export default function SubmitFeedback() {
 
   const autoDownloadTriggered = useRef(false);
 
-  const triggerReceiptDownload = useCallback((d: NonNullable<typeof submitted>) => {
+  const triggerReceiptDownload = useCallback(async (d: NonNullable<typeof submitted>) => {
     const receiptUrl = `${getApiUrl()}/api/feedback/receipt/${encodeURIComponent(d.referenceId)}`;
     try {
+      const resp = await fetch(receiptUrl);
+      const htmlText = await resp.text();
+      const blob = new Blob([htmlText], { type: "text/html" });
+      const blobUrl = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.href = receiptUrl;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
+      link.href = blobUrl;
+      link.download = `CUPGS-Receipt-${d.referenceId}.html`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
     } catch {
       window.open(receiptUrl, "_blank");
     }
@@ -731,16 +735,6 @@ export default function SubmitFeedback() {
                 {[1, 2, 3, 4].map(y => <option key={y} value={y}>{y}{["st", "nd", "rd", "th"][y - 1]} Year</option>)}
               </select>
             </div>
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Section</label>
-            <input
-              type="text"
-              className="w-full border rounded-xl px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="e.g. A, B, C"
-              value={section}
-              onChange={e => setSection(e.target.value)}
-            />
           </div>
         </div>
 
