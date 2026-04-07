@@ -20,6 +20,8 @@ import Windows from "./pages/Windows";
 import FacultyPortal from "./pages/FacultyPortal";
 import HodDashboard from "./pages/HodDashboard";
 import AdminReports from "./pages/AdminReports";
+import ComplaintForm from "./pages/ComplaintForm";
+import ComplaintsList from "./pages/ComplaintsList";
 
 import { AppLayout } from "./components/layout/AppLayout";
 import { HomePageLayout } from "./components/HomePageLayout";
@@ -41,6 +43,8 @@ function DashboardRoutes() {
     <AppLayout>
       <Switch>
         <Route path="/submit-feedback" component={SubmitFeedback} />
+        <Route path="/complaint-box" component={ComplaintForm} />
+        <Route path="/complaints" component={ComplaintsList} />
         <Route path="/faculty-portal" component={FacultyPortal} />
         <Route path="/hod-dashboard" component={HodDashboard} />
         <Route path="/dashboard" component={Dashboard} />

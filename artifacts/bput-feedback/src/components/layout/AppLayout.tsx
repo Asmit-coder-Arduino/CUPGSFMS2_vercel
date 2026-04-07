@@ -4,7 +4,7 @@ import {
   BookOpen, LayoutDashboard, LineChart, Users, Building,
   Calendar, List, MessageSquare, GraduationCap, LogOut,
   ShieldCheck, Briefcase, Building2, FileDown, Home,
-  Sun, Moon, Zap
+  Sun, Moon, Zap, FileText
 } from "lucide-react";
 import { useRole } from "@/contexts/RoleContext";
 import { usePlatform } from "@/hooks/usePlatform";
@@ -29,10 +29,12 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const guestNav: NavItem[] = [
     { name: "Home", href: "/", icon: Home },
     { name: "Feedback", href: "/submit-feedback", icon: MessageSquare },
+    { name: "Complaint Box", href: "/complaint-box", icon: FileText },
   ];
   const studentNav: NavItem[] = [
     { name: "Home", href: "/", icon: Home },
     { name: "Feedback", href: "/submit-feedback", icon: MessageSquare },
+    { name: "Complaint Box", href: "/complaint-box", icon: FileText },
   ];
   const facultyNav: NavItem[] = [
     { name: "Home", href: "/", icon: Home },
@@ -41,12 +43,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const hodNav: NavItem[] = [
     { name: "Home", href: "/", icon: Home },
     { name: "Analytics", href: "/hod-dashboard", icon: Building2 },
+    { name: "Complaints", href: "/complaints", icon: FileText },
   ];
   const adminNav: NavItem[] = [
     { name: "Home", href: "/", icon: Home },
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Analytics", href: "/analytics", icon: LineChart },
     { name: "Reports", href: "/reports", icon: FileDown },
+    { name: "Complaints", href: "/complaints", icon: FileText },
     { name: "Departments", href: "/departments", icon: Building },
     { name: "Faculty", href: "/faculty", icon: Users },
     { name: "Courses", href: "/courses", icon: List },
