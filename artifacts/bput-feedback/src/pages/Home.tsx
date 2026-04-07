@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useRole } from "@/contexts/RoleContext";
-import { useGlassMode } from "@/contexts/GlassModeContext";
 import { getApiUrl } from "@/lib/api";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
@@ -43,7 +42,6 @@ function HeroSection({ role, faculty, hod, student, logout }: {
   student: { rollNumber: string } | null;
   logout: () => void;
 }) {
-  const { isLiquid } = useGlassMode();
   const [curr, setCurr] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -104,7 +102,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
       {/* ── Session pill (top-left, shown only when logged in) ── */}
       {role !== "guest" && (
         <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full"
-          style={{ background: "rgba(0,0,0,0.45)", backdropFilter: isLiquid ? "none" : "blur(6px)" }}>
+          style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(6px)" }}>
           <CheckCircle2 className="w-3.5 h-3.5 text-white/70 flex-shrink-0" />
           <span className="text-white/80 text-xs font-medium">
             {role === "faculty" && faculty && faculty.name}
@@ -121,7 +119,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
 
       {/* ── Slide counter (top-right) ── */}
       <div className="absolute top-4 right-4 z-20 text-[11px] font-mono"
-        style={{ color: "rgba(255,255,255,0.5)", background: "rgba(0,0,0,0.35)", backdropFilter: isLiquid ? "none" : "blur(6px)", padding: "3px 10px", borderRadius: "99px" }}>
+        style={{ color: "rgba(255,255,255,0.5)", background: "rgba(0,0,0,0.35)", backdropFilter: "blur(6px)", padding: "3px 10px", borderRadius: "99px" }}>
         {curr + 1} / {n}
       </div>
 
@@ -130,7 +128,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
         {/* Prev */}
         <button onClick={() => { advance(-1); resetTimer(); }}
           className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-          style={{ background: "rgba(255,255,255,0.12)", backdropFilter: isLiquid ? "none" : "blur(6px)" }}>
+          style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(6px)" }}>
           <ChevronLeft className="w-4 h-4 text-white" />
         </button>
 
@@ -150,7 +148,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
         {/* Next */}
         <button onClick={() => { advance(1); resetTimer(); }}
           className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-          style={{ background: "rgba(255,255,255,0.12)", backdropFilter: isLiquid ? "none" : "blur(6px)" }}>
+          style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(6px)" }}>
           <ChevronRight className="w-4 h-4 text-white" />
         </button>
       </div>
@@ -158,7 +156,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
       {/* ── Caption (bottom-center above controls) ── */}
       <div className="absolute bottom-16 left-0 right-0 z-20 flex justify-center">
         <span className="text-xs text-white/55 font-medium tracking-wide px-3 py-1 rounded-full"
-          style={{ background: "rgba(0,0,0,0.25)", backdropFilter: isLiquid ? "none" : "blur(6px)" }}>
+          style={{ background: "rgba(0,0,0,0.25)", backdropFilter: "blur(6px)" }}>
           {SLIDES[curr].caption}
         </span>
       </div>
@@ -280,7 +278,7 @@ function FacultyDetailModal({ facultyId, open, onClose }: { facultyId: number | 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) onClose(); }}>
       <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto p-0"
-        style={{ background: "rgba(15,20,35,0.95)", backdropFilter: "none", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "28px" }}>
+        style={{ background: "rgba(15,20,35,0.95)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "28px" }}>
         {loading ? (
           <div className="p-10 text-center">
             <div className="w-8 h-8 border-2 border-white/20 border-t-violet-400 rounded-full animate-spin mx-auto" />
@@ -389,7 +387,6 @@ function FacultyDetailModal({ facultyId, open, onClose }: { facultyId: number | 
    Real-time Teacher Rankings
 ───────────────────────────────── */
 function TopTeachersSection() {
-  const { isLiquid } = useGlassMode();
   const qc = useQueryClient();
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   const [spinning, setSpinning] = useState(false);
@@ -448,7 +445,7 @@ function TopTeachersSection() {
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
-            style={{ background: "rgba(255,255,255,0.08)", backdropFilter: isLiquid ? "none" : "blur(6px)" }}>
+            style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(6px)" }}>
             <Trophy className="w-5 h-5 text-white/60" />
           </div>
           <div>
@@ -460,7 +457,7 @@ function TopTeachersSection() {
 
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full"
-            style={{ background: "rgba(255,255,255,0.07)", backdropFilter: isLiquid ? "none" : "blur(6px)" }}>
+            style={{ background: "rgba(255,255,255,0.07)", backdropFilter: "blur(6px)" }}>
             <span className="relative w-2.5 h-2.5 flex-shrink-0">
               <span className="absolute inset-0 rounded-full bg-white/40"
                 style={{ animation: "liveRing 1.8s ease-out infinite" }} />
@@ -470,7 +467,7 @@ function TopTeachersSection() {
           </div>
           <button onClick={refresh} title="Refresh now"
             className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-            style={{ background: "rgba(255,255,255,0.07)", backdropFilter: isLiquid ? "none" : "blur(6px)" }}>
+            style={{ background: "rgba(255,255,255,0.07)", backdropFilter: "blur(6px)" }}>
             <RefreshCw className={`w-3.5 h-3.5 text-white/50 transition-transform ${spinning ? "animate-spin" : ""}`} />
           </button>
         </div>
@@ -590,12 +587,11 @@ function TopTeachersSection() {
    BPUT Info Section
 ───────────────────────────────── */
 function BputInfoSection() {
-  const { isLiquid } = useGlassMode();
   return (
     <section className="space-y-5">
       <div className="flex items-center gap-3">
         <div className="w-11 h-11 rounded-2xl flex items-center justify-center"
-          style={{ background: "rgba(255,255,255,0.08)", backdropFilter: isLiquid ? "none" : "blur(6px)" }}>
+          style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(6px)" }}>
           <Building2 className="w-5 h-5 text-white/60" />
         </div>
         <div>
@@ -657,7 +653,7 @@ function BputInfoSection() {
             <div className="absolute inset-0" style={{ background: "linear-gradient(to right, transparent 50%, rgba(0,0,0,0.25))" }} />
             <div className="absolute bottom-3 left-3">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-semibold text-white"
-                style={{ background: "rgba(0,0,0,0.55)", backdropFilter: isLiquid ? "none" : "blur(6px)" }}>
+                style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}>
                 <Building2 className="w-3 h-3 text-violet-300" /> BPUT Campus, Rourkela
               </div>
             </div>
@@ -844,7 +840,6 @@ export default function Home() {
     setHodEmpId(""); setHodPin(""); setAdminPass("");
   };
   const openModal = (t: "student"|"faculty"|"hod"|"admin") => {
-    document.documentElement.classList.add("lg-dialog-open");
     clear();
     if (t === "student") setShowStudentModal(true);
     else if (t === "faculty") setShowFacultyModal(true);
