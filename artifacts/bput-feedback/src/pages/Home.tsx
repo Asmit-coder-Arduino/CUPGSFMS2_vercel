@@ -78,8 +78,16 @@ function HeroSection({ role, faculty, hod, student, logout }: {
   return (
     <div className="relative w-full rounded-3xl overflow-hidden select-none" style={{ minHeight: "520px" }}>
 
+      <div className="absolute inset-0">
+        <img
+          src={`${import.meta.env.BASE_URL}images/hero-students.png`}
+          alt="BPUT Students"
+          className="w-full h-full object-cover"
+          style={{ opacity: 0.35, filter: "blur(0.5px)" }}
+        />
+      </div>
       <div className="absolute inset-0"
-        style={{ background: "linear-gradient(135deg, #0f0a00 0%, #1a1000 35%, #0d0800 65%, #130c00 100%)" }} />
+        style={{ background: "linear-gradient(135deg, rgba(15,10,0,0.82) 0%, rgba(26,16,0,0.78) 35%, rgba(13,8,0,0.85) 65%, rgba(19,12,0,0.82) 100%)" }} />
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[

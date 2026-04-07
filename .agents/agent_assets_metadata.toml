@@ -450,6 +450,12 @@ uri = "file://artifacts/bput-feedback/public/bg-molten-gold.png"
 type = "image"
 title = "molten gold lava flow"
 
+[[generated]]
+id = "aJ1Hj-qvrXJcnJRfAQk3_"
+uri = "file://artifacts/bput-feedback/public/images/hero-students.png"
+type = "image"
+title = "BPUT students campus hero"
+
 [[outputs]]
 id = "DNYPbFPAJjS-si0mrrbw9"
 uri = "file://CUPGS_All_Credentials.xlsx"
