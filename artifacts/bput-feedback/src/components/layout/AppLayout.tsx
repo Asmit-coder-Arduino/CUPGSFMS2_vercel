@@ -4,11 +4,12 @@ import {
   BookOpen, LayoutDashboard, LineChart, Users, Building,
   Calendar, List, MessageSquare, GraduationCap, LogOut,
   ShieldCheck, Briefcase, Building2, FileDown, Home,
-  Sun, Moon, Zap, FileText
+  Sun, Moon, Zap, FileText, Droplets, Glasses
 } from "lucide-react";
 import { useRole } from "@/contexts/RoleContext";
 import { usePlatform } from "@/hooks/usePlatform";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useGlassMode } from "@/contexts/GlassModeContext";
 import { CupgsLogo } from "@/components/CupgsLogo";
 import { BackgroundSlideshow } from "@/components/BackgroundSlideshow";
 import { ComplaintNotifications } from "@/components/ComplaintNotifications";
@@ -20,6 +21,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const { role, faculty, hod, student, logout } = useRole();
   const { isMobile, isIOS } = usePlatform();
   const { theme, toggleTheme, isDark } = useTheme();
+  const { isLiquid, toggleGlassMode } = useGlassMode();
   const [iconKey, setIconKey] = useState(0);
 
   const handleToggle = () => {
@@ -109,7 +111,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <div className="bg-blob-light bg-blob-light-2" />
 
       {/* ── Desktop Sidebar ── */}
-      <div className="w-full md:w-64 flex flex-col z-10 hidden md:flex relative"
+      <div className="w-full md:w-64 flex flex-col z-10 hidden md:flex relative lg-sidebar"
         style={{
           background: "rgba(255,255,255,0)",
           backdropFilter: "blur(12px)",
@@ -141,6 +143,29 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <p className="text-[10px] mt-0.5" style={{ color: "rgba(196,181,253,0.5)" }}>Academic Feedback System</p>
           </div>
           <ComplaintNotifications />
+          <button
+            onClick={toggleGlassMode}
+            className="lg-toggle-btn"
+            style={{
+              width: 38, height: 38,
+              borderRadius: 9999,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer",
+              transition: "background 0.2s ease, transform 0.2s ease",
+              background: isLiquid ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0)",
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)",
+              border: "1px solid rgba(255,255,255,0)",
+              boxShadow: "0 0 30px 0px rgba(0,0,0,0.3)",
+              flexShrink: 0,
+            }}
+            title={isLiquid ? "Switch to Classic Mode" : "Switch to Liquid Glass Mode"}
+          >
+            {isLiquid
+              ? <Droplets className="w-4 h-4 text-violet-300" />
+              : <Glasses className="w-4 h-4 text-violet-400/60" />
+            }
+          </button>
           <ThemeToggle />
         </div>
 
@@ -212,7 +237,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* ── Mobile Top Bar ── */}
-      <div className="md:hidden sticky top-0 z-30 glass-strong border-b">
+      <div className="md:hidden sticky top-0 z-30 glass-strong border-b lg-mobile-bar">
         <div className="flex items-center justify-between px-4 py-2.5">
           <div className="flex items-center gap-2.5">
             <CupgsLogo size={28} className="flex-shrink-0" />
@@ -220,6 +245,24 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
           <div className="flex items-center gap-2">
             <ComplaintNotifications />
+            <button
+              onClick={toggleGlassMode}
+              className="lg-toggle-btn !w-8 !h-8 !rounded-lg"
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "center",
+                cursor: "pointer",
+                background: isLiquid ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0)",
+                backdropFilter: "blur(6px)",
+                border: "1px solid rgba(255,255,255,0)",
+                flexShrink: 0,
+              }}
+              title={isLiquid ? "Classic Mode" : "Liquid Glass"}
+            >
+              {isLiquid
+                ? <Droplets className="w-3.5 h-3.5 text-violet-300" />
+                : <Glasses className="w-3.5 h-3.5 text-foreground/50" />
+              }
+            </button>
             <ThemeToggle size="sm" />
             {avatar && (
               <>
@@ -247,7 +290,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
       {/* ── Mobile Bottom Navigation ── */}
       <div
-        className={`md:hidden fixed bottom-0 left-0 right-0 z-30 glass-strong border-t ${isIOS ? "safe-area-bottom" : ""}`}
+        className={`md:hidden fixed bottom-0 left-0 right-0 z-30 glass-strong border-t lg-mobile-bar ${isIOS ? "safe-area-bottom" : ""}`}
         style={{ paddingBottom: isIOS ? "env(safe-area-inset-bottom, 0px)" : undefined }}
       >
         <div className="flex items-stretch">

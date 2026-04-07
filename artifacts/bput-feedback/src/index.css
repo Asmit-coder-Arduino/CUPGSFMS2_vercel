@@ -674,3 +674,463 @@ body {
 .is-mobile { touch-action: manipulation; }
 .is-standalone { user-select: none; -webkit-user-select: none; }
 .is-standalone.os-android { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* ══════════════════════════════════════
+   LIQUID GLASS MODE
+   Activated via .liquid-glass class on <html>
+══════════════════════════════════════ */
+
+/* --- Liquid Glass: Cards --- */
+.liquid-glass .glass-card,
+.liquid-glass .glass,
+.liquid-glass .glass-strong,
+.liquid-glass .stat-card {
+  position: relative;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.liquid-glass .glass-card::before,
+.liquid-glass .glass::before,
+.liquid-glass .glass-strong::before,
+.liquid-glass .stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  box-shadow:
+    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
+    inset 0 0 3px 1px rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+}
+.liquid-glass .glass-card::after,
+.liquid-glass .glass::after,
+.liquid-glass .glass-strong::after,
+.liquid-glass .stat-card::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  filter: url(#liquid-glass-card);
+  -webkit-filter: url(#liquid-glass-card);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+}
+.liquid-glass .glass-card:hover,
+.liquid-glass .stat-card:hover {
+  transform: translateY(-3px) scale(1.005);
+}
+.liquid-glass .glass-card:hover::before,
+.liquid-glass .stat-card:hover::before {
+  box-shadow:
+    inset 2px 2px 0px -1px rgba(255, 255, 255, 0.85),
+    inset 0 0 5px 2px rgba(255, 255, 255, 0.6);
+}
+
+/* --- Liquid Glass: Sidebar --- */
+.liquid-glass .lg-sidebar {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  position: relative;
+}
+.liquid-glass .lg-sidebar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 0 28px 28px 0;
+  box-shadow:
+    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
+    inset 0 0 4px 1px rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+}
+.liquid-glass .lg-sidebar::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 0 28px 28px 0;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  filter: url(#liquid-glass-sidebar);
+  -webkit-filter: url(#liquid-glass-sidebar);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+/* --- Liquid Glass: Nav Items --- */
+.liquid-glass .glass-nav-item.active {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  position: relative;
+}
+.liquid-glass .glass-nav-item.active::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow:
+    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
+    inset 0 0 3px 1px rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+.liquid-glass .glass-nav-item.active::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 16px;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  filter: url(#liquid-glass-nav);
+  -webkit-filter: url(#liquid-glass-nav);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+}
+.liquid-glass .glass-nav-item:hover {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  position: relative;
+}
+
+/* --- Liquid Glass: Buttons --- */
+.liquid-glass .btn-gradient-blue,
+.liquid-glass .btn-gradient-teal,
+.liquid-glass .btn-gradient-indigo,
+.liquid-glass .btn-gradient-slate {
+  position: relative;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.liquid-glass .btn-gradient-blue::before,
+.liquid-glass .btn-gradient-teal::before,
+.liquid-glass .btn-gradient-indigo::before,
+.liquid-glass .btn-gradient-slate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  box-shadow:
+    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
+    inset 0 0 3px 1px rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+.liquid-glass .btn-gradient-blue::after,
+.liquid-glass .btn-gradient-teal::after,
+.liquid-glass .btn-gradient-indigo::after,
+.liquid-glass .btn-gradient-slate::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  filter: url(#liquid-glass-btn);
+  -webkit-filter: url(#liquid-glass-btn);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+/* --- Liquid Glass: Theme Toggle --- */
+.liquid-glass .theme-toggle,
+.liquid-glass .lg-toggle-btn {
+  position: relative;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.liquid-glass .theme-toggle::before,
+.liquid-glass .lg-toggle-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 9999px;
+  box-shadow:
+    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
+    inset 0 0 3px 1px rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+.liquid-glass .theme-toggle::after,
+.liquid-glass .lg-toggle-btn::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 9999px;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  filter: url(#liquid-glass-btn);
+  -webkit-filter: url(#liquid-glass-btn);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+/* --- Liquid Glass: Modals --- */
+.liquid-glass [role="dialog"] {
+  position: relative;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.liquid-glass [role="dialog"]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 28px;
+  box-shadow:
+    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
+    inset 0 0 4px 1px rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+.liquid-glass [role="dialog"]::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 28px;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  filter: url(#liquid-glass-modal);
+  -webkit-filter: url(#liquid-glass-modal);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+/* --- Liquid Glass: Inputs --- */
+.liquid-glass .input-glass {
+  position: relative;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* --- Liquid Glass: Hero Badge --- */
+.liquid-glass .hero-badge {
+  position: relative;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.liquid-glass .hero-badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 9999px;
+  box-shadow:
+    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
+    inset 0 0 3px 1px rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+}
+.liquid-glass .hero-badge::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 9999px;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  filter: url(#liquid-glass-btn);
+  -webkit-filter: url(#liquid-glass-btn);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+/* --- Liquid Glass: Icon Circles --- */
+.liquid-glass .icon-circle-blue,
+.liquid-glass .icon-circle-teal,
+.liquid-glass .icon-circle-indigo,
+.liquid-glass .icon-circle-slate {
+  position: relative;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.liquid-glass .icon-circle-blue::before,
+.liquid-glass .icon-circle-teal::before,
+.liquid-glass .icon-circle-indigo::before,
+.liquid-glass .icon-circle-slate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 9999px;
+  box-shadow:
+    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
+    inset 0 0 3px 1px rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+}
+.liquid-glass .icon-circle-blue::after,
+.liquid-glass .icon-circle-teal::after,
+.liquid-glass .icon-circle-indigo::after,
+.liquid-glass .icon-circle-slate::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 9999px;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  filter: url(#liquid-glass-btn);
+  -webkit-filter: url(#liquid-glass-btn);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+/* --- Liquid Glass: Mobile top/bottom bars --- */
+.liquid-glass .lg-mobile-bar {
+  position: relative;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.liquid-glass .lg-mobile-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  box-shadow:
+    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.6),
+    inset 0 0 3px 1px rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+.liquid-glass .lg-mobile-bar::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  filter: url(#liquid-glass-sidebar);
+  -webkit-filter: url(#liquid-glass-sidebar);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+/* --- Liquid Glass: Accent Lines --- */
+.liquid-glass .accent-line-blue,
+.liquid-glass .accent-line-teal,
+.liquid-glass .accent-line-indigo,
+.liquid-glass .accent-line-slate {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  position: relative;
+}
+.liquid-glass .accent-line-blue::after,
+.liquid-glass .accent-line-teal::after,
+.liquid-glass .accent-line-indigo::after,
+.liquid-glass .accent-line-slate::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  filter: url(#liquid-glass-btn);
+  -webkit-filter: url(#liquid-glass-btn);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+/* --- Liquid Glass: General bg-card elements --- */
+.liquid-glass .lg-card {
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass .lg-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  box-shadow:
+    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.6),
+    inset 0 0 3px 1px rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+.liquid-glass .lg-card::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  filter: url(#liquid-glass-card);
+  -webkit-filter: url(#liquid-glass-card);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+/* --- Liquid Glass mode toggle indicator --- */
+.liquid-glass .lg-mode-indicator {
+  background: rgba(139, 92, 246, 0.15);
+  color: #c4b5fd;
+}
+
+/* Ensure pseudo-elements don't break z-stacking of content */
+.liquid-glass .glass-card > *,
+.liquid-glass .glass > *,
+.liquid-glass .glass-strong > *,
+.liquid-glass .stat-card > *,
+.liquid-glass .lg-card > *,
+.liquid-glass [role="dialog"] > * {
+  position: relative;
+  z-index: 1;
+}

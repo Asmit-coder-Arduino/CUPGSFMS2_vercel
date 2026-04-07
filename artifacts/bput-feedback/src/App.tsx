@@ -28,6 +28,8 @@ import { HomePageLayout } from "./components/HomePageLayout";
 import { InstallPrompt } from "./components/InstallPrompt";
 import { SplashScreen } from "./components/SplashScreen";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { GlassModeProvider } from "./contexts/GlassModeContext";
+import { LiquidGlassFilters } from "./components/LiquidGlassFilters";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -86,18 +88,21 @@ function App() {
 
   return (
     <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <RoleProvider>
-            {!splashDone && <SplashScreen onDone={handleSplashDone} />}
-            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-              <Router />
-            </WouterRouter>
-          </RoleProvider>
-          <Toaster />
-          <InstallPrompt />
-        </TooltipProvider>
-      </QueryClientProvider>
+      <GlassModeProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <RoleProvider>
+              <LiquidGlassFilters />
+              {!splashDone && <SplashScreen onDone={handleSplashDone} />}
+              <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+                <Router />
+              </WouterRouter>
+            </RoleProvider>
+            <Toaster />
+            <InstallPrompt />
+          </TooltipProvider>
+        </QueryClientProvider>
+      </GlassModeProvider>
     </ThemeProvider>
   );
 }

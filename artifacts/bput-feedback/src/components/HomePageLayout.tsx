@@ -2,10 +2,12 @@ import { ReactNode } from "react";
 import { Link } from "wouter";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useRole } from "@/contexts/RoleContext";
+import { useGlassMode } from "@/contexts/GlassModeContext";
 import { useState } from "react";
 import {
   Sun, Moon, Globe, Phone, Mail, MapPin,
-  GraduationCap, ExternalLink, LogOut, ChevronRight
+  GraduationCap, ExternalLink, LogOut, ChevronRight,
+  Droplets, Glasses
 } from "lucide-react";
 import { CupgsLogo } from "@/components/CupgsLogo";
 import { BackgroundSlideshow } from "@/components/BackgroundSlideshow";
@@ -21,6 +23,35 @@ function ThemeToggleBtn() {
       title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
     >
       {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+    </button>
+  );
+}
+
+function GlassModeToggle() {
+  const { isLiquid, toggleGlassMode } = useGlassMode();
+  return (
+    <button
+      onClick={toggleGlassMode}
+      className="lg-toggle-btn"
+      style={{
+        width: 38, height: 38,
+        borderRadius: 9999,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        cursor: "pointer",
+        transition: "background 0.2s ease, transform 0.2s ease",
+        background: isLiquid ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0)",
+        backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)",
+        border: "1px solid rgba(255,255,255,0)",
+        boxShadow: "0 0 30px 0px rgba(0,0,0,0.3)",
+        flexShrink: 0,
+      }}
+      title={isLiquid ? "Switch to Classic Mode" : "Switch to Liquid Glass Mode"}
+    >
+      {isLiquid
+        ? <Droplets className="w-4 h-4 text-violet-300" />
+        : <Glasses className="w-4 h-4 text-violet-400/60" />
+      }
     </button>
   );
 }
@@ -136,6 +167,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
                     </button>
                   </div>
                 )}
+                <GlassModeToggle />
                 <ThemeToggleBtn />
               </div>
             </div>
