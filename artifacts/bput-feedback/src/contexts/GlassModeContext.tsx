@@ -65,8 +65,26 @@ export function GlassModeProvider({ children }: { children: ReactNode }) {
       html.classList.add("liquid-glass");
     } else {
       html.classList.remove("liquid-glass");
+      html.classList.remove("lg-dialog-open");
     }
     try { localStorage.setItem("cupgs-glass-mode", glassMode); } catch {}
+  }, [glassMode]);
+
+  useEffect(() => {
+    if (glassMode !== "liquid") return;
+    const html = document.documentElement;
+    const check = () => {
+      const hasDialog = document.querySelector('[role="dialog"], [role="alertdialog"]') !== null;
+      if (hasDialog) {
+        html.classList.add("lg-dialog-open");
+      } else {
+        html.classList.remove("lg-dialog-open");
+      }
+    };
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
   }, [glassMode]);
 
   useEffect(() => {

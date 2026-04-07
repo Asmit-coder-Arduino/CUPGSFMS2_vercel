@@ -1209,3 +1209,40 @@ body {
   position: relative;
   z-index: 1;
 }
+
+/* ── CRITICAL: Disable ALL SVG filters when dialog is open to prevent GPU freeze ── */
+.lg-dialog-open .glass-card::after,
+.lg-dialog-open .glass::after,
+.lg-dialog-open .glass-strong::after,
+.lg-dialog-open .stat-card::after,
+.lg-dialog-open .lg-card::after,
+.lg-dialog-open .lg-sidebar::after,
+.lg-dialog-open .glass-nav-item.active::after,
+.lg-dialog-open .btn-gradient-blue::after,
+.lg-dialog-open .btn-gradient-teal::after,
+.lg-dialog-open .btn-gradient-indigo::after,
+.lg-dialog-open .btn-gradient-slate::after,
+.lg-dialog-open .theme-toggle::after,
+.lg-dialog-open .lg-toggle-btn::after,
+.lg-dialog-open .hero-badge::after,
+.lg-dialog-open .icon-circle-blue::after,
+.lg-dialog-open .icon-circle-teal::after,
+.lg-dialog-open .icon-circle-indigo::after,
+.lg-dialog-open .icon-circle-slate::after,
+.lg-dialog-open .lg-mobile-bar::after,
+.lg-dialog-open .accent-line-blue::after,
+.lg-dialog-open .accent-line-teal::after,
+.lg-dialog-open .accent-line-indigo::after,
+.lg-dialog-open .accent-line-slate::after {
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+.lg-dialog-open .glass-card::before,
+.lg-dialog-open .glass::before,
+.lg-dialog-open .glass-strong::before,
+.lg-dialog-open .stat-card::before,
+.lg-dialog-open .lg-card::before,
+.lg-dialog-open .lg-sidebar::before {
+  filter: none !important;
+  -webkit-filter: none !important;
+}
