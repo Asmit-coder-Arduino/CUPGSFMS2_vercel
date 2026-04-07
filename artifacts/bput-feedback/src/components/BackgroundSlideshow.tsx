@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Pin, PinOff, ChevronLeft, ChevronRight } from "lucide-react";
+import { useGlassMode } from "@/contexts/GlassModeContext";
 
 const BG_IMAGES = [
   { src: "/bg-aurora.png", label: "Aurora" },
@@ -50,6 +51,7 @@ function getSavedPin(): number | null {
 }
 
 export function BackgroundSlideshow() {
+  const { isLiquid } = useGlassMode();
   const savedPin = getSavedPin();
   const [curr, setCurr] = useState(savedPin ?? 0);
   const [pinned, setPinned] = useState(savedPin !== null);
@@ -167,7 +169,7 @@ export function BackgroundSlideshow() {
             className="w-8 h-8 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors flex-shrink-0"
             style={{
               background: "rgba(0,0,0,0.5)",
-              backdropFilter: "blur(10px)",
+              backdropFilter: isLiquid ? "none" : "blur(10px)",
             }}
           >
             <ChevronLeft className="w-4 h-4" />
@@ -177,7 +179,7 @@ export function BackgroundSlideshow() {
             className="flex items-center gap-2 px-3 py-1.5 rounded-full flex-shrink-0"
             style={{
               background: "rgba(0,0,0,0.5)",
-              backdropFilter: "blur(10px)",
+              backdropFilter: isLiquid ? "none" : "blur(10px)",
             }}
           >
             <span className="text-[11px] text-white/70 font-medium whitespace-nowrap">
@@ -193,7 +195,7 @@ export function BackgroundSlideshow() {
             className="w-8 h-8 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors flex-shrink-0"
             style={{
               background: "rgba(0,0,0,0.5)",
-              backdropFilter: "blur(10px)",
+              backdropFilter: isLiquid ? "none" : "blur(10px)",
             }}
           >
             <ChevronRight className="w-4 h-4" />
@@ -211,7 +213,7 @@ export function BackgroundSlideshow() {
             background: pinned
               ? "rgba(139,92,246,0.5)"
               : "rgba(0,0,0,0.45)",
-            backdropFilter: "blur(10px)",
+            backdropFilter: isLiquid ? "none" : "blur(10px)",
             boxShadow: pinned
               ? "0 0 12px rgba(139,92,246,0.3)"
               : "0 0 8px rgba(0,0,0,0.3)",

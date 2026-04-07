@@ -226,7 +226,7 @@ export default function FacultyPortal() {
               onClick={() => fileInputRef.current?.click()}
               disabled={uploadingPhoto}
               className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center transition-all hover:scale-110"
-              style={{ background: "rgba(139,92,246,0.8)", backdropFilter: "blur(6px)" }}
+              style={{ background: "rgba(139,92,246,0.8)" }}
             >
               {uploadingPhoto ? (
                 <div className="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin" />
