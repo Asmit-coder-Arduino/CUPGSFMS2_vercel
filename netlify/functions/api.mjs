@@ -83424,7 +83424,7 @@ var feedbackLimiter = rate_limit_default({
 app.use("/api", globalLimiter);
 app.use("/api/auth", authLimiter);
 app.use("/api/feedback", feedbackLimiter);
-app.get("/api/healthz", (_req, res) => {
+var healthzHandler = (_req, res) => {
   const hasSupabase = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY);
   const hasAdminPwd = !!process.env.ADMIN_PASSWORD;
   res.json({
@@ -83435,7 +83435,9 @@ app.get("/api/healthz", (_req, res) => {
       adminPassword: hasAdminPwd
     }
   });
-});
+};
+app.get("/api/healthz", healthzHandler);
+app.get("/healthz", healthzHandler);
 app.use("/api", routes_default);
 app.use((err, _req, res, _next) => {
   logger.error(err, "Unhandled error");
@@ -83445,16 +83447,26 @@ app.use((err, _req, res, _next) => {
 var app_default = app;
 
 // src/netlify-function.ts
-var handler_fn = (0, import_serverless_http.default)(app_default, {
-  request(req) {
-    if (req.url && !req.url.startsWith("/api")) {
-      req.url = "/api" + req.url;
-    }
-  }
-});
+app_default.use("/", routes_default);
+var handler_fn = (0, import_serverless_http.default)(app_default);
 var handler = async (event, context) => {
+  if (!event.requestContext) {
+    event.requestContext = { identity: {} };
+  }
+  if (!event.requestContext.identity) {
+    event.requestContext.identity = {};
+  }
   console.log("[netlify-fn] path:", event.path, "method:", event.httpMethod);
-  return handler_fn(event, context);
+  try {
+    return await handler_fn(event, context);
+  } catch (err) {
+    console.error("[netlify-fn] error:", err);
+    return {
+      statusCode: 500,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ error: "Internal server error", detail: err.message })
+    };
+  }
 };
 export {
   handler

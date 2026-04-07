@@ -1,15 +1,29 @@
 import serverless from "serverless-http";
 import app from "./app";
+import router from "./routes";
 
-const handler_fn = serverless(app, {
-  request(req: any) {
-    if (req.url && !req.url.startsWith("/api")) {
-      req.url = "/api" + req.url;
-    }
-  },
-});
+app.use("/", router);
+
+const handler_fn = serverless(app);
 
 export const handler = async (event: any, context: any) => {
+  if (!event.requestContext) {
+    event.requestContext = { identity: {} };
+  }
+  if (!event.requestContext.identity) {
+    event.requestContext.identity = {};
+  }
+
   console.log("[netlify-fn] path:", event.path, "method:", event.httpMethod);
-  return handler_fn(event, context);
+
+  try {
+    return await handler_fn(event, context);
+  } catch (err: any) {
+    console.error("[netlify-fn] error:", err);
+    return {
+      statusCode: 500,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ error: "Internal server error", detail: err.message }),
+    };
+  }
 };

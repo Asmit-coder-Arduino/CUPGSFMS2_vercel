@@ -87,7 +87,7 @@ app.use("/api/auth", authLimiter);
 app.use("/api/feedback", feedbackLimiter);
 
 // ── Health check ─────────────────────────────────────────────────────────────
-app.get("/api/healthz", (_req, res) => {
+const healthzHandler = (_req: Request, res: Response) => {
   const hasSupabase = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY);
   const hasAdminPwd = !!process.env.ADMIN_PASSWORD;
   res.json({
@@ -98,7 +98,9 @@ app.get("/api/healthz", (_req, res) => {
       adminPassword: hasAdminPwd,
     },
   });
-});
+};
+app.get("/api/healthz", healthzHandler);
+app.get("/healthz", healthzHandler);
 
 // ── Routes ───────────────────────────────────────────────────────────────────
 app.use("/api", router);
