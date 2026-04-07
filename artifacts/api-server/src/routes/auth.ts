@@ -86,7 +86,7 @@ router.post("/auth/hod-login", async (req, res): Promise<void> => {
 
 router.post("/auth/admin-login", async (req, res): Promise<void> => {
   const { password } = req.body;
-  const adminPassword = process.env.ADMIN_PASSWORD || "bput@admin2025";
+  const adminPassword = process.env.ADMIN_PASSWORD || "BPUT_Admin@2025#Secure";
   if (password !== adminPassword) {
     res.status(401).json({ error: "Invalid admin password." });
     return;

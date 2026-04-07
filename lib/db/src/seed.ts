@@ -18,35 +18,35 @@ async function main() {
       name: "Computer Science & Engineering",
       hodName: "Dr. Debashreet Das",
       hodEmployeeId: "HOD/CSE/001",
-      hodPin: "CSE@2025",
+      hodPin: "HD4X7A",
     },
     {
       code: "ECE",
       name: "Electronics & Communication Engineering",
       hodName: "Dr. Prakash Kumar Panda",
       hodEmployeeId: "HOD/ECE/001",
-      hodPin: "ECE@2025",
+      hodPin: "HD8Y3B",
     },
     {
       code: "EE",
       name: "Electrical Engineering",
       hodName: "Dr. Manas Ranjan Nayak",
       hodEmployeeId: "HOD/EE/001",
-      hodPin: "EEE@2025",
+      hodPin: "HD2Z6C",
     },
     {
       code: "ME",
       name: "Mechanical Engineering",
       hodName: "Dr. Atal Bihari Harichandan",
       hodEmployeeId: "HOD/ME/001",
-      hodPin: "MECH@2025",
+      hodPin: "HD6W9D",
     },
     {
       code: "CE",
       name: "Civil Engineering",
       hodName: "Dr. Bibhuti Bhusan Mukharjee",
       hodEmployeeId: "HOD/CE/001",
-      hodPin: "CIVIL@2025",
+      hodPin: "HD3V5E",
     },
   ];
 
@@ -83,7 +83,7 @@ async function main() {
       designation: "Associate Professor",
       departmentCode: "CSE",
       employeeId: "CUPGS/CSE/001",
-      loginPin: "1234",
+      loginPin: "FP7K2M",
       qualification: "B.E.(I.T.), M.Tech(CSE), PhD(CSE)",
       specialization: "Data Structures & Algorithms",
       photoUrl: "https://www.bput.ac.in/images/faculty/Debashreet-Das.jpg",
@@ -93,7 +93,7 @@ async function main() {
       designation: "Professor",
       departmentCode: "CSE",
       employeeId: "CUPGS/CSE/002",
-      loginPin: "1234",
+      loginPin: "FP3N8Q",
       qualification: "B.E., M.E., Ph.D.",
       specialization:
         "Embedded Systems, VLSI, Network-on-Chip, Cloud Computing, Image Processing",
@@ -105,7 +105,7 @@ async function main() {
       designation: "Professor",
       departmentCode: "CSE",
       employeeId: "CUPGS/CSE/003",
-      loginPin: "1234",
+      loginPin: "FP9R4W",
       qualification: "B.Tech, M.Tech, Ph.D.",
       specialization:
         "Cryptography & Network Security, Fractal Analysis, Pattern Recognition, Steganography",
@@ -117,7 +117,7 @@ async function main() {
       designation: "Assistant Professor",
       departmentCode: "CSE",
       employeeId: "CUPGS/CSE/004",
-      loginPin: "1234",
+      loginPin: "FP5T6X",
       qualification: "B.Tech, M.Tech",
       specialization: "Data Structures & Algorithms",
       photoUrl:
@@ -128,7 +128,7 @@ async function main() {
       designation: "Associate Professor",
       departmentCode: "CSE",
       employeeId: "CUPGS/CSE/005",
-      loginPin: "1234",
+      loginPin: "FP2V8Y",
       qualification: "B.Tech, M.Tech, Ph.D.",
       specialization: "Computer Science & Engineering",
       photoUrl:
@@ -141,7 +141,7 @@ async function main() {
       designation: "Associate Professor",
       departmentCode: "ECE",
       employeeId: "CUPGS/ECE/001",
-      loginPin: "1234",
+      loginPin: "FP4A7D",
       qualification: "M.Tech, Ph.D.",
       specialization: "Electronics & Communication Engineering",
       photoUrl:
@@ -152,7 +152,7 @@ async function main() {
       designation: "Associate Professor",
       departmentCode: "ECE",
       employeeId: "CUPGS/ECE/002",
-      loginPin: "1234",
+      loginPin: "FP6B3G",
       qualification: "Ph.D., M.Tech, B.Tech",
       specialization:
         "Wireless Communication, Adaptive Control, Control of Underwater Vehicles, Robotics",
@@ -164,7 +164,7 @@ async function main() {
       designation: "Assistant Professor",
       departmentCode: "ECE",
       employeeId: "CUPGS/ECE/003",
-      loginPin: "1234",
+      loginPin: "FP8C5H",
       qualification: "Ph.D., M.Tech",
       specialization: "Electronics & Communication Engineering",
       photoUrl:
@@ -177,7 +177,7 @@ async function main() {
       designation: "Professor",
       departmentCode: "EE",
       employeeId: "CUPGS/EE/001",
-      loginPin: "1234",
+      loginPin: "FP1E9J",
       qualification: "Ph.D., M.E., B.E.",
       specialization:
         "Renewable Energy Integration, Energy Storage, Electric Vehicle, Smart Grid",
@@ -189,7 +189,7 @@ async function main() {
       designation: "Professor",
       departmentCode: "EE",
       employeeId: "CUPGS/EE/002",
-      loginPin: "1234",
+      loginPin: "FP7F2L",
       qualification: "Ph.D., M.Tech, B.E.",
       specialization:
         "Power Distribution System, Distributed Generation, Micro Grids, Soft Computing in Power Systems",
@@ -201,7 +201,7 @@ async function main() {
       designation: "Associate Professor",
       departmentCode: "EE",
       employeeId: "CUPGS/EE/003",
-      loginPin: "1234",
+      loginPin: "FP3G6N",
       qualification: "B.E., M.Tech, Ph.D.",
       specialization: "Power Electronics & Electrical Drives, Renewable Energy Systems",
       photoUrl:
@@ -212,7 +212,7 @@ async function main() {
       designation: "Assistant Professor",
       departmentCode: "EE",
       employeeId: "CUPGS/EE/004",
-      loginPin: "1234",
+      loginPin: "FP9H4P",
       qualification: "Ph.D.",
       specialization: "Electrical Engineering",
       photoUrl:
@@ -225,7 +225,7 @@ async function main() {
       designation: "Associate Professor",
       departmentCode: "ME",
       employeeId: "CUPGS/ME/001",
-      loginPin: "1234",
+      loginPin: "FP5K8R",
       qualification: "B.E., M.Tech, Ph.D.",
       specialization:
         "Computational Fluid Dynamics, Aerodynamics, Gas Dynamics, Carbon Capture, Aeroacoustics",
@@ -237,7 +237,7 @@ async function main() {
       designation: "Professor",
       departmentCode: "ME",
       employeeId: "CUPGS/ME/002",
-      loginPin: "1234",
+      loginPin: "FP2L3S",
       qualification: "Ph.D., M.Tech., B.Tech.",
       specialization:
         "Alloys & Composites, Casting & Solidification, CFD, Semisolid Materials Processing",
@@ -249,7 +249,7 @@ async function main() {
       designation: "Associate Professor",
       departmentCode: "ME",
       employeeId: "CUPGS/ME/003",
-      loginPin: "1234",
+      loginPin: "FP6M7T",
       qualification: "B.E., M.Tech, Ph.D.",
       specialization: "Mechanics of Materials, Applied Thermodynamics",
       photoUrl:
@@ -262,7 +262,7 @@ async function main() {
       designation: "Associate Professor",
       departmentCode: "CE",
       employeeId: "CUPGS/CE/001",
-      loginPin: "1234",
+      loginPin: "FP4N9U",
       qualification: "B.E., M.Tech, Ph.D.",
       specialization: "Concrete Technology, Sustainable Materials and Technologies",
       photoUrl:
@@ -273,7 +273,7 @@ async function main() {
       designation: "Assistant Professor",
       departmentCode: "CE",
       employeeId: "CUPGS/CE/002",
-      loginPin: "1234",
+      loginPin: "FP8P2V",
       qualification: "B.Tech, M.Tech, Ph.D.",
       specialization:
         "Structural Dynamics, Composite Structures, Vibration and Stability of Plates & Shells",
@@ -285,7 +285,7 @@ async function main() {
       designation: "Associate Professor",
       departmentCode: "CE",
       employeeId: "CUPGS/CE/003",
-      loginPin: "1234",
+      loginPin: "FP1Q5W",
       qualification: "B.Tech, M.Tech, Ph.D.",
       specialization: "Building Engineering, Construction Technology",
       photoUrl:

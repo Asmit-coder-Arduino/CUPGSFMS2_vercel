@@ -22,6 +22,7 @@ import HodDashboard from "./pages/HodDashboard";
 import AdminReports from "./pages/AdminReports";
 import ComplaintForm from "./pages/ComplaintForm";
 import ComplaintsList from "./pages/ComplaintsList";
+import HodManagement from "./pages/HodManagement";
 
 import { AppLayout } from "./components/layout/AppLayout";
 import { HomePageLayout } from "./components/HomePageLayout";
@@ -59,6 +60,7 @@ function DashboardRoutes() {
         <Route path="/feedback" component={FeedbackList} />
         <Route path="/windows" component={Windows} />
         <Route path="/reports" component={AdminReports} />
+        <Route path="/hod-management" component={HodManagement} />
         <Route component={NotFound} />
       </Switch>
     </AppLayout>

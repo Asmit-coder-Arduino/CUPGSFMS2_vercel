@@ -431,3 +431,9 @@ id = "dF_YUzwGOLqs5LwwWybdB"
 uri = "file://exports/CUPGS_Credentials.xlsx"
 type = "table"
 title = "CUPGS Credentials - All Logins"
+
+[[outputs]]
+id = "_2vBn2B7QdyoJX1pEFpfG"
+uri = "file://CUPGS_Credentials_2025.xlsx"
+type = "table"
+title = "CUPGS Credentials 2025 - All Roles"

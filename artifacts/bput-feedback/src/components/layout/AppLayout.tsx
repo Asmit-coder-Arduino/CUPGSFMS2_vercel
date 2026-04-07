@@ -4,7 +4,7 @@ import {
   BookOpen, LayoutDashboard, LineChart, Users, Building,
   Calendar, List, MessageSquare, GraduationCap, LogOut,
   ShieldCheck, Briefcase, Building2, FileDown, Home,
-  Sun, Moon, Zap, FileText, Droplets, Glasses
+  Sun, Moon, Zap, FileText, Droplets, Glasses, UserCog
 } from "lucide-react";
 import { useRole } from "@/contexts/RoleContext";
 import { usePlatform } from "@/hooks/usePlatform";
@@ -60,6 +60,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
     { name: "Courses", href: "/courses", icon: List },
     { name: "Feedback", href: "/feedback", icon: MessageSquare },
     { name: "Windows", href: "/windows", icon: Calendar },
+    { name: "HOD Management", href: "/hod-management", icon: UserCog },
   ];
 
   const navigation =

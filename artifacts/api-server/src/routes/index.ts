@@ -10,6 +10,7 @@ import authRouter from "./auth";
 import formTemplatesRouter from "./formTemplates";
 import complaintsRouter from "./complaints";
 import aiAnalyticsRouter from "./aiAnalytics";
+import adminHodsRouter from "./adminHods";
 
 const router: IRouter = Router();
 
@@ -24,5 +25,6 @@ router.use(analyticsRouter);
 router.use(formTemplatesRouter);
 router.use(complaintsRouter);
 router.use(aiAnalyticsRouter);
+router.use(adminHodsRouter);
 
 export default router;

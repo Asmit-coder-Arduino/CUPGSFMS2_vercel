@@ -34,14 +34,12 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 Tables: `departments`, `faculty`, `courses`, `feedback`, `feedback_windows`, `form_templates`
 
 ### Current Seed Data (Real CUPGS data)
-- **7 departments**: CSE (id=7), ECE (id=8), EE (id=9), ME (id=10), CE (id=11), IT (id=12), ChE (id=13)
-  - CUPGS actively uses 5 departments: CSE, ECE, EE, ME, CE
-- **18 faculty**: Real CUPGS faculty scraped from bput.ac.in, employee IDs (`CUPGS/DEPT/NUM`), PIN format `CUPGS_{DEPT}_{NNN}#` (e.g. `CUPGS_CSE_001#`)
-  - HOD logins: PIN format `HOD_{DEPT}_@2025#` (e.g. `HOD_CSE_@2025#`), Employee ID `HOD/DEPT/001`
+- **5 departments**: CSE, ECE, EE, ME, CE
+- **18 faculty**: Real CUPGS faculty from bput.ac.in, employee IDs (`CUPGS/DEPT/NUM`), unique 6-char alphanumeric PINs (e.g. `FP7K2M`)
+  - HOD logins: Unique 6-char PINs (e.g. `HD4X7A`), Employee ID `HOD/DEPT/001`
 - Real HODs: CSE=Dr. Debashreet Das, ECE=Dr. Prakash Kumar Panda, EE=Dr. Manas Ranjan Nayak, ME=Dr. Atal Bihari Harichandan, CE=Dr. Bibhuti Bhusan Mukharjee
-- **40 courses**: Realistic BPUT curriculum, Semesters 5 & 6, academic year 2024-25
-- **2 feedback windows**: 1 active (Even Sem End 2024-25), 1 closed
-- **126+ feedback entries**: Seeded across 12 courses
+- **49 courses**: Realistic BPUT curriculum, Semesters 1-7, academic year 2025-26
+- **All credentials in**: `CUPGS_Credentials_2025.xlsx` (3 sheets: Faculty, HODs, Admin)
 
 ### Feedback Rating Parameters (0.5–5.0, stored as REAL)
 - `rating_course_content`, `rating_teaching_quality`, `rating_lab_facilities`, `rating_study_material`, `rating_overall`
@@ -53,17 +51,15 @@ Tables: `departments`, `faculty`, `courses`, `feedback`, `feedback_windows`, `fo
 ### Reference ID Format
 `BPUT-{randomChars}` — generated on submission, returned to user
 
-## HOD Credentials (All 7 Branches)
+## HOD Credentials (5 Active Departments)
 
 | Department | HOD Name | Employee ID | PIN |
 |---|---|---|---|
-| CSE | Dr. Srikanta Patnaik | `HOD/CSE/001` | `HOD_CSE_@2025#` |
-| ECE | Dr. Pradipta Kumar Sahu | `HOD/ECE/001` | `HOD_ECE_@2025#` |
-| EE | Dr. Rabi Narayan Mahapatra | `HOD/EE/001` | `HOD_EE_@2025#` |
-| ME | Prof. Srihari Rath | `HOD/ME/001` | `HOD_ME_@2025#` |
-| CE | Prof. Subhendu Sekhar Dey | `HOD/CE/001` | `HOD_CE_@2025#` |
-| IT | Prof. Binod Kumar Pattanayak | `HOD/IT/001` | `HOD_IT_@2025#` |
-| ChE | Prof. Sarat Kumar Patel | `HOD/CHE/001` | `HOD_CHE_@2025#` |
+| CSE | Dr. Debashreet Das | `HOD/CSE/001` | `HD4X7A` |
+| ECE | Dr. Prakash Kumar Panda | `HOD/ECE/001` | `HD8Y3B` |
+| EE | Dr. Manas Ranjan Nayak | `HOD/EE/001` | `HD2Z6C` |
+| ME | Dr. Atal Bihari Harichandan | `HOD/ME/001` | `HD6W9D` |
+| CE | Dr. Bibhuti Bhusan Mukharjee | `HOD/CE/001` | `HD3V5E` |
 
 ## Role-Based Access Control
 
@@ -128,7 +124,7 @@ code, name, semester, academicYear, credits, facultyId (null to unassign)
 - **Serial Number**: Each feedback gets a serial number in format `CUPGS/FB/00001`
 - **Thank You Receipt**: After submission, students see a detailed receipt with download button (downloads as styled HTML file with all submission details)
 - **Feedback Tracking**: Students can track their feedback status using Reference ID on the home page. Backend: `GET /api/feedback/track/:referenceId`
-- **Admin HOD Management**: Dashboard includes HOD management section where admin can edit HOD name, employee ID, and PIN for each department. Backend: `PATCH /api/departments/:id`
+- **Admin HOD Management**: Dedicated HOD Management page (`/hod-management`) in admin sidebar. Admin can view/edit HOD name, employee ID, and PIN for each department with show/hide PIN toggle. Backend: `GET/PUT /api/admin/hods`. Faculty list per department also shown.
 - **Faculty Photos**: All 18 faculty have AI-generated portrait photos at `/faculty-photos/faculty_{dept}_{num}.png`
 - **Instagram-style Top Teachers**: Home page shows top 3 teachers with photos, like/heart button, star ratings, and detailed modal with AI analysis
 - **Complaint Box**: Students can submit complaints (anonymous or named); HODs see department-specific complaints; Admin sees all; real-time SSE notifications
@@ -141,8 +137,8 @@ code, name, semester, academicYear, credits, facultyId (null to unassign)
 ## Key Conventions
 - API base URL: relative (`""`) — Replit proxy routes `/api/*` to the API server
 - Faculty employee ID format: `CUPGS/DEPT/NUM` (e.g. `CUPGS/CSE/001`)
-- Faculty PIN format: `CUPGS_{DEPT}_{NNN}#` (e.g. `CUPGS_CSE_001#`)
-- HOD PIN format: `HOD_{DEPT}_@2025#` (e.g. `HOD_CSE_@2025#`)
+- Faculty PIN format: Unique 6-char alphanumeric (e.g. `FP7K2M`)
+- HOD PIN format: Unique 6-char alphanumeric (e.g. `HD4X7A`)
 - Admin password: via env var `ADMIN_PASSWORD` (stored in session after login for API auth headers)
 - Security: API responses strip `loginPin` from faculty, `hodPin` from departments, and `ipAddress` from all feedback/complaint responses
 - All feedback is anonymous by default
