@@ -26,7 +26,7 @@ interface GlassModeContextType {
 }
 
 const GlassModeContext = createContext<GlassModeContextType>({
-  glassMode: "classic",
+  glassMode: "liquid",
   toggleGlassMode: () => {},
   isLiquid: false,
   settings: DEFAULT_SETTINGS,
@@ -40,7 +40,7 @@ export function GlassModeProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem("cupgs-glass-mode") as GlassMode | null;
       if (saved === "classic" || saved === "liquid") return saved;
     } catch {}
-    return "classic";
+    return "liquid";
   });
 
   const [settings, setSettings] = useState<GlassSettings>(() => {
