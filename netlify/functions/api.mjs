@@ -83445,7 +83445,17 @@ app.use((err, _req, res, _next) => {
 var app_default = app;
 
 // src/netlify-function.ts
-var handler = (0, import_serverless_http.default)(app_default);
+var handler_fn = (0, import_serverless_http.default)(app_default, {
+  request(req) {
+    if (req.url && !req.url.startsWith("/api")) {
+      req.url = "/api" + req.url;
+    }
+  }
+});
+var handler = async (event, context) => {
+  console.log("[netlify-fn] path:", event.path, "method:", event.httpMethod);
+  return handler_fn(event, context);
+};
 export {
   handler
 };
