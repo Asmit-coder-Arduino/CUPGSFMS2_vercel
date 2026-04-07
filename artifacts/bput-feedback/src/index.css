@@ -687,6 +687,7 @@ body {
 .liquid-glass {
   --lg-blur: 8px;
   --lg-opacity: 0.06;
+  --lg-level: 1;
   --lg-border: 0;
 }
 
@@ -1158,4 +1159,52 @@ body {
 .liquid-glass [role="dialog"] > * {
   position: relative;
   z-index: 1;
+}
+
+/* --- CRITICAL: Disable ALL backdrop-filter when dialog is open --- */
+/* Prevents GPU freeze from stacked blur effects behind modal overlay */
+html.liquid-glass:has([role="dialog"]) .glass-card,
+html.liquid-glass:has([role="dialog"]) .glass,
+html.liquid-glass:has([role="dialog"]) .glass-strong,
+html.liquid-glass:has([role="dialog"]) .stat-card,
+html.liquid-glass:has([role="dialog"]) .lg-sidebar,
+html.liquid-glass:has([role="dialog"]) .glass-nav-item.active,
+html.liquid-glass:has([role="dialog"]) .btn-gradient-blue,
+html.liquid-glass:has([role="dialog"]) .btn-gradient-teal,
+html.liquid-glass:has([role="dialog"]) .btn-gradient-indigo,
+html.liquid-glass:has([role="dialog"]) .btn-gradient-slate,
+html.liquid-glass:has([role="dialog"]) .theme-toggle,
+html.liquid-glass:has([role="dialog"]) .lg-toggle-btn,
+html.liquid-glass:has([role="dialog"]) .hero-badge,
+html.liquid-glass:has([role="dialog"]) .icon-circle-blue,
+html.liquid-glass:has([role="dialog"]) .icon-circle-teal,
+html.liquid-glass:has([role="dialog"]) .icon-circle-indigo,
+html.liquid-glass:has([role="dialog"]) .icon-circle-slate,
+html.liquid-glass:has([role="dialog"]) .lg-mobile-bar,
+html.liquid-glass:has([role="dialog"]) .input-glass,
+html.liquid-glass:has([role="dialog"]) .lg-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+html.liquid-glass:has([role="dialog"]) .glass-card::after,
+html.liquid-glass:has([role="dialog"]) .glass::after,
+html.liquid-glass:has([role="dialog"]) .glass-strong::after,
+html.liquid-glass:has([role="dialog"]) .stat-card::after,
+html.liquid-glass:has([role="dialog"]) .lg-sidebar::after,
+html.liquid-glass:has([role="dialog"]) .glass-nav-item.active::after,
+html.liquid-glass:has([role="dialog"]) .btn-gradient-blue::after,
+html.liquid-glass:has([role="dialog"]) .btn-gradient-teal::after,
+html.liquid-glass:has([role="dialog"]) .btn-gradient-indigo::after,
+html.liquid-glass:has([role="dialog"]) .btn-gradient-slate::after,
+html.liquid-glass:has([role="dialog"]) .theme-toggle::after,
+html.liquid-glass:has([role="dialog"]) .lg-toggle-btn::after,
+html.liquid-glass:has([role="dialog"]) .hero-badge::after,
+html.liquid-glass:has([role="dialog"]) .icon-circle-blue::after,
+html.liquid-glass:has([role="dialog"]) .icon-circle-teal::after,
+html.liquid-glass:has([role="dialog"]) .icon-circle-indigo::after,
+html.liquid-glass:has([role="dialog"]) .icon-circle-slate::after,
+html.liquid-glass:has([role="dialog"]) .lg-mobile-bar::after,
+html.liquid-glass:has([role="dialog"]) .lg-card::after {
+  filter: none !important;
+  -webkit-filter: none !important;
 }

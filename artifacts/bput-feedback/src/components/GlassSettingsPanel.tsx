@@ -112,6 +112,15 @@ export function GlassSettingsPanel() {
             onChange={v => updateSettings({ opacity: v })}
           />
           <SliderRow
+            label="Liquid Level"
+            value={settings.level}
+            min={0}
+            max={3}
+            step={0.1}
+            unit="x"
+            onChange={v => updateSettings({ level: v })}
+          />
+          <SliderRow
             label="Border"
             value={settings.border}
             min={0}
@@ -142,7 +151,9 @@ function SliderRow({
   displayMultiplier?: number;
   displayUnit?: string;
 }) {
-  const displayVal = displayMultiplier ? Math.round(value * displayMultiplier) : Math.round(value);
+  const displayVal = displayMultiplier
+    ? Math.round(value * displayMultiplier)
+    : (step < 1 ? value.toFixed(1) : Math.round(value));
   const suffix = displayUnit ?? unit;
 
   return (
