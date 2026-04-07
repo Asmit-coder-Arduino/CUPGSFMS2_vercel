@@ -3,6 +3,8 @@ import { db, complaintsTable, departmentsTable } from "@workspace/db";
 import { eq, desc, and } from "drizzle-orm";
 import { z } from "zod";
 import { containsProfanity } from "../lib/profanityFilter";
+import { complaintEvents } from "../lib/complaintEvents";
+import { randomUUID } from "crypto";
 
 const router: IRouter = Router();
 
@@ -68,6 +70,15 @@ router.post("/complaints", async (req, res): Promise<void> => {
     isAnonymous: data.isAnonymous,
     ipAddress: clientIp,
   }).returning();
+
+  const [dept] = await db.select({ name: departmentsTable.name }).from(departmentsTable).where(eq(departmentsTable.id, data.departmentId));
+
+  complaintEvents.notifyNewComplaint({
+    ...complaint,
+    departmentName: dept?.name || "",
+    studentName: data.studentName,
+    isAnonymous: data.isAnonymous,
+  });
 
   res.status(201).json({
     ...complaint,
@@ -200,6 +211,41 @@ router.delete("/complaints/:id", async (req, res): Promise<void> => {
   }
 
   res.json({ message: "Complaint deleted" });
+});
+
+router.get("/complaints/events/stream", (req, res): void => {
+  const role = req.query.role as string;
+  const departmentId = req.query.departmentId ? parseInt(req.query.departmentId as string, 10) : undefined;
+
+  if (role !== "admin" && role !== "hod") {
+    res.status(403).json({ error: "Unauthorized" });
+    return;
+  }
+
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+    "X-Accel-Buffering": "no",
+  });
+
+  res.write(`data: ${JSON.stringify({ type: "connected" })}\n\n`);
+
+  const clientId = randomUUID();
+  complaintEvents.addClient({
+    id: clientId,
+    res,
+    role: role as "admin" | "hod",
+    departmentId,
+  });
+
+  const keepAlive = setInterval(() => {
+    try { res.write(": keepalive\n\n"); } catch { clearInterval(keepAlive); }
+  }, 30000);
+
+  req.on("close", () => {
+    clearInterval(keepAlive);
+  });
 });
 
 export default router;

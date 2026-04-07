@@ -11,6 +11,7 @@ import { usePlatform } from "@/hooks/usePlatform";
 import { useTheme } from "@/contexts/ThemeContext";
 import { CupgsLogo } from "@/components/CupgsLogo";
 import { BackgroundSlideshow } from "@/components/BackgroundSlideshow";
+import { ComplaintNotifications } from "@/components/ComplaintNotifications";
 
 type NavItem = { name: string; href: string; icon: React.ElementType };
 
@@ -139,6 +140,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <h1 className="text-sm font-extrabold tracking-tight text-white leading-tight">CUPGS Feedback</h1>
             <p className="text-[10px] mt-0.5" style={{ color: "rgba(196,181,253,0.5)" }}>Academic Feedback System</p>
           </div>
+          <ComplaintNotifications />
           <ThemeToggle />
         </div>
 
@@ -217,6 +219,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <span className="font-extrabold text-sm text-foreground tracking-tight">CUPGS Feedback</span>
           </div>
           <div className="flex items-center gap-2">
+            <ComplaintNotifications />
             <ThemeToggle size="sm" />
             {avatar && (
               <>
