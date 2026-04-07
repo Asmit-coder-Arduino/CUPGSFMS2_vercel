@@ -10,6 +10,7 @@ import {
   Droplets, Glasses
 } from "lucide-react";
 import { CupgsLogo } from "@/components/CupgsLogo";
+import { getAcademicYear } from "@/lib/utils";
 import { BackgroundSlideshow } from "@/components/BackgroundSlideshow";
 import { GlassSettingsPanel } from "@/components/GlassSettingsPanel";
 
@@ -148,7 +149,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
                 <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
                   style={{ background: "rgba(16,185,129,0.15)", color: "#6ee7b7" }}>
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Live · 2024–25
+                  Live · {getAcademicYear()}
                 </span>
               </div>
             </div>
@@ -329,7 +330,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
               © 2025 Biju Patnaik University of Technology, Rourkela. All Rights Reserved.
             </div>
             <div className="text-[11px]" style={{ color: "rgba(139,92,246,0.6)" }}>
-              CUPGS Feedback Management System · Academic Year 2024–25
+              CUPGS Feedback Management System · Academic Year {getAcademicYear()}
             </div>
           </div>
         </div>

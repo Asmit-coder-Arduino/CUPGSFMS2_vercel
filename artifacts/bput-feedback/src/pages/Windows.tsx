@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useListWindows, useCreateWindow, useUpdateWindow, getListWindowsQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { getAcademicYear } from "@/lib/utils";
 
 const feedbackTypeLabels: Record<string, string> = {
   semester_end: "Semester End",
@@ -16,7 +17,7 @@ export default function Windows() {
   const queryClient = useQueryClient();
 
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ title: "", feedbackType: "semester_end", academicYear: "2024-25", semester: "5", startDate: "", endDate: "" });
+  const [form, setForm] = useState({ title: "", feedbackType: "semester_end", academicYear: getAcademicYear(), semester: "5", startDate: "", endDate: "" });
   const [error, setError] = useState("");
 
   const handleCreate = (e: React.FormEvent) => {
@@ -36,7 +37,7 @@ export default function Windows() {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getListWindowsQueryKey() });
         setShowForm(false);
-        setForm({ title: "", feedbackType: "semester_end", academicYear: "2024-25", semester: "5", startDate: "", endDate: "" });
+        setForm({ title: "", feedbackType: "semester_end", academicYear: getAcademicYear(), semester: "5", startDate: "", endDate: "" });
       },
       onError: () => setError("Failed to create window.")
     });
@@ -66,7 +67,7 @@ export default function Windows() {
           {error && <div className="text-sm text-destructive">{error}</div>}
           <div className="space-y-1">
             <label className="text-sm font-medium">Title <span className="text-destructive">*</span></label>
-            <input type="text" className="w-full border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary" placeholder="e.g. Semester 5 End Feedback 2024-25" value={form.title} onChange={e => setForm(f => ({...f, title: e.target.value}))} />
+            <input type="text" className="w-full border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary" placeholder={`e.g. Semester 5 End Feedback ${getAcademicYear()}`} value={form.title} onChange={e => setForm(f => ({...f, title: e.target.value}))} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
@@ -97,7 +98,7 @@ export default function Windows() {
           </div>
           <div className="space-y-1">
             <label className="text-sm font-medium">Academic Year</label>
-            <input type="text" className="w-full border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary" placeholder="e.g. 2024-25" value={form.academicYear} onChange={e => setForm(f => ({...f, academicYear: e.target.value}))} />
+            <input type="text" className="w-full border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary" placeholder={`e.g. ${getAcademicYear()}`} value={form.academicYear} onChange={e => setForm(f => ({...f, academicYear: e.target.value}))} />
           </div>
           <button type="submit" disabled={createWindow.isPending} className="w-full bg-primary text-primary-foreground py-2 rounded-md text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity">
             {createWindow.isPending ? "Creating..." : "Create Window"}

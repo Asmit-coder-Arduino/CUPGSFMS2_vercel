@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useRole } from "@/contexts/RoleContext";
 import { getApiUrl } from "@/lib/api";
+import { getAcademicYear } from "@/lib/utils";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
@@ -126,19 +127,17 @@ function HeroSection({ role, faculty, hod, student, logout }: {
         style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 25%, transparent 70%, rgba(0,0,0,0.4) 100%)" }} />
 
       {displayName && (
-        <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full"
-          style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.12)" }}>
+        <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
           <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#a78bfa" }} />
-          <span className="text-white/85 text-xs font-medium">{displayName}</span>
+          <span className="text-white/70 text-xs font-medium">{displayName}</span>
           <button onClick={logout}
             className="text-[10px] text-white/35 hover:text-white/80 transition-colors ml-1">✕</button>
         </div>
       )}
 
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-        style={{ background: "rgba(255,255,255,0.07)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)" }}>
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5">
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="text-[10px] font-medium text-white/60 tracking-widest uppercase">Live · 2025-26</span>
+        <span className="text-[10px] font-medium text-white/50 tracking-widest uppercase">Live · {getAcademicYear()}</span>
       </div>
 
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 py-10">

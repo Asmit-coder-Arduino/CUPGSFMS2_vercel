@@ -171,7 +171,13 @@ function ConfirmDialog({ title, message, onConfirm, onCancel, loading }: {
 // ─── Faculty Form Modal ───────────────────────────────────────────────────────
 
 const DESIGNATIONS = ["Professor", "Associate Professor", "Assistant Professor", "Lecturer", "Lab Instructor", "HOD"];
-const ACADEMIC_YEARS = ["2023-24", "2024-25", "2025-26"];
+const ACADEMIC_YEARS = (() => {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = now.getMonth() + 1;
+  const base = m >= 7 ? y : y - 1;
+  return [`${base - 2}-${String(base - 1).slice(2)}`, `${base - 1}-${String(base).slice(2)}`, `${base}-${String(base + 1).slice(2)}`];
+})();
 
 interface FacultyFormData {
   name: string; designation: string; email: string;
@@ -308,7 +314,7 @@ function CourseModal({ deptId, faculty, initial, onClose, onSaved }: {
     code: initial?.code ?? "",
     name: initial?.name ?? "",
     semester: String(initial?.semester ?? "1"),
-    academicYear: initial?.academicYear ?? "2024-25",
+    academicYear: initial?.academicYear ?? ACADEMIC_YEARS[ACADEMIC_YEARS.length - 1],
     credits: String(initial?.credits ?? "4"),
     facultyId: String(initial?.facultyId ?? ""),
   });
@@ -484,7 +490,7 @@ function CreateWindowModal({ deptId, onClose, onSaved }: {
 }) {
   const today = new Date().toISOString().split("T")[0];
   const [form, setForm] = useState({
-    title: "", feedbackType: "semester_end", academicYear: "2024-25",
+    title: "", feedbackType: "semester_end", academicYear: ACADEMIC_YEARS[ACADEMIC_YEARS.length - 1],
     semester: "1", startDate: today, endDate: "", forAll: true,
   });
   const [saving, setSaving] = useState(false);
@@ -518,7 +524,7 @@ function CreateWindowModal({ deptId, onClose, onSaved }: {
         {error && <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-3 py-2">{error}</div>}
 
         <InputField label="Window Title" required>
-          <input className={inputCls} placeholder="Even Semester End Feedback 2024-25" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
+          <input className={inputCls} placeholder={`Even Semester End Feedback ${ACADEMIC_YEARS[ACADEMIC_YEARS.length - 1]}`} value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
         </InputField>
 
         <div className="grid grid-cols-2 gap-3">

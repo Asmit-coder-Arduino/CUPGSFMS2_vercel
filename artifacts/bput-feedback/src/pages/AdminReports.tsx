@@ -3,6 +3,7 @@ import { useRole } from "@/contexts/RoleContext";
 import { useLocation } from "wouter";
 import { useListDepartments } from "@workspace/api-client-react";
 import { getApiUrl } from "@/lib/api";
+import { getAcademicYear } from "@/lib/utils";
 import { getCupgsLogoDataUrl } from "@/lib/pdfLogo";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -59,7 +60,7 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, generatedAt:
   doc.text(subtitle, pw / 2, 54, { align: "center" });
 
   doc.setFontSize(9);
-  doc.text("Academic Year: 2024-25 | Even Semester End Feedback", pw / 2, 64, { align: "center" });
+  doc.text(`Academic Year: ${getAcademicYear()} | Even Semester End Feedback`, pw / 2, 64, { align: "center" });
 
   doc.setFillColor(230, 240, 255);
   doc.roundedRect(25, 95, pw - 50, 28, 3, 3, "F");
@@ -866,7 +867,7 @@ export default function AdminReports() {
           </div>
           <div className="space-y-1.5">
             <p className="font-semibold text-foreground mb-1">Report Details</p>
-            <div>Academic Year: 2024-25</div>
+            <div>Academic Year: {getAcademicYear()}</div>
             <div>Semester: Even (Sem 6)</div>
             <div>Rating Scale: 1–5</div>
             <div>Classification: Confidential</div>

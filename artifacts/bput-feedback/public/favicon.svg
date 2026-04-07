@@ -1,23 +1,10 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="180" y2="180">
+    <linearGradient id="bg" x1="0" y1="0" x2="32" y2="32">
       <stop offset="0%" stop-color="#7c3aed"/>
-      <stop offset="50%" stop-color="#6366f1"/>
       <stop offset="100%" stop-color="#2563eb"/>
     </linearGradient>
-    <linearGradient id="star" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#fbbf24"/>
-      <stop offset="100%" stop-color="#f59e0b"/>
-    </linearGradient>
   </defs>
-  <rect width="180" height="180" rx="36" fill="url(#bg)"/>
-  <rect x="32" y="60" width="80" height="60" rx="10" fill="white" fill-opacity="0.95"/>
-  <rect x="42" y="76" width="50" height="4" rx="2" fill="#7c3aed" fill-opacity="0.4"/>
-  <rect x="42" y="86" width="38" height="4" rx="2" fill="#7c3aed" fill-opacity="0.3"/>
-  <rect x="42" y="96" width="55" height="4" rx="2" fill="#7c3aed" fill-opacity="0.2"/>
-  <path d="M78 50 L122 50 Q132 50 132 60 L132 95 Q132 105 122 105 L108 105 L100 115 L92 105 L78 105 Q68 105 68 95 L68 60 Q68 50 78 50Z" fill="#1e1b4b" fill-opacity="0.9"/>
-  <polygon points="88,68 90,75 97,75 91,79 93,86 88,82 83,86 85,79 79,75 86,75" fill="url(#star)"/>
-  <polygon points="112,68 114,75 121,75 115,79 117,86 112,82 107,86 109,79 103,75 110,75" fill="url(#star)"/>
-  <path d="M125 118 C125 118 130 110 140 110 C150 110 155 118 155 124 C155 130 145 140 140 145 C135 140 125 130 125 124 C125 118 125 118 125 118Z" fill="#f43f5e" fill-opacity="0.9"/>
-  <path d="M133 140 L133 155 L140 150 L147 155 L147 140" fill="#fbbf24" fill-opacity="0.8"/>
+  <rect width="32" height="32" rx="8" fill="url(#bg)"/>
+  <text x="16" y="23" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="20" fill="white">B</text>
 </svg>

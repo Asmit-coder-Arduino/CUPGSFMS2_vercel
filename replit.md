@@ -119,6 +119,11 @@ code, name, semester, academicYear, credits, facultyId (null to unassign)
 - **Feedback Windows**: Create/toggle active/inactive windows; progress bar for running windows; status badges
 - **Form Builder**: Customize feedback forms per department
 
+## Dynamic Academic Year
+- All academic year references are computed dynamically via `getAcademicYear()` from `@/lib/utils`
+- Logic: if month >= July → `currentYear-nextYear`, else `prevYear-currentYear` (e.g. April 2026 → "2025-26")
+- Used in: Hero badge, HomePageLayout header/footer, Windows form, HodDashboard forms, AdminReports PDF
+
 ## Recent Features Added
 - **IP Address Tracking**: Feedback submissions capture client IP internally (for abuse prevention only), never exposed in API responses, receipts, or admin views
 - **Serial Number**: Each feedback gets a serial number in format `CUPGS/FB/00001`
