@@ -141,7 +141,7 @@ function HeroSection({ role, faculty, hod, student, logout }: {
 
         <h1 className="text-center font-bold text-2xl md:text-3xl leading-snug mb-2"
           style={{
-            background: "linear-gradient(90deg, #fbbf24, #f59e0b, #eab308)",
+            background: "linear-gradient(90deg, #60a5fa, #3b82f6, #1d4ed8)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
