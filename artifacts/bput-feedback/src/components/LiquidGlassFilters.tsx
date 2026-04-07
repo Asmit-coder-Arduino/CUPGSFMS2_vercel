@@ -4,11 +4,13 @@ const FILTER_CSS = `
 .liquid-glass .glass-card::after,
 .liquid-glass .glass::after,
 .liquid-glass .glass-strong::after,
-.liquid-glass .stat-card::after {
+.liquid-glass .stat-card::after,
+.liquid-glass .lg-card::after {
   filter: url(#liquid-glass-card);
   -webkit-filter: url(#liquid-glass-card);
 }
-.liquid-glass .lg-sidebar::after {
+.liquid-glass .lg-sidebar::after,
+.liquid-glass .lg-mobile-bar::after {
   filter: url(#liquid-glass-sidebar);
   -webkit-filter: url(#liquid-glass-sidebar);
 }
@@ -21,7 +23,16 @@ const FILTER_CSS = `
 .liquid-glass .btn-gradient-indigo::after,
 .liquid-glass .btn-gradient-slate::after,
 .liquid-glass .theme-toggle::after,
-.liquid-glass .lg-toggle-btn::after {
+.liquid-glass .lg-toggle-btn::after,
+.liquid-glass .hero-badge::after,
+.liquid-glass .icon-circle-blue::after,
+.liquid-glass .icon-circle-teal::after,
+.liquid-glass .icon-circle-indigo::after,
+.liquid-glass .icon-circle-slate::after,
+.liquid-glass .accent-line-blue::after,
+.liquid-glass .accent-line-teal::after,
+.liquid-glass .accent-line-indigo::after,
+.liquid-glass .accent-line-slate::after {
   filter: url(#liquid-glass-btn);
   -webkit-filter: url(#liquid-glass-btn);
 }
