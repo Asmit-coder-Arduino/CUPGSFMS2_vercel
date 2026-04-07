@@ -3,6 +3,16 @@ import { Pin, PinOff, ChevronLeft, ChevronRight } from "lucide-react";
 import { useGlassMode } from "@/contexts/GlassModeContext";
 
 const BG_IMAGES = [
+  { src: "/bg-glass-violet.png", label: "Glass Violet" },
+  { src: "/bg-aurora-lake.png", label: "Aurora Lake" },
+  { src: "/bg-holo-grid.png", label: "Holo Grid" },
+  { src: "/bg-golden-peaks.png", label: "Golden Peaks" },
+  { src: "/bg-iridescent-bubble.png", label: "Iridescent" },
+  { src: "/bg-bioluminescent-ocean.png", label: "Deep Glow" },
+  { src: "/bg-silk-emerald.png", label: "Silk Emerald" },
+  { src: "/bg-sakura-twilight.png", label: "Sakura Dusk" },
+  { src: "/bg-cyber-rain.png", label: "Cyber Rain" },
+  { src: "/bg-molten-gold.png", label: "Molten Gold" },
   { src: "/bg-aurora.png", label: "Aurora" },
   { src: "/bg-nebula.png", label: "Nebula" },
   { src: "/bg-liquid.png", label: "Liquid" },

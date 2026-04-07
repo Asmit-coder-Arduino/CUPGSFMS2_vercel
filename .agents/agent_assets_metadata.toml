@@ -390,6 +390,66 @@ uri = "file://attached_assets/generated_images/faculty_ce_003.png"
 type = "image"
 title = "Dr Bharadwaj Nanda portrait"
 
+[[generated]]
+id = "SE2djggsBJkvh9Ag1Lh5V"
+uri = "file://artifacts/bput-feedback/public/bg-glass-violet.png"
+type = "image"
+title = "glass violet gradient"
+
+[[generated]]
+id = "V8xsCuC3FRZrLd-dtOwtF"
+uri = "file://artifacts/bput-feedback/public/bg-aurora-lake.png"
+type = "image"
+title = "aurora reflective lake"
+
+[[generated]]
+id = "Pplwdc-PK6U8DzQiczAZl"
+uri = "file://artifacts/bput-feedback/public/bg-holo-grid.png"
+type = "image"
+title = "holographic grid cosmos"
+
+[[generated]]
+id = "V6KGOEQgXCkpDJc0CwxiF"
+uri = "file://artifacts/bput-feedback/public/bg-golden-peaks.png"
+type = "image"
+title = "golden sunrise mountain peaks"
+
+[[generated]]
+id = "WWvxH1Y97he0HTfgVAuxi"
+uri = "file://artifacts/bput-feedback/public/bg-iridescent-bubble.png"
+type = "image"
+title = "iridescent bubble macro"
+
+[[generated]]
+id = "ZDrKGpk0feMQESh3X7xpZ"
+uri = "file://artifacts/bput-feedback/public/bg-bioluminescent-ocean.png"
+type = "image"
+title = "bioluminescent ocean glow"
+
+[[generated]]
+id = "1PGsIYl_Bz_5-XjJXW0-2"
+uri = "file://artifacts/bput-feedback/public/bg-silk-emerald.png"
+type = "image"
+title = "emerald gold silk fabric"
+
+[[generated]]
+id = "hrG-YCEtnRPFMLH_sqeKv"
+uri = "file://artifacts/bput-feedback/public/bg-sakura-twilight.png"
+type = "image"
+title = "sakura twilight petals"
+
+[[generated]]
+id = "pSsROxXQUcXzWneW9lmP3"
+uri = "file://artifacts/bput-feedback/public/bg-cyber-rain.png"
+type = "image"
+title = "cyberpunk rainy cityscape"
+
+[[generated]]
+id = "p7lc0Kq4SQCCIebBbrG9D"
+uri = "file://artifacts/bput-feedback/public/bg-molten-gold.png"
+type = "image"
+title = "molten gold lava flow"
+
 [[outputs]]
 id = "DNYPbFPAJjS-si0mrrbw9"
 uri = "file://CUPGS_All_Credentials.xlsx"
