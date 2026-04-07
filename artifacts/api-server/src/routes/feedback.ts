@@ -76,7 +76,7 @@ router.get("/feedback", async (req, res): Promise<void> => {
     .limit(100);
 
   const enriched = await Promise.all(feedbackList.map(enrichFeedback));
-  res.json(enriched);
+  res.json(enriched.map(({ ipAddress, ...rest }: any) => rest));
 });
 
 router.post("/feedback", async (req, res): Promise<void> => {
@@ -152,7 +152,7 @@ router.post("/feedback", async (req, res): Promise<void> => {
 
   const serialNumber = `CUPGS/FB/${String(feedback.id).padStart(5, "0")}`;
   const enriched = await enrichFeedback(feedback);
-  res.status(201).json({ ...enriched, serialNumber, ipAddress: clientIp });
+  res.status(201).json({ ...enriched, serialNumber });
 });
 
 router.get("/feedback/:id", async (req, res): Promise<void> => {
@@ -174,7 +174,8 @@ router.get("/feedback/:id", async (req, res): Promise<void> => {
   }
 
   const enriched = await enrichFeedback(feedback);
-  res.json(enriched);
+  const { ipAddress, ...safeData } = enriched as any;
+  res.json(safeData);
 });
 
 router.get("/feedback/track/:referenceId", async (req, res): Promise<void> => {
@@ -278,7 +279,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8f9fa;padding:16px
 <div class="row"><span class="label">Form Serial No.</span><span class="value">${serialNumber}</span></div>
 <div class="row"><span class="label">Date</span><span class="value">${dateStr}</span></div>
 <div class="row"><span class="label">Time</span><span class="value">${timeStr}</span></div>
-<div class="row"><span class="label">IP Address</span><span class="value">${feedback.ipAddress || "N/A"}</span></div>
+<div class="row"><span class="label">Submission</span><span class="value">Verified ✓</span></div>
 <div class="section-title">Course & Faculty</div>
 <div class="row"><span class="label">Department</span><span class="value">${enriched.departmentName || "N/A"}</span></div>
 <div class="row"><span class="label">Course</span><span class="value">[${enriched.courseCode}] ${enriched.courseName}</span></div>

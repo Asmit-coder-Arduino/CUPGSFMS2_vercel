@@ -577,8 +577,8 @@ export default function SubmitFeedback() {
               <p className="font-semibold text-amber-600">{"★".repeat(Math.round(submitted.ratingOverall))}{"☆".repeat(5 - Math.round(submitted.ratingOverall))} {submitted.ratingOverall}/5</p>
             </div>
             <div className="bg-muted/50 rounded-lg p-3">
-              <p className="text-xs text-muted-foreground">IP Address</p>
-              <p className="font-semibold font-mono text-xs">{submitted.ipAddress}</p>
+              <p className="text-xs text-muted-foreground">Submission</p>
+              <p className="font-semibold text-xs text-green-600">Verified ✓</p>
             </div>
           </div>
 

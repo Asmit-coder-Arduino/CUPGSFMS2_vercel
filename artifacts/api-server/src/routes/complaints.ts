@@ -76,12 +76,13 @@ router.post("/complaints", async (req, res): Promise<void> => {
   complaintEvents.notifyNewComplaint({
     ...complaint,
     departmentName: dept?.name || "",
-    studentName: data.studentName,
+    studentName: data.isAnonymous ? "Anonymous" : data.studentName,
     isAnonymous: data.isAnonymous,
   });
 
+  const { ipAddress: _ip, ...safeComplaint } = complaint;
   res.status(201).json({
-    ...complaint,
+    ...safeComplaint,
     message: "Complaint submitted successfully",
   });
 });

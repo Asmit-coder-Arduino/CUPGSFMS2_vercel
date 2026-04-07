@@ -20,6 +20,7 @@ import {
   MessageCircle, Brain, X, Search, Loader2,
 } from "lucide-react";
 import { CupgsLogo } from "@/components/CupgsLogo";
+import { FacultyAIAnalysis } from "@/components/FacultyAIAnalysis";
 
 /* ─────────────────────────────────
    BPUT Campus slide data
@@ -243,6 +244,7 @@ function FacultyDetailModal({ facultyId, open, onClose }: { facultyId: number | 
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [likeAnimating, setLikeAnimating] = useState(false);
+  const [showAIAnalysis, setShowAIAnalysis] = useState(false);
 
   useEffect(() => {
     if (!open || !facultyId) return;
@@ -329,14 +331,27 @@ function FacultyDetailModal({ facultyId, open, onClose }: { facultyId: number | 
               <p className="text-center text-[10px] text-white/30 mt-1.5">{detail.ratings.totalFeedback} total reviews</p>
             </div>
 
-            {detail.aiAnalysis && (
-              <div className="mx-6 mb-4 p-4 rounded-2xl" style={{ background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.15)" }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <Brain className="w-4 h-4 text-violet-400" />
-                  <span className="text-xs font-bold text-violet-300">AI Analysis</span>
+            <div className="mx-6 mb-4">
+              <button
+                onClick={() => setShowAIAnalysis(true)}
+                className="w-full p-4 rounded-2xl flex items-center justify-between group transition-all hover:scale-[1.01]"
+                style={{ background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.15)" }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-violet-500/20">
+                    <Brain className="w-5 h-5 text-violet-400" />
+                  </div>
+                  <div className="text-left">
+                    <span className="text-sm font-bold text-violet-300 block">AI Performance Analysis</span>
+                    <span className="text-[10px] text-white/40">Powered by AI · Click to view detailed insights</span>
+                  </div>
                 </div>
-                <p className="text-xs text-white/70 leading-relaxed">{detail.aiAnalysis}</p>
-              </div>
+                <ChevronRight className="w-5 h-5 text-violet-400/60 group-hover:text-violet-400 transition-colors" />
+              </button>
+            </div>
+
+            {showAIAnalysis && facultyId && (
+              <FacultyAIAnalysis facultyId={facultyId} onClose={() => setShowAIAnalysis(false)} />
             )}
 
             {detail.comments.length > 0 && (

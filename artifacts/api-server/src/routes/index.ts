@@ -9,6 +9,7 @@ import analyticsRouter from "./analytics";
 import authRouter from "./auth";
 import formTemplatesRouter from "./formTemplates";
 import complaintsRouter from "./complaints";
+import aiAnalyticsRouter from "./aiAnalytics";
 
 const router: IRouter = Router();
 
@@ -22,5 +23,6 @@ router.use(windowsRouter);
 router.use(analyticsRouter);
 router.use(formTemplatesRouter);
 router.use(complaintsRouter);
+router.use(aiAnalyticsRouter);
 
 export default router;
