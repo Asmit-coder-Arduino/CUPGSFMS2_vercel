@@ -60,6 +60,7 @@ function GlassModeToggle() {
 export function HomePageLayout({ children }: { children: ReactNode }) {
   const { isDark } = useTheme();
   const { role, faculty, hod, student, logout } = useRole();
+  const { isLiquid } = useGlassMode();
 
   const getUserLabel = () => {
     if (role === "faculty" && faculty) return `${faculty.name} (Faculty)`;
@@ -86,9 +87,9 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
           className="text-xs"
           style={{
             background: "rgba(255, 255, 255, 0)",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
-            boxShadow: "0 0 30px 0px rgba(0,0,0,0.3)",
+            backdropFilter: isLiquid ? "none" : "blur(6px)",
+            WebkitBackdropFilter: isLiquid ? "none" : "blur(6px)",
+            boxShadow: isLiquid ? "none" : "0 0 30px 0px rgba(0,0,0,0.3)",
           }}
         >
           <div className="w-full px-4 md:px-10 xl:px-16 py-1.5 flex items-center justify-between">
@@ -115,9 +116,9 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
         <div
           style={{
             background: "rgba(255, 255, 255, 0)",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
-            boxShadow: "0 0 30px 0px rgba(0,0,0,0.3)",
+            backdropFilter: isLiquid ? "none" : "blur(6px)",
+            WebkitBackdropFilter: isLiquid ? "none" : "blur(6px)",
+            boxShadow: isLiquid ? "none" : "0 0 30px 0px rgba(0,0,0,0.3)",
           }}
         >
           <div className="w-full px-4 md:px-10 xl:px-16 py-3 flex items-center gap-4">
@@ -179,12 +180,12 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
         {/* Navigation bar */}
         <nav
           style={{
-            background: isDark
+            background: isLiquid ? "transparent" : (isDark
               ? "rgba(139,92,246,0.08)"
-              : "rgba(109,40,217,0.55)",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
-            boxShadow: "0 0 30px 0px rgba(0,0,0,0.3)",
+              : "rgba(109,40,217,0.55)"),
+            backdropFilter: isLiquid ? "none" : "blur(6px)",
+            WebkitBackdropFilter: isLiquid ? "none" : "blur(6px)",
+            boxShadow: isLiquid ? "none" : "0 0 30px 0px rgba(0,0,0,0.3)",
           }}
         >
           <div className="w-full px-4 md:px-10 xl:px-16">

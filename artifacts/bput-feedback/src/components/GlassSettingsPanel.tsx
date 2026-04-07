@@ -105,15 +105,13 @@ export function GlassSettingsPanel() {
             onChange={v => updateSettings({ blur: v })}
           />
           <SliderRow
-            label="Opacity"
-            value={settings.opacity}
-            min={0}
-            max={0.4}
-            step={0.01}
-            unit=""
-            displayMultiplier={100}
-            displayUnit="%"
-            onChange={v => updateSettings({ opacity: v })}
+            label="Saturation"
+            value={settings.saturation}
+            min={1}
+            max={3}
+            step={0.1}
+            unit="x"
+            onChange={v => updateSettings({ saturation: v })}
           />
           <SliderRow
             label="Border"
@@ -146,7 +144,7 @@ function SliderRow({
   displayMultiplier?: number;
   displayUnit?: string;
 }) {
-  const displayVal = displayMultiplier ? Math.round(value * displayMultiplier) : Math.round(value);
+  const displayVal = displayMultiplier ? Math.round(value * displayMultiplier) : (step < 1 ? value.toFixed(1) : Math.round(value));
   const suffix = displayUnit ?? unit;
 
   return (

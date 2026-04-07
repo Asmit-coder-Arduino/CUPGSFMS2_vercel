@@ -680,13 +680,13 @@ body {
    Activated via .liquid-glass class on <html>
    Uses CSS custom properties:
      --lg-blur   (backdrop blur, default 18px)
-     --lg-opacity (bg opacity, default 0.08)
+     --lg-saturation (color vibrancy, default 1.4)
      --lg-border  (border strength 0-1, default 0)
 ══════════════════════════════════════ */
 
 .liquid-glass {
   --lg-blur: 12px;
-  --lg-opacity: 0.06;
+  --lg-saturation: 1.4;
   --lg-border: 0;
 }
 
@@ -696,9 +696,9 @@ body {
 .liquid-glass .glass-strong,
 .liquid-glass .stat-card {
   position: relative;
-  background: rgba(255, 255, 255, var(--lg-opacity)) !important;
-  backdrop-filter: blur(var(--lg-blur)) !important;
-  -webkit-backdrop-filter: blur(var(--lg-blur)) !important;
+  background: transparent !important;
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturation)) !important;
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturation)) !important;
   border: none !important;
   box-shadow: none !important;
 }
@@ -742,9 +742,9 @@ body {
 
 /* --- Liquid Glass: Sidebar --- */
 .liquid-glass .lg-sidebar {
-  background: rgba(255, 255, 255, var(--lg-opacity)) !important;
-  backdrop-filter: blur(var(--lg-blur)) !important;
-  -webkit-backdrop-filter: blur(var(--lg-blur)) !important;
+  background: transparent !important;
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturation)) !important;
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturation)) !important;
   border: none !important;
   box-shadow: none !important;
   position: relative;
@@ -774,11 +774,11 @@ body {
 
 /* --- Liquid Glass: Nav Items --- */
 .liquid-glass .glass-nav-item.active {
-  background: rgba(255, 255, 255, var(--lg-opacity)) !important;
+  background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) !important;
-  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) !important;
+  backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) saturate(var(--lg-saturation)) !important;
+  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) saturate(var(--lg-saturation)) !important;
   position: relative;
 }
 .liquid-glass .glass-nav-item.active::before {
@@ -804,7 +804,7 @@ body {
   pointer-events: none;
 }
 .liquid-glass .glass-nav-item:hover {
-  background: rgba(255, 255, 255, calc(var(--lg-opacity) * 0.5)) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
   backdrop-filter: none !important;
   position: relative;
 }
@@ -815,9 +815,9 @@ body {
 .liquid-glass .btn-gradient-indigo,
 .liquid-glass .btn-gradient-slate {
   position: relative;
-  background: rgba(255, 255, 255, var(--lg-opacity)) !important;
-  backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) !important;
-  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) !important;
+  background: transparent !important;
+  backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) saturate(var(--lg-saturation)) !important;
+  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) saturate(var(--lg-saturation)) !important;
   border: none !important;
   box-shadow: none !important;
 }
@@ -854,9 +854,9 @@ body {
 .liquid-glass .theme-toggle,
 .liquid-glass .lg-toggle-btn {
   position: relative;
-  background: rgba(255, 255, 255, var(--lg-opacity)) !important;
-  backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) !important;
-  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) !important;
+  background: transparent !important;
+  backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) saturate(var(--lg-saturation)) !important;
+  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) saturate(var(--lg-saturation)) !important;
   border: none !important;
   box-shadow: none !important;
 }
@@ -888,9 +888,9 @@ body {
 /* --- Liquid Glass: Modals --- */
 .liquid-glass [role="dialog"] {
   position: relative;
-  background: rgba(255, 255, 255, var(--lg-opacity)) !important;
-  backdrop-filter: blur(var(--lg-blur)) !important;
-  -webkit-backdrop-filter: blur(var(--lg-blur)) !important;
+  background: transparent !important;
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturation)) !important;
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturation)) !important;
   border: none !important;
   box-shadow: none !important;
 }
@@ -920,9 +920,9 @@ body {
 /* --- Liquid Glass: Inputs --- */
 .liquid-glass .input-glass {
   position: relative;
-  background: rgba(255, 255, 255, calc(var(--lg-opacity) * 0.5)) !important;
-  backdrop-filter: blur(calc(var(--lg-blur) * 0.3)) !important;
-  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.3)) !important;
+  background: transparent !important;
+  backdrop-filter: blur(calc(var(--lg-blur) * 0.3)) saturate(var(--lg-saturation)) !important;
+  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.3)) saturate(var(--lg-saturation)) !important;
   border: none !important;
   box-shadow: none !important;
 }
@@ -930,9 +930,9 @@ body {
 /* --- Liquid Glass: Hero Badge --- */
 .liquid-glass .hero-badge {
   position: relative;
-  background: rgba(255, 255, 255, var(--lg-opacity)) !important;
-  backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) !important;
-  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) !important;
+  background: transparent !important;
+  backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) saturate(var(--lg-saturation)) !important;
+  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.5)) saturate(var(--lg-saturation)) !important;
   border: none !important;
   box-shadow: none !important;
 }
@@ -965,9 +965,9 @@ body {
 .liquid-glass .icon-circle-indigo,
 .liquid-glass .icon-circle-slate {
   position: relative;
-  background: rgba(255, 255, 255, var(--lg-opacity)) !important;
-  backdrop-filter: blur(calc(var(--lg-blur) * 0.3)) !important;
-  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.3)) !important;
+  background: transparent !important;
+  backdrop-filter: blur(calc(var(--lg-blur) * 0.3)) saturate(var(--lg-saturation)) !important;
+  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.3)) saturate(var(--lg-saturation)) !important;
   border: none !important;
   box-shadow: none !important;
 }
@@ -1003,9 +1003,9 @@ body {
 /* --- Liquid Glass: Mobile top/bottom bars --- */
 .liquid-glass .lg-mobile-bar {
   position: relative;
-  background: rgba(255, 255, 255, var(--lg-opacity)) !important;
-  backdrop-filter: blur(var(--lg-blur)) !important;
-  -webkit-backdrop-filter: blur(var(--lg-blur)) !important;
+  background: transparent !important;
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturation)) !important;
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturation)) !important;
   border: none !important;
   box-shadow: none !important;
 }
