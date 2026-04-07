@@ -1,6 +1,5 @@
 import { Router, type IRouter } from "express";
-import { db, facultyTable, departmentsTable, coursesTable, feedbackTable } from "@workspace/db";
-import { eq, avg, count, desc } from "drizzle-orm";
+import { supabase, camelRow, camelRows } from "@workspace/db";
 
 const router: IRouter = Router();
 
@@ -11,45 +10,49 @@ router.post("/auth/faculty-login", async (req, res): Promise<void> => {
     return;
   }
 
-  const [faculty] = await db
-    .select({
-      id: facultyTable.id,
-      name: facultyTable.name,
-      email: facultyTable.email,
-      designation: facultyTable.designation,
-      departmentId: facultyTable.departmentId,
-      employeeId: facultyTable.employeeId,
-      qualification: facultyTable.qualification,
-      specialization: facultyTable.specialization,
-      departmentName: departmentsTable.name,
-      departmentCode: departmentsTable.code,
-      loginPin: facultyTable.loginPin,
-    })
-    .from(facultyTable)
-    .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id))
-    .where(eq(facultyTable.employeeId, employeeId));
+  const { data: faculty, error } = await supabase
+    .from("faculty")
+    .select("id, name, email, designation, department_id, employee_id, qualification, specialization, login_pin")
+    .eq("employee_id", employeeId)
+    .single();
 
-  if (!faculty) {
+  if (error || !faculty) {
     res.status(401).json({ error: "Invalid Employee ID. Please check and try again." });
     return;
   }
-  if (faculty.loginPin !== pin) {
+  if (faculty.login_pin !== pin) {
     res.status(401).json({ error: "Incorrect PIN. Please try again." });
     return;
   }
 
-  const courses = await db
-    .select({ id: coursesTable.id, code: coursesTable.code, name: coursesTable.name, semester: coursesTable.semester })
-    .from(coursesTable)
-    .where(eq(coursesTable.facultyId, faculty.id));
+  const { data: dept } = await supabase
+    .from("departments")
+    .select("name, code")
+    .eq("id", faculty.department_id)
+    .single();
 
-  const [avgResult] = await db
-    .select({ avg: avg(feedbackTable.ratingOverall), cnt: count() })
-    .from(feedbackTable)
-    .where(eq(feedbackTable.facultyId, faculty.id));
+  const { data: courses } = await supabase
+    .from("courses")
+    .select("id, code, name, semester")
+    .eq("faculty_id", faculty.id);
 
-  const { loginPin: _pin, ...safeData } = faculty;
-  res.json({ ...safeData, courses, avgRating: avgResult?.avg ? parseFloat(avgResult.avg) : null, totalFeedbackCount: Number(avgResult?.cnt ?? 0) });
+  const { data: fbData } = await supabase
+    .from("feedback")
+    .select("rating_overall")
+    .eq("faculty_id", faculty.id);
+
+  const ratings = (fbData || []).map((r: any) => r.rating_overall);
+  const avgRating = ratings.length > 0 ? ratings.reduce((s: number, v: number) => s + v, 0) / ratings.length : null;
+
+  const { login_pin: _pin, ...safeData } = faculty;
+  res.json({
+    ...camelRow(safeData),
+    departmentName: dept?.name ?? null,
+    departmentCode: dept?.code ?? null,
+    courses: camelRows(courses || []),
+    avgRating,
+    totalFeedbackCount: ratings.length,
+  });
 });
 
 router.post("/auth/hod-login", async (req, res): Promise<void> => {
@@ -59,29 +62,23 @@ router.post("/auth/hod-login", async (req, res): Promise<void> => {
     return;
   }
 
-  const [dept] = await db
-    .select({
-      id: departmentsTable.id,
-      code: departmentsTable.code,
-      name: departmentsTable.name,
-      hodName: departmentsTable.hodName,
-      hodEmployeeId: departmentsTable.hodEmployeeId,
-      hodPin: departmentsTable.hodPin,
-    })
-    .from(departmentsTable)
-    .where(eq(departmentsTable.hodEmployeeId, employeeId));
+  const { data: dept, error } = await supabase
+    .from("departments")
+    .select("id, code, name, hod_name, hod_employee_id, hod_pin")
+    .eq("hod_employee_id", employeeId)
+    .single();
 
-  if (!dept) {
+  if (error || !dept) {
     res.status(401).json({ error: "Invalid HOD Employee ID. Please check and try again." });
     return;
   }
-  if (dept.hodPin !== pin) {
+  if (dept.hod_pin !== pin) {
     res.status(401).json({ error: "Incorrect PIN. Please try again." });
     return;
   }
 
-  const { hodPin: _pin, ...safeData } = dept;
-  res.json(safeData);
+  const { hod_pin: _pin, ...safeData } = dept;
+  res.json(camelRow(safeData));
 });
 
 router.post("/auth/admin-login", async (req, res): Promise<void> => {
@@ -98,42 +95,33 @@ router.get("/faculty/:id/my-feedback", async (req, res): Promise<void> => {
   const facultyId = parseInt(req.params.id);
   if (isNaN(facultyId)) { res.status(400).json({ error: "Invalid faculty ID" }); return; }
 
-  const courses = await db
-    .select({ id: coursesTable.id, code: coursesTable.code, name: coursesTable.name, semester: coursesTable.semester, academicYear: coursesTable.academicYear })
-    .from(coursesTable)
-    .where(eq(coursesTable.facultyId, facultyId));
+  const { data: courses } = await supabase
+    .from("courses")
+    .select("id, code, name, semester, academic_year")
+    .eq("faculty_id", facultyId);
 
   const courseData = await Promise.all(
-    courses.map(async (course) => {
-      const feedbackRows = await db
-        .select({
-          ratingCourseContent: feedbackTable.ratingCourseContent,
-          ratingTeachingQuality: feedbackTable.ratingTeachingQuality,
-          ratingLabFacilities: feedbackTable.ratingLabFacilities,
-          ratingStudyMaterial: feedbackTable.ratingStudyMaterial,
-          ratingOverall: feedbackTable.ratingOverall,
-          comments: feedbackTable.comments,
-          studentYear: feedbackTable.studentYear,
-          section: feedbackTable.section,
-          createdAt: feedbackTable.createdAt,
-        })
-        .from(feedbackTable)
-        .where(eq(feedbackTable.courseId, course.id))
-        .orderBy(desc(feedbackTable.createdAt));
+    (courses || []).map(async (course: any) => {
+      const { data: feedbackRows } = await supabase
+        .from("feedback")
+        .select("rating_course_content, rating_teaching_quality, rating_lab_facilities, rating_study_material, rating_overall, comments, student_year, section, created_at")
+        .eq("course_id", course.id)
+        .order("created_at", { ascending: false });
 
-      const cnt = feedbackRows.length;
-      const calcAvg = (key: keyof typeof feedbackRows[0]) =>
-        cnt ? feedbackRows.reduce((s, f) => s + (Number(f[key]) || 0), 0) / cnt : null;
-      const comments = feedbackRows.filter(f => f.comments).map(f => f.comments as string);
+      const rows = feedbackRows || [];
+      const cnt = rows.length;
+      const calcAvg = (key: string) =>
+        cnt ? rows.reduce((s: number, f: any) => s + (Number(f[key]) || 0), 0) / cnt : null;
+      const comments = rows.filter((f: any) => f.comments).map((f: any) => f.comments as string);
 
       return {
-        ...course,
+        ...camelRow(course),
         feedbackCount: cnt,
-        avgOverall: calcAvg("ratingOverall"),
-        avgCourseContent: calcAvg("ratingCourseContent"),
-        avgTeachingQuality: calcAvg("ratingTeachingQuality"),
-        avgLabFacilities: calcAvg("ratingLabFacilities"),
-        avgStudyMaterial: calcAvg("ratingStudyMaterial"),
+        avgOverall: calcAvg("rating_overall"),
+        avgCourseContent: calcAvg("rating_course_content"),
+        avgTeachingQuality: calcAvg("rating_teaching_quality"),
+        avgLabFacilities: calcAvg("rating_lab_facilities"),
+        avgStudyMaterial: calcAvg("rating_study_material"),
         recentComments: comments.slice(0, 5),
       };
     })
@@ -146,93 +134,86 @@ router.get("/departments/:id/hod-report", async (req, res): Promise<void> => {
   const deptId = parseInt(req.params.id);
   if (isNaN(deptId)) { res.status(400).json({ error: "Invalid department ID" }); return; }
 
-  const [dept] = await db
-    .select({ id: departmentsTable.id, name: departmentsTable.name, code: departmentsTable.code, hodName: departmentsTable.hodName })
-    .from(departmentsTable)
-    .where(eq(departmentsTable.id, deptId));
+  const { data: dept } = await supabase
+    .from("departments")
+    .select("id, name, code, hod_name")
+    .eq("id", deptId)
+    .single();
 
   if (!dept) { res.status(404).json({ error: "Department not found" }); return; }
 
-  const facultyList = await db
-    .select({ id: facultyTable.id, name: facultyTable.name, designation: facultyTable.designation, employeeId: facultyTable.employeeId })
-    .from(facultyTable)
-    .where(eq(facultyTable.departmentId, deptId));
+  const { data: facultyList } = await supabase
+    .from("faculty")
+    .select("id, name, designation, employee_id")
+    .eq("department_id", deptId);
 
-  const courses = await db
-    .select({ id: coursesTable.id, code: coursesTable.code, name: coursesTable.name, semester: coursesTable.semester, facultyId: coursesTable.facultyId, academicYear: coursesTable.academicYear, credits: coursesTable.credits })
-    .from(coursesTable)
-    .where(eq(coursesTable.departmentId, deptId));
+  const { data: courses } = await supabase
+    .from("courses")
+    .select("id, code, name, semester, faculty_id, academic_year, credits")
+    .eq("department_id", deptId);
 
-  const allFeedback = await db
-    .select({
-      courseId: feedbackTable.courseId,
-      facultyId: feedbackTable.facultyId,
-      ratingCourseContent: feedbackTable.ratingCourseContent,
-      ratingTeachingQuality: feedbackTable.ratingTeachingQuality,
-      ratingLabFacilities: feedbackTable.ratingLabFacilities,
-      ratingStudyMaterial: feedbackTable.ratingStudyMaterial,
-      ratingOverall: feedbackTable.ratingOverall,
-      comments: feedbackTable.comments,
-      section: feedbackTable.section,
-      feedbackType: feedbackTable.feedbackType,
-      createdAt: feedbackTable.createdAt,
-    })
-    .from(feedbackTable)
-    .where(eq(feedbackTable.departmentId, deptId))
-    .orderBy(desc(feedbackTable.createdAt));
+  const { data: allFeedback } = await supabase
+    .from("feedback")
+    .select("course_id, faculty_id, rating_course_content, rating_teaching_quality, rating_lab_facilities, rating_study_material, rating_overall, comments, section, feedback_type, created_at")
+    .eq("department_id", deptId)
+    .order("created_at", { ascending: false });
+
+  const fb = allFeedback || [];
+  const fList = camelRows(facultyList || []) as any[];
+  const cList = camelRows(courses || []) as any[];
 
   const calcAvg = (arr: number[]) => arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : null;
 
-  const courseStats = courses.map(course => {
-    const fb = allFeedback.filter(f => f.courseId === course.id);
-    const facultyMember = facultyList.find(f => f.id === course.facultyId);
+  const courseStats = cList.map(course => {
+    const cfb = fb.filter((f: any) => f.course_id === course.id);
+    const facultyMember = fList.find(f => f.id === course.facultyId);
     return {
       ...course,
       facultyName: facultyMember?.name ?? "—",
-      feedbackCount: fb.length,
-      avgOverall: calcAvg(fb.map(f => f.ratingOverall)),
-      avgCourseContent: calcAvg(fb.map(f => f.ratingCourseContent)),
-      avgTeachingQuality: calcAvg(fb.map(f => f.ratingTeachingQuality)),
-      avgLabFacilities: calcAvg(fb.map(f => f.ratingLabFacilities)),
-      avgStudyMaterial: calcAvg(fb.map(f => f.ratingStudyMaterial)),
-      recentComments: fb.filter(f => f.comments).map(f => f.comments as string).slice(0, 3),
+      feedbackCount: cfb.length,
+      avgOverall: calcAvg(cfb.map((f: any) => f.rating_overall)),
+      avgCourseContent: calcAvg(cfb.map((f: any) => f.rating_course_content)),
+      avgTeachingQuality: calcAvg(cfb.map((f: any) => f.rating_teaching_quality)),
+      avgLabFacilities: calcAvg(cfb.map((f: any) => f.rating_lab_facilities)),
+      avgStudyMaterial: calcAvg(cfb.map((f: any) => f.rating_study_material)),
+      recentComments: cfb.filter((f: any) => f.comments).map((f: any) => f.comments as string).slice(0, 3),
     };
   });
 
-  const facultyStats = facultyList.map(f => {
-    const fb = allFeedback.filter(x => x.facultyId === f.id);
-    const fCourses = courses.filter(c => c.facultyId === f.id);
+  const facultyStats = fList.map(f => {
+    const ffb = fb.filter((x: any) => x.faculty_id === f.id);
+    const fCourses = cList.filter(c => c.facultyId === f.id);
     return {
       ...f,
       courseCount: fCourses.length,
       courseNames: fCourses.map(c => `${c.code}: ${c.name}`).join(", "),
-      feedbackCount: fb.length,
-      avgOverall: calcAvg(fb.map(x => x.ratingOverall)),
-      avgCourseContent: calcAvg(fb.map(x => x.ratingCourseContent)),
-      avgTeachingQuality: calcAvg(fb.map(x => x.ratingTeachingQuality)),
-      avgLabFacilities: calcAvg(fb.map(x => x.ratingLabFacilities)),
-      avgStudyMaterial: calcAvg(fb.map(x => x.ratingStudyMaterial)),
+      feedbackCount: ffb.length,
+      avgOverall: calcAvg(ffb.map((x: any) => x.rating_overall)),
+      avgCourseContent: calcAvg(ffb.map((x: any) => x.rating_course_content)),
+      avgTeachingQuality: calcAvg(ffb.map((x: any) => x.rating_teaching_quality)),
+      avgLabFacilities: calcAvg(ffb.map((x: any) => x.rating_lab_facilities)),
+      avgStudyMaterial: calcAvg(ffb.map((x: any) => x.rating_study_material)),
     };
   });
 
-  const recentComments = allFeedback.filter(f => f.comments).slice(0, 10).map(f => ({
+  const recentComments = fb.filter((f: any) => f.comments).slice(0, 10).map((f: any) => ({
     comment: f.comments,
-    courseCode: courses.find(c => c.id === f.courseId)?.code ?? "—",
+    courseCode: cList.find(c => c.id === f.course_id)?.code ?? "—",
     section: f.section,
-    createdAt: f.createdAt,
+    createdAt: f.created_at,
   }));
 
   res.json({
-    department: dept,
+    department: camelRow(dept),
     summary: {
-      totalFeedback: allFeedback.length,
-      totalCourses: courses.length,
-      totalFaculty: facultyList.length,
-      avgOverall: calcAvg(allFeedback.map(f => f.ratingOverall)),
-      avgCourseContent: calcAvg(allFeedback.map(f => f.ratingCourseContent)),
-      avgTeachingQuality: calcAvg(allFeedback.map(f => f.ratingTeachingQuality)),
-      avgLabFacilities: calcAvg(allFeedback.map(f => f.ratingLabFacilities)),
-      avgStudyMaterial: calcAvg(allFeedback.map(f => f.ratingStudyMaterial)),
+      totalFeedback: fb.length,
+      totalCourses: cList.length,
+      totalFaculty: fList.length,
+      avgOverall: calcAvg(fb.map((f: any) => f.rating_overall)),
+      avgCourseContent: calcAvg(fb.map((f: any) => f.rating_course_content)),
+      avgTeachingQuality: calcAvg(fb.map((f: any) => f.rating_teaching_quality)),
+      avgLabFacilities: calcAvg(fb.map((f: any) => f.rating_lab_facilities)),
+      avgStudyMaterial: calcAvg(fb.map((f: any) => f.rating_study_material)),
     },
     facultyStats,
     courseStats,
@@ -242,51 +223,40 @@ router.get("/departments/:id/hod-report", async (req, res): Promise<void> => {
 });
 
 router.get("/admin/full-report", async (req, res): Promise<void> => {
-  const departments = await db.select().from(departmentsTable).orderBy(departmentsTable.code);
+  const { data: departments } = await supabase.from("departments").select("*").order("code");
+  const { data: allFeedback } = await supabase
+    .from("feedback")
+    .select("id, course_id, faculty_id, department_id, rating_course_content, rating_teaching_quality, rating_lab_facilities, rating_study_material, rating_overall, comments, section, created_at")
+    .order("created_at", { ascending: false });
+  const { data: allFaculty } = await supabase
+    .from("faculty")
+    .select("id, name, designation, employee_id, department_id");
+  const { data: allCourses } = await supabase
+    .from("courses")
+    .select("id, code, name, semester, department_id, faculty_id, academic_year");
 
-  const allFeedback = await db
-    .select({
-      id: feedbackTable.id,
-      courseId: feedbackTable.courseId,
-      facultyId: feedbackTable.facultyId,
-      departmentId: feedbackTable.departmentId,
-      ratingCourseContent: feedbackTable.ratingCourseContent,
-      ratingTeachingQuality: feedbackTable.ratingTeachingQuality,
-      ratingLabFacilities: feedbackTable.ratingLabFacilities,
-      ratingStudyMaterial: feedbackTable.ratingStudyMaterial,
-      ratingOverall: feedbackTable.ratingOverall,
-      comments: feedbackTable.comments,
-      section: feedbackTable.section,
-      createdAt: feedbackTable.createdAt,
-    })
-    .from(feedbackTable)
-    .orderBy(desc(feedbackTable.createdAt));
-
-  const allFaculty = await db
-    .select({ id: facultyTable.id, name: facultyTable.name, designation: facultyTable.designation, employeeId: facultyTable.employeeId, departmentId: facultyTable.departmentId })
-    .from(facultyTable);
-
-  const allCourses = await db
-    .select({ id: coursesTable.id, code: coursesTable.code, name: coursesTable.name, semester: coursesTable.semester, departmentId: coursesTable.departmentId, facultyId: coursesTable.facultyId, academicYear: coursesTable.academicYear })
-    .from(coursesTable);
+  const depts = camelRows(departments || []) as any[];
+  const fb = allFeedback || [];
+  const fac = camelRows(allFaculty || []) as any[];
+  const crs = camelRows(allCourses || []) as any[];
 
   const calcAvg = (arr: number[]) => arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : null;
 
-  const deptStats = departments.map(dept => {
-    const fb = allFeedback.filter(f => f.departmentId === dept.id);
-    const faculty = allFaculty.filter(f => f.departmentId === dept.id);
-    const courses = allCourses.filter(c => c.departmentId === dept.id);
+  const deptStats = depts.map(dept => {
+    const dfb = fb.filter((f: any) => f.department_id === dept.id);
+    const faculty = fac.filter(f => f.departmentId === dept.id);
+    const courses = crs.filter(c => c.departmentId === dept.id);
 
     const facultyStats = faculty.map(f => {
-      const ffb = fb.filter(x => x.facultyId === f.id);
+      const ffb = dfb.filter((x: any) => x.faculty_id === f.id);
       return {
         ...f,
         feedbackCount: ffb.length,
-        avgOverall: calcAvg(ffb.map(x => x.ratingOverall)),
-        avgCourseContent: calcAvg(ffb.map(x => x.ratingCourseContent)),
-        avgTeachingQuality: calcAvg(ffb.map(x => x.ratingTeachingQuality)),
-        avgLabFacilities: calcAvg(ffb.map(x => x.ratingLabFacilities)),
-        avgStudyMaterial: calcAvg(ffb.map(x => x.ratingStudyMaterial)),
+        avgOverall: calcAvg(ffb.map((x: any) => x.rating_overall)),
+        avgCourseContent: calcAvg(ffb.map((x: any) => x.rating_course_content)),
+        avgTeachingQuality: calcAvg(ffb.map((x: any) => x.rating_teaching_quality)),
+        avgLabFacilities: calcAvg(ffb.map((x: any) => x.rating_lab_facilities)),
+        avgStudyMaterial: calcAvg(ffb.map((x: any) => x.rating_study_material)),
       };
     }).sort((a, b) => (b.avgOverall ?? 0) - (a.avgOverall ?? 0));
 
@@ -297,50 +267,49 @@ router.get("/admin/full-report", async (req, res): Promise<void> => {
       hodName: dept.hodName,
       totalFaculty: faculty.length,
       totalCourses: courses.length,
-      totalFeedback: fb.length,
-      avgOverall: calcAvg(fb.map(f => f.ratingOverall)),
-      avgCourseContent: calcAvg(fb.map(f => f.ratingCourseContent)),
-      avgTeachingQuality: calcAvg(fb.map(f => f.ratingTeachingQuality)),
-      avgLabFacilities: calcAvg(fb.map(f => f.ratingLabFacilities)),
-      avgStudyMaterial: calcAvg(fb.map(f => f.ratingStudyMaterial)),
+      totalFeedback: dfb.length,
+      avgOverall: calcAvg(dfb.map((f: any) => f.rating_overall)),
+      avgCourseContent: calcAvg(dfb.map((f: any) => f.rating_course_content)),
+      avgTeachingQuality: calcAvg(dfb.map((f: any) => f.rating_teaching_quality)),
+      avgLabFacilities: calcAvg(dfb.map((f: any) => f.rating_lab_facilities)),
+      avgStudyMaterial: calcAvg(dfb.map((f: any) => f.rating_study_material)),
       facultyStats,
     };
   });
 
-  const allRatings = allFeedback;
-  const topFaculty = allFaculty
+  const topFaculty = fac
     .map(f => {
-      const fb = allFeedback.filter(x => x.facultyId === f.id);
-      const dept = departments.find(d => d.id === f.departmentId);
+      const ffb = fb.filter((x: any) => x.faculty_id === f.id);
+      const dept = depts.find(d => d.id === f.departmentId);
       return {
         ...f,
         departmentCode: dept?.code ?? "—",
-        feedbackCount: fb.length,
-        avgOverall: calcAvg(fb.map(x => x.ratingOverall)),
+        feedbackCount: ffb.length,
+        avgOverall: calcAvg(ffb.map((x: any) => x.rating_overall)),
       };
     })
     .filter(f => f.feedbackCount > 0)
     .sort((a, b) => (b.avgOverall ?? 0) - (a.avgOverall ?? 0))
     .slice(0, 10);
 
-  const recentComments = allFeedback.filter(f => f.comments).slice(0, 20).map(f => ({
+  const recentComments = fb.filter((f: any) => f.comments).slice(0, 20).map((f: any) => ({
     comment: f.comments,
-    courseCode: allCourses.find(c => c.id === f.courseId)?.code ?? "—",
-    deptCode: departments.find(d => d.id === f.departmentId)?.code ?? "—",
-    createdAt: f.createdAt,
+    courseCode: crs.find(c => c.id === f.course_id)?.code ?? "—",
+    deptCode: depts.find(d => d.id === f.department_id)?.code ?? "—",
+    createdAt: f.created_at,
   }));
 
   res.json({
     overall: {
-      totalFeedback: allFeedback.length,
-      totalDepartments: departments.length,
-      totalFaculty: allFaculty.length,
-      totalCourses: allCourses.length,
-      avgOverall: calcAvg(allRatings.map(f => f.ratingOverall)),
-      avgCourseContent: calcAvg(allRatings.map(f => f.ratingCourseContent)),
-      avgTeachingQuality: calcAvg(allRatings.map(f => f.ratingTeachingQuality)),
-      avgLabFacilities: calcAvg(allRatings.map(f => f.ratingLabFacilities)),
-      avgStudyMaterial: calcAvg(allRatings.map(f => f.ratingStudyMaterial)),
+      totalFeedback: fb.length,
+      totalDepartments: depts.length,
+      totalFaculty: fac.length,
+      totalCourses: crs.length,
+      avgOverall: calcAvg(fb.map((f: any) => f.rating_overall)),
+      avgCourseContent: calcAvg(fb.map((f: any) => f.rating_course_content)),
+      avgTeachingQuality: calcAvg(fb.map((f: any) => f.rating_teaching_quality)),
+      avgLabFacilities: calcAvg(fb.map((f: any) => f.rating_lab_facilities)),
+      avgStudyMaterial: calcAvg(fb.map((f: any) => f.rating_study_material)),
     },
     departments: deptStats,
     topFaculty,

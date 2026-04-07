@@ -1,12 +1,9 @@
 import { Router, type IRouter } from "express";
-import { db, formTemplatesTable, departmentsTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { supabase, camelRow } from "@workspace/db";
 import type { FieldConfig } from "@workspace/db";
 import { DEFAULT_FIELDS } from "@workspace/db";
 
 const router: IRouter = Router();
-
-// ── Default template when no custom one exists ────────────────────────────────
 
 function buildDefaultTemplate(departmentId: number) {
   return {
@@ -22,28 +19,30 @@ function buildDefaultTemplate(departmentId: number) {
   };
 }
 
-// ── GET /api/departments/:id/form-template ────────────────────────────────────
-// Returns the active form template for the department.
-// If no custom template exists, returns the default fields.
-
 router.get("/departments/:id/form-template", async (req, res): Promise<void> => {
   const departmentId = parseInt(req.params.id, 10);
   if (isNaN(departmentId)) { res.status(400).json({ error: "Invalid department ID" }); return; }
 
-  const [dept] = await db.select({ id: departmentsTable.id }).from(departmentsTable).where(eq(departmentsTable.id, departmentId));
+  const { data: dept } = await supabase
+    .from("departments")
+    .select("id")
+    .eq("id", departmentId)
+    .single();
+
   if (!dept) { res.status(404).json({ error: "Department not found" }); return; }
 
-  const [template] = await db.select().from(formTemplatesTable).where(eq(formTemplatesTable.departmentId, departmentId));
+  const { data: template } = await supabase
+    .from("form_templates")
+    .select("*")
+    .eq("department_id", departmentId)
+    .single();
 
   if (!template) {
     res.json(buildDefaultTemplate(departmentId));
     return;
   }
-  res.json({ ...template, isDefault: false });
+  res.json({ ...camelRow(template), isDefault: false });
 });
-
-// ── POST /api/departments/:id/form-template ───────────────────────────────────
-// Create or fully replace the department's form template.
 
 router.post("/departments/:id/form-template", async (req, res): Promise<void> => {
   const departmentId = parseInt(req.params.id, 10);
@@ -59,48 +58,59 @@ router.post("/departments/:id/form-template", async (req, res): Promise<void> =>
     return;
   }
 
-  // Validate: at least one standard field enabled and required
   const enabledStandard = fields.filter(f => f.isStandard && f.enabled);
   if (enabledStandard.length === 0) {
     res.status(400).json({ error: "At least one standard rating field must be enabled" });
     return;
   }
 
-  // Re-index order to keep clean 1..N ordering
   const orderedFields = fields.map((f, i) => ({ ...f, order: i + 1 }));
 
   const payload = {
-    departmentId,
+    department_id: departmentId,
     title: title?.trim() || "Student Feedback Form",
     description: description?.trim() || null,
     fields: orderedFields,
-    commentLabel: commentLabel?.trim() || "Additional Comments / Suggestions",
-    commentRequired: commentRequired ?? false,
-    isActive: isActive ?? true,
-    updatedAt: new Date(),
+    comment_label: commentLabel?.trim() || "Additional Comments / Suggestions",
+    comment_required: commentRequired ?? false,
+    is_active: isActive ?? true,
+    updated_at: new Date().toISOString(),
   };
 
-  // Upsert (insert or update)
-  const [existing] = await db.select({ id: formTemplatesTable.id }).from(formTemplatesTable).where(eq(formTemplatesTable.departmentId, departmentId));
+  const { data: existing } = await supabase
+    .from("form_templates")
+    .select("id")
+    .eq("department_id", departmentId)
+    .single();
 
   let result;
   if (existing) {
-    [result] = await db.update(formTemplatesTable).set(payload).where(eq(formTemplatesTable.departmentId, departmentId)).returning();
+    const { data, error } = await supabase
+      .from("form_templates")
+      .update(payload)
+      .eq("department_id", departmentId)
+      .select()
+      .single();
+    if (error) { res.status(500).json({ error: error.message }); return; }
+    result = data;
   } else {
-    [result] = await db.insert(formTemplatesTable).values(payload).returning();
+    const { data, error } = await supabase
+      .from("form_templates")
+      .insert(payload)
+      .select()
+      .single();
+    if (error) { res.status(500).json({ error: error.message }); return; }
+    result = data;
   }
 
-  res.status(existing ? 200 : 201).json({ ...result, isDefault: false });
+  res.status(existing ? 200 : 201).json({ ...camelRow(result), isDefault: false });
 });
-
-// ── DELETE /api/departments/:id/form-template ─────────────────────────────────
-// Removes custom template; department will revert to the system default.
 
 router.delete("/departments/:id/form-template", async (req, res): Promise<void> => {
   const departmentId = parseInt(req.params.id, 10);
   if (isNaN(departmentId)) { res.status(400).json({ error: "Invalid department ID" }); return; }
 
-  await db.delete(formTemplatesTable).where(eq(formTemplatesTable.departmentId, departmentId));
+  await supabase.from("form_templates").delete().eq("department_id", departmentId);
   res.json({ success: true, message: "Custom template removed. Department will use default form." });
 });
 

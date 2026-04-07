@@ -1,35 +1,42 @@
 import { Router, type IRouter } from "express";
-import { db, departmentsTable, facultyTable, coursesTable, feedbackTable } from "@workspace/db";
-import { avg, count, eq } from "drizzle-orm";
+import { supabase, camelRow, camelRows, snakeObj } from "@workspace/db";
 
 const router: IRouter = Router();
 
 router.get("/departments", async (req, res): Promise<void> => {
-  const departments = await db.select().from(departmentsTable).orderBy(departmentsTable.code);
+  const { data: departments, error } = await supabase
+    .from("departments")
+    .select("*")
+    .order("code");
+
+  if (error) { res.status(500).json({ error: error.message }); return; }
 
   const result = await Promise.all(
-    departments.map(async (dept) => {
-      const [facultyCount] = await db
-        .select({ count: count() })
-        .from(facultyTable)
-        .where(eq(facultyTable.departmentId, dept.id));
+    (departments || []).map(async (dept: any) => {
+      const { count: facultyCount } = await supabase
+        .from("faculty")
+        .select("*", { count: "exact", head: true })
+        .eq("department_id", dept.id);
 
-      const [courseCount] = await db
-        .select({ count: count() })
-        .from(coursesTable)
-        .where(eq(coursesTable.departmentId, dept.id));
+      const { count: courseCount } = await supabase
+        .from("courses")
+        .select("*", { count: "exact", head: true })
+        .eq("department_id", dept.id);
 
-      const [avgResult] = await db
-        .select({ avg: avg(feedbackTable.ratingOverall) })
-        .from(feedbackTable)
-        .where(eq(feedbackTable.departmentId, dept.id));
+      const { data: avgData } = await supabase
+        .from("feedback")
+        .select("rating_overall")
+        .eq("department_id", dept.id);
 
-      const { hodPin: _hp, ...safeDept } = dept;
+      const ratings = (avgData || []).map((r: any) => r.rating_overall);
+      const avgRating = ratings.length > 0 ? ratings.reduce((s: number, v: number) => s + v, 0) / ratings.length : null;
+
+      const { hod_pin: _hp, ...safeDept } = dept;
       return {
-        ...safeDept,
-        totalFaculty: facultyCount?.count ?? 0,
-        totalCourses: courseCount?.count ?? 0,
-        avgRating: avgResult?.avg ? parseFloat(avgResult.avg) : null,
+        ...camelRow(safeDept),
+        totalFaculty: facultyCount ?? 0,
+        totalCourses: courseCount ?? 0,
+        avgRating,
       };
     })
   );
@@ -55,19 +62,19 @@ router.patch("/departments/:id", async (req, res): Promise<void> => {
     if (typeof hodName !== "string" || hodName.trim().length < 2 || hodName.trim().length > 100) {
       res.status(400).json({ error: "HOD name must be 2-100 characters" }); return;
     }
-    updates.hodName = hodName.trim();
+    updates.hod_name = hodName.trim();
   }
   if (hodEmployeeId !== undefined) {
     if (typeof hodEmployeeId !== "string" || hodEmployeeId.trim().length < 3 || hodEmployeeId.trim().length > 50) {
       res.status(400).json({ error: "HOD Employee ID must be 3-50 characters" }); return;
     }
-    updates.hodEmployeeId = hodEmployeeId.trim();
+    updates.hod_employee_id = hodEmployeeId.trim();
   }
   if (hodPin !== undefined) {
     if (typeof hodPin !== "string" || hodPin.trim().length < 4 || hodPin.trim().length > 50) {
       res.status(400).json({ error: "HOD PIN must be 4-50 characters" }); return;
     }
-    updates.hodPin = hodPin.trim();
+    updates.hod_pin = hodPin.trim();
   }
   if (name !== undefined) {
     if (typeof name !== "string" || name.trim().length < 2 || name.trim().length > 100) {
@@ -87,27 +94,33 @@ router.patch("/departments/:id", async (req, res): Promise<void> => {
     return;
   }
 
-  const [updated] = await db
-    .update(departmentsTable)
-    .set(updates)
-    .where(eq(departmentsTable.id, deptId))
-    .returning();
+  const { data: updated, error } = await supabase
+    .from("departments")
+    .update(updates)
+    .eq("id", deptId)
+    .select()
+    .single();
 
-  if (!updated) { res.status(404).json({ error: "Department not found" }); return; }
+  if (error || !updated) { res.status(404).json({ error: "Department not found" }); return; }
 
-  const { hodPin: _hp, ...safe } = updated;
-  res.json(safe);
+  const { hod_pin: _hp, ...safe } = updated;
+  res.json(camelRow(safe));
 });
 
 router.get("/departments/:id", async (req, res): Promise<void> => {
   const deptId = parseInt(req.params.id);
   if (isNaN(deptId)) { res.status(400).json({ error: "Invalid department ID" }); return; }
 
-  const [dept] = await db.select().from(departmentsTable).where(eq(departmentsTable.id, deptId));
-  if (!dept) { res.status(404).json({ error: "Department not found" }); return; }
+  const { data: dept, error } = await supabase
+    .from("departments")
+    .select("*")
+    .eq("id", deptId)
+    .single();
 
-  const { hodPin: _hp, ...safe } = dept;
-  res.json(safe);
+  if (error || !dept) { res.status(404).json({ error: "Department not found" }); return; }
+
+  const { hod_pin: _hp, ...safe } = dept;
+  res.json(camelRow(safe));
 });
 
 export default router;

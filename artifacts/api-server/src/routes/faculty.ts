@@ -1,6 +1,5 @@
 import { Router, type IRouter } from "express";
-import { db, facultyTable, departmentsTable, feedbackTable, coursesTable } from "@workspace/db";
-import { avg, count, eq } from "drizzle-orm";
+import { supabase, camelRow, camelRows } from "@workspace/db";
 import {
   ListFacultyQueryParams,
   CreateFacultyBody,
@@ -25,34 +24,44 @@ router.get("/faculty", async (req, res): Promise<void> => {
   const params = ListFacultyQueryParams.safeParse(req.query);
   if (!params.success) { res.status(400).json({ error: params.error.message }); return; }
 
-  const facultyList = await db
-    .select({
-      id: facultyTable.id, name: facultyTable.name, email: facultyTable.email,
-      designation: facultyTable.designation, departmentId: facultyTable.departmentId,
-      departmentName: departmentsTable.name, employeeId: facultyTable.employeeId,
-      qualification: facultyTable.qualification, specialization: facultyTable.specialization,
-      photoUrl: facultyTable.photoUrl,
-    })
-    .from(facultyTable)
-    .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id))
-    .where(params.data.departmentId ? eq(facultyTable.departmentId, params.data.departmentId) : undefined)
-    .orderBy(facultyTable.name);
+  let query = supabase
+    .from("faculty")
+    .select("id, name, email, designation, department_id, employee_id, qualification, specialization, photo_url");
+
+  if (params.data.departmentId) {
+    query = query.eq("department_id", params.data.departmentId);
+  }
+
+  const { data: facultyList, error } = await query.order("name");
+  if (error) { res.status(500).json({ error: error.message }); return; }
 
   const result = await Promise.all(
-    facultyList.map(async (f) => {
-      const [avgResult] = await db
-        .select({ avg: avg(feedbackTable.ratingOverall), cnt: count() })
-        .from(feedbackTable).where(eq(feedbackTable.facultyId, f.id));
+    (facultyList || []).map(async (f: any) => {
+      const { data: dept } = await supabase
+        .from("departments")
+        .select("name")
+        .eq("id", f.department_id)
+        .single();
 
-      const assignedCourses = await db
-        .select({ id: coursesTable.id, code: coursesTable.code, name: coursesTable.name, semester: coursesTable.semester, academicYear: coursesTable.academicYear, credits: coursesTable.credits })
-        .from(coursesTable).where(eq(coursesTable.facultyId, f.id));
+      const { data: fbData } = await supabase
+        .from("feedback")
+        .select("rating_overall")
+        .eq("faculty_id", f.id);
+
+      const ratings = (fbData || []).map((r: any) => r.rating_overall);
+      const avgRating = ratings.length > 0 ? ratings.reduce((s: number, v: number) => s + v, 0) / ratings.length : null;
+
+      const { data: assignedCourses } = await supabase
+        .from("courses")
+        .select("id, code, name, semester, academic_year, credits")
+        .eq("faculty_id", f.id);
 
       return {
-        ...f,
-        avgRating: avgResult?.avg ? parseFloat(avgResult.avg) : null,
-        totalFeedbackCount: Number(avgResult?.cnt ?? 0),
-        assignedCourses,
+        ...camelRow(f),
+        departmentName: dept?.name ?? null,
+        avgRating,
+        totalFeedbackCount: ratings.length,
+        assignedCourses: camelRows(assignedCourses || []),
       };
     })
   );
@@ -64,24 +73,33 @@ router.post("/faculty", async (req, res): Promise<void> => {
   const parsed = CreateFacultyBody.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: parsed.error.message }); return; }
 
-  // Accept extra fields from request body directly
   const body = req.body as Record<string, unknown>;
-  const [faculty] = await db.insert(facultyTable).values({
-    name: parsed.data.name,
-    email: parsed.data.email ?? null,
-    designation: parsed.data.designation,
-    departmentId: parsed.data.departmentId,
-    employeeId: typeof body.employeeId === "string" ? body.employeeId : null,
-    loginPin: typeof body.loginPin === "string" ? body.loginPin : null,
-    qualification: typeof body.qualification === "string" ? body.qualification : null,
-    specialization: typeof body.specialization === "string" ? body.specialization : null,
-  }).returning();
+  const { data: faculty, error } = await supabase
+    .from("faculty")
+    .insert({
+      name: parsed.data.name,
+      email: parsed.data.email ?? null,
+      designation: parsed.data.designation,
+      department_id: parsed.data.departmentId,
+      employee_id: typeof body.employeeId === "string" ? body.employeeId : null,
+      login_pin: typeof body.loginPin === "string" ? body.loginPin : null,
+      qualification: typeof body.qualification === "string" ? body.qualification : null,
+      specialization: typeof body.specialization === "string" ? body.specialization : null,
+    })
+    .select()
+    .single();
 
-  const [dept] = await db.select().from(departmentsTable).where(eq(departmentsTable.id, faculty.departmentId));
+  if (error || !faculty) { res.status(500).json({ error: error?.message || "Insert failed" }); return; }
 
-  const { loginPin: _lp, ...safeFaculty } = faculty;
+  const { data: dept } = await supabase
+    .from("departments")
+    .select("name")
+    .eq("id", faculty.department_id)
+    .single();
+
+  const { login_pin: _lp, ...safeFaculty } = faculty;
   res.status(201).json({
-    ...safeFaculty,
+    ...camelRow(safeFaculty),
     departmentName: dept?.name,
     avgRating: null,
     totalFeedbackCount: 0,
@@ -94,32 +112,36 @@ router.get("/faculty/:id", async (req, res): Promise<void> => {
   const params = GetFacultyParams.safeParse({ id: parseInt(raw, 10) });
   if (!params.success) { res.status(400).json({ error: params.error.message }); return; }
 
-  const [faculty] = await db
-    .select({
-      id: facultyTable.id, name: facultyTable.name, email: facultyTable.email,
-      designation: facultyTable.designation, departmentId: facultyTable.departmentId,
-      departmentName: departmentsTable.name, employeeId: facultyTable.employeeId,
-      qualification: facultyTable.qualification, specialization: facultyTable.specialization,
-      photoUrl: facultyTable.photoUrl,
-    })
-    .from(facultyTable)
-    .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id))
-    .where(eq(facultyTable.id, params.data.id));
+  const { data: faculty, error } = await supabase
+    .from("faculty")
+    .select("id, name, email, designation, department_id, employee_id, qualification, specialization, photo_url")
+    .eq("id", params.data.id)
+    .single();
 
-  if (!faculty) { res.status(404).json({ error: "Faculty not found" }); return; }
+  if (error || !faculty) { res.status(404).json({ error: "Faculty not found" }); return; }
 
-  const [avgResult] = await db
-    .select({ avg: avg(feedbackTable.ratingOverall), cnt: count() })
-    .from(feedbackTable).where(eq(feedbackTable.facultyId, params.data.id));
+  const { data: dept } = await supabase
+    .from("departments")
+    .select("name")
+    .eq("id", faculty.department_id)
+    .single();
+
+  const { data: fbData } = await supabase
+    .from("feedback")
+    .select("rating_overall")
+    .eq("faculty_id", params.data.id);
+
+  const ratings = (fbData || []).map((r: any) => r.rating_overall);
+  const avgRating = ratings.length > 0 ? ratings.reduce((s: number, v: number) => s + v, 0) / ratings.length : null;
 
   res.json({
-    ...faculty,
-    avgRating: avgResult?.avg ? parseFloat(avgResult.avg) : null,
-    totalFeedbackCount: Number(avgResult?.cnt ?? 0),
+    ...camelRow(faculty),
+    departmentName: dept?.name ?? null,
+    avgRating,
+    totalFeedbackCount: ratings.length,
   });
 });
 
-// ── PATCH /faculty/:id — Update faculty details ──────────────────────────────
 router.patch("/faculty/:id", async (req, res): Promise<void> => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid faculty ID" }); return; }
@@ -127,49 +149,61 @@ router.patch("/faculty/:id", async (req, res): Promise<void> => {
   const parsed = UpdateFacultyBody.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: parsed.error.message }); return; }
 
-  const updates: Partial<typeof facultyTable.$inferInsert> = {};
+  const updates: Record<string, unknown> = {};
   if (parsed.data.name !== undefined) updates.name = parsed.data.name;
   if (parsed.data.email !== undefined) updates.email = parsed.data.email;
   if (parsed.data.designation !== undefined) updates.designation = parsed.data.designation;
-  if (parsed.data.employeeId !== undefined) updates.employeeId = parsed.data.employeeId;
-  if (parsed.data.loginPin !== undefined) updates.loginPin = parsed.data.loginPin;
+  if (parsed.data.employeeId !== undefined) updates.employee_id = parsed.data.employeeId;
+  if (parsed.data.loginPin !== undefined) updates.login_pin = parsed.data.loginPin;
   if (parsed.data.qualification !== undefined) updates.qualification = parsed.data.qualification;
   if (parsed.data.specialization !== undefined) updates.specialization = parsed.data.specialization;
-  if (parsed.data.photoUrl !== undefined) updates.photoUrl = parsed.data.photoUrl;
+  if (parsed.data.photoUrl !== undefined) updates.photo_url = parsed.data.photoUrl;
 
   if (Object.keys(updates).length === 0) { res.status(400).json({ error: "No fields to update" }); return; }
 
-  const [updated] = await db.update(facultyTable).set(updates).where(eq(facultyTable.id, id)).returning();
+  const { data: updated, error } = await supabase
+    .from("faculty")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
 
-  if (!updated) { res.status(404).json({ error: "Faculty not found" }); return; }
+  if (error || !updated) { res.status(404).json({ error: "Faculty not found" }); return; }
 
-  const { loginPin: _lp2, ...safeUpdated } = updated;
-  res.json(safeUpdated);
+  const { login_pin: _lp2, ...safeUpdated } = updated;
+  res.json(camelRow(safeUpdated));
 });
 
-// ── DELETE /faculty/:id — Remove faculty member ──────────────────────────────
 router.delete("/faculty/:id", async (req, res): Promise<void> => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid faculty ID" }); return; }
 
-  // Check if faculty has feedback associated
-  const [fbCount] = await db.select({ cnt: count() }).from(feedbackTable).where(eq(feedbackTable.facultyId, id));
-  if (Number(fbCount?.cnt ?? 0) > 0) {
+  const { count: fbCount } = await supabase
+    .from("feedback")
+    .select("*", { count: "exact", head: true })
+    .eq("faculty_id", id);
+
+  if ((fbCount ?? 0) > 0) {
     res.status(409).json({
-      error: `Cannot delete faculty with ${fbCount.cnt} existing feedback record(s). Unassign from courses first or keep for data integrity.`,
-      feedbackCount: Number(fbCount.cnt),
+      error: `Cannot delete faculty with ${fbCount} existing feedback record(s). Unassign from courses first or keep for data integrity.`,
+      feedbackCount: fbCount,
     });
     return;
   }
 
-  // Unassign from all courses first
-  await db.update(coursesTable).set({ facultyId: null }).where(eq(coursesTable.facultyId, id));
+  await supabase.from("courses").update({ faculty_id: null }).eq("faculty_id", id);
 
-  const [deleted] = await db.delete(facultyTable).where(eq(facultyTable.id, id)).returning();
-  if (!deleted) { res.status(404).json({ error: "Faculty not found" }); return; }
+  const { data: deleted, error } = await supabase
+    .from("faculty")
+    .delete()
+    .eq("id", id)
+    .select()
+    .single();
 
-  const { loginPin: _lp3, ...safeDeleted } = deleted;
-  res.json({ success: true, deleted: safeDeleted });
+  if (error || !deleted) { res.status(404).json({ error: "Faculty not found" }); return; }
+
+  const { login_pin: _lp3, ...safeDeleted } = deleted;
+  res.json({ success: true, deleted: camelRow(safeDeleted) });
 });
 
 export default router;

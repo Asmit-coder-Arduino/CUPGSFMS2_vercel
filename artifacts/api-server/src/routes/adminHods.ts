@@ -1,6 +1,5 @@
 import { Router, type IRouter } from "express";
-import { db, departmentsTable, facultyTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { supabase, camelRows } from "@workspace/db";
 
 const router: IRouter = Router();
 
@@ -17,23 +16,26 @@ function verifyAdmin(req: any, res: any): boolean {
 router.get("/admin/hods", async (req, res): Promise<void> => {
   if (!verifyAdmin(req, res)) return;
 
-  const departments = await db.select().from(departmentsTable).orderBy(departmentsTable.code);
+  const { data: departments } = await supabase
+    .from("departments")
+    .select("*")
+    .order("code");
 
   const hodsWithFaculty = await Promise.all(
-    departments.map(async (dept) => {
-      const faculty = await db
-        .select({ id: facultyTable.id, name: facultyTable.name, designation: facultyTable.designation, employeeId: facultyTable.employeeId })
-        .from(facultyTable)
-        .where(eq(facultyTable.departmentId, dept.id));
+    (departments || []).map(async (dept: any) => {
+      const { data: faculty } = await supabase
+        .from("faculty")
+        .select("id, name, designation, employee_id")
+        .eq("department_id", dept.id);
 
       return {
         departmentId: dept.id,
         departmentCode: dept.code,
         departmentName: dept.name,
-        hodName: dept.hodName,
-        hodEmployeeId: dept.hodEmployeeId,
-        hodPin: dept.hodPin,
-        facultyList: faculty,
+        hodName: dept.hod_name,
+        hodEmployeeId: dept.hod_employee_id,
+        hodPin: dept.hod_pin,
+        facultyList: camelRows(faculty || []),
       };
     })
   );
@@ -45,59 +47,64 @@ router.put("/admin/hods/:deptId", async (req, res): Promise<void> => {
   if (!verifyAdmin(req, res)) return;
 
   const deptId = parseInt(req.params.deptId);
-  if (isNaN(deptId)) {
-    res.status(400).json({ error: "Invalid department ID" });
-    return;
-  }
+  if (isNaN(deptId)) { res.status(400).json({ error: "Invalid department ID" }); return; }
 
   const { hodName, hodEmployeeId, hodPin } = req.body;
-
   if (!hodName || !hodEmployeeId || !hodPin) {
     res.status(400).json({ error: "hodName, hodEmployeeId, and hodPin are all required" });
     return;
   }
 
-  const [existing] = await db.select().from(departmentsTable).where(eq(departmentsTable.id, deptId));
-  if (!existing) {
-    res.status(404).json({ error: "Department not found" });
-    return;
-  }
+  const { data: existing } = await supabase
+    .from("departments")
+    .select("*")
+    .eq("id", deptId)
+    .single();
 
-  if (hodEmployeeId !== existing.hodEmployeeId) {
-    const [conflict] = await db
-      .select({ id: departmentsTable.id })
-      .from(departmentsTable)
-      .where(eq(departmentsTable.hodEmployeeId, hodEmployeeId));
-    if (conflict && conflict.id !== deptId) {
+  if (!existing) { res.status(404).json({ error: "Department not found" }); return; }
+
+  if (hodEmployeeId !== existing.hod_employee_id) {
+    const { data: conflicts } = await supabase
+      .from("departments")
+      .select("id")
+      .eq("hod_employee_id", hodEmployeeId)
+      .neq("id", deptId)
+      .limit(1);
+    if (conflicts && conflicts.length > 0) {
       res.status(409).json({ error: "This HOD Employee ID is already assigned to another department" });
       return;
     }
   }
 
-  if (hodPin !== existing.hodPin) {
-    const [pinConflict] = await db
-      .select({ id: departmentsTable.id })
-      .from(departmentsTable)
-      .where(eq(departmentsTable.hodPin, hodPin));
-    if (pinConflict && pinConflict.id !== deptId) {
+  if (hodPin !== existing.hod_pin) {
+    const { data: pinConflicts } = await supabase
+      .from("departments")
+      .select("id")
+      .eq("hod_pin", hodPin)
+      .neq("id", deptId)
+      .limit(1);
+    if (pinConflicts && pinConflicts.length > 0) {
       res.status(409).json({ error: "This PIN is already used by another HOD" });
       return;
     }
   }
 
-  const [updated] = await db
-    .update(departmentsTable)
-    .set({ hodName, hodEmployeeId, hodPin })
-    .where(eq(departmentsTable.id, deptId))
-    .returning();
+  const { data: updated, error } = await supabase
+    .from("departments")
+    .update({ hod_name: hodName, hod_employee_id: hodEmployeeId, hod_pin: hodPin })
+    .eq("id", deptId)
+    .select()
+    .single();
+
+  if (error || !updated) { res.status(500).json({ error: "Update failed" }); return; }
 
   res.json({
     departmentId: updated.id,
     departmentCode: updated.code,
     departmentName: updated.name,
-    hodName: updated.hodName,
-    hodEmployeeId: updated.hodEmployeeId,
-    hodPin: updated.hodPin,
+    hodName: updated.hod_name,
+    hodEmployeeId: updated.hod_employee_id,
+    hodPin: updated.hod_pin,
   });
 });
 

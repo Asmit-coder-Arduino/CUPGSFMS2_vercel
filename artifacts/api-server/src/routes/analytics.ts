@@ -1,219 +1,148 @@
 import { Router, type IRouter } from "express";
-import {
-  db,
-  feedbackTable,
-  coursesTable,
-  facultyTable,
-  departmentsTable,
-  facultyLikesTable,
-} from "@workspace/db";
-import { eq, avg, count, desc, and, sql } from "drizzle-orm";
+import { supabase, camelRow, camelRows } from "@workspace/db";
 import {
   GetDepartmentAnalyticsParams,
   GetDepartmentAnalyticsQueryParams,
   GetFacultyAnalyticsParams,
   GetTrendsQueryParams,
 } from "@workspace/api-zod";
-import { windowsTable } from "@workspace/db";
 
 const router: IRouter = Router();
 
 router.get("/analytics/dashboard", async (req, res): Promise<void> => {
-  const [totalFeedbackRow] = await db.select({ cnt: count() }).from(feedbackTable);
-  const [totalCoursesRow] = await db.select({ cnt: count() }).from(coursesTable);
-  const [totalFacultyRow] = await db.select({ cnt: count() }).from(facultyTable);
-  const [totalDeptRow] = await db.select({ cnt: count() }).from(departmentsTable);
-  const [avgRow] = await db.select({ avg: avg(feedbackTable.ratingOverall) }).from(feedbackTable);
-  const [activeWindowsRow] = await db
-    .select({ cnt: count() })
-    .from(windowsTable)
-    .where(eq(windowsTable.isActive, true));
+  const { count: totalFeedback } = await supabase.from("feedback").select("*", { count: "exact", head: true });
+  const { count: totalCourses } = await supabase.from("courses").select("*", { count: "exact", head: true });
+  const { count: totalFaculty } = await supabase.from("faculty").select("*", { count: "exact", head: true });
+  const { count: totalDepartments } = await supabase.from("departments").select("*", { count: "exact", head: true });
+  const { count: activeWindows } = await supabase.from("feedback_windows").select("*", { count: "exact", head: true }).eq("is_active", true);
 
-  const now = new Date();
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const [monthRow] = await db
-    .select({ cnt: count() })
-    .from(feedbackTable);
+  const { data: allRatings } = await supabase
+    .from("feedback")
+    .select("rating_overall, rating_course_content, rating_teaching_quality, rating_lab_facilities, rating_study_material");
 
-  const [avgCC] = await db.select({ avg: avg(feedbackTable.ratingCourseContent) }).from(feedbackTable);
-  const [avgTQ] = await db.select({ avg: avg(feedbackTable.ratingTeachingQuality) }).from(feedbackTable);
-  const [avgLF] = await db.select({ avg: avg(feedbackTable.ratingLabFacilities) }).from(feedbackTable);
-  const [avgSM] = await db.select({ avg: avg(feedbackTable.ratingStudyMaterial) }).from(feedbackTable);
-  const [avgOA] = await db.select({ avg: avg(feedbackTable.ratingOverall) }).from(feedbackTable);
+  const r = allRatings || [];
+  const calcAvg = (arr: number[]) => arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : 0;
 
-  const recentFeedbackRaw = await db
-    .select()
-    .from(feedbackTable)
-    .orderBy(desc(feedbackTable.createdAt))
+  const { data: recentFeedbackRaw } = await supabase
+    .from("feedback")
+    .select("*")
+    .order("created_at", { ascending: false })
     .limit(5);
 
   const recentFeedback = await Promise.all(
-    recentFeedbackRaw.map(async (fb) => {
-      const [course] = await db
-        .select({ name: coursesTable.name, code: coursesTable.code })
-        .from(coursesTable)
-        .where(eq(coursesTable.id, fb.courseId));
-      const [dept] = await db
-        .select({ name: departmentsTable.name })
-        .from(departmentsTable)
-        .where(eq(departmentsTable.id, fb.departmentId));
-      const [faculty] = fb.facultyId
-        ? await db
-            .select({ name: facultyTable.name })
-            .from(facultyTable)
-            .where(eq(facultyTable.id, fb.facultyId))
-        : [null];
+    (recentFeedbackRaw || []).map(async (fb: any) => {
+      const { data: course } = await supabase.from("courses").select("name, code").eq("id", fb.course_id).single();
+      const { data: dept } = await supabase.from("departments").select("name").eq("id", fb.department_id).single();
+      let facultyName = null;
+      if (fb.faculty_id) {
+        const { data: fac } = await supabase.from("faculty").select("name").eq("id", fb.faculty_id).single();
+        facultyName = fac?.name ?? null;
+      }
       return {
-        ...fb,
+        ...camelRow(fb),
         courseName: course?.name ?? null,
         courseCode: course?.code ?? null,
         departmentName: dept?.name ?? null,
-        facultyName: faculty?.name ?? null,
+        facultyName,
       };
     })
   );
 
-  const departments = await db.select().from(departmentsTable);
+  const { data: departments } = await supabase.from("departments").select("id, name");
   let topDepartment = "";
   let topDeptAvg = 0;
-  for (const dept of departments) {
-    const [r] = await db
-      .select({ avg: avg(feedbackTable.ratingOverall) })
-      .from(feedbackTable)
-      .where(eq(feedbackTable.departmentId, dept.id));
-    const val = r?.avg ? parseFloat(r.avg) : 0;
-    if (val > topDeptAvg) {
-      topDeptAvg = val;
-      topDepartment = dept.name;
-    }
+  for (const dept of departments || []) {
+    const { data: deptFb } = await supabase.from("feedback").select("rating_overall").eq("department_id", dept.id);
+    const vals = (deptFb || []).map((f: any) => f.rating_overall);
+    const val = vals.length > 0 ? vals.reduce((s: number, v: number) => s + v, 0) / vals.length : 0;
+    if (val > topDeptAvg) { topDeptAvg = val; topDepartment = dept.name; }
   }
 
   res.json({
-    totalFeedback: Number(totalFeedbackRow?.cnt ?? 0),
-    totalCourses: Number(totalCoursesRow?.cnt ?? 0),
-    totalFaculty: Number(totalFacultyRow?.cnt ?? 0),
-    totalDepartments: Number(totalDeptRow?.cnt ?? 0),
-    avgOverallRating: avgRow?.avg ? parseFloat(avgRow.avg) : 0,
-    activeWindows: Number(activeWindowsRow?.cnt ?? 0),
-    feedbackThisMonth: Number(monthRow?.cnt ?? 0),
+    totalFeedback: totalFeedback ?? 0,
+    totalCourses: totalCourses ?? 0,
+    totalFaculty: totalFaculty ?? 0,
+    totalDepartments: totalDepartments ?? 0,
+    avgOverallRating: calcAvg(r.map((f: any) => f.rating_overall)),
+    activeWindows: activeWindows ?? 0,
+    feedbackThisMonth: totalFeedback ?? 0,
     topDepartment,
     recentFeedback,
     ratingBreakdown: {
-      courseContent: avgCC?.avg ? parseFloat(avgCC.avg) : 0,
-      teachingQuality: avgTQ?.avg ? parseFloat(avgTQ.avg) : 0,
-      labFacilities: avgLF?.avg ? parseFloat(avgLF.avg) : 0,
-      studyMaterial: avgSM?.avg ? parseFloat(avgSM.avg) : 0,
-      overall: avgOA?.avg ? parseFloat(avgOA.avg) : 0,
+      courseContent: calcAvg(r.map((f: any) => f.rating_course_content)),
+      teachingQuality: calcAvg(r.map((f: any) => f.rating_teaching_quality)),
+      labFacilities: calcAvg(r.map((f: any) => f.rating_lab_facilities)),
+      studyMaterial: calcAvg(r.map((f: any) => f.rating_study_material)),
+      overall: calcAvg(r.map((f: any) => f.rating_overall)),
     },
   });
 });
 
 router.get("/analytics/department/:departmentId", async (req, res): Promise<void> => {
-  const rawId = Array.isArray(req.params.departmentId)
-    ? req.params.departmentId[0]
-    : req.params.departmentId;
+  const rawId = Array.isArray(req.params.departmentId) ? req.params.departmentId[0] : req.params.departmentId;
   const params = GetDepartmentAnalyticsParams.safeParse({ departmentId: parseInt(rawId, 10) });
-  if (!params.success) {
-    res.status(400).json({ error: params.error.message });
-    return;
-  }
+  if (!params.success) { res.status(400).json({ error: params.error.message }); return; }
 
   const qp = GetDepartmentAnalyticsQueryParams.safeParse(req.query);
 
-  const [dept] = await db
-    .select()
-    .from(departmentsTable)
-    .where(eq(departmentsTable.id, params.data.departmentId));
+  const { data: dept } = await supabase.from("departments").select("*").eq("id", params.data.departmentId).single();
+  if (!dept) { res.status(404).json({ error: "Department not found" }); return; }
 
-  if (!dept) {
-    res.status(404).json({ error: "Department not found" });
-    return;
-  }
+  let fbQuery = supabase.from("feedback").select("*").eq("department_id", params.data.departmentId);
+  if (qp.success && qp.data.academicYear) fbQuery = fbQuery.eq("academic_year", qp.data.academicYear);
+  const { data: fbData } = await fbQuery;
+  const fb = fbData || [];
 
-  const conditions = [eq(feedbackTable.departmentId, params.data.departmentId)];
-  if (qp.success && qp.data.academicYear) {
-    conditions.push(eq(feedbackTable.academicYear, qp.data.academicYear));
-  }
+  const calcAvg = (arr: number[]) => arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : 0;
 
-  const [avgData] = await db
-    .select({
-      avgRating: avg(feedbackTable.ratingOverall),
-      avgCC: avg(feedbackTable.ratingCourseContent),
-      avgTQ: avg(feedbackTable.ratingTeachingQuality),
-      avgLF: avg(feedbackTable.ratingLabFacilities),
-      avgSM: avg(feedbackTable.ratingStudyMaterial),
-      total: count(),
-    })
-    .from(feedbackTable)
-    .where(and(...conditions));
-
-  const coursesRaw = await db
-    .select({
-      id: coursesTable.id,
-      code: coursesTable.code,
-      name: coursesTable.name,
-      departmentId: coursesTable.departmentId,
-      facultyId: coursesTable.facultyId,
-      semester: coursesTable.semester,
-      academicYear: coursesTable.academicYear,
-      credits: coursesTable.credits,
-      facultyName: facultyTable.name,
-    })
-    .from(coursesTable)
-    .leftJoin(facultyTable, eq(coursesTable.facultyId, facultyTable.id))
-    .where(eq(coursesTable.departmentId, params.data.departmentId))
+  const { data: coursesRaw } = await supabase
+    .from("courses")
+    .select("id, code, name, department_id, faculty_id, semester, academic_year, credits")
+    .eq("department_id", params.data.departmentId)
     .limit(10);
 
   const topCourses = await Promise.all(
-    coursesRaw.map(async (c) => {
-      const [r] = await db
-        .select({ avg: avg(feedbackTable.ratingOverall), cnt: count() })
-        .from(feedbackTable)
-        .where(eq(feedbackTable.courseId, c.id));
+    (coursesRaw || []).map(async (c: any) => {
+      let facultyName = null;
+      if (c.faculty_id) {
+        const { data: fac } = await supabase.from("faculty").select("name").eq("id", c.faculty_id).single();
+        facultyName = fac?.name ?? null;
+      }
+      const cfb = fb.filter((f: any) => f.course_id === c.id);
       return {
-        ...c,
+        ...camelRow(c),
         departmentName: dept.name,
-        avgRating: r?.avg ? parseFloat(r.avg) : null,
-        feedbackCount: Number(r?.cnt ?? 0),
+        facultyName,
+        avgRating: cfb.length > 0 ? calcAvg(cfb.map((f: any) => f.rating_overall)) : null,
+        feedbackCount: cfb.length,
       };
     })
   );
 
-  const facultyRaw = await db
-    .select({
-      id: facultyTable.id,
-      name: facultyTable.name,
-      email: facultyTable.email,
-      designation: facultyTable.designation,
-      departmentId: facultyTable.departmentId,
-    })
-    .from(facultyTable)
-    .where(eq(facultyTable.departmentId, params.data.departmentId));
+  const { data: facultyRaw } = await supabase
+    .from("faculty")
+    .select("id, name, email, designation, department_id")
+    .eq("department_id", params.data.departmentId);
 
-  const facultyPerformance = await Promise.all(
-    facultyRaw.map(async (f) => {
-      const [r] = await db
-        .select({ avg: avg(feedbackTable.ratingOverall), cnt: count() })
-        .from(feedbackTable)
-        .where(eq(feedbackTable.facultyId, f.id));
-      return {
-        ...f,
-        departmentName: dept.name,
-        avgRating: r?.avg ? parseFloat(r.avg) : null,
-        totalFeedbackCount: Number(r?.cnt ?? 0),
-      };
-    })
-  );
+  const facultyPerformance = (facultyRaw || []).map((f: any) => {
+    const ffb = fb.filter((x: any) => x.faculty_id === f.id);
+    return {
+      ...camelRow(f),
+      departmentName: dept.name,
+      avgRating: ffb.length > 0 ? calcAvg(ffb.map((x: any) => x.rating_overall)) : null,
+      totalFeedbackCount: ffb.length,
+    };
+  });
 
   res.json({
     departmentId: dept.id,
     departmentName: dept.name,
-    totalFeedback: Number(avgData?.total ?? 0),
-    avgRating: avgData?.avgRating ? parseFloat(avgData.avgRating) : 0,
-    avgCourseContent: avgData?.avgCC ? parseFloat(avgData.avgCC) : 0,
-    avgTeachingQuality: avgData?.avgTQ ? parseFloat(avgData.avgTQ) : 0,
-    avgLabFacilities: avgData?.avgLF ? parseFloat(avgData.avgLF) : 0,
-    avgStudyMaterial: avgData?.avgSM ? parseFloat(avgData.avgSM) : 0,
+    totalFeedback: fb.length,
+    avgRating: fb.length > 0 ? calcAvg(fb.map((f: any) => f.rating_overall)) : 0,
+    avgCourseContent: fb.length > 0 ? calcAvg(fb.map((f: any) => f.rating_course_content)) : 0,
+    avgTeachingQuality: fb.length > 0 ? calcAvg(fb.map((f: any) => f.rating_teaching_quality)) : 0,
+    avgLabFacilities: fb.length > 0 ? calcAvg(fb.map((f: any) => f.rating_lab_facilities)) : 0,
+    avgStudyMaterial: fb.length > 0 ? calcAvg(fb.map((f: any) => f.rating_study_material)) : 0,
     topCourses,
     facultyPerformance,
   });
@@ -222,93 +151,55 @@ router.get("/analytics/department/:departmentId", async (req, res): Promise<void
 router.get("/analytics/faculty/:facultyId", async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.facultyId) ? req.params.facultyId[0] : req.params.facultyId;
   const params = GetFacultyAnalyticsParams.safeParse({ facultyId: parseInt(rawId, 10) });
-  if (!params.success) {
-    res.status(400).json({ error: params.error.message });
-    return;
-  }
+  if (!params.success) { res.status(400).json({ error: params.error.message }); return; }
 
-  const [faculty] = await db
-    .select({
-      id: facultyTable.id,
-      name: facultyTable.name,
-      email: facultyTable.email,
-      designation: facultyTable.designation,
-      departmentId: facultyTable.departmentId,
-      departmentName: departmentsTable.name,
-    })
-    .from(facultyTable)
-    .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id))
-    .where(eq(facultyTable.id, params.data.facultyId));
+  const { data: faculty } = await supabase
+    .from("faculty")
+    .select("id, name, email, designation, department_id")
+    .eq("id", params.data.facultyId)
+    .single();
 
-  if (!faculty) {
-    res.status(404).json({ error: "Faculty not found" });
-    return;
-  }
+  if (!faculty) { res.status(404).json({ error: "Faculty not found" }); return; }
 
-  const [avgData] = await db
-    .select({
-      avgOverall: avg(feedbackTable.ratingOverall),
-      avgCC: avg(feedbackTable.ratingCourseContent),
-      avgTQ: avg(feedbackTable.ratingTeachingQuality),
-      avgLF: avg(feedbackTable.ratingLabFacilities),
-      avgSM: avg(feedbackTable.ratingStudyMaterial),
-      total: count(),
-    })
-    .from(feedbackTable)
-    .where(eq(feedbackTable.facultyId, params.data.facultyId));
+  const { data: dept } = await supabase.from("departments").select("name").eq("id", faculty.department_id).single();
 
-  const coursesRaw = await db
-    .select({
-      id: coursesTable.id,
-      code: coursesTable.code,
-      name: coursesTable.name,
-      departmentId: coursesTable.departmentId,
-      facultyId: coursesTable.facultyId,
-      semester: coursesTable.semester,
-      academicYear: coursesTable.academicYear,
-      credits: coursesTable.credits,
-    })
-    .from(coursesTable)
-    .where(eq(coursesTable.facultyId, params.data.facultyId));
+  const { data: fbData } = await supabase.from("feedback").select("*").eq("faculty_id", params.data.facultyId);
+  const fb = fbData || [];
+  const calcAvg = (arr: number[]) => arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : 0;
 
-  const courses = await Promise.all(
-    coursesRaw.map(async (c) => {
-      const [r] = await db
-        .select({ avg: avg(feedbackTable.ratingOverall), cnt: count() })
-        .from(feedbackTable)
-        .where(eq(feedbackTable.courseId, c.id));
-      return {
-        ...c,
-        departmentName: faculty.departmentName,
-        facultyName: faculty.name,
-        avgRating: r?.avg ? parseFloat(r.avg) : null,
-        feedbackCount: Number(r?.cnt ?? 0),
-      };
-    })
-  );
+  const { data: coursesRaw } = await supabase
+    .from("courses")
+    .select("id, code, name, department_id, faculty_id, semester, academic_year, credits")
+    .eq("faculty_id", params.data.facultyId);
 
-  const recentCommentsRaw = await db
-    .select({ comments: feedbackTable.comments })
-    .from(feedbackTable)
-    .where(and(eq(feedbackTable.facultyId, params.data.facultyId)))
-    .orderBy(desc(feedbackTable.createdAt))
-    .limit(5);
+  const courses = (coursesRaw || []).map((c: any) => {
+    const cfb = fb.filter((f: any) => f.course_id === c.id);
+    return {
+      ...camelRow(c),
+      departmentName: dept?.name ?? null,
+      facultyName: faculty.name,
+      avgRating: cfb.length > 0 ? calcAvg(cfb.map((f: any) => f.rating_overall)) : null,
+      feedbackCount: cfb.length,
+    };
+  });
 
-  const recentComments = recentCommentsRaw
-    .map((r) => r.comments)
-    .filter((c): c is string => c !== null && c.trim() !== "");
+  const recentComments = fb
+    .filter((f: any) => f.comments && f.comments.trim() !== "")
+    .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 5)
+    .map((f: any) => f.comments);
 
   res.json({
     facultyId: faculty.id,
     facultyName: faculty.name,
     designation: faculty.designation,
-    departmentName: faculty.departmentName ?? "",
-    totalFeedback: Number(avgData?.total ?? 0),
-    avgOverall: avgData?.avgOverall ? parseFloat(avgData.avgOverall) : 0,
-    avgCourseContent: avgData?.avgCC ? parseFloat(avgData.avgCC) : 0,
-    avgTeachingQuality: avgData?.avgTQ ? parseFloat(avgData.avgTQ) : 0,
-    avgLabFacilities: avgData?.avgLF ? parseFloat(avgData.avgLF) : 0,
-    avgStudyMaterial: avgData?.avgSM ? parseFloat(avgData.avgSM) : 0,
+    departmentName: dept?.name ?? "",
+    totalFeedback: fb.length,
+    avgOverall: fb.length > 0 ? calcAvg(fb.map((f: any) => f.rating_overall)) : 0,
+    avgCourseContent: fb.length > 0 ? calcAvg(fb.map((f: any) => f.rating_course_content)) : 0,
+    avgTeachingQuality: fb.length > 0 ? calcAvg(fb.map((f: any) => f.rating_teaching_quality)) : 0,
+    avgLabFacilities: fb.length > 0 ? calcAvg(fb.map((f: any) => f.rating_lab_facilities)) : 0,
+    avgStudyMaterial: fb.length > 0 ? calcAvg(fb.map((f: any) => f.rating_study_material)) : 0,
     courses,
     recentComments,
   });
@@ -316,46 +207,29 @@ router.get("/analytics/faculty/:facultyId", async (req, res): Promise<void> => {
 
 router.get("/analytics/trends", async (req, res): Promise<void> => {
   const params = GetTrendsQueryParams.safeParse(req.query);
-  if (!params.success) {
-    res.status(400).json({ error: params.error.message });
-    return;
-  }
+  if (!params.success) { res.status(400).json({ error: params.error.message }); return; }
 
-  const allFeedback = await db
-    .select({
-      academicYear: feedbackTable.academicYear,
-      semester: feedbackTable.semester,
-      ratingOverall: feedbackTable.ratingOverall,
-      ratingCourseContent: feedbackTable.ratingCourseContent,
-      ratingTeachingQuality: feedbackTable.ratingTeachingQuality,
-      ratingLabFacilities: feedbackTable.ratingLabFacilities,
-      ratingStudyMaterial: feedbackTable.ratingStudyMaterial,
-      departmentId: feedbackTable.departmentId,
-    })
-    .from(feedbackTable)
-    .where(
-      params.data.departmentId
-        ? eq(feedbackTable.departmentId, params.data.departmentId)
-        : undefined
-    );
+  let query = supabase
+    .from("feedback")
+    .select("academic_year, semester, rating_overall, rating_course_content, rating_teaching_quality, rating_lab_facilities, rating_study_material, department_id");
+
+  if (params.data.departmentId) query = query.eq("department_id", params.data.departmentId);
+
+  const { data: allFeedback } = await query;
 
   const grouped = new Map<string, { sum: number; count: number }>();
-  for (const fb of allFeedback) {
-    const key = `${fb.academicYear}|${fb.semester}`;
+  for (const fb of allFeedback || []) {
+    const key = `${fb.academic_year}|${fb.semester}`;
     const metric = params.data.metric ?? "overall";
-    let value = fb.ratingOverall;
-    if (metric === "course_content") value = fb.ratingCourseContent;
-    else if (metric === "teaching_quality") value = fb.ratingTeachingQuality;
-    else if (metric === "lab_facilities") value = fb.ratingLabFacilities;
-    else if (metric === "study_material") value = fb.ratingStudyMaterial;
+    let value = fb.rating_overall;
+    if (metric === "course_content") value = fb.rating_course_content;
+    else if (metric === "teaching_quality") value = fb.rating_teaching_quality;
+    else if (metric === "lab_facilities") value = fb.rating_lab_facilities;
+    else if (metric === "study_material") value = fb.rating_study_material;
 
     const existing = grouped.get(key);
-    if (existing) {
-      existing.sum += value;
-      existing.count++;
-    } else {
-      grouped.set(key, { sum: value, count: 1 });
-    }
+    if (existing) { existing.sum += value; existing.count++; }
+    else { grouped.set(key, { sum: value, count: 1 }); }
   }
 
   const trends = Array.from(grouped.entries())
@@ -363,94 +237,70 @@ router.get("/analytics/trends", async (req, res): Promise<void> => {
       const [academicYear, semStr] = key.split("|");
       const semester = parseInt(semStr, 10);
       return {
-        academicYear,
-        semester,
+        academicYear, semester,
         avgRating: Math.round((sum / count) * 100) / 100,
         feedbackCount: count,
         label: `${academicYear} Sem ${semester}`,
       };
     })
-    .sort((a, b) => {
-      if (a.academicYear !== b.academicYear) return a.academicYear.localeCompare(b.academicYear);
-      return a.semester - b.semester;
-    });
+    .sort((a, b) => a.academicYear !== b.academicYear ? a.academicYear.localeCompare(b.academicYear) : a.semester - b.semester);
 
   res.json(trends);
 });
 
 router.get("/analytics/top-rated", async (req, res): Promise<void> => {
-  const allFaculty = await db
-    .select({
-      id: facultyTable.id,
-      name: facultyTable.name,
-      email: facultyTable.email,
-      designation: facultyTable.designation,
-      departmentId: facultyTable.departmentId,
-      departmentName: departmentsTable.name,
-      departmentCode: departmentsTable.code,
-      photoUrl: facultyTable.photoUrl,
-    })
-    .from(facultyTable)
-    .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id));
+  const { data: allFaculty } = await supabase
+    .from("faculty")
+    .select("id, name, email, designation, department_id, photo_url");
 
-  const facultyWithRatings = await Promise.all(
-    allFaculty.map(async (f) => {
-      const [r] = await db
-        .select({ avg: avg(feedbackTable.ratingOverall), cnt: count() })
-        .from(feedbackTable)
-        .where(eq(feedbackTable.facultyId, f.id));
-      const [likesRow] = await db
-        .select({ cnt: count() })
-        .from(facultyLikesTable)
-        .where(eq(facultyLikesTable.facultyId, f.id));
-      return {
-        ...f,
-        avgRating: r?.avg ? parseFloat(r.avg) : null,
-        totalFeedbackCount: Number(r?.cnt ?? 0),
-        likeCount: Number(likesRow?.cnt ?? 0),
-      };
-    })
-  );
+  const { data: allDepts } = await supabase.from("departments").select("id, name, code");
+  const { data: allFb } = await supabase.from("feedback").select("faculty_id, course_id, rating_overall");
+  const { data: allLikes } = await supabase.from("faculty_likes").select("faculty_id");
+
+  const fb = allFb || [];
+  const likes = allLikes || [];
+
+  const facultyWithRatings = (allFaculty || []).map((f: any) => {
+    const ffb = fb.filter((x: any) => x.faculty_id === f.id);
+    const fLikes = likes.filter((x: any) => x.faculty_id === f.id);
+    const dept = (allDepts || []).find((d: any) => d.id === f.department_id);
+    const ratings = ffb.map((x: any) => x.rating_overall);
+    return {
+      ...camelRow(f),
+      departmentName: dept?.name ?? null,
+      departmentCode: dept?.code ?? null,
+      avgRating: ratings.length > 0 ? ratings.reduce((s: number, v: number) => s + v, 0) / ratings.length : null,
+      totalFeedbackCount: ratings.length,
+      likeCount: fLikes.length,
+    };
+  });
 
   const topFaculty = facultyWithRatings
-    .filter((f) => f.totalFeedbackCount > 0)
-    .sort((a, b) => (b.avgRating ?? 0) - (a.avgRating ?? 0))
+    .filter((f: any) => f.totalFeedbackCount > 0)
+    .sort((a: any, b: any) => (b.avgRating ?? 0) - (a.avgRating ?? 0))
     .slice(0, 5);
 
-  const allCourses = await db
-    .select({
-      id: coursesTable.id,
-      code: coursesTable.code,
-      name: coursesTable.name,
-      departmentId: coursesTable.departmentId,
-      departmentName: departmentsTable.name,
-      facultyId: coursesTable.facultyId,
-      facultyName: facultyTable.name,
-      semester: coursesTable.semester,
-      academicYear: coursesTable.academicYear,
-      credits: coursesTable.credits,
-    })
-    .from(coursesTable)
-    .leftJoin(departmentsTable, eq(coursesTable.departmentId, departmentsTable.id))
-    .leftJoin(facultyTable, eq(coursesTable.facultyId, facultyTable.id));
+  const { data: allCourses } = await supabase
+    .from("courses")
+    .select("id, code, name, department_id, faculty_id, semester, academic_year, credits");
 
-  const coursesWithRatings = await Promise.all(
-    allCourses.map(async (c) => {
-      const [r] = await db
-        .select({ avg: avg(feedbackTable.ratingOverall), cnt: count() })
-        .from(feedbackTable)
-        .where(eq(feedbackTable.courseId, c.id));
-      return {
-        ...c,
-        avgRating: r?.avg ? parseFloat(r.avg) : null,
-        feedbackCount: Number(r?.cnt ?? 0),
-      };
-    })
-  );
+  const coursesWithRatings = (allCourses || []).map((c: any) => {
+    const cfb = fb.filter((x: any) => x.course_id === c.id);
+    const dept = (allDepts || []).find((d: any) => d.id === c.department_id);
+    const fac = (allFaculty || []).find((f: any) => f.id === c.faculty_id);
+    const ratings = cfb.map((x: any) => x.rating_overall);
+    return {
+      ...camelRow(c),
+      departmentName: dept?.name ?? null,
+      facultyName: fac?.name ?? null,
+      avgRating: ratings.length > 0 ? ratings.reduce((s: number, v: number) => s + v, 0) / ratings.length : null,
+      feedbackCount: ratings.length,
+    };
+  });
 
   const topCourses = coursesWithRatings
-    .filter((c) => c.feedbackCount > 0)
-    .sort((a, b) => (b.avgRating ?? 0) - (a.avgRating ?? 0))
+    .filter((c: any) => c.feedbackCount > 0)
+    .sort((a: any, b: any) => (b.avgRating ?? 0) - (a.avgRating ?? 0))
     .slice(0, 5);
 
   res.json({ topFaculty, topCourses });
@@ -461,20 +311,20 @@ router.post("/faculty/:id/like", async (req, res): Promise<void> => {
   const { sessionId } = req.body;
   if (!sessionId) { res.status(400).json({ error: "sessionId required" }); return; }
 
-  const existing = await db
-    .select()
-    .from(facultyLikesTable)
-    .where(and(eq(facultyLikesTable.facultyId, facultyId), eq(facultyLikesTable.sessionId, sessionId)));
+  const { data: existing } = await supabase
+    .from("faculty_likes")
+    .select("id")
+    .eq("faculty_id", facultyId)
+    .eq("session_id", sessionId);
 
-  if (existing.length > 0) {
-    await db.delete(facultyLikesTable)
-      .where(and(eq(facultyLikesTable.facultyId, facultyId), eq(facultyLikesTable.sessionId, sessionId)));
-    const [cnt] = await db.select({ cnt: count() }).from(facultyLikesTable).where(eq(facultyLikesTable.facultyId, facultyId));
-    res.json({ liked: false, likeCount: Number(cnt?.cnt ?? 0) });
+  if (existing && existing.length > 0) {
+    await supabase.from("faculty_likes").delete().eq("faculty_id", facultyId).eq("session_id", sessionId);
+    const { count } = await supabase.from("faculty_likes").select("*", { count: "exact", head: true }).eq("faculty_id", facultyId);
+    res.json({ liked: false, likeCount: count ?? 0 });
   } else {
-    await db.insert(facultyLikesTable).values({ facultyId, sessionId });
-    const [cnt] = await db.select({ cnt: count() }).from(facultyLikesTable).where(eq(facultyLikesTable.facultyId, facultyId));
-    res.json({ liked: true, likeCount: Number(cnt?.cnt ?? 0) });
+    await supabase.from("faculty_likes").insert({ faculty_id: facultyId, session_id: sessionId });
+    const { count } = await supabase.from("faculty_likes").select("*", { count: "exact", head: true }).eq("faculty_id", facultyId);
+    res.json({ liked: true, likeCount: count ?? 0 });
   }
 });
 
@@ -482,49 +332,60 @@ router.get("/faculty/:id/top-detail", async (req, res): Promise<void> => {
   const facultyId = parseInt(req.params.id);
   const sessionId = (req.query.sessionId as string) || "";
 
-  const [faculty] = await db
-    .select({
-      id: facultyTable.id,
-      name: facultyTable.name,
-      designation: facultyTable.designation,
-      departmentName: departmentsTable.name,
-      departmentCode: departmentsTable.code,
-      photoUrl: facultyTable.photoUrl,
-    })
-    .from(facultyTable)
-    .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id))
-    .where(eq(facultyTable.id, facultyId));
+  const { data: faculty } = await supabase
+    .from("faculty")
+    .select("id, name, designation, department_id, photo_url")
+    .eq("id", facultyId)
+    .single();
 
   if (!faculty) { res.status(404).json({ error: "Faculty not found" }); return; }
 
-  const [ratings] = await db
-    .select({
-      avgOverall: avg(feedbackTable.ratingOverall),
-      avgContent: avg(feedbackTable.ratingCourseContent),
-      avgTeaching: avg(feedbackTable.ratingTeachingQuality),
-      avgLab: avg(feedbackTable.ratingLabFacilities),
-      avgMaterial: avg(feedbackTable.ratingStudyMaterial),
-      cnt: count(),
-    })
-    .from(feedbackTable)
-    .where(eq(feedbackTable.facultyId, facultyId));
+  const { data: dept } = await supabase.from("departments").select("name, code").eq("id", faculty.department_id).single();
 
-  const comments = await db
-    .select({
-      comment: feedbackTable.comments,
-      courseCode: coursesTable.code,
-      courseName: coursesTable.name,
-      createdAt: feedbackTable.createdAt,
-      ratingOverall: feedbackTable.ratingOverall,
-    })
-    .from(feedbackTable)
-    .leftJoin(coursesTable, eq(feedbackTable.courseId, coursesTable.id))
-    .where(and(eq(feedbackTable.facultyId, facultyId), sql`${feedbackTable.comments} IS NOT NULL AND ${feedbackTable.comments} != ''`))
-    .orderBy(desc(feedbackTable.createdAt))
+  const { data: fbData } = await supabase
+    .from("feedback")
+    .select("rating_overall, rating_course_content, rating_teaching_quality, rating_lab_facilities, rating_study_material, comments, course_id, created_at")
+    .eq("faculty_id", facultyId);
+
+  const fb = fbData || [];
+  const calcAvg = (arr: number[]) => arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : null;
+
+  const { data: commentsRaw } = await supabase
+    .from("feedback")
+    .select("comments, course_id, created_at, rating_overall")
+    .eq("faculty_id", facultyId)
+    .not("comments", "is", null)
+    .neq("comments", "")
+    .order("created_at", { ascending: false })
     .limit(20);
 
-  const [likesRow] = await db.select({ cnt: count() }).from(facultyLikesTable).where(eq(facultyLikesTable.facultyId, facultyId));
-  const likedByMe = sessionId ? (await db.select().from(facultyLikesTable).where(and(eq(facultyLikesTable.facultyId, facultyId), eq(facultyLikesTable.sessionId, sessionId)))).length > 0 : false;
+  const comments = await Promise.all(
+    (commentsRaw || []).map(async (c: any) => {
+      const { data: course } = await supabase.from("courses").select("code, name").eq("id", c.course_id).single();
+      return {
+        comment: c.comments,
+        courseCode: course?.code ?? null,
+        courseName: course?.name ?? null,
+        createdAt: c.created_at,
+        ratingOverall: c.rating_overall,
+      };
+    })
+  );
+
+  const { count: likeCount } = await supabase
+    .from("faculty_likes")
+    .select("*", { count: "exact", head: true })
+    .eq("faculty_id", facultyId);
+
+  let likedByMe = false;
+  if (sessionId) {
+    const { data: myLike } = await supabase
+      .from("faculty_likes")
+      .select("id")
+      .eq("faculty_id", facultyId)
+      .eq("session_id", sessionId);
+    likedByMe = (myLike || []).length > 0;
+  }
 
   let aiAnalysis = "";
   try {
@@ -533,6 +394,7 @@ router.get("/faculty/:id/top-detail", async (req, res): Promise<void> => {
       const baseUrl = process.env.AI_INTEGRATIONS_OPENAI_BASE_URL;
       const apiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY;
       if (baseUrl && apiKey) {
+        const avgOverall = calcAvg(fb.map((f: any) => f.rating_overall));
         const resp = await fetch(`${baseUrl}/chat/completions`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${apiKey}` },
@@ -540,7 +402,7 @@ router.get("/faculty/:id/top-detail", async (req, res): Promise<void> => {
             model: "gpt-4o-mini",
             messages: [
               { role: "system", content: "You are an academic feedback analyst. Analyze student comments about a professor and explain in 3-4 concise sentences why this teacher is highly rated. Be specific, referencing themes from the comments. Write in a professional yet warm tone. Keep it brief." },
-              { role: "user", content: `Professor: ${faculty.name} (${faculty.designation}, ${faculty.departmentName})\n\nStudent Comments:\n${commentTexts.map((c, i) => `${i + 1}. "${c}"`).join("\n")}\n\nAverage Rating: ${ratings.avgOverall ? parseFloat(String(ratings.avgOverall)).toFixed(1) : "N/A"}/5.0 from ${ratings.cnt} reviews.\n\nAnalyze why this teacher is top-rated based on the feedback.` }
+              { role: "user", content: `Professor: ${faculty.name} (${faculty.designation}, ${dept?.name})\n\nStudent Comments:\n${commentTexts.map((c: any, i: number) => `${i + 1}. "${c}"`).join("\n")}\n\nAverage Rating: ${avgOverall ? avgOverall.toFixed(1) : "N/A"}/5.0 from ${fb.length} reviews.\n\nAnalyze why this teacher is top-rated based on the feedback.` }
             ],
             max_completion_tokens: 300,
           }),
@@ -554,17 +416,24 @@ router.get("/faculty/:id/top-detail", async (req, res): Promise<void> => {
   }
 
   res.json({
-    faculty,
+    faculty: {
+      id: faculty.id,
+      name: faculty.name,
+      designation: faculty.designation,
+      departmentName: dept?.name ?? null,
+      departmentCode: dept?.code ?? null,
+      photoUrl: faculty.photo_url,
+    },
     ratings: {
-      avgOverall: ratings.avgOverall ? parseFloat(String(ratings.avgOverall)) : null,
-      avgContent: ratings.avgContent ? parseFloat(String(ratings.avgContent)) : null,
-      avgTeaching: ratings.avgTeaching ? parseFloat(String(ratings.avgTeaching)) : null,
-      avgLab: ratings.avgLab ? parseFloat(String(ratings.avgLab)) : null,
-      avgMaterial: ratings.avgMaterial ? parseFloat(String(ratings.avgMaterial)) : null,
-      totalFeedback: Number(ratings.cnt ?? 0),
+      avgOverall: calcAvg(fb.map((f: any) => f.rating_overall)),
+      avgContent: calcAvg(fb.map((f: any) => f.rating_course_content)),
+      avgTeaching: calcAvg(fb.map((f: any) => f.rating_teaching_quality)),
+      avgLab: calcAvg(fb.map((f: any) => f.rating_lab_facilities)),
+      avgMaterial: calcAvg(fb.map((f: any) => f.rating_study_material)),
+      totalFeedback: fb.length,
     },
     comments,
-    likeCount: Number(likesRow?.cnt ?? 0),
+    likeCount: likeCount ?? 0,
     likedByMe,
     aiAnalysis,
   });

@@ -1,6 +1,5 @@
 import { Router, type IRouter } from "express";
-import { db, complaintsTable, departmentsTable } from "@workspace/db";
-import { eq, desc, and } from "drizzle-orm";
+import { supabase, camelRow, camelRows } from "@workspace/db";
 import { z } from "zod";
 import { containsProfanity } from "../lib/profanityFilter";
 import { complaintEvents } from "../lib/complaintEvents";
@@ -9,15 +8,8 @@ import { randomUUID } from "crypto";
 const router: IRouter = Router();
 
 const CATEGORIES = [
-  "Academic",
-  "Infrastructure",
-  "Faculty",
-  "Examination",
-  "Hostel",
-  "Library",
-  "Lab & Equipment",
-  "Administration",
-  "Other",
+  "Academic", "Infrastructure", "Faculty", "Examination",
+  "Hostel", "Library", "Lab & Equipment", "Administration", "Other",
 ] as const;
 
 const PRIORITIES = ["low", "medium", "high", "urgent"] as const;
@@ -48,43 +40,44 @@ router.post("/complaints", async (req, res): Promise<void> => {
   }
 
   const data = parsed.data;
-
   if (containsProfanity(data.subject) || containsProfanity(data.description)) {
     res.status(400).json({ error: "Complaint contains inappropriate language. Please use respectful language." });
     return;
   }
 
   const clientIp = (req.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim() || req.socket.remoteAddress || "unknown";
-
   const referenceId = generateComplaintRef();
 
-  const [complaint] = await db.insert(complaintsTable).values({
-    referenceId,
-    studentName: data.isAnonymous ? "Anonymous" : data.studentName,
-    rollNumber: data.isAnonymous ? "Anonymous" : data.rollNumber,
-    departmentId: data.departmentId,
-    category: data.category,
-    priority: data.priority,
-    subject: data.subject,
-    description: data.description,
-    isAnonymous: data.isAnonymous,
-    ipAddress: clientIp,
-  }).returning();
+  const { data: complaint, error } = await supabase
+    .from("complaints")
+    .insert({
+      reference_id: referenceId,
+      student_name: data.isAnonymous ? "Anonymous" : data.studentName,
+      roll_number: data.isAnonymous ? "Anonymous" : data.rollNumber,
+      department_id: data.departmentId,
+      category: data.category,
+      priority: data.priority,
+      subject: data.subject,
+      description: data.description,
+      is_anonymous: data.isAnonymous,
+      ip_address: clientIp,
+    })
+    .select()
+    .single();
 
-  const [dept] = await db.select({ name: departmentsTable.name }).from(departmentsTable).where(eq(departmentsTable.id, data.departmentId));
+  if (error || !complaint) { res.status(500).json({ error: error?.message || "Insert failed" }); return; }
+
+  const { data: dept } = await supabase.from("departments").select("name").eq("id", data.departmentId).single();
 
   complaintEvents.notifyNewComplaint({
-    ...complaint,
+    ...camelRow(complaint),
     departmentName: dept?.name || "",
     studentName: data.isAnonymous ? "Anonymous" : data.studentName,
     isAnonymous: data.isAnonymous,
-  });
+  } as any);
 
-  const { ipAddress: _ip, ...safeComplaint } = complaint;
-  res.status(201).json({
-    ...safeComplaint,
-    message: "Complaint submitted successfully",
-  });
+  const { ip_address: _ip, ...safeComplaint } = complaint;
+  res.status(201).json({ ...camelRow(safeComplaint), message: "Complaint submitted successfully" });
 });
 
 router.get("/complaints", async (req, res): Promise<void> => {
@@ -92,67 +85,46 @@ router.get("/complaints", async (req, res): Promise<void> => {
   const status = req.query.status as string | undefined;
   const priority = req.query.priority as string | undefined;
 
-  const conditions = [];
-  if (departmentId) conditions.push(eq(complaintsTable.departmentId, departmentId));
-  if (status) conditions.push(eq(complaintsTable.status, status));
-  if (priority) conditions.push(eq(complaintsTable.priority, priority));
+  let query = supabase
+    .from("complaints")
+    .select("id, reference_id, student_name, roll_number, department_id, category, priority, subject, description, status, admin_remarks, hod_remarks, is_anonymous, created_at, updated_at, resolved_at");
 
-  const complaints = await db
-    .select({
-      id: complaintsTable.id,
-      referenceId: complaintsTable.referenceId,
-      studentName: complaintsTable.studentName,
-      rollNumber: complaintsTable.rollNumber,
-      departmentId: complaintsTable.departmentId,
-      departmentName: departmentsTable.name,
-      departmentCode: departmentsTable.code,
-      category: complaintsTable.category,
-      priority: complaintsTable.priority,
-      subject: complaintsTable.subject,
-      description: complaintsTable.description,
-      status: complaintsTable.status,
-      adminRemarks: complaintsTable.adminRemarks,
-      hodRemarks: complaintsTable.hodRemarks,
-      isAnonymous: complaintsTable.isAnonymous,
-      createdAt: complaintsTable.createdAt,
-      updatedAt: complaintsTable.updatedAt,
-      resolvedAt: complaintsTable.resolvedAt,
+  if (departmentId) query = query.eq("department_id", departmentId);
+  if (status) query = query.eq("status", status);
+  if (priority) query = query.eq("priority", priority);
+
+  const { data: complaints, error } = await query.order("created_at", { ascending: false });
+  if (error) { res.status(500).json({ error: error.message }); return; }
+
+  const result = await Promise.all(
+    (complaints || []).map(async (c: any) => {
+      const { data: dept } = await supabase.from("departments").select("name, code").eq("id", c.department_id).single();
+      return {
+        ...camelRow(c),
+        departmentName: dept?.name ?? null,
+        departmentCode: dept?.code ?? null,
+      };
     })
-    .from(complaintsTable)
-    .leftJoin(departmentsTable, eq(complaintsTable.departmentId, departmentsTable.id))
-    .where(conditions.length > 0 ? and(...conditions) : undefined)
-    .orderBy(desc(complaintsTable.createdAt));
+  );
 
-  res.json(complaints);
+  res.json(result);
 });
 
 router.get("/complaints/track/:referenceId", async (req, res): Promise<void> => {
   const refId = req.params.referenceId;
-  const [complaint] = await db
-    .select({
-      id: complaintsTable.id,
-      referenceId: complaintsTable.referenceId,
-      category: complaintsTable.category,
-      priority: complaintsTable.priority,
-      subject: complaintsTable.subject,
-      status: complaintsTable.status,
-      adminRemarks: complaintsTable.adminRemarks,
-      hodRemarks: complaintsTable.hodRemarks,
-      createdAt: complaintsTable.createdAt,
-      updatedAt: complaintsTable.updatedAt,
-      resolvedAt: complaintsTable.resolvedAt,
-      departmentName: departmentsTable.name,
-    })
-    .from(complaintsTable)
-    .leftJoin(departmentsTable, eq(complaintsTable.departmentId, departmentsTable.id))
-    .where(eq(complaintsTable.referenceId, refId));
 
-  if (!complaint) {
-    res.status(404).json({ error: "Complaint not found" });
-    return;
-  }
+  const { data: complaint } = await supabase
+    .from("complaints")
+    .select("id, reference_id, category, priority, subject, status, admin_remarks, hod_remarks, created_at, updated_at, resolved_at, department_id")
+    .eq("reference_id", refId)
+    .single();
 
-  res.json(complaint);
+  if (!complaint) { res.status(404).json({ error: "Complaint not found" }); return; }
+
+  const { data: dept } = await supabase.from("departments").select("name").eq("id", complaint.department_id).single();
+  const { department_id: _did, ...rest } = complaint;
+
+  res.json({ ...camelRow(rest), departmentName: dept?.name ?? null });
 });
 
 const UpdateComplaint = z.object({
@@ -163,54 +135,40 @@ const UpdateComplaint = z.object({
 
 router.patch("/complaints/:id", async (req, res): Promise<void> => {
   const id = parseInt(req.params.id, 10);
-  if (isNaN(id)) {
-    res.status(400).json({ error: "Invalid complaint ID" });
-    return;
-  }
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid complaint ID" }); return; }
 
   const parsed = UpdateComplaint.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({ error: "Invalid update data" });
-    return;
-  }
+  if (!parsed.success) { res.status(400).json({ error: "Invalid update data" }); return; }
 
-  const updates: Record<string, unknown> = { updatedAt: new Date() };
+  const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
   if (parsed.data.status) updates.status = parsed.data.status;
-  if (parsed.data.adminRemarks !== undefined) updates.adminRemarks = parsed.data.adminRemarks;
-  if (parsed.data.hodRemarks !== undefined) updates.hodRemarks = parsed.data.hodRemarks;
-  if (parsed.data.status === "resolved") updates.resolvedAt = new Date();
+  if (parsed.data.adminRemarks !== undefined) updates.admin_remarks = parsed.data.adminRemarks;
+  if (parsed.data.hodRemarks !== undefined) updates.hod_remarks = parsed.data.hodRemarks;
+  if (parsed.data.status === "resolved") updates.resolved_at = new Date().toISOString();
 
-  const [updated] = await db
-    .update(complaintsTable)
-    .set(updates)
-    .where(eq(complaintsTable.id, id))
-    .returning();
+  const { data: updated, error } = await supabase
+    .from("complaints")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
 
-  if (!updated) {
-    res.status(404).json({ error: "Complaint not found" });
-    return;
-  }
-
-  res.json(updated);
+  if (error || !updated) { res.status(404).json({ error: "Complaint not found" }); return; }
+  res.json(camelRow(updated));
 });
 
 router.delete("/complaints/:id", async (req, res): Promise<void> => {
   const id = parseInt(req.params.id, 10);
-  if (isNaN(id)) {
-    res.status(400).json({ error: "Invalid complaint ID" });
-    return;
-  }
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid complaint ID" }); return; }
 
-  const [deleted] = await db
-    .delete(complaintsTable)
-    .where(eq(complaintsTable.id, id))
-    .returning();
+  const { data: deleted, error } = await supabase
+    .from("complaints")
+    .delete()
+    .eq("id", id)
+    .select("id")
+    .single();
 
-  if (!deleted) {
-    res.status(404).json({ error: "Complaint not found" });
-    return;
-  }
-
+  if (error || !deleted) { res.status(404).json({ error: "Complaint not found" }); return; }
   res.json({ message: "Complaint deleted" });
 });
 
@@ -233,20 +191,13 @@ router.get("/complaints/events/stream", (req, res): void => {
   res.write(`data: ${JSON.stringify({ type: "connected" })}\n\n`);
 
   const clientId = randomUUID();
-  complaintEvents.addClient({
-    id: clientId,
-    res,
-    role: role as "admin" | "hod",
-    departmentId,
-  });
+  complaintEvents.addClient({ id: clientId, res, role: role as "admin" | "hod", departmentId });
 
   const keepAlive = setInterval(() => {
     try { res.write(": keepalive\n\n"); } catch { clearInterval(keepAlive); }
   }, 30000);
 
-  req.on("close", () => {
-    clearInterval(keepAlive);
-  });
+  req.on("close", () => { clearInterval(keepAlive); });
 });
 
 export default router;

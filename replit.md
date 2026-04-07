@@ -11,7 +11,7 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 ### Packages
 - `artifacts/api-server` — Express 5 REST API (port via `$PORT`, default 8080)
 - `artifacts/bput-feedback` — React + Vite frontend (main web app at `/`)
-- `lib/db` — Drizzle ORM schema + migrations
+- `lib/db` — Supabase client + camelCase/snakeCase helpers + schema types
 - `lib/api-spec` — OpenAPI spec (openapi.yaml)
 - `lib/api-client-react` — Generated React Query hooks (via Orval)
 - `lib/api-zod` — Zod validation schemas (generated)
@@ -23,8 +23,8 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **Package manager**: pnpm
 - **TypeScript version**: 5.9
 - **API framework**: Express 5 + Pino logger
-- **Database**: PostgreSQL + Drizzle ORM
-- **Validation**: Zod (`zod/v4`), `drizzle-zod`
+- **Database**: Supabase (PostgreSQL) via `@supabase/supabase-js`
+- **Validation**: Zod (`zod/v4`)
 - **API codegen**: Orval (from OpenAPI spec → React Query hooks)
 - **Charts**: Recharts (LineChart, RadarChart)
 - **Build**: esbuild (CJS bundle)

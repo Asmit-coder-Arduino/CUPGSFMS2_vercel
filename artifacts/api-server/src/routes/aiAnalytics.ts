@@ -1,6 +1,5 @@
 import { Router, type IRouter } from "express";
-import { db, feedbackTable, facultyTable, departmentsTable, coursesTable } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { supabase, camelRow } from "@workspace/db";
 import rateLimit from "express-rate-limit";
 
 const router: IRouter = Router();
@@ -38,10 +37,7 @@ const defaultAvgRatings = {
 
 router.get("/faculty/:id/ai-analysis", aiRateLimit, async (req, res): Promise<void> => {
   const facultyId = parseInt(req.params.id, 10);
-  if (isNaN(facultyId)) {
-    res.status(400).json({ error: "Invalid faculty ID" });
-    return;
-  }
+  if (isNaN(facultyId)) { res.status(400).json({ error: "Invalid faculty ID" }); return; }
 
   const cached = analysisCache.get(facultyId);
   if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
@@ -49,46 +45,30 @@ router.get("/faculty/:id/ai-analysis", aiRateLimit, async (req, res): Promise<vo
     return;
   }
 
-  const [faculty] = await db
-    .select({
-      id: facultyTable.id,
-      name: facultyTable.name,
-      designation: facultyTable.designation,
-      departmentId: facultyTable.departmentId,
-      departmentName: departmentsTable.name,
-    })
-    .from(facultyTable)
-    .leftJoin(departmentsTable, eq(facultyTable.departmentId, departmentsTable.id))
-    .where(eq(facultyTable.id, facultyId));
+  const { data: faculty } = await supabase
+    .from("faculty")
+    .select("id, name, designation, department_id")
+    .eq("id", facultyId)
+    .single();
 
-  if (!faculty) {
-    res.status(404).json({ error: "Faculty not found" });
-    return;
-  }
+  if (!faculty) { res.status(404).json({ error: "Faculty not found" }); return; }
 
-  const feedbacks = await db
-    .select({
-      ratingCourseContent: feedbackTable.ratingCourseContent,
-      ratingTeachingQuality: feedbackTable.ratingTeachingQuality,
-      ratingLabFacilities: feedbackTable.ratingLabFacilities,
-      ratingStudyMaterial: feedbackTable.ratingStudyMaterial,
-      ratingOverall: feedbackTable.ratingOverall,
-      comments: feedbackTable.comments,
-      courseName: coursesTable.name,
-      courseCode: coursesTable.code,
-      createdAt: feedbackTable.createdAt,
-    })
-    .from(feedbackTable)
-    .leftJoin(coursesTable, eq(feedbackTable.courseId, coursesTable.id))
-    .where(eq(feedbackTable.facultyId, facultyId))
-    .orderBy(desc(feedbackTable.createdAt))
+  const { data: dept } = await supabase.from("departments").select("name").eq("id", faculty.department_id).single();
+
+  const { data: feedbacks } = await supabase
+    .from("feedback")
+    .select("rating_course_content, rating_teaching_quality, rating_lab_facilities, rating_study_material, rating_overall, comments, course_id, created_at")
+    .eq("faculty_id", facultyId)
+    .order("created_at", { ascending: false })
     .limit(100);
 
-  if (feedbacks.length === 0) {
+  const fb = feedbacks || [];
+
+  if (fb.length === 0) {
     res.json({
       facultyName: faculty.name,
       designation: faculty.designation,
-      department: faculty.departmentName,
+      department: dept?.name,
       totalFeedbacks: 0,
       totalComments: 0,
       avgRatings: defaultAvgRatings,
@@ -99,27 +79,30 @@ router.get("/faculty/:id/ai-analysis", aiRateLimit, async (req, res): Promise<vo
     return;
   }
 
-  const comments = feedbacks
-    .filter(f => f.comments && f.comments.trim())
-    .map(f => f.comments!.trim());
+  const comments = fb.filter((f: any) => f.comments && f.comments.trim()).map((f: any) => f.comments!.trim());
 
   const avgRatings = {
-    courseContent: (feedbacks.reduce((s, f) => s + f.ratingCourseContent, 0) / feedbacks.length).toFixed(2),
-    teachingQuality: (feedbacks.reduce((s, f) => s + f.ratingTeachingQuality, 0) / feedbacks.length).toFixed(2),
-    labFacilities: (feedbacks.reduce((s, f) => s + f.ratingLabFacilities, 0) / feedbacks.length).toFixed(2),
-    studyMaterial: (feedbacks.reduce((s, f) => s + f.ratingStudyMaterial, 0) / feedbacks.length).toFixed(2),
-    overall: (feedbacks.reduce((s, f) => s + f.ratingOverall, 0) / feedbacks.length).toFixed(2),
+    courseContent: (fb.reduce((s: number, f: any) => s + f.rating_course_content, 0) / fb.length).toFixed(2),
+    teachingQuality: (fb.reduce((s: number, f: any) => s + f.rating_teaching_quality, 0) / fb.length).toFixed(2),
+    labFacilities: (fb.reduce((s: number, f: any) => s + f.rating_lab_facilities, 0) / fb.length).toFixed(2),
+    studyMaterial: (fb.reduce((s: number, f: any) => s + f.rating_study_material, 0) / fb.length).toFixed(2),
+    overall: (fb.reduce((s: number, f: any) => s + f.rating_overall, 0) / fb.length).toFixed(2),
   };
 
-  const courses = [...new Set(feedbacks.map(f => `${f.courseCode} - ${f.courseName}`).filter(Boolean))];
+  const courseIds = [...new Set(fb.map((f: any) => f.course_id))];
+  const courseNames: string[] = [];
+  for (const cid of courseIds) {
+    const { data: c } = await supabase.from("courses").select("code, name").eq("id", cid).single();
+    if (c) courseNames.push(`${c.code} - ${c.name}`);
+  }
 
   const prompt = `You are an academic feedback analyst for CUPGS, BPUT Rourkela (a university in Odisha, India). Analyze the following faculty feedback data and provide a comprehensive, professional assessment.
 
 Faculty: ${faculty.name}
 Designation: ${faculty.designation}
-Department: ${faculty.departmentName}
-Total Feedbacks: ${feedbacks.length}
-Courses: ${courses.join(", ")}
+Department: ${dept?.name}
+Total Feedbacks: ${fb.length}
+Courses: ${courseNames.join(", ")}
 
 Average Ratings (out of 5):
 - Course Content: ${avgRatings.courseContent}
@@ -128,7 +111,7 @@ Average Ratings (out of 5):
 - Study Material: ${avgRatings.studyMaterial}
 - Overall: ${avgRatings.overall}
 
-${comments.length > 0 ? `Student Comments (${comments.length} comments):\n${comments.slice(0, 30).map((c, i) => `${i + 1}. "${c}"`).join("\n")}` : "No student comments available."}
+${comments.length > 0 ? `Student Comments (${comments.length} comments):\n${comments.slice(0, 30).map((c: string, i: number) => `${i + 1}. "${c}"`).join("\n")}` : "No student comments available."}
 
 Provide your analysis in the following JSON format (respond ONLY with valid JSON, no markdown):
 {
@@ -168,20 +151,17 @@ Provide your analysis in the following JSON format (respond ONLY with valid JSON
       const cleaned = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
       analysis = JSON.parse(cleaned);
     } catch {
-      analysis = {
-        ...defaultAnalysisFields,
-        summary: content,
-      };
+      analysis = { ...defaultAnalysisFields, summary: content };
     }
 
     const result = {
       facultyName: faculty.name,
       designation: faculty.designation,
-      department: faculty.departmentName,
-      totalFeedbacks: feedbacks.length,
+      department: dept?.name,
+      totalFeedbacks: fb.length,
       totalComments: comments.length,
       avgRatings,
-      courses,
+      courses: courseNames,
       ...defaultAnalysisFields,
       ...analysis,
     };

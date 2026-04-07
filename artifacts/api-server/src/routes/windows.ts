@@ -1,6 +1,5 @@
 import { Router, type IRouter } from "express";
-import { db, windowsTable } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { supabase, camelRow } from "@workspace/db";
 import {
   CreateWindowBody,
   GetWindowParams,
@@ -11,99 +10,88 @@ import {
 const router: IRouter = Router();
 
 router.get("/windows", async (req, res): Promise<void> => {
-  const windows = await db
-    .select()
-    .from(windowsTable)
-    .orderBy(desc(windowsTable.createdAt));
+  const { data: windows, error } = await supabase
+    .from("feedback_windows")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) { res.status(500).json({ error: error.message }); return; }
 
   res.json(
-    windows.map((w) => ({
-      ...w,
-      departmentIds: (w.departmentIds ?? []).map(Number),
+    (windows || []).map((w: any) => ({
+      ...camelRow(w),
+      departmentIds: (w.department_ids ?? []).map(Number),
     }))
   );
 });
 
 router.post("/windows", async (req, res): Promise<void> => {
   const parsed = CreateWindowBody.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({ error: parsed.error.message });
-    return;
-  }
+  if (!parsed.success) { res.status(400).json({ error: parsed.error.message }); return; }
 
-  const [win] = await db
-    .insert(windowsTable)
-    .values({
+  const { data: win, error } = await supabase
+    .from("feedback_windows")
+    .insert({
       title: parsed.data.title,
-      feedbackType: parsed.data.feedbackType,
-      academicYear: parsed.data.academicYear,
+      feedback_type: parsed.data.feedbackType,
+      academic_year: parsed.data.academicYear,
       semester: parsed.data.semester,
-      startDate: new Date(parsed.data.startDate),
-      endDate: new Date(parsed.data.endDate),
-      isActive: true,
-      departmentIds: (parsed.data.departmentIds ?? []).map(String),
+      start_date: new Date(parsed.data.startDate).toISOString(),
+      end_date: new Date(parsed.data.endDate).toISOString(),
+      is_active: true,
+      department_ids: (parsed.data.departmentIds ?? []).map(String),
     })
-    .returning();
+    .select()
+    .single();
+
+  if (error || !win) { res.status(500).json({ error: error?.message || "Insert failed" }); return; }
 
   res.status(201).json({
-    ...win,
-    departmentIds: (win.departmentIds ?? []).map(Number),
+    ...camelRow(win),
+    departmentIds: (win.department_ids ?? []).map(Number),
   });
 });
 
 router.get("/windows/:id", async (req, res): Promise<void> => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const params = GetWindowParams.safeParse({ id: parseInt(raw, 10) });
-  if (!params.success) {
-    res.status(400).json({ error: params.error.message });
-    return;
-  }
+  if (!params.success) { res.status(400).json({ error: params.error.message }); return; }
 
-  const [win] = await db
-    .select()
-    .from(windowsTable)
-    .where(eq(windowsTable.id, params.data.id));
+  const { data: win, error } = await supabase
+    .from("feedback_windows")
+    .select("*")
+    .eq("id", params.data.id)
+    .single();
 
-  if (!win) {
-    res.status(404).json({ error: "Window not found" });
-    return;
-  }
+  if (error || !win) { res.status(404).json({ error: "Window not found" }); return; }
 
-  res.json({ ...win, departmentIds: (win.departmentIds ?? []).map(Number) });
+  res.json({ ...camelRow(win), departmentIds: (win.department_ids ?? []).map(Number) });
 });
 
 router.patch("/windows/:id", async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const params = UpdateWindowParams.safeParse({ id: parseInt(rawId, 10) });
-  if (!params.success) {
-    res.status(400).json({ error: params.error.message });
-    return;
-  }
+  if (!params.success) { res.status(400).json({ error: params.error.message }); return; }
 
   const parsed = UpdateWindowBody.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({ error: parsed.error.message });
-    return;
-  }
+  if (!parsed.success) { res.status(400).json({ error: parsed.error.message }); return; }
 
   const updates: Record<string, unknown> = {};
   if (parsed.data.title !== undefined) updates.title = parsed.data.title;
-  if (parsed.data.isActive !== undefined) updates.isActive = parsed.data.isActive;
-  if (parsed.data.startDate !== undefined) updates.startDate = new Date(parsed.data.startDate);
-  if (parsed.data.endDate !== undefined) updates.endDate = new Date(parsed.data.endDate);
+  if (parsed.data.isActive !== undefined) updates.is_active = parsed.data.isActive;
+  if (parsed.data.startDate !== undefined) updates.start_date = new Date(parsed.data.startDate).toISOString();
+  if (parsed.data.endDate !== undefined) updates.end_date = new Date(parsed.data.endDate).toISOString();
 
-  const [win] = await db
-    .update(windowsTable)
-    .set(updates)
-    .where(eq(windowsTable.id, params.data.id))
-    .returning();
+  const { data: win, error } = await supabase
+    .from("feedback_windows")
+    .update(updates)
+    .eq("id", params.data.id)
+    .select()
+    .single();
 
-  if (!win) {
-    res.status(404).json({ error: "Window not found" });
-    return;
-  }
+  if (error || !win) { res.status(404).json({ error: "Window not found" }); return; }
 
-  res.json({ ...win, departmentIds: (win.departmentIds ?? []).map(Number) });
+  res.json({ ...camelRow(win), departmentIds: (win.department_ids ?? []).map(Number) });
 });
 
 export default router;
