@@ -115,11 +115,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <div className="w-full md:w-64 flex flex-col z-10 hidden md:flex relative lg-sidebar"
         style={{
           background: "rgba(255,255,255,0)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          borderRight: "1px solid rgba(255,255,255,0.06)",
+          backdropFilter: isLiquid ? "none" : "blur(12px)",
+          WebkitBackdropFilter: isLiquid ? "none" : "blur(12px)",
+          borderRight: isLiquid ? "none" : "1px solid rgba(255,255,255,0.06)",
           borderRadius: "0 28px 28px 0",
-          boxShadow: "4px 0 30px rgba(0,0,0,0.25)",
+          boxShadow: isLiquid ? "none" : "4px 0 30px rgba(0,0,0,0.25)",
         }}>
 
         {/* Sidebar inner glow */}
@@ -154,10 +154,10 @@ export function AppLayout({ children }: { children: ReactNode }) {
               cursor: "pointer",
               transition: "background 0.2s ease, transform 0.2s ease",
               background: isLiquid ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0)",
-              backdropFilter: "blur(6px)",
-              WebkitBackdropFilter: "blur(6px)",
+              backdropFilter: isLiquid ? "none" : "blur(6px)",
+              WebkitBackdropFilter: isLiquid ? "none" : "blur(6px)",
               border: "1px solid rgba(255,255,255,0)",
-              boxShadow: "0 0 30px 0px rgba(0,0,0,0.3)",
+              boxShadow: isLiquid ? "none" : "0 0 30px 0px rgba(0,0,0,0.3)",
               flexShrink: 0,
             }}
             title={isLiquid ? "Switch to Classic Mode" : "Switch to Liquid Glass Mode"}
@@ -176,7 +176,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <div className="mx-3 mt-3 mb-1 p-3 rounded-xl animate-fade-in relative overflow-hidden"
             style={{
               background: `rgba(255, 255, 255, 0)`,
-              backdropFilter: "blur(6px)",
+              backdropFilter: isLiquid ? "none" : "blur(6px)",
               boxShadow: `0 0 20px ${avatar.accent}`
             }}>
             <div className="flex items-center gap-2.5">
@@ -254,7 +254,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 cursor: "pointer",
                 background: isLiquid ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0)",
-                backdropFilter: "blur(6px)",
+                backdropFilter: isLiquid ? "none" : "blur(6px)",
                 border: "1px solid rgba(255,255,255,0)",
                 flexShrink: 0,
               }}

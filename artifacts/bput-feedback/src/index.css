@@ -888,11 +888,11 @@ body {
 /* --- Liquid Glass: Modals --- */
 .liquid-glass [role="dialog"] {
   position: relative;
-  background: transparent !important;
+  background: rgba(15, 10, 35, 0.75) !important;
   backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturation)) !important;
   -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturation)) !important;
-  border: none !important;
-  box-shadow: none !important;
+  border: 1px solid rgba(139, 92, 246, 0.15) !important;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4) !important;
 }
 .liquid-glass [role="dialog"]::before {
   content: '';
@@ -920,11 +920,32 @@ body {
 /* --- Liquid Glass: Inputs --- */
 .liquid-glass .input-glass {
   position: relative;
-  background: transparent !important;
+  background: rgba(255, 255, 255, 0.04) !important;
   backdrop-filter: blur(calc(var(--lg-blur) * 0.3)) saturate(var(--lg-saturation)) !important;
   -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 0.3)) saturate(var(--lg-saturation)) !important;
-  border: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   box-shadow: none !important;
+}
+.liquid-glass [role="dialog"] input,
+.liquid-glass [role="dialog"] textarea,
+.liquid-glass [role="dialog"] select {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #fff !important;
+}
+.liquid-glass [role="dialog"] input::placeholder,
+.liquid-glass [role="dialog"] textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+.liquid-glass [role="dialog"] label {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+.liquid-glass [role="dialog"] button.btn-gradient-blue,
+.liquid-glass [role="dialog"] button.btn-gradient-teal,
+.liquid-glass [role="dialog"] button.btn-gradient-indigo,
+.liquid-glass [role="dialog"] button.btn-gradient-slate {
+  background: rgba(139, 92, 246, 0.3) !important;
+  backdrop-filter: none !important;
 }
 
 /* --- Liquid Glass: Hero Badge --- */
