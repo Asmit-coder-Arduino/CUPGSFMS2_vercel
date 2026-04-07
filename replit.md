@@ -139,6 +139,20 @@ code, name, semester, academicYear, credits, facultyId (null to unassign)
 - **Liquid Glass Mode**: Toggle between classic and liquid glass visual modes via Droplets/Glasses icon button in sidebar + home header. Persisted in localStorage key `cupgs-glass-mode`. Context: `GlassModeContext.tsx` (`useGlassMode()` hook). SVG filters: `LiquidGlassFilters.tsx`. CSS uses `.liquid-glass` class on `<html>` with CSS custom properties `--lg-blur`, `--lg-saturation`, `--lg-border`. Uses transparent backgrounds with backdrop-filter blur + saturate — no white overlay, background colors show through like real liquid glass.
 - **Glass Settings Panel**: When liquid glass mode is active, a sliders icon appears next to the glass toggle. Click to open a dropdown with 3 adjustable sliders: Blur (0–40px, default 12px), Saturation (1x–3x, default 1.4x), Border (0–100%, default 0% = borderless). Settings persisted in localStorage key `cupgs-glass-settings`. Component: `GlassSettingsPanel.tsx`. Reset button restores defaults.
 
+## Netlify Deployment
+
+The project is configured for Netlify deployment:
+- `netlify.toml` — Build config, redirects, and function settings
+- `netlify-build.sh` — Build script (frontend + API serverless function)
+- `artifacts/api-server/build-netlify.mjs` — Bundles Express API as Netlify Function
+- `artifacts/api-server/src/netlify-function.ts` — Serverless function entry point
+- `netlify/functions/api.mjs` — Built self-contained API function (3.2MB)
+
+### Required Environment Variables on Netlify
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY`
+- `ADMIN_PASSWORD`, `ALLOWED_ORIGINS` (set to `*`), `NODE_ENV` = `production`
+- Optional: `AI_INTEGRATIONS_OPENAI_BASE_URL`, `AI_INTEGRATIONS_OPENAI_API_KEY`
+
 ## Key Conventions
 - API base URL: relative (`""`) — proxy routes `/api/*` to the API server
 - Faculty employee ID format: `CUPGS/DEPT/NUM` (e.g. `CUPGS/CSE/001`)
