@@ -682,7 +682,7 @@ body {
   --lg-blur: 8px;
   --lg-opacity: 0.06;
   --lg-level: 1;
-  --lg-border: 1;
+  --lg-border: 0;
 }
 
 

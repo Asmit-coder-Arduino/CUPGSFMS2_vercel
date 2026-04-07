@@ -13,7 +13,7 @@ const DEFAULT_SETTINGS: GlassSettings = {
   blur: 8,
   opacity: 0.08,
   level: 1,
-  border: 1,
+  border: 0,
 };
 
 interface GlassModeContextType {
