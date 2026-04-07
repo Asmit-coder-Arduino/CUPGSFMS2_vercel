@@ -201,10 +201,10 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </nav>
 
         {/* Footer */}
-        <div className="px-4 pb-5 pt-3 border-t border-white/[0.05]">
+        <div className="px-4 pb-5 pt-3 border-t border-white/[0.05]" style={{ background: "#000000" }}>
           <div className="flex items-center gap-2 justify-center">
             <Zap className="w-2.5 h-2.5" style={{ color: "rgba(139,92,246,0.5)" }} />
-            <span className="text-[10px] text-center leading-relaxed" style={{ color: "rgba(255,255,255,0.2)" }}>
+            <span className="text-[10px] text-center leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
               CUPGS · BPUT Rourkela
             </span>
           </div>

@@ -200,9 +200,7 @@ export function HomePageLayout({ children }: { children: ReactNode }) {
       {/* ══════════ BPUT OFFICIAL FOOTER ══════════ */}
       <footer id="bput-footer" className="relative z-10 mt-auto"
         style={{
-          background: isDark
-            ? "linear-gradient(135deg, rgba(6,3,15,0.98) 0%, rgba(10,5,28,0.98) 100%)"
-            : "linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)",
+          background: "#000000",
         }}>
         <div className="w-full px-4 md:px-10 xl:px-16 py-10">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
