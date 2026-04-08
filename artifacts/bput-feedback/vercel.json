@@ -1,0 +1,8 @@
+{
+  "buildCommand": "export BASE_PATH=/ && export PORT=3000 && npm run build",
+  "outputDirectory": "dist/public",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
