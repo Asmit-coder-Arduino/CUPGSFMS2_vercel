@@ -1,7 +1,7 @@
 {
   "buildCommand": "pnpm -w run build:vercel",
   "installCommand": "echo 'Dependencies handled in build script'",
-  "outputDirectory": "artifacts/bput-feedback/dist/public",
+  "outputDirectory": "public",
   "framework": null,
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index" },
