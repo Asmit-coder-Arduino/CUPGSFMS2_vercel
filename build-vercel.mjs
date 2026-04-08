@@ -1,10 +1,11 @@
 /**
  * Root-level Vercel build orchestrator.
- * Run via: node build-vercel.mjs
- * Invoked by: pnpm run build:vercel (defined in root package.json)
+ * Invoked by: pnpm -w run build:vercel
+ *
+ * Vercel handles API function bundling automatically from api/index.ts.
+ * This script just installs deps and builds the frontend.
  */
 import { execSync } from "node:child_process";
-import { mkdirSync, cpSync, writeFileSync, rmSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -17,65 +18,18 @@ const run = (cmd, opts = {}) => {
 console.log("=== VERCEL BUILD START ===");
 console.log(`Node: ${process.version}`);
 
-// ── 1. Install dependencies (dev + prod) ──────────────────────────────────────
+// ── 1. Install all dependencies (dev + prod so build tools are available) ─────
 console.log("\n--- Installing dependencies ---");
-run("pnpm install --no-frozen-lockfile", { env: { ...process.env, NODE_ENV: "development" } });
+run("pnpm install --no-frozen-lockfile", {
+  env: { ...process.env, NODE_ENV: "development" },
+});
 
-// ── 2. Build API serverless function ──────────────────────────────────────────
-console.log("\n--- Building API serverless function ---");
-run("node build-vercel.mjs", { cwd: path.join(ROOT, "artifacts/api-server") });
-
-// ── 3. Build frontend ─────────────────────────────────────────────────────────
+// ── 2. Build frontend ─────────────────────────────────────────────────────────
 console.log("\n--- Building frontend ---");
 run("pnpm --filter @workspace/bput-feedback run build", {
   env: { ...process.env, NODE_ENV: "production", BASE_PATH: "/", PORT: "3000" },
 });
 
-// ── 4. Assemble Vercel Build Output API structure ─────────────────────────────
-console.log("\n--- Assembling Vercel Build Output ---");
-const vercelOut = path.join(ROOT, ".vercel/output");
-const staticDir = path.join(vercelOut, "static");
-const funcDir = path.join(vercelOut, "functions/api.func");
-
-mkdirSync(staticDir, { recursive: true });
-mkdirSync(funcDir, { recursive: true });
-
-// Copy frontend build
-const frontendDist = path.join(ROOT, "artifacts/bput-feedback/dist/public");
-cpSync(frontendDist, staticDir, { recursive: true });
-
-// Write function config
-writeFileSync(
-  path.join(funcDir, ".vc-config.json"),
-  JSON.stringify(
-    {
-      runtime: "nodejs20.x",
-      handler: "index.mjs",
-      launcherType: "Nodejs",
-      shouldAddHelpers: true,
-    },
-    null,
-    2
-  )
-);
-
-// Write routing config
-writeFileSync(
-  path.join(vercelOut, "config.json"),
-  JSON.stringify(
-    {
-      version: 3,
-      routes: [
-        { src: "/api/(.*)", dest: "/api" },
-        { handle: "filesystem" },
-        { src: "/(.*)", dest: "/index.html" },
-      ],
-    },
-    null,
-    2
-  )
-);
-
 console.log("\n=== VERCEL BUILD COMPLETE ===");
-console.log("  Frontend  -> .vercel/output/static/");
-console.log("  API Func  -> .vercel/output/functions/api.func/");
+console.log("  Frontend -> artifacts/bput-feedback/dist/public/");
+console.log("  API      -> Vercel auto-bundles api/index.ts");
