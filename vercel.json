@@ -1,0 +1,5 @@
+{
+  "buildCommand": "bash vercel-build.sh",
+  "installCommand": "echo 'Dependencies handled in build script'",
+  "framework": null
+}

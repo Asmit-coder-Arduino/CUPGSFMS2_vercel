@@ -142,19 +142,31 @@ code, name, semester, academicYear, credits, facultyId (null to unassign)
 - **Liquid Glass Mode**: Toggle between classic and liquid glass visual modes via Droplets/Glasses icon button in sidebar + home header. Persisted in localStorage key `cupgs-glass-mode`. Context: `GlassModeContext.tsx` (`useGlassMode()` hook). SVG filters: `LiquidGlassFilters.tsx`. CSS uses `.liquid-glass` class on `<html>` with CSS custom properties `--lg-blur`, `--lg-saturation`, `--lg-border`. Uses transparent backgrounds with backdrop-filter blur + saturate — no white overlay, background colors show through like real liquid glass.
 - **Glass Settings Panel**: When liquid glass mode is active, a sliders icon appears next to the glass toggle. Click to open a dropdown with 3 adjustable sliders: Blur (0–40px, default 12px), Saturation (1x–3x, default 1.4x), Border (0–100%, default 0% = borderless). Settings persisted in localStorage key `cupgs-glass-settings`. Component: `GlassSettingsPanel.tsx`. Reset button restores defaults.
 
-## Netlify Deployment
+## Deployment
 
-The project is configured for Netlify deployment:
+### Netlify
 - `netlify.toml` — Build config, redirects, and function settings
 - `netlify-build.sh` — Build script (frontend + API serverless function)
 - `artifacts/api-server/build-netlify.mjs` — Bundles Express API as Netlify Function
 - `artifacts/api-server/src/netlify-function.ts` — Serverless function entry point
 - `netlify/functions/api.mjs` — Built self-contained API function (3.2MB)
+- See `NETLIFY_DEPLOY.md` for full instructions
 
-### Required Environment Variables on Netlify
+### Vercel
+- `vercel.json` — Root-level Vercel config using Build Output API
+- `vercel-build.sh` — Full build script (pnpm setup, frontend + API function build)
+- `artifacts/api-server/build-vercel.mjs` — Bundles Express API as Vercel Function
+- `artifacts/api-server/src/vercel-function.ts` — Vercel Node.js serverless handler
+- See `VERCEL_DEPLOY.md` for full instructions
+- Build output goes to `.vercel/output/` (gitignored)
+
+### Required Environment Variables (both platforms)
 - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY`
-- `ADMIN_PASSWORD`, `ALLOWED_ORIGINS` (set to `*`), `NODE_ENV` = `production`
+- `ADMIN_PASSWORD`, `ALLOWED_ORIGINS` (set to `*`)
 - Optional: `AI_INTEGRATIONS_OPENAI_BASE_URL`, `AI_INTEGRATIONS_OPENAI_API_KEY`
+
+### Liquid Glass Effect (Deployment Fix)
+SVG filter CSS uses inline data URIs (`filter: url("data:image/svg+xml,...")`) instead of DOM fragment references (`url(#id)`). This makes the effect completely self-contained in CSS — works identically on any hosting platform including Netlify and Vercel.
 
 ## Key Conventions
 - API base URL: relative (`""`) — proxy routes `/api/*` to the API server
