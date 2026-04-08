@@ -1,6 +1,5 @@
 import { execSync } from "node:child_process";
 import { existsSync, mkdirSync, writeFileSync, cpSync } from "node:fs";
-import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const ROOT = process.cwd();
