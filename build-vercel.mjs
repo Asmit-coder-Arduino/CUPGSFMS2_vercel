@@ -1,54 +1,42 @@
 import { execSync } from "node:child_process";
-import { cpSync, rmSync, existsSync, readdirSync, mkdirSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
-// Use both methods to determine root — whichever is correct on Vercel's CI
-const ROOT_FROM_URL = path.dirname(fileURLToPath(import.meta.url));
-const ROOT_FROM_CWD = process.cwd();
-
-console.log("=== VERCEL BUILD START ===");
-console.log("Node:", process.version);
-console.log("ROOT (import.meta.url):", ROOT_FROM_URL);
-console.log("ROOT (process.cwd):", ROOT_FROM_CWD);
-
-// Use CWD as the authoritative root (where vercel.json lives)
-const ROOT = ROOT_FROM_CWD;
-
+const ROOT = process.cwd();
 const run = (cmd, opts = {}) => {
   console.log(`\n> ${cmd}`);
   execSync(cmd, { stdio: "inherit", cwd: ROOT, ...opts });
 };
 
-// 1. Install all deps
+console.log("=== VERCEL BUILD START ===");
+console.log("Node:", process.version);
+console.log("ROOT:", ROOT);
+
+// 1. Install all deps (NODE_ENV=development so build tools like Vite are included)
 run("pnpm install --no-frozen-lockfile", {
   env: { ...process.env, NODE_ENV: "development" },
 });
 
-// 2. Build the frontend
+// 2. Build frontend — Vite writes directly to /public at repo root via BUILD_OUT_DIR
+//    BUILD_OUT_DIR is relative to the artifact dir (artifacts/bput-feedback)
+//    so "../../public" resolves to <ROOT>/public/
 run("pnpm --filter @workspace/bput-feedback run build", {
-  env: { ...process.env, NODE_ENV: "production", BASE_PATH: "/", PORT: "3000" },
+  env: {
+    ...process.env,
+    NODE_ENV: "production",
+    BASE_PATH: "/",
+    PORT: "3000",
+    BUILD_OUT_DIR: "../../public",
+  },
 });
 
-// 3. Copy to public/ where Vercel expects it
-const src = path.join(ROOT, "artifacts/bput-feedback/dist/public");
-const dest = path.join(ROOT, "public");
-
-console.log("\n--- Copying output to public/ ---");
-console.log("src:", src, "| exists:", existsSync(src));
-console.log("dest:", dest);
-
-if (!existsSync(src)) {
-  console.error("ERROR: src directory does not exist:", src);
-  process.exit(1);
+const publicDir = path.join(ROOT, "public");
+console.log("\n--- Output check ---");
+console.log("public/ exists:", existsSync(publicDir));
+if (existsSync(publicDir)) {
+  console.log("public/ contents:", readdirSync(publicDir).slice(0, 5));
 }
-
-rmSync(dest, { recursive: true, force: true });
-mkdirSync(dest, { recursive: true });
-cpSync(src, dest, { recursive: true });
-
-console.log("dest exists after copy:", existsSync(dest));
-console.log("dest contents:", readdirSync(dest).slice(0, 5));
 
 console.log("\n=== VERCEL BUILD COMPLETE ===");
 console.log("Output: public/");
