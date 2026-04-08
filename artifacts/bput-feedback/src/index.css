@@ -725,8 +725,7 @@ body {
   border-radius: inherit;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  filter: url(#liquid-glass-card);
-  -webkit-filter: url(#liquid-glass-card);
+
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -766,8 +765,7 @@ body {
   border-radius: 0 28px 28px 0;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  filter: url(#liquid-glass-sidebar);
-  -webkit-filter: url(#liquid-glass-sidebar);
+
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -803,8 +801,6 @@ body {
   border-radius: 16px;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  filter: url(#liquid-glass-nav);
-  -webkit-filter: url(#liquid-glass-nav);
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -855,8 +851,7 @@ body {
   border-radius: inherit;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  filter: url(#liquid-glass-btn);
-  -webkit-filter: url(#liquid-glass-btn);
+
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -895,8 +890,7 @@ body {
   border-radius: 9999px;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  filter: url(#liquid-glass-btn);
-  -webkit-filter: url(#liquid-glass-btn);
+
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -1001,8 +995,7 @@ body {
   border-radius: 9999px;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  filter: url(#liquid-glass-btn);
-  -webkit-filter: url(#liquid-glass-btn);
+
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -1047,8 +1040,7 @@ body {
   border-radius: 9999px;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  filter: url(#liquid-glass-btn);
-  -webkit-filter: url(#liquid-glass-btn);
+
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -1082,8 +1074,7 @@ body {
   inset: 0;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  filter: url(#liquid-glass-sidebar);
-  -webkit-filter: url(#liquid-glass-sidebar);
+
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -1111,8 +1102,7 @@ body {
   border-radius: inherit;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  filter: url(#liquid-glass-btn);
-  -webkit-filter: url(#liquid-glass-btn);
+
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -1144,8 +1134,7 @@ body {
   border-radius: inherit;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  filter: url(#liquid-glass-card);
-  -webkit-filter: url(#liquid-glass-card);
+
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
