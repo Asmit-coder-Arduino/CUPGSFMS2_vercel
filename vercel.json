@@ -1,5 +1,3 @@
 {
-  "buildCommand": "pnpm -w run build:vercel",
-  "installCommand": "echo 'Dependencies handled in build script'",
   "framework": null
 }
